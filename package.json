@@ -1,0 +1,17 @@
+{
+  "name": "liturgical-calendar",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "repository": "https://github.com/Sint-Willibrordkerk/liturgical-calendar.git",
+  "author": "Sint Willibrordus Stichting",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.4",
+    "typescript": "^5.7.2",
+    "yaml": "^2.6.1"
+  }
+}
