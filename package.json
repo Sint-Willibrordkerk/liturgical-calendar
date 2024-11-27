@@ -1,16 +1,17 @@
 {
   "name": "liturgical-calendar",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "dist/index.js",
   "repository": "https://github.com/Sint-Willibrordkerk/liturgical-calendar.git",
   "author": "Sint Willibrordus Stichting",
+  "description": "Generate a (local) Catholic liturgical calendar in accordance with the 1960 rubrics.",
   "license": "MIT",
   "private": false,
   "scripts": {
     "build": "tsc"
   },
   "files": [
-    "dist",
+    "dist/**/*.js",
     "assets"
   ],
   "devDependencies": {

@@ -1,41 +1,55 @@
+import { readFileSync } from "fs";
+import { parse } from "yaml";
+
+export type LiturgicalClass = 1 | 2 | 3 | 4;
 export interface Saint {
   title: string;
   type: "feest" | "vigilie" | "lord" | "custom";
   subtitle?: string;
-  class: 1 | 2 | 3 | 4;
+  class: LiturgicalClass;
 }
-export type Saints = Record<string, Record<string, Saint[]>>;
+export type Saints = Record<number, Record<number, Saint[]>>;
 
-type RawSaint = {
-  name: string;
-  titles: string[];
-  type: "vigilie" | "lord" | "custom";
-  class: 1 | 2 | 3 | 4;
-};
-type RawSaints = Record<string, Record<string, RawSaint | RawSaint[]>>;
+type RawCalendar = Record<
+  LiturgicalClass,
+  Record<`${number}-${number}`, string | string[]>
+>;
+type RawSaints = Record<
+  string,
+  {
+    title?: string;
+    type?: "vigilie" | "lord" | "custom";
+  }
+>;
 
 export function loadSaints(): Saints {
-  const allRawSaints: RawSaints = require("../assets/saints.json");
-  const saints: Saints = {};
+  const calendar: RawCalendar = parse(
+    readFileSync("./assets/calendar.yml", "utf-8")
+  );
+  const allRawSaints: RawSaints = parse(
+    readFileSync("./assets/saints.yml", "utf-8")
+  );
 
-  for (let month = 1; month <= 12; month++) {
-    saints[month] = {};
-    Object.entries(allRawSaints[month]).forEach(([day, value]) => {
-      const rawSaints = Array.isArray(value) ? value : [value];
-      saints[month][day] = rawSaints.map((rawSaint) => ({
-        // replace space with nbsp
-        title: rawSaint.name.replace("H. ", "H.\u00A0"),
-        type: rawSaint.type ?? "feest",
-        subtitle: rawSaint.titles
-          ? rawSaint.titles.length > 1
-            ? `${rawSaint.titles
-                .slice(0, -1)
-                .join(", ")} en ${rawSaint.titles.slice(-1)}`
-            : rawSaint.titles[0]
-          : undefined,
-        class: rawSaint.class,
-      }));
-    });
+  const saints: Saints = {};
+  for (let class_ = 1; class_ <= 4; class_++) {
+    Object.entries(calendar[class_ as LiturgicalClass]).forEach(
+      ([key, val]) => {
+        const day = Number.parseInt(key.split("-")[0]);
+        const month = Number.parseInt(key.split("-")[1]);
+        const names = Array.isArray(val) ? val : [val];
+        for (let name of names) {
+          const saint = allRawSaints[name];
+          saints[month] ??= {};
+          saints[month][day] ??= [];
+          saints[month][day].push({
+            title: name.replace("H. ", "H.\u00A0"),
+            subtitle: saint.title,
+            type: saint.type ?? "feest",
+            class: class_ as LiturgicalClass,
+          });
+        }
+      }
+    );
   }
 
   return saints;
