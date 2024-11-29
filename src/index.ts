@@ -18,9 +18,10 @@ export type Calendar = Record<
   Record<number, LiturgicalDay & { commemorations: Commemoration[] }>
 >;
 
-export default function generateCalendar(year: number): Calendar {
+export default function generateCalendar(year: number, lang: string): Calendar {
   return new Calendar_(
     year,
+    lang,
     structuredClone(calendarData),
     structuredClone(propers)
   ).calendar;
@@ -185,14 +186,20 @@ const propers: Propers = {
 class Calendar_ {
   private year: number;
   private propers: Propers;
-  private saints: Saints = loadSaints();
+  private saints: Saints;
   private advent: Date;
   private easter: Date;
   public calendar: Calendar = {};
 
-  constructor(year: number, data: CalendarData, propers: Propers) {
+  constructor(
+    year: number,
+    lang: string,
+    data: CalendarData,
+    propers: Propers
+  ) {
     this.year = year;
     this.propers = propers;
+    this.saints = loadSaints(lang);
     this.calculateAdvent();
     this.calculateEaster();
     this.initCalendar();

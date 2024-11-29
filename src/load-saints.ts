@@ -17,17 +17,18 @@ type RawCalendar = Record<
 type RawSaints = Record<
   string,
   {
+    name: string;
     title?: string;
     type?: "vigilie" | "lord" | "custom";
   }
 >;
 
-export function loadSaints(): Saints {
+export function loadSaints(lang: string): Saints {
   const calendar: RawCalendar = parse(
     readFileSync("./assets/calendar.yml", "utf-8")
   );
   const allRawSaints: RawSaints = parse(
-    readFileSync("./assets/saints.yml", "utf-8")
+    readFileSync(`./assets/saints/${lang}.yml`, "utf-8")
   );
 
   const saints: Saints = {};
@@ -36,13 +37,15 @@ export function loadSaints(): Saints {
       ([key, val]) => {
         const day = Number.parseInt(key.split("-")[0]);
         const month = Number.parseInt(key.split("-")[1]);
-        const names = Array.isArray(val) ? val : [val];
-        for (let name of names) {
-          const saint = allRawSaints[name];
+        const ids = Array.isArray(val) ? val : [val];
+        for (let id of ids) {
+          const saint = allRawSaints[id];
+          if (!saint) console.log(id);
+
           saints[month] ??= {};
           saints[month][day] ??= [];
           saints[month][day].push({
-            title: name.replace("H. ", "H.\u00A0"),
+            title: saint.name.replace("H. ", "H.\u00A0"),
             subtitle: saint.title,
             type: saint.type ?? "feest",
             class: class_ as LiturgicalClass,
