@@ -1,0 +1,939 @@
+Octava Nativitatis Domini:
+  type: custom
+In Epiphania Domini:
+  type: custom
+S. Joseph Sponsi B. Mariæ V.:
+  title:
+    - Confessoris
+    - Ecclesiæ Universæ Patroni
+In Annuntiatione Beate Mariæ Virgine: {}
+S. Joseph Opificis:
+  titles:
+    - Sponsi B. Mariæ V.
+    - Confessoris
+In Nativitate S. Joannis Baptistæ: {}
+Ss. Petri et Pauli:
+  title: Apostolorum
+Pretiosissimi Sanguinis D.N.I.C: {}
+In Assumptione Beatæ Mariæ Virginis:
+  type: custom
+In Dedicatione S. Michælis Archangeli:
+  title: Archangeli
+In festo Omnium Sanctorum: {}
+In Commemoratione Omnium Fidelium Defunctorum:
+  type: custom
+In Conceptione Immaculata Beatæ Mariæ Virginis:
+  type: custom
+In vigilia Nativitatis Domini:
+  type: custom
+In Nativitate Domini:
+  type: custom
+In Commemoratione Baptismatis Domini Nostri Jesu Christi:
+  type: domini
+In Purificatione Beatæ Mariæ Virginis: {}
+In Cathedra S. Petri Ap.: {}
+S. Matthiæ:
+  title: Apostoli
+S. Marci:
+  title: Evangelistæ
+Ss. Philippi et Jacobi:
+  title: Apostolorum
+Beatæ Mariæ Virginis Reginæ:
+  title: Reginæ
+In vigilia Nativitatis S. Joannis Baptistæ:
+  type: vigilia
+In vigilia Ss. Petri et Pauli:
+  title: Apostolorum
+  type: vigilia
+In Visitatione B. Mariæ Virginis: {}
+S. Jacobi:
+  title: Apostoli
+S. Annæ Matris B.M.V.:
+  title: Moeder van de H. Virginis Maria
+In Transfiguratione D.N.I.C:
+  type: domini
+S. Laurentii:
+  title: Martyris
+In vigilia Assumptionis B. Mariæ Virg.:
+  type: vigilia
+S. Joachim Patris Beatæ Mariæ Virginis:
+  title:
+    - Patris B.M.V.
+    - Confessoris
+Immaculati Cordis B. Mariæ Virginis: {}
+S. Bartholomæi:
+  title: Apostoli
+In Nativitate Beatæ Mariæ Virginis: {}
+In Exaltatione S. Crucis:
+  type: domini
+Septem Dolorum Beatæ Mariæ Virginis: {}
+S. Matthæi:
+  title:
+    - Apostoli
+    - Evangelistæ
+Beatæ Mariæ Virginis a Rosario: {}
+Maternitatis Beatæ Mariæ Virginis: {}
+S. Lucæ:
+  title: Evangelistæ
+Ss. Simonis et Judæ:
+  title: Apostolorum
+In Dedic. Archbasilicæ Ssm̃i. Salvatoris:
+  title: Basiliek van de Allerheiligste Verlosser
+S. Andreæ:
+  title: Apostoli
+S. Thomæ:
+  title: Apostoli
+S. Stephani:
+  title: Protomartyris
+S. Joannis:
+  title:
+    - Apostoli
+    - Evangelistæ
+Ss. Innocentium:
+  title: Martyrum
+S. Hilarii:
+  title:
+    - Episcopi
+    - Confessoris
+    - Ecclesiæ Doctoris
+S. Pauli:
+  title:
+    - Primi Eremitæ
+    - Confessoris
+S. Marcelli I:
+  title:
+    - Papæ
+    - Martyris
+S. Antonii:
+  title: Abbatis
+Ss. Fabiani et Sebastiani:
+  title: Martyrum
+S. Agnetis:
+  title:
+    - Virginis
+    - Martyris
+Ss. Vincentii et Anastasii:
+  title: Martyrum
+S. Raymundi de Peñafort:
+  title: Confessoris
+S. Timothei:
+  title:
+    - Episcopi
+    - Martyris
+In Conversione S. Pauli Apostoli: {}
+S. Polycarpi:
+  title:
+    - Episcopi
+    - Martyris
+S. Joannis Chrysostomi:
+  title:
+    - Episcopi
+    - Confessoris
+    - Ecclesiæ Doctoris
+S. Petri Nolasci:
+  title: Confessoris
+S. Francisci Salesii:
+  title:
+    - Episcopi
+    - Confessoris
+    - Ecclesiæ Doctoris
+S. Martinæ:
+  title:
+    - Virginis
+    - Martyris
+S. Joannis Bosco:
+  title: Confessoris
+S. Ignatii:
+  title:
+    - Episcopi
+    - Martyris
+S. Andreæ Corsini:
+  title:
+    - Episcopi
+    - Confessoris
+S. Agathæ:
+  title:
+    - Virginis
+    - Martyris
+S. Titi:
+  title:
+    - Confessoris
+    - Episcopi
+S. Romualdi:
+  title: Abbatis
+S. Joannis de Matha:
+  title: Confessoris
+S. Cyrilli Ep. Alexandrini Conf. et  Eccl. Doct.:
+  title:
+    - Episcopi
+    - Confessoris
+    - Ecclesiæ Doctoris
+S. Scholasticæ:
+  title: Virginis
+In Apparitione B. Mariæ V.:
+  title: Immaculatæ
+Ss. Septem Fundat. Ord. Servorum B. Mariæ V.:
+  title: Confessorum
+S. Petri Damiani:
+  title:
+    - Episcopi
+    - Confessoris
+    - Ecclesiæ Doctoris
+S. Gabrielis a Virgine Perdolente:
+  title: Confessoris
+S. Casimiri:
+  title: Confessoris
+Ss. Perpetuæ et Felicitatis:
+  title: Martyrum
+S. Thomæ de Aquino:
+  title:
+    - Confessoris
+    - Ecclesiæ Doctoris
+S. Joannis de Deo:
+  title: Confessoris
+S. Franciscæ Romanæ:
+  title: Viduæ
+Ss. Quadraginta Martyrum:
+  title: Martyrum
+S. Gregorii I:
+  title:
+    - Papæ
+    - Confessoris
+    - Ecclesiæ Doctoris
+S. Patricii:
+  title:
+    - Episcopi
+    - Confessoris
+S. Cyrilli Hierosolymitani:
+  title:
+    - Episcopi
+    - Confessoris
+    - Ecclesiæ Doctoris
+S. Benedicti:
+  title: Abbatis
+S. Gabrielis:
+  title: Archangeli
+S. Joannis Damasceni:
+  title:
+    - Confessoris
+    - Ecclesiæ Doctoris
+S. Joannis a Capistrano:
+  title: Confessoris
+S. Francisci de Paula:
+  title: Confessoris
+S. Isidori:
+  title:
+    - Episcopi
+    - Confessoris
+    - Ecclesiæ Doctoris
+S. Vincentii Ferrerii:
+  title: Confessoris
+S. Leonis I:
+  title:
+    - Papæ
+    - Confessoris
+    - Ecclesiæ Doctoris
+S. Hermenegildi:
+  title: Martyris
+S. Justini:
+  title: Martyris
+S. Anselmi:
+  title:
+    - Episcopi
+    - Confessoris
+    - Ecclesiæ Doctoris
+Ss. Soteris et Caji:
+  title:
+    - Summorum Pontificum
+    - Martyrum
+S. Fidelis de Sigmaringa:
+  title: Martyris
+Ss. Cleti et Marcellini:
+  title:
+    - Summorum Pontificum
+    - Martyrum
+S. Petri Canisii:
+  title:
+    - Confessoris
+    - Ecclesiæ Doctoris
+S. Pauli a Cruce:
+  title: Confessoris
+S. Petri Martyris:
+  title: Martyris
+S. Catharina Senensis:
+  title: Virginis
+S. Athanasii:
+  title:
+    - Episcopi
+    - Confessoris
+    - Ecclesiæ Doctoris
+S. Monicæ:
+  title: Viduæ
+S. Pii V:
+  title:
+    - Papæ
+    - Confessoris
+S. Stanislai:
+  title:
+    - Episcopi
+    - Martyris
+S. Gregorii Nazianzeni:
+  title:
+    - Episcopi
+    - Confessoris
+    - Ecclesiæ Doctoris
+S. Antonini:
+  title:
+    - Episcopi
+    - Confessoris
+Ss. Nerei, Achillei et Domitillæ Virg. atque Pancratii Mm.: {}
+S. Roberti Bellarmino:
+  title:
+    - Episcopi
+    - Confessoris
+    - Ecclesiæ Doctoris
+S. Joannis Baptistæ de la Salle:
+  title: Confessoris
+S. Ubaldi:
+  title:
+    - Episcopi
+    - Confessoris
+S. Paschalis Baylon:
+  title: Confessoris
+S. Venantii:
+  title: Martyris
+S. Petri Celestini:
+  title:
+    - Papæ
+    - Confessoris
+S. Bernardini Senensis:
+  title: Confessoris
+S. Gregorii VII:
+  title:
+    - Papæ
+    - Confessoris
+S. Philippi Neri:
+  title: Confessoris
+S. Bedæ Venerabilis:
+  title:
+    - Confessoris
+    - Ecclesiæ Doctoris
+S. Augustini:
+  title:
+    - Episcopi
+    - Confessoris
+S. Mariæ Magdalenæ de Pazzis:
+  title: Virginis
+S. Angelæ Mericiæ:
+  title: Virginis
+S. Francisci Caracciolo:
+  title: Confessoris
+S. Bonifatii:
+  title:
+    - Episcopi
+    - Martyris
+S. Norberti:
+  title:
+    - Episcopi
+    - Confessoris
+S. Margaritæ Scotorum Reginae:
+  title:
+    - Scotorum Reginae
+    - Viduæ
+S. Barnabæ:
+  title: Apostoli
+S. Joannis de S. Facundo:
+  title: Confessoris
+S. Antonii de Padua:
+  title:
+    - Confessoris
+    - Ecclesiæ Doctoris
+S. Basilii Magni:
+  title:
+    - Episcopi
+    - Confessoris
+    - Ecclesiæ Doctoris
+S. Gregorii Barbadici:
+  title:
+    - Episcopi
+    - Confessoris
+S. Ephræm Syri:
+  title:
+    - Diaconi
+    - Confessoris
+    - Ecclesiæ Doctoris
+S. Julianæ de Falconeriis:
+  title: Virginis
+S. Aloisii Gonzagæ:
+  title: Confessoris
+S. Paulini:
+  title:
+    - Episcopi
+    - Confessoris
+S. Gulielmi:
+  title: Abbatis
+Ss. Joannis et Pauli:
+  title: Martyrum
+In Commemoratione Sancti Pauli Apostoli:
+  title: Apostoli
+S. Irenæi:
+  title:
+    - Episcopi
+    - Martyris
+S. Antonii Mariæ Zaccaria:
+  title: Confessoris
+Ss. Cyrilli et Methodii:
+  title:
+    - Episcoporum
+    - Confessorum
+S. Elisabeth Reginæ Portugaliæ:
+  title:
+    - Reginæ Portugaliæ
+    - Viduæ
+Ss. Septem Fratrum Mm., ac Rufinæ et Secundæ Vv. et Mm.:
+  title:
+    - Martyrum
+    - Virginum
+S. Joannis Gualberti:
+  title: Abbatis
+S. Bonaventuræ:
+  title:
+    - Episcopi
+    - Confessoris
+    - Ecclesiæ Doctoris
+S. Henrici:
+  title:
+    - Imperatoris
+    - Confessoris
+S. Camilli de Lellis:
+  title: Confessoris
+S. Vincentii a Paulo:
+  title: Confessoris
+S. Hieronymi Emiliani:
+  title: Confessoris
+S. Laurentii a Brundusio:
+  title:
+    - Confessoris
+    - Ecclesiæ Doctoris
+S. Mariæ Magdalenæ:
+  title: Pænitentis
+S. Apollinaris:
+  title:
+    - Episcopi
+    - Martyris
+Ss. Nazarii et Celsi Mm., Victoris I Papæ et Mart. ac Innocentii I Papæ et Conf.:
+  title:
+    - Martyrum
+    - Papæ
+    - Confessoris
+S. Marthæ:
+  title: Virginis
+S. Ignatii Confessoris:
+  title: Confessoris
+S. Alfonsi Mariæ de Ligorio:
+  title:
+    - Episcopi
+    - Confessoris
+    - Ecclesiæ Doctoris
+S. Dominici:
+  title: Confessoris
+In Dedicatione S. Mariæ ad Nives: {}
+S. Cajetani:
+  title: Confessoris
+S. Joannis Mariæ Vianney:
+  title: Confessoris
+In vigilia S. Laurentii:
+  title: Martyris
+  type: vigilia
+S. Claræ:
+  title: Virginis
+S. Hyacinthi:
+  title: Confessoris
+S. Joannis Eudes:
+  title: Confessoris
+S. Bernardi:
+  title:
+    - Abbatis
+    - Ecclesiæ Doctoris
+S. Joannæ Franciscæ Frémiot de Chantal:
+  title: Viduæ
+S. Philippi Benitii:
+  title: Confessoris
+S. Ludovici:
+  title:
+    - Regis Francorum
+    - Confessoris
+S. Josephi Calasanctii:
+  title: Confessoris
+S. Augustini Hipponensis:
+  title:
+    - Episcopi
+    - Confessoris
+    - Ecclesiæ Doctoris
+In Decollatione S. Joannis Baptistæ: {}
+S. Rosæ Limanæ:
+  title: Virginis
+S. Raymundi Nonnati:
+  title: Confessoris
+S. Stephani Regis Hungariæ:
+  title:
+    - Regis Hungariæ
+    - Confessoris
+S. Pii X:
+  title:
+    - Papæ
+    - Confessoris
+S. Laurentii Justiniani:
+  title:
+    - Episcopi
+    - Confessoris
+S. Nicolai de Tolentino:
+  title: Confessoris
+Ssm̃i. Nominis Mariæ: {}
+Ss. Cornelii Papæ et Cypriani Ep., Mm.:
+  title:
+    - Papæ
+    - Episcopi
+    - Martyrum
+S. Josephi de Cupertino:
+  title: Confessoris
+Ss. Januarii Ep. et Sociorum:
+  title:
+    - Episcopi
+    - Martyrum
+S. Thomæ de Villanova:
+  title:
+    - Episcopi
+    - Confessoris
+S. Lini:
+  title:
+    - Papæ
+    - Martyris
+S. Cosmæ et Damiani:
+  title: Martyrum
+S. Wenceslai:
+  title:
+    - Ducis
+    - Martyris
+S. Hieronymi:
+  title:
+    - Presbyteris
+    - Confessoris
+    - Ecclesiæ Doctoris
+Ss. Angelorum Custodum: {}
+S. Theresiæ a Jesu Infante:
+  title: Virginis
+S. Francisci:
+  title: Confessoris
+S. Brunonis:
+  title: Confessoris
+S. Birgittæ:
+  title: Viduæ
+S. Joannis Leonardi:
+  title: Confessoris
+S. Francisci Borgiæ:
+  title: Confessoris
+S. Eduardi:
+  title:
+    - Regis Anglorum
+    - Confessoris
+S. Callisti:
+  title:
+    - Papæ
+    - Martyris
+S. Teresiæ:
+  title: Virginis
+S. Hedwigis:
+  title: Viduæ
+S. Margaritæ Mariæ Alaquoque:
+  title: Virginis
+S. Petri de Alcantara:
+  title: Confessoris
+S. Joannis Cantii:
+  title: Confessoris
+S. Antonii Mariæ Claret:
+  title:
+    - Episcopi
+    - Confessoris
+S. Raphælis Archangeli:
+  title: Archangeli
+S. Caroli:
+  title:
+    - Episcopi
+    - Confessoris
+S. Andreæ Avellini:
+  title: Confessoris
+S. Martini:
+  title:
+    - Episcopi
+    - Martyris
+S. Martini I:
+  title:
+    - Papæ
+    - Martyris
+S. Didaci:
+  title: Confessoris
+S. Josaphat:
+  title:
+    - Episcopi
+    - Martyris
+S. Alberti Magni:
+  title:
+    - Episcopi
+    - Confessoris
+    - Ecclesiæ Doctoris
+S. Gertrudis:
+  title: Virginis
+S. Gregorii Thaumaturgi:
+  title:
+    - Episcopi
+    - Confessoris
+In Dedicatione Basilicarum Ss. Petri et Pauli App.: {}
+S. Elisabeth:
+  title: Viduæ
+S. Felicis de Valois:
+  title: Confessoris
+In Presentatione Beatæ Mariæ Virginis: {}
+S. Cæciliæ:
+  title:
+    - Virginis
+    - Martyris
+S. Clementis I:
+  title:
+    - Papæ
+    - Martyris
+S. Joannis a Cruce:
+  title:
+    - Confessoris
+    - Ecclesiæ Doctoris
+S. Catharinæ:
+  title:
+    - Virginis
+    - Martyris
+S. Silvesteri:
+  title: Abbatis
+S. Bibianæ:
+  title:
+    - Virginis
+    - Martyris
+S. Francisci Xaverii:
+  title: Confessoris
+S. Petri Chrysologi:
+  title:
+    - Episcopi
+    - Confessoris
+    - Ecclesiæ Doctoris
+S. Nicolai:
+  title:
+    - Episcopi
+    - Confessoris
+S. Ambrosii:
+  title:
+    - Episcopi
+    - Confessoris
+    - Ecclesiæ Doctoris
+S. Damasi:
+  title:
+    - Papæ
+    - Confessoris
+S. Luciæ:
+  title:
+    - Virginis
+    - Martyris
+S. Eusebii:
+  title:
+    - Episcopi
+    - Martyris
+S. Telesphori:
+  title:
+    - Papæ
+    - Martyris
+S. Hygini:
+  title:
+    - Papæ
+    - Martyris
+S. Felicis:
+  title:
+    - Presbyteri
+    - Martyris
+S. Mauri:
+  title: Abbatis
+S. Priscæ:
+  title:
+    - Virginis
+    - Martyris
+Ss. Marii, Marthæ, Audifacis et Abachum:
+  title: Martyrum
+S. Canuti:
+  title:
+    - Rege
+    - Martyris
+S. Emerentianæ:
+  title:
+    - Virginis
+    - Martyris
+S. Petri:
+  title: Apostoli
+S. Agnetis secundo:
+  title:
+    - Virginis
+    - Martyris
+S. Blasii:
+  title:
+    - Episcopi
+    - Martyris
+S. Dorotheæ:
+  title:
+    - Virginis
+    - Martyris
+S. Apolloniæ:
+  title:
+    - Virginis
+    - Martyris
+S. Valentini:
+  title:
+    - Presbyteri
+    - Martyris
+Ss. Faustini et Jovitæ:
+  title: Martyrum
+S. Simeonis:
+  title:
+    - Episcopi
+    - Martyris
+S. Lucii I:
+  title:
+    - Papæ
+    - Martyris
+Ss. Tiburtii, Valeriani et Maximi:
+  title: Martyrum
+S. Aniceti:
+  title:
+    - Papæ
+    - Martyris
+S. Georgii:
+  title: Martyris
+Ss. Alexandri, Eventii et Theoduli Mm. ac Iuvenalis Ep. et Conf.:
+  title:
+    - Martyrum
+    - Episcopi
+    - Confessoris
+Ss. Gordiani et Epimachi:
+  title: Martyrum
+S. Bonifacii Martyris:
+  title: Martyris
+S. Pudentianæ:
+  title: Virginis
+S. Urbanis I:
+  title:
+    - Papæ
+    - Martyris
+S. Eleutherii:
+  title:
+    - Papæ
+    - Martyris
+S. Joannis I:
+  title:
+    - Papæ
+    - Martyris
+S. Felicis I:
+  title:
+    - Papæ
+    - Martyris
+S. Petronillæ:
+  title: Virginis
+Ss. Marcellini, Petri, atque Erasmi:
+  title: Martyrum
+Ss. Primi et Feliciani:
+  title: Martyrum
+Ss. Basilidis, Cyrini, Naboris and Nazarii:
+  title: Martyrum
+Ss. Viti, Modesti atque Crescentiæ:
+  title: Martyrum
+Ss. Marci et Marcelliani:
+  title: Martyrum
+Ss. Gervasii et Protasii:
+  title: Martyrum
+S. Silverii:
+  title:
+    - Papæ
+    - Martyris
+Ss. Processi et Martiniani:
+  title: Martyrum
+S. Pii I:
+  title:
+    - Papæ
+    - Martyris
+Ss. Naboris and Felicis:
+  title: Martyrum
+Beatæ Mariæ Virginis de Monte Carmelo: {}
+S. Alexii:
+  title: Confessoris
+Ss. Symphorosæ et Septem Filiorum:
+  title: Martyrum
+S. Margaritæ:
+  title:
+    - Virginis
+    - Martyris
+S. Praxedis:
+  title: Virginis
+S. Liborii:
+  title:
+    - Episcopi
+    - Confessoris
+S. Christinæ:
+  title:
+    - Virginis
+    - Martyris
+S. Christophori:
+  title: Martyris
+S. Pantaleonis:
+  title: Martyris
+Ss. Felicis, Simplicii, Faustini et Beatricis:
+  title: Martyrum
+S. Abdon et Sennen:
+  title: Martyrum
+Ss. Machabæorum:
+  title: Martyrum
+S. Stephani I:
+  title:
+    - Papæ
+    - Martyris
+Ss. Xysti II Papæ, Felicissimi et Agapiti Mm.:
+  title:
+    - Papæ
+    - Martyrum
+S. Donati:
+  title:
+    - Episcopi
+    - Confessoris
+Ss. Cyriaci, Largi et Smaragdi:
+  title: Martyrum
+S. Romani:
+  title: Martyris
+Ss. Tiburtii et Susannæ:
+  title:
+    - Virginum
+    - Martyrum
+Ss. Hippolyti et Cassiani:
+  title: Martyris
+S. Eusebii Confessoris:
+  title: Confessoris
+S. Agapiti:
+  title: Martyris
+Ss. Timothei, Hippolyti et Symphoriani:
+  title: Martyrum
+S. Zephirini:
+  title:
+    - Papæ
+    - et Martyris
+S. Hermetis:
+  title: Martyris
+S. Sabina:
+  title: Martyris
+Ss. Felicis et Adaucti:
+  title: Martyrum
+S. Ægidii:
+  title: Abbatis
+Ss. duodecim Fratrum Martyrum:
+  title: Martyrum
+S. Adriani:
+  title: Martyris
+S. Gorgonii:
+  title: Martyris
+Ss. Proti et Hyacinthi:
+  title: Martyrum
+S. Nicomedis:
+  title: Martyris
+Ss. Euphemiæ Virg., Luciæ et Geminiani Mm.:
+  title:
+    - Virginis
+    - Martyrum
+Impressionis Ss. Stigmatum S. Francisci:
+  title: Confessoris
+Ss. Eustachii et Sociorum:
+  title: Martyrum
+Ss. Mauritii et Sociorum:
+  title: Martyrum
+S. Theclæ:
+  title:
+    - Virginis
+    - Martyris
+Beatæ Mariæ Virginis a Mercede: {}
+Ss. Cypriani et Justinæ Virg.:
+  title:
+    - Virginis
+    - Martyrum
+S. Remigii:
+  title:
+    - Episcopi
+    - Confessoris
+Ss. Placidi et Sociorum:
+  title: Martyrum
+S. Marci I:
+  title:
+    - Papæ
+    - Confessoris
+Ss. Sergii, Bacchi, Marcelli et Apuleji:
+  title: Martyrum
+Ss. Dionysii Ep., Rustici et Eleutherii, Mm.:
+  title:
+    - Episcopi
+    - Martyrum
+S. Hilarionis:
+  title: Abbatis
+Ss. Ursulæ et Sociarum Vv. et Mm.:
+  title:
+    - Virginum
+    - Martyrum
+Ss. Chrysanthi et Dariæ:
+  title: Martyrum
+S. Evaristi:
+  title:
+    - Papæ
+    - Martyris
+Ss. Vitalis et Agricola:
+  title: Martyrum
+Ss. Quatuor Coronatorum:
+  title: Martyrum
+S. Theodori:
+  title: Martyris
+Ss. Tryphone, Respicio et Nympha Virg.:
+  title:
+    - Virginis
+    - Martyrum
+S. Mennæ:
+  title: Martyris
+S. Pontiani:
+  title:
+    - Papæ
+    - Martyris
+S. Felicitatis:
+  title: Marytis
+S. Chrysogoni:
+  title: Martyris
+S. Petri Alexandrini:
+  title:
+    - Episcopi
+    - Martyris
+S. Saturnini:
+  title: Martyris
+S. Barbaræ:
+  title:
+    - Virginis
+    - Martyris
+S. Sabbæ:
+  title: Abbatis
+S. Melchiadis:
+  title:
+    - Papæ
+    - Martyris
+S. Anastasiæ:
+  title: Martyris
+S. Thomæ de Cantuariae:
+  title:
+    - Episcopi
+    - Martyris
+S. Silvestri:
+  title:
+    - Papæ
+    - Confessoris

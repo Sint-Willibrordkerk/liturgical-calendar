@@ -1,943 +1,663 @@
 Octava Nativitatis Domini:
   name: Octaafdag van Kerstmis, Besnijdenis van de Heer
-  type: custom
 In Epiphania Domini:
   name: Verschijning van Onze Heer, Driekoningen
-  type: custom
-S. Joseph Sponsi B.M.V. Confessoris:
-  name: H. Jozef
-  title: Bruidegom van de H. Maagd Maria en Belijder
+S. Joseph Sponsi B. Mariæ V.:
+  name: H. Jozef, Bruidegom van O
 In Annuntiatione Beate Mariæ Virgine:
   name: Maria Boodschap
 S. Joseph Opificis:
   name: H. Jozef, Ambachtsman
-  title: Bruidegom van de H. Maagd Maria en Belijder
 In Nativitate S. Joannis Baptistæ:
   name: Geboorte van de H. Johannes de Doper
-SS. Apostolorum Petri et Pauli:
+Ss. Petri et Pauli:
   name: HH. Petrus en Paulus
-  title: Apostelen
-Pretiosissimi Sanguinis Domini Nostri Jesu Christi:
+Pretiosissimi Sanguinis D.N.I.C:
   name: Feest van het Kostbaar Bloed van Onze Heer Jezus Christus
 In Assumptione Beatæ Mariæ Virginis:
   name: Maria-ten-Hemel-Opneming
-  type: custom
-In Dedicatione S. Michælis Archangelis:
+In Dedicatione S. Michælis Archangeli:
   name: Wijding van de basiliek van de H. Aartsengel Michaël
-Omnium Sanctorum:
+In festo Omnium Sanctorum:
   name: Allerheiligen
 In Commemoratione Omnium Fidelium Defunctorum:
   name: Allerzielen
-  type: custom
 In Conceptione Immaculata Beatæ Mariæ Virginis:
   name: Onbevlekte Ontvangenis van de H. Maagd Maria
-  type: custom
 In Vigilia Nativitatis Domini:
   name: Vigilie van Kerstmis
-  type: custom
 In Nativitate Domini:
   name: Hoogfeest van Kerstmis
-  type: custom
 In Commemoratione Baptismatis Domini Nostri Jesu Christi:
   name: Gedachtenis van het Doopsel van Onze Heer
-  type: lord
 In Purificatione Beatæ Mariæ Virginis:
   name: Opdracht van Jezus in de Tempel, Maria Lichtmis
 In Cathedra S. Petri Ap.:
   name: Sint Petrus' Stoel te Antiochië
-S. Matthiæ Apostoli:
+S. Matthiæ:
   name: H. Matthias
-  title: Apostel
-S. Marci Evangelistæ:
+S. Marci:
   name: H. Marcus
-  title: Evangelist
-Ss. Philippi et Jacobi Apostolorum:
+Ss. Philippi et Jacobi:
   name: HH. Philippus en Jacobus de Jongere
-  title: Apostelen
 Beatæ Mariæ Virginis Reginæ:
   name: H. Maagd Maria
-  title: Koningin
-In Vigilia S. Joannis Baptistæ:
+In vigilia Nativitatis S. Joannis Baptistæ:
   name: Vigilie van de H. Johannes de Doper
-  type: vigilie
-In Vigilia Ss. Petri et Pauli Apostolorum:
+In vigilia Ss. Petri et Pauli:
   name: Vigilie van de HH. Petrus en Paulus
-  type: vigilie
-  title: Apostelen
 In Visitatione B. Mariæ Virginis:
   name: Onze Lieve Vrouw Visitatie
-S. Jacobi Apostoli:
+S. Jacobi:
   name: H. Jacobus de Meerdere
-  title: Apostel
 S. Annæ Matris B.M.V.:
   name: H. Anna
-  title: Moeder van de H. Maagd Maria
-In Transfiguratione Domini Nostri Jesu Christi:
+In Transfiguratione D.N.I.C:
   name: Gedaanteverandering van Onze Heer Jezus Christus
-  type: lord
-S. Laurentii Martyris:
+S. Laurentii:
   name: H. Laurentius
-  title: Martelaar
-Vigilia Assumptionis B.M.V.:
+In vigilia Assumptionis B. Mariæ Virg.:
   name: Vigilie van Maria-ten-Hemel-Opneming
-  type: vigilie
-S. Joachim Confessoris, Patris B. Mariæ Virginis:
+S. Joachim Patris Beatæ Mariæ Virginis:
   name: H. Joachim
-  title: Vader van de H. Maagd Maria en Belijder
-Immaculati Cordis Beatæ Mariæ Virginis:
+Immaculati Cordis B. Mariæ Virginis:
   name: Onbevlekt Hart van Maria
-S. Bartholomæi Apostoli:
+S. Bartholomæi:
   name: H. Bartholomeus
-  title: Apostel
-Nativitate Beatæ Mariæ Virginis:
+In Nativitate Beatæ Mariæ Virginis:
   name: Geboorte van de H. Maagd Maria
-In Exaltatione Sanctæ crucis:
+In Exaltatione S. Crucis:
   name: Kruisverheffing
-  type: lord
 Septem Dolorum Beatæ Mariæ Virginis:
   name: Onze-Lieve-Vrouw-van-Zeven-Smarten
-S. Matthæi Apostoli et Evangelistæ:
+S. Matthæi:
   name: H. Mattheüs
-  title: Apostel en Evangelist
-Festum Beatæ Mariæ Virginis a Rosario:
+Beatæ Mariæ Virginis a Rosario:
   name: Onze Lieve Vrouw van de H. Rozenkrans
 Maternitatis Beatæ Mariæ Virginis:
   name: Moederschap van de H. Maagd Maria
-S. Lucæ Evangelistæ:
+S. Lucæ:
   name: H. Lucas
-  title: Evangelist
-Ss. Simonis et Judæ Apostolorum.:
+Ss. Simonis et Judæ:
   name: HH. Simon en Judas
-  title: Apostelen
-In Dedicatione Basilicæ Ss. Salvatoris:
+In Dedic. Archbasilicæ Ssm̃i. Salvatoris:
   name: Wijding de St. Jan van Lateranen
-  title: Basiliek van de Allerheiligste Verlosser
-S. Andreæ Apostoli:
+S. Andreæ:
   name: H. Andreas
-  title: Apostel
-S. Thomæ Apostoli:
+S. Thomæ:
   name: H. Thomas
-  title: Apostel
-S. Stephani Protomartyris:
+S. Stephani:
   name: Tweede Kerstdag, H. Stephanus, eerste martelaar
-S. Joannis Apostoli et Evangelistæ:
+S. Joannis:
   name: H. Johannes
-  title: Apostel en Evangelist
 Ss. Innocentium:
   name: HH. Onnozele Kinderen
-S. Hilarii Episcopi Confessoris Ecclesiæ Doctoris:
+S. Hilarii:
   name: H. Hilarius
-  title: Bisschop, Belijder en Kerkleraar
-S. Pauli Primi Eremitæ et Confessoris:
+S. Pauli:
   name: H. Paulus, Eerste kluizenaar
-S. Marcelli Papæ et Martyris:
+S. Marcelli I:
   name: H. Marcellus I
-  title: Paus en Martelaar
-S. Antonii Abbatis:
+S. Antonii:
   name: H. Antonius
-  title: Abt
-Ss. Fabiani et Sebastiani Martyrum:
+Ss. Fabiani et Sebastiani:
   name: HH. Fabianus, Paus, en Sebastianus
-  title: Martelaren
-S. Agnetis Virginis et Martyris:
+S. Agnetis:
   name: H. Agnes
-  title: Maagd en Martelares
-Ss. Vincentii et Anastasii Martyrum:
+Ss. Vincentii et Anastasii:
   name: HH. Vincentius en Anastasius
-  title: Martelaren
-S. Raymundi de Peñafort Confessoris:
+S. Raymundi de Peñafort:
   name: H. Raymundus van Pennafort
-  title: Belijder
-S. Timothei Episcopi et Martyris:
+S. Timothei:
   name: H. Timotheus
-  title: Bisschop en Martelaar
 In Conversione S. Pauli Apostoli:
   name: Bekering van de H. Apostel Paulus
-S. Polycarpi Episcopi et Martyris:
+S. Polycarpi:
   name: H. Polycarpus
-  title: Bisschop en Martelaar
-S. Joannis Chrysostomi Episcopi Confessoris Ecclesiæ Doctoris:
+S. Joannis Chrysostomi:
   name: H. Johannes Chrysostomus
-  title: Bisschop, Belijder en Kerkleraar
-S. Petri Nolasci Confessoris:
+S. Petri Nolasci:
   name: H. Petrus Nolascus
-  title: Belijder
-S. Francisci Salesii Episcopi Confessoris Ecclesiæ Doctoris:
+S. Francisci Salesii:
   name: H. Franciscus van Sales
-  title: Bisschop, Belijder en Kerkleraar
-S. Martinæ Virginis et Martyris:
+S. Martinæ:
   name: H. Martina
-  title: Maagd en Martelares
-S. Joannis Bosco Confessoris:
+S. Joannis Bosco:
   name: H. Johannes Bosco
-  title: Belijder
-S. Ignatii Episcopi et Martyris:
+S. Ignatii:
   name: H. Ignatius
-  title: Bisschop en Martelaar
-S. Andreæ Corsini Episcopi et Confessoris:
+S. Andreæ Corsini:
   name: H. Andreas Corsini
-  title: Bisschop en Belijder
-S. Agathæ Virginis et Martyris:
+S. Agathæ:
   name: H. Agatha
-  title: Maagd en Martelares
-S. Titi Episc. et Confessoris:
+S. Titi:
   name: H. Titus
-  title: Belijder en Bisschop
-S. Romualdi Abbatis:
+S. Romualdi:
   name: H. Romualdus
-  title: Abt
-S. Joannis de Matha Confessoris:
+S. Joannis de Matha:
   name: H. Johannes van Matha
-  title: Belijder
-S. Cyrilli Episc. Alexandrini Confessoris Ecclesiæ Doctoris:
+S. Cyrilli Ep. Alexandrini Conf. et  Eccl. Doct.:
   name: H. Cyrillus van Alexandrië
-  title: Bisschop, Belijder en Kerkleraar
-S. Scholasticæ Virginis:
+S. Scholasticæ:
   name: H. Scholastica
-  title: Maagd
 In Apparitione Beatæ Mariæ Virginis:
   name: Verschijning van Onze Lieve Vrouwe te Lourdes
 Ss. Septem Fundat. Ord. Servorum B. M. V.:
   name: De zeven HH. stichters van de servieten van de H. Maagd Maria
-  title: Belijders
-S. Petri Damiani Episcopi Confessoris et Ecclesiæ Doctoris:
+S. Petri Damiani:
   name: H. Petrus Damianus
-  title: Bisschop, Belijder en Kerkleraar
-S. Gabrielis a Virgine Perdolente Confessoris:
+S. Gabrielis a Virgine Perdolente:
   name: H. Gabriel van de Moeder van Smarten
-  title: Belijder
-S. Casimiri Confessoris:
+S. Casimiri:
   name: H. Casimir
-  title: Belijder
-Ss. Perpetuæ et Felicitatis Martyrum:
+Ss. Perpetuæ et Felicitatis:
   name: HH. Perpetua and Felicitas
-  title: Martelaressen
-S. Thomæ de Aquino Confessoris Ecclesiæ Doctoris:
+S. Thomæ de Aquino:
   name: H. Thomas van Aquino
-  title: Belijder en Kerkleraar
-S. Joannis de Deo Confessoris:
+S. Joannis de Deo:
   name: H. Johannes De Deo
-  title: Belijder
-S. Franciscæ Viduæ Romanæ:
+S. Franciscæ Romanæ:
   name: H. Francisca Romana
-  title: Weduwe
 Ss. Quadraginta Martyrum:
   name: HH. Martelaren van Sebaste
-S. Gregorii Papæ Confessoris et Ecclesiæ Doctoris:
+S. Gregorii I:
   name: H. Gregorius
-  title: Paus, Belijder en Kerkleraar
-S. Patricii Episcopi et Conf.:
+S. Patricii:
   name: H. Patricius
-  title: Bisschop en Belijder
-S. Cyrilli Episcopi Hierosolymitani Ecclesiæ Doctoris:
+S. Cyrilli Hierosolymitani:
   name: H. Cyrillus van Jerusalem
-  title: Bisschop, Belijder en Kerkleraar
-S. Benedicti Abbatis:
+S. Benedicti:
   name: H. Benedictus
-  title: Abt
-S. Gabrielis Archangeli:
+S. Gabrielis:
   name: H. Gabriël
-  title: Aartsengel
-S. Joannis Damasceni Confessoris:
+S. Joannis Damasceni:
   name: H. Johannes van Damascus
-  title: Belijder en Kerkleraar
-S. Joannis a Capistrano Confessoris:
+S. Joannis a Capistrano:
   name: H. Johannes van Capistrano
-  title: Belijder
-S. Francisci de Paula Confessoris:
+S. Francisci de Paula:
   name: H. Franciscus van Paula
-  title: Belijder
-S. Isidori Episc. Confessoris et Ecclesiæ Doctoris:
+S. Isidori:
   name: H. Isidorus
-  title: Bisschop, Belijder en Kerkleraar
-S. Vincentii Ferrerii Confessoris:
+S. Vincentii Ferrerii:
   name: H. Vincentius Ferrerius
-  title: Belijder
-S. Leonis I Papæ Confessoris et Ecclesiæ Doctoris:
+S. Leonis I:
   name: H. Leo I
-  title: Paus, Belijder en Kerkleraar
-S. Hermenegildi Martyris:
+S. Hermenegildi:
   name: H. Hermenegildus
-  title: Martelaar
-S. Justini Martyris:
+S. Justini:
   name: H. Justinus
-  title: Martelaar
-S. Anselmi Episcopi Confessoris et Ecclesiæ Doctoris:
+S. Anselmi:
   name: H. Anselmus
-  title: Bisschop, Belijder en Kerkleraar
-SS. Soteris et Caji Summorum Pontificum et Martyrum:
+Ss. Soteris et Caji:
   name: HH. Soter en Caius
-  title: Pausen en Martelaren
-S. Fidelis de Sigmaringa Martyris:
+S. Fidelis de Sigmaringa:
   name: H. Fidelis van Sigmaringen
-  title: Martelaar
-SS. Cleti et Marcellini Summorum Pontificum et Martyrum:
+Ss. Cleti et Marcellini:
   name: HH. Cletus en Marcellinus
-  title: Pausen en Martelaren
-S. Petri Canisii Confessoris et Ecclesiæ Doctoris:
+S. Petri Canisii:
   name: H. Petrus Canisius
-  title: Belijder en Kerkleraar
-S. Pauli a Cruce Confessoris:
+S. Pauli a Cruce:
   name: H. Paulus van het Kruis
-  title: Belijder
 S. Petri Martyris:
   name: H. Petrus van Verona
-  title: Martelaar
-S. Catharina Senensis Virgine:
+S. Catharina Senensis:
   name: H. Catharina van Siëna
-  title: Maagd
-S. Athanasii Confessoris Ecclesiæ Doctoris:
+S. Athanasii:
   name: H. Athanasius
-  title: Bisschop, Belijder en Kerkleraar
-S. Monicæ Viduæ:
+S. Monicæ:
   name: H. Monica
-  title: Weduwe
-S. Pii V Papæ Confessoris:
+S. Pii V:
   name: H. Pius V
-  title: Paus en Belijder
-S. Stanislai Episcopi Martyri:
+S. Stanislai:
   name: H. Stanislaus
-  title: Bisschop en Martelaar
-S. Gregorii Nazianzeni Episcopi Confessoris Ecclesiæ Doctoris:
+S. Gregorii Nazianzeni:
   name: H. Gregorius van Nazianze
-  title: Bisschop, Belijder en Kerkleraar
-S. Antonini Episcopi Confessoris:
+S. Antonini:
   name: H. Antoninus
-  title: Bisschop en Belijder
 Ss. Nerei, Achillei et Domitillæ Virginis atque Pancratii Martyrum:
   name: HH. Nereus, Achilleus, Domitilla, Maagd, en Pancras, Martelaar
-S. Roberti Bellarmino Episcopi Confessoris et Ecclesiæ Doctoris:
+S. Roberti Bellarmino:
   name: H. Robertus Bellarminus
-  title: Bisschop, Belijder en Kerkleraar
-S. Joannis Baptistæ de la Salle Confessoris:
+S. Joannis Baptistæ de la Salle:
   name: H. Johannes Baptista de la Salle
-  title: Belijder
-S. Ubaldi Episcopi Confessoris:
+S. Ubaldi:
   name: H. Ubaldus
-  title: Bisschop en Belijder
-S. Paschalis Baylon Confessoris:
+S. Paschalis Baylon:
   name: H. Paschalis Baylon
-  title: Belijder
-S. Venantii Martyris:
+S. Venantii:
   name: H. Venantius
-  title: Martelaar
-S. Petri Celestini Papæ Confessoris:
+S. Petri Celestini:
   name: H. Celestinus V
-  title: Paus en Belijder
-S. Bernardini Senensis Confessoris:
+S. Bernardini Senensis:
   name: H. Bernardinus van Siena
-  title: Belijder
-S. Gregorii VII Papæ Confessoris:
+S. Gregorii VII:
   name: H. Gregorius VII
-  title: Paus en Belijder
-S. Philippi Neri Confessoris:
+S. Philippi Neri:
   name: H. Philippus Nerius
-  title: Belijder
-S. Bedæ Venerabilis Confessoris et Ecclesiæ Doctoris:
+S. Bedæ Venerabilis:
   name: H. Beda de Eerbiedwaardige
-  title: Belijder en Kerkleraar
-S. Augustini Episcopi Confessoris:
+S. Augustini:
   name: H. Augustinus
-  title: Bisschop en Belijder
-S. Mariæ Magdalenæ de Pazzis Virginis:
+S. Mariæ Magdalenæ de Pazzis:
   name: H. Mary Magdalena Pazzi
-  title: Maagd
-S. Angelæ Mericiæ Virginis:
+S. Angelæ Mericiæ:
   name: H. Angela de Merici
-  title: Maagd
-S. Francisci Caracciolo Confessoris:
+S. Francisci Caracciolo:
   name: H. Franciscus Caracciolo
-  title: Belijder
-S. Bonifatii Episcopi et Martyris:
+S. Bonifatii:
   name: H. Bonifatius, Bisschop
-  title: Martelaar
-S. Norberti Episc. et Confessoris:
+S. Norberti:
   name: H. Norbertus
-  title: Bisschop en Belijder
-S. Margaritæ Reginæ viduæ:
-  name: H. Margaretha
-  title: Koningin van Schotland
-S. Barnabæ Apostoli:
+S. Margaritæ Scotorum Reginae:
+  name: H. Margaretha, Koningin van Schotland
+S. Barnabæ:
   name: H. Barnabas
-  title: Apostel
-S. Joannis a S. Facundo Confessoris:
+S. Joannis de S. Facundo:
   name: H. Johannes van Sahagun
-  title: Belijder
-S. Antonii de Padua Confessoris et Ecclesiæ Doctoris:
+S. Antonii de Padua:
   name: H. Antonius van Padua
-  title: Belijder en Kerkleraar
-S. Basilii Magni Confessoris et Ecclesiæ Doctoris:
+S. Basilii Magni:
   name: H. Basilius the Great
-  title: Bisschop, Belijder en Kerkleraar
-S. Gregorii Barbadici Episcopi Confessoris:
+S. Gregorii Barbadici:
   name: H. Gregorius Barbarigo
-  title: Bisschop en Belijder
-S. Ephræm Syri Confessoris et Ecclesiæ Doctorem:
+S. Ephræm Syri:
   name: H. Ephrem van Syrie
-  title: Diaken, Belijder en Kerkleraar
-S. Julianæ de Falconeriis Virginis:
+S. Julianæ de Falconeriis:
   name: H. Juliana Falconieri
-  title: Maagd
-S. Aloisii Gonzagæ Confessoris:
+S. Aloisii Gonzagæ:
   name: H. Aloysius van Gonzaga
-S. Paulini Episcopi et Confessoris:
+S. Paulini:
   name: H. Paulinus
-  title: Bisschop en Belijder
-S. Gulielmi Abbatis:
+S. Gulielmi:
   name: H. Gulielmus
-  title: Abt
-Ss. Joannis et Pauli Martyrum:
+Ss. Joannis et Pauli:
   name: HH. Johannes en Paulus
-  title: Martelaren
 In Commemoratione Sancti Pauli Apostoli:
   name: H. Paulus
-  title: Apostel
-S. Irenæi Episcopi et Martyris:
+S. Irenæi:
   name: H. Ireneus
-  title: Bisschop en Martelaar
-S. Antonii Mariæ Zaccaria Confessoris:
+S. Antonii Mariæ Zaccaria:
   name: H. Antonius Maria Zaccaria
-  title: Belijder
-Ss. Cyrilli et Methodii Pont. et Conf.:
+Ss. Cyrilli et Methodii:
   name: HH. Cyrillus en Methodius
-  title: Bisschoppen en Belijders
 S. Elisabeth Reg. Portugaliæ Viduæ:
   name: H. Elizabeth, Koningin van Portugal
-  title: Weduwe
-Ss. Septem Fratrum Martyrum, ac Rufinæ et Secundæ Virginum et Martyrum:
+Ss. Septem Fratrum Mm., ac Rufinæ et Secundæ Vv. et Mm.:
   name: Zeven HH. broeders, Martelaren en Rufina en Secunda, Maagden en Martelaressen
-S. Joannis Gualberti Abbatis:
+S. Joannis Gualberti:
   name: H. Johannes Gualbertus
-  title: Abt
-S. Bonaventuræ Episcopi Confessoris et Ecclesiæ Doctoris:
+S. Bonaventuræ:
   name: H. Bonaventura
-  title: Bisschop, Belijder en Kerkleraar
-S. Henrici Imperatoris Confessoris:
+S. Henrici:
   name: H. Henricus
-  title: Keizer en Belijder
-S. Camilli de Lellis Confessoris:
+S. Camilli de Lellis:
   name: H. Camillus de Lellis
-  title: Belijder
-S. Vincentii a Paulo Confessoris:
+S. Vincentii a Paulo:
   name: H. Vincentius a Paulo
-  title: Belijder
-S. Hieronymi Emiliani Confessoris:
+S. Hieronymi Emiliani:
   name: H. Hiëronymus Aemilianus
-  title: Belijder
-S. Laurentii a Brundusio Confessoris:
+S. Laurentii a Brundusio:
   name: H. Laurentius van Brindisi
-S. Mariæ Magdalenæ Pœnitentis:
+S. Mariæ Magdalenæ Pænitentis:
   name: H. Maria Magdalena
-  title: Boetelinge
-S. Apollinaris Episcopi et Martyris:
+S. Apollinaris:
   name: H. Apollinaris
-  title: Bisschop en Martelaar
-Ss. Nazarii et Celsi Martyrum, Victoris I Papæ et Martyris ac Innocentii I Papæ et Confessoris:
+Ss. Nazarii et Celsi Mm., Victoris I Papæ et Mart. ac Innocentii I Papæ et Conf.:
   name: HH. Nazarius en Celsus, Martelaren, H. Victor I, Paus en Martelaar, H.
     Innocent I, Paus en Belijder
-S. Marthæ Virginis:
+S. Marthæ:
   name: H. Martha
-  title: Maagd
 S. Ignatii Confessoris:
   name: H. Ignatius van Loyola
-  title: Belijder
-S. Alfonsi Mariæ de Ligorio Episcopi Confessoris et Ecclesiæ Doctoris:
+S. Alfonsi Mariæ de Ligorio:
   name: H. Alphonsus Maria van Liguori
-  title: Bisschop, Belijder en Kerkleraar
-S. Dominici Confessoris:
+S. Dominici:
   name: H. Dominicus
-  title: Belijder
-S. Mariæ ad Nives:
+In Dedicatione S. Mariæ ad Nives:
   name: Onze Lieve Vrouw ter Sneeuw
-S. Cajetani Confessoris:
+S. Cajetani:
   name: H. Cajetanus
-  title: Belijder
-S. Joannis Mariæ Vianney Confessoris:
+S. Joannis Mariæ Vianney:
+  name: H. Johannes Maria Vianney
+In vigilia S. Laurentii:
   name: Vigilie van de H. Laurentius
-  type: vigilie
-  title: Diaken en Martelaar
-S. Claræ Virginis:
+S. Claræ:
   name: H. Clara van Assisië
-  title: Maagd
-S. Hyacinthi Confessoris:
+S. Hyacinthi:
   name: H. Hyacinthus
-  title: Belijder
-S. Joannis Eudes Confessoris:
+S. Joannis Eudes:
   name: H. Johannes Eudes
-  title: Belijder
-S. Bernardi Abbatis et Ecclesiæ Doctoris:
+S. Bernardi:
   name: H. Bernardus
-  title: Abt en Kerkleraar
-S. Joannæ Franciscæ Frémiot de Chantal Viduæ:
+S. Joannæ Franciscæ Frémiot de Chantal:
   name: H. Johanna Francica Fremiot de Chantal
-  title: Weduwe
-S. Philippi Benitii Confessoris:
+S. Philippi Benitii:
   name: H. Philippus Benitius
-  title: Belijder
-S. Ludovici Confessoris:
+S. Ludovici:
   name: H. Lodewijk
-  title: Belijder
-S. Josephi Calasanctii Confessoris:
+S. Josephi Calasanctii:
   name: H. Jozef Calasanctius
-  title: Belijder
-S. Augustini Episcopi et Confessoris et Ecclesiæ Doctoris:
+S. Augustini Hipponensis:
   name: H. Augustinus, Kerkleraar
-  title: Bisschop, Belijder en Kerkleraar
-Decollatione S. Joannis Baptistæ:
+In Decollatione S. Joannis Baptistæ:
   name: Onthoofding van de H. Johannes de Doper
-S. Rosæ a Sancta Maria Limange Virginis:
+S. Rosæ Limanæ:
   name: H. Rosa van Lima
-  title: Maagd
-S. Raymundi Nonnati Confessoris:
+S. Raymundi Nonnati:
   name: H. Raymundus Nonnatus
-  title: Belijder
-S. Stephani Hungariæ Regis Confessoris:
+S. Stephani Regis Hungariæ:
   name: H. Stephanus I, Koning
-  title: Belijder
-S. Pii X Papæ Confessoris:
+S. Pii X:
   name: Paus Pius X
-  title: Paus en Belijder
-S. Laurentii Justiniani Episcopi et Confessoris:
+S. Laurentii Justiniani:
   name: H. Laurentius Justinianus
-  title: Bisschop en Belijder
-S. Nicolai de Tolentino Confessoris:
+S. Nicolai de Tolentino:
   name: H. Nicolaas van Tolentino
-  title: Belijder
-S. Nominis Beatæ Mariæ Virginis:
+Ssm̃i. Nominis Mariæ:
   name: H. Naam van Maria
 Ss. Cornelii Papæ et Cypriani Episcopi, Martyrum:
   name: HH. Cornelius, Paus, en Cyprianus, bisschop
-  title: Martelaren
-S. Josephi de Cupertino Confessoris:
+S. Josephi de Cupertino:
   name: H. Jozef van Cupertino
-  title: Belijder
-S. Januarii Episcopi et Sociorum Martyrum:
+Ss. Januarii Ep. et Sociorum:
   name: HH. Januarius, bisschop, en gezellen
-  title: Martelaren
-S. Thomæ de Villanova Episcopi et Confessoris:
+S. Thomæ de Villanova:
   name: H. Thomas van Villanova
-  title: Bisschop en Belijder
-S. Lini Papæ et Martyris:
+S. Lini:
   name: H. Linus
-  title: Paus en Martelaar
-S. Cosmæ et Damiani Martyrum:
+S. Cosmæ et Damiani:
   name: HH. Cosmas en Damianus
-  title: Martelaren
-S. Wenceslai Ducis et Martyris:
+S. Wenceslai:
   name: H. Wenceslaus
-  title: Hertog en Martelaar
-S. Hieronymi Presbyteris Confessoris et Ecclesiæ Doctoris:
+S. Hieronymi:
   name: H. Hiëronymus
-  title: Belijder en Kerkleraar
 Ss. Angelorum Custodum:
   name: HH. Engelbewaarders
-S. Theresiæ a Jesu Infante Virginis:
+S. Theresiæ a Jesu Infante:
   name: H. Theresia-van-het-Kind-Jezus
-  title: Maagd
-S. Francisci Confessoris:
+S. Francisci:
   name: H. Franciscus van Assisi
-  title: Belijder
-S. Brunonis Confessoris:
+S. Brunonis:
   name: H. Bruno
-  title: Belijder
-S. Birgittæ Viduæ:
+S. Birgittæ:
   name: H. Brigitta van Zweden
-  title: Weduwe
-S. Joannis Leonardi Confessoris:
+S. Joannis Leonardi:
   name: H. Johannes Leonardi
-  title: Belijder
-S. Francisci Borgiæ Confessoris:
+S. Francisci Borgiæ:
   name: H. Franciscus Borgia
-  title: Belijder
-S. Eduardi Regis Confessoris:
+S. Eduardi:
   name: H. Eduardus
-  title: Koning en Belijder
-S. Callisti Papæ et Martyris:
+S. Callisti:
   name: H. Callixtus I
-  title: Paus en Martelaar
-S. Teresiæ Virginis:
+S. Teresiæ:
   name: H. Theresia van Avila
-  title: Maagd
-S. Hedwigis Viduæ:
+S. Hedwigis:
   name: H. Hedwig
-  title: Weduwe
-S. Margaritæ Mariæ Alaquoque Virginis:
+S. Margaritæ Mariæ Alaquoque:
   name: H. Margareth a Maria Alacoque
-  title: Maagd
-S. Petri de Alcantara Confessoris:
+S. Petri de Alcantara:
   name: H. Petrus van Alcantara
-  title: Belijder
-S. Joannis Cantii Confessoris:
+S. Joannis Cantii:
   name: H. Johannes Cantius
-  title: Belijder
-S. Antonii Mariæ Claret Episcopi Confessoris:
+S. Antonii Mariæ Claret:
   name: H. Antonius Maria Claret
-  title: Bisschop en Belijder
 S. Raphælis Archangeli:
   name: H. Rafaël
-  title: Aartsengel
-S. Caroli Episcopi et Confessoris:
+S. Caroli:
   name: H. Carolus Borromeüs
-  title: Bisschop en Belijder
-S. Andreæ Avellini Confessoris:
+S. Andreæ Avellini:
   name: H. Andreas van Avellino
-  title: Belijder
-S. Martini Episcopi et Confessoris:
+S. Martini:
   name: H. Menas van Alexandrië
-  title: Martelaar
-S. Martini Papæ et Martyris:
+S. Martini I:
   name: H. Martinus I
-  title: Paus en Martelaar
-S. Didaci Confessoris:
+S. Didaci:
   name: H. Didacus
-  title: Belijder
-S. Josaphat Episcopi et Martyris:
+S. Josaphat:
   name: H. Josaphat
-  title: Bisschop en Martelaar
-S. Alberti Magni Episcopi Confessoris et Ecclesiæ Doctoris:
+S. Alberti Magni:
   name: H. Albert de Grote
-  title: Bisschop, Belijder en Kerkleraar
-S. Gertrudis Virginis:
+S. Gertrudis:
   name: H. Gertrudis
-  title: Maagd
-S. Gregorii Thaumaturgi Episcopi et Confessoris:
+S. Gregorii Thaumaturgi:
   name: H. Gregorius de wonderdoener
-  title: Bisschop en Belijder
-In Dedicatione Basilicarum Ss. Apostolorum Petri et Pauli:
+In Dedicatione Basilicarum Ss. Petri et Pauli:
   name: Wijding van de basilieken van de HH. Petrus en Paulus
-S. Elisabeth Viduæ:
+S. Elisabeth:
   name: H. Elizabeth
-  title: Weduwe
-S. Felicis de Valois Confessoris:
+S. Felicis de Valois:
   name: H. Felix van Valois
-  title: Belijder
 In Presentatione Beatæ Mariæ Virginis:
   name: Opdracht van de H. Maagd Maria
-S. Cæciliæ Virginis et Martyris:
+S. Cæciliæ:
   name: H. Cecilia
-  title: Maagd en Martelaar
-S. Clementis Papæ et Martyris:
+S. Clementis I:
   name: H. Clement I
-  title: Paus en Martelaar
-S. Joannis a Cruce Confessoris et Ecclesiæ Doctoris:
+S. Joannis a Cruce:
   name: H. Johannes van het Kruis
-  title: Belijder en Kerkleraar
-S. Catharinæ Virginis et Martyris:
+S. Catharinæ:
   name: H. Catharina van Alexandria
-  title: Maagd en Martelaar
-S. Silvesteri Abbatis et Confessoris:
+S. Silvesteri:
   name: H. Silvester
-  title: Abt
-S. Bibianæ Virginis et Martyris:
+S. Bibianæ:
   name: H. Bibiana
-  title: Maagd en Martelares
-S. Francisci Xaverii Confessoris:
+S. Francisci Xaverii:
   name: H. Franciscus Xaverius
-  title: Belijder
-S. Petri Chrysologi Episcopi Confessoris et Ecclesiæ Doctoris:
+S. Petri Chrysologi:
   name: H. Petrus Chrysologus
-  title: Bisschop, Belijder en Kerkleraar
-S. Nicolai Episcopi et Confessoris:
+S. Nicolai:
   name: H. Nicolaas
-  title: Bisschop en Belijder
-S. Ambrosii Episcopi Confessoris et Ecclesiæ Doctoris:
+S. Ambrosii:
   name: H. Ambrosius
-  title: Bisschop, Belijder en Kerkleraar
-S. Damasi Papæ et Confessoris:
+S. Damasi:
   name: H. Damasus I
-  title: Paus en Belijder
-S. Luciæ Virginis et Martyris:
+S. Luciæ:
   name: H. Lucia
-  title: Maagd en Martelares
-S. Eusebii Episcopi et Martyris:
+S. Eusebii:
   name: H. Eusebius, Bisschop
-  title: Martelaar
-S. Telesphori Papæ et Martyris:
+S. Telesphori:
   name: H. Telesphorus
-  title: Paus en Martelaar
-S. Hygini Papæ et Martyris:
+S. Hygini:
   name: H. Hyginus
-  title: Paus en Martelaar
-S. Felicis Martyris:
+S. Felicis:
   name: H. Felix
-  title: Priester en Martelaar
-S. Mauri Abbatis:
+S. Mauri:
   name: H. Maurus
-  title: Abt
-S. Priscæ Virginis:
+S. Priscæ:
   name: H. Prisca
-  title: Maagd en Martelares
-Ss. Marii, Marthæ, Audifacis et Abachum Martyrum:
+Ss. Marii, Marthæ, Audifacis et Abachum:
   name: HH. Marius, Martha, Audifax en Abachum
-S. Canuto Rege Martyris:
+S. Canuti:
   name: H. Kanut
-S. Emerentianæ Virgini et Martyris:
+S. Emerentianæ:
   name: H. Emerentiana
-  title: Maagd en Martelares
-S. Agnetis Virginis et Martyris secundo:
+S. Petri:
+  name: H. Petrus
+S. Agnetis secundo:
   name: H. Agnes II
-  title: Maagd en Martelares
-S. Blasii Episcopi:
+S. Blasii:
   name: H. Blasius
-  title: Bisschop en Martelaar
-S. Dorotheæ Virginis et Martyris:
+S. Dorotheæ:
   name: H. Dorothea
-  title: Maagd en Martelares
-S. Apolloniæ Virginis et Martyris:
+S. Apolloniæ:
   name: H. Apollonia
-  title: Maagd en Martelares
-S. Valentini Presbyteri et Martyris:
+S. Valentini:
   name: H. Valentinus
-  title: Priester en Martelaar
-SS. Faustini et Jovitæ:
+Ss. Faustini et Jovitæ:
   name: HH. Faustinus en Jovita
-  title: Martelaars
-S. Simeonis Faustini Episcopi et Martyris:
+S. Simeonis:
   name: H. Simeon
-  title: Bisschop en Martelaar
-S. Lucii I, Papæ et Martyris:
+S. Lucii I:
   name: H. Lucius
-  title: Paus en Martelaar
-Ss. Tiburtii, Valeriani et Maximi, Martyrum:
+Ss. Tiburtii, Valeriani et Maximi:
   name: HH. Tiburtius, Valerianus en Maximus
-  title: Martelaren
-S. Aniceti Papæ et Martyris:
+S. Aniceti:
   name: H. Anicetus
-  title: Paus en Martelaar
-S. Georgii Martyris:
+S. Georgii:
   name: H. Georgius
-  title: Martelaar
-Ss. Alexandri et Sociorum Martyrum:
+Ss. Alexandri, Eventii et Theoduli Mm. ac Iuvenalis Ep. et Conf.:
   name: HH. Alexander, Eventius en Theodulus
-  title: Martelaren
-Ss. Gordiani et Epimachi Martyrum:
+Ss. Gordiani et Epimachi:
   name: HH. Gordianus en Epimachus
-  title: Martelaren
 S. Bonifacii Martyris:
   name: H. Bonifatius
-  title: Martelaar
-S. Pudentianæ Virginis:
+S. Pudentianæ:
   name: H. Pudentiana
-  title: Maagd
-S. Urbanis Papæ et Martyris:
+S. Urbanis I:
   name: H. Urbanus I
-  title: Paus en Martelaar
-S. Eleutherii Papæ et Martyris:
+S. Eleutherii:
   name: H. Eleutherius
-  title: Paus en Martelaar
-S. Joannis Papæ et Martyris:
+S. Joannis I:
   name: H. Johannes I
-  title: Paus en Martelaar
-S. Felicis Papæ et Martyris:
+S. Felicis I:
   name: H. Felix I
-  title: Paus en Martelaar
-S. Petronillæ Virginis:
+S. Petronillæ:
   name: H. Petronilla
-  title: Maagd
-Ss. Marcellini, Petri, atque Erasmi Martyrum:
+Ss. Marcellini, Petri, atque Erasmi:
   name: HH. Marcellinus, Petrus, en H. Erasmus
-  title: Martelaar
-Ss. Primi et Feliciani Martyrum:
+Ss. Primi et Feliciani:
   name: HH. Primus en Felicianus
-  title: Martelaren
-Ss. Basilidis, Cyrini, Naboris and Nazarii Martyrum:
+Ss. Basilidis, Cyrini, Naboris and Nazarii:
   name: HH. Basilides, Cyrinus, Nabor, en Nazarius
-  title: Martelaren
-Ss. Viti, Modesti atque Crescentiæ Martyrum:
+Ss. Viti, Modesti atque Crescentiæ:
   name: HH. Vitus, Modestus, en Crescentia
-  title: Martelaren
-SS. Marci et Marcelliani Martyrum:
+Ss. Marci et Marcelliani:
   name: HH. Marcus en Marcellianus
-  title: Martelaren
-Ss. Gervasii et Protasii Martyrum:
+Ss. Gervasii et Protasii:
   name: HH. Gervasius en Protasius
-  title: Martelaren
-S. Silverii Papæ et Martyri:
+S. Silverii:
   name: H. Silverius
-  title: Paus en Martelaar
-Ss. Processi et Martiniani Martyrum:
+Ss. Processi et Martiniani:
   name: HH. Processus en Martinianus
-  title: Martelaren
-S. Pii I Papæ et Martyris:
+S. Pii I:
   name: H. Pius I
-  title: Paus en Martelaar
-Ss. Naboris and Felicis Martyrum:
+Ss. Naboris and Felicis:
   name: HH. Nabor en Felix
-  title: Martelaren
 Beatæ Mariæ Virginis de Monte Carmelo:
   name: Onze Lieve Vrouw van de berg Carmel
-S. Alexii Confessoris:
+S. Alexii:
   name: H. Alexius
-  title: Belijder
-Ss. Symphorosæ et Septem Filiorum Martyrum:
+Ss. Symphorosæ et Septem Filiorum:
   name: H. Symphorosa en haar zeven zonen
-  title: Martelaren
-S. Margaritæ, Virginis et Martyris:
+S. Margaritæ:
   name: H. Margaretha van Antiochië
-  title: Maagd en Martelares
-S. Praxedis Virginis:
+S. Praxedis:
   name: H. Praxedes
-  title: Maagd
-S. Liborii Episcopi et Confessoris:
+S. Liborii:
   name: H. Liborius
-  title: Bisschop en Belijder
-S. Christinæ Virginis et Martyris:
+S. Christinæ:
   name: H. Christina
-  title: Maagd en Martelares
-S. Christophori Martyris:
+S. Christophori:
   name: H. Christophorus
-  title: Martelaar
-S. Pantaleonis Martyris:
+S. Pantaleonis:
   name: H. Pantaleon
-  title: Martelaar
-Ss. Felicis, Simplicii, Faustini et Beatricis Martyrum:
+Ss. Felicis, Simplicii, Faustini et Beatricis:
   name: HH. Felix II, Paus, Simplicius, Faustinus en Beatrix
-  title: Martelaren
-S. Abdon et Sennen Martyrum:
+S. Abdon et Sennen:
   name: HH. Abdon en Sennen
-  title: Martelaren
-Ss. Martyrum Machabæorum:
+Ss. Machabæorum:
   name: HH. Makkabeeën
-  title: Martelaren
-S. Stephani Papæ Martyris:
+S. Stephani I:
   name: H. Stephanus I
-  title: Paus en Martelaar
-Ss. Xysti II Papæ, Felicissimi et Agapiti Martyrum:
+Ss. Xysti II Papæ, Felicissimi et Agapiti Mm.:
   name: HH. Sixtus II, Paus, en gezellen
-  title: Martelaren
-S. Donati Episcopi et Martyris:
+S. Donati:
   name: H. Donatus
-  title: Bisschop en Belijder
-Ss. Cyriaci, Largi et Smaragdi Martyrum:
+Ss. Cyriaci, Largi et Smaragdi:
   name: HH. Cyriacus, Largus, en Smaragdus
-  title: Martelaren
-S. Romano Martyre:
+S. Romani:
   name: H. Romanus
-  title: Diaken en Martelaar
-Ss. Tiburtii et Susannæ Virginum et Martyrum:
+Ss. Tiburtii et Susannæ:
   name: H. Tiburtius en H. Susanna
-  title: Martelaar en Maagd
-Ss. Hippolyti et Cassiani Martyrum:
+Ss. Hippolyti et Cassiani:
   name: HH. Hippolytus en Cassianus
-  title: Martelaar
 S. Eusebii Confessoris:
   name: H. Eusebius
-  title: Belijder
-S. Agapiti Martyris:
+S. Agapiti:
   name: H. Agapitus
-  title: Martelaar
-Ss. Timotheo, Hippolyto et Symphoriano, Martyribus:
+Ss. Timothei, Hippolyti et Symphoriani:
   name: HH. Timotheus, Hippolytus en Symphorianus
-  title: Martelaren
-S. Zephirini Papæ et Martyris:
+S. Zephirini:
   name: H. Zephyrinus
-  title: Paus en Martelaar
-S. Hermete Martyre:
+S. Hermetis:
   name: H. Hermes
-  title: Martelaar
-S. Sabina Virginis et Martyris:
+S. Sabina:
   name: H. Sabina
-  title: Martelares
-Ss. Felicis et Adaucti Martyrum:
+Ss. Felicis et Adaucti:
   name: HH. Felix en Adauctus
-  title: Martelaren
-S. Ægidii Abbatis:
+S. Ægidii:
   name: H. Egidius
-Duodecim Fratribus Martyribus:
+Ss. duodecim Fratrum Martyrum:
   name: HH. Twaalf Gebroeders
-S. Adriani Martyris:
+S. Adriani:
   name: H. Hadrianus
-  title: Martelaar
-S. Gorgonii Martyris:
+S. Gorgonii:
   name: H. Gorgonius
-  title: Martelaar
-Ss. Proti et Hyacinthi Martyrum:
+Ss. Proti et Hyacinthi:
   name: HH. Protus en Hyacinthus
-  title: Martelaren
-S. Nicomedis Martyris:
+S. Nicomedis:
   name: H. Nicomedes
-  title: Priester en Martelaar
-Ss. Euphemiae Virginis, Luciae et Geminiani Martyrum:
+Ss. Euphemiæ Virg., Luciæ et Geminiani Mm.:
   name: HH. Euphemia, Lucia en Geminianus
-  title: Martelaren
-Impressionis Stigmatum S. Francisci:
+Impressionis Ss. Stigmatum S. Francisci:
   name: HH. Kruiswonden van de H. Franciscus
-  title: Belijder
-S. Eustachii et Sociorum Martyrum:
+Ss. Eustachii et Sociorum:
   name: H. Eustachius en gezellen
-  title: Martelaren
-Ss. Mauritii et Sociorum Martyrum:
+Ss. Mauritii et Sociorum:
   name: HH. Mauritius en gezellen
-  title: Martelaren
-S. Thecla Virginis et Martyris:
+S. Theclæ:
   name: H. Thekla
-  title: Maagd en Martelares
-Beatæ Mariæ Virginis de Mercede:
+Beatæ Mariæ Virginis a Mercede:
   name: Onze-Lieve-Vrouw-tot-vrijkoping-van-de-slaven
 Ss. Cypriani et Justinæ Martyrum:
   name: HH. Cyprianus en Justina
-  title: Martelaren
-S. Remigii Episcopi Confessoris:
+S. Remigii:
   name: H. Remigius
-  title: Bisschop en Belijder
-Ss. Placidi et Sociorum Martyrum:
+Ss. Placidi et Sociorum:
   name: HH. Placidus en gezellen
-  title: Martelaren
-S. Marco Papa et Confessoris:
+S. Marci I:
   name: H. Marcus, Paus
-  title: Belijder
-Ss. Sergii, Bacchi, Marcelli et Apuleji Martyrum:
+Ss. Sergii, Bacchi, Marcelli et Apuleji:
   name: HH. Sergius, Bacchus, Marcellus en Apulejus
-  title: Martelaren
-Ss. Dionysii Episcopi, Rustici et Eleutherii, Martyrum:
+Ss. Dionysii Ep., Rustici et Eleutherii, Mm.:
   name: HH. Dionysius, Rusticus en Eleutherius
-  title: Martelaren
-S. Hilarionis Abbatis:
+S. Hilarionis:
   name: H. Hilarion
-Ss. Ursulæ et Sociarum Virginum et Martyrum:
+Ss. Ursulæ et Sociarum Vv. et Mm.:
   name: HH. Ursula en gezellinnen
-Ss. Chrysanthi et Dariæ Martyrum:
+Ss. Chrysanthi et Dariæ:
   name: HH. Chrysanthus en Daria
-  title: Martelaren
-S. Evaristi Papæ et Martyris:
+S. Evaristi:
   name: H. Evaristus
-  title: Paus en Martelaar
-Ss. Vitalis et Agricola, Martyres:
+Ss. Vitalis et Agricola:
   name: HH. Vitalis en Agricola
-  title: Martelaren
-Ss. Quatuor Coronatorum Martyrum:
+Ss. Quatuor Coronatorum:
   name: Vier HH. gekroonde Martelaren
-  title: Martelaren
-S. Theodoro Martyris:
+S. Theodori:
   name: H. Theodorus
-  title: Martelaar
-Ss. Tryphone, Respicio et Nympha Virginum, Martyrum:
+Ss. Tryphone, Respicio et Nympha Virg.:
   name: HH. Tryphon, Respicius en Nympha, Maagd
-  title: Martelaren
-S. Pontiani Papæ et Martyris:
+S. Mennæ:
+  name: H. Menas
+S. Pontiani:
   name: H. Pontianus I
-  title: Paus en Martelaar
-S. Chrysogoni Martyris:
+S. Felicitatis:
+  name: H. Felicitas
+S. Chrysogoni:
   name: H. Chrysogonus
-  title: Martelaar
-S. Petri Alexandrini Episcopi et Martyris:
+S. Petri Alexandrini:
   name: H. Petrus van Alexandrië
-  title: Bisschop en Martelaar
-S. Saturnini Martyris:
+S. Saturnini:
   name: H. Saturninus
-  title: Bisschop en Martelaar
-S. Barbaræ Virginis et Martyris:
+S. Barbaræ:
   name: H. Barbara
-  title: Maagd en Martelares
-S. Sabbæ Abbatis:
+S. Sabbæ:
   name: H. Sabbas
-  title: Abt
-S. Melchiadis Papæ et Mart:
+S. Melchiadis:
   name: H. Melchiades
-  title: Paus en Martelaar
-S. Thomæ Episcopi et Martyris:
-  name: H. Thomas van Canterbury
-  title: Bisschop en Martelaar
-S. Silvestri Papæ et Confessoris:
+S. Anastasiæ:
+  name: H. Anastasia
+S. Thomæ de Cantuariae:
+  name: H. Thomas van Kantelberg
+S. Silvestri:
   name: Paus Silvester I
-  title: Paus en Belijder
