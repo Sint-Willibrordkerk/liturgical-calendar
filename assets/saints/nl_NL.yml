@@ -3,7 +3,7 @@ Octava Nativitatis Domini:
 In Epiphania Domini:
   name: Verschijning van Onze Heer, Driekoningen
 S. Joseph Sponsi B. Mariæ V.:
-  name: H. Jozef, Bruidegom van O
+  name: H. Jozef, Bruidegom van O.L.V.
 In Annuntiatione Beate Mariæ Virgine:
   name: Maria Boodschap
 S. Joseph Opificis:
@@ -24,7 +24,7 @@ In Commemoratione Omnium Fidelium Defunctorum:
   name: Allerzielen
 In Conceptione Immaculata Beatæ Mariæ Virginis:
   name: Onbevlekte Ontvangenis van de H. Maagd Maria
-In Vigilia Nativitatis Domini:
+In vigilia Nativitatis Domini:
   name: Vigilie van Kerstmis
 In Nativitate Domini:
   name: Hoogfeest van Kerstmis
@@ -140,9 +140,9 @@ S. Cyrilli Ep. Alexandrini Conf. et  Eccl. Doct.:
   name: H. Cyrillus van Alexandrië
 S. Scholasticæ:
   name: H. Scholastica
-In Apparitione Beatæ Mariæ Virginis:
+In Apparitione B. Mariæ V.:
   name: Verschijning van Onze Lieve Vrouwe te Lourdes
-Ss. Septem Fundat. Ord. Servorum B. M. V.:
+Ss. Septem Fundat. Ord. Servorum B. Mariæ V.:
   name: De zeven HH. stichters van de servieten van de H. Maagd Maria
 S. Petri Damiani:
   name: H. Petrus Damianus
@@ -214,7 +214,7 @@ S. Gregorii Nazianzeni:
   name: H. Gregorius van Nazianze
 S. Antonini:
   name: H. Antoninus
-Ss. Nerei, Achillei et Domitillæ Virginis atque Pancratii Martyrum:
+Ss. Nerei, Achillei et Domitillæ Virg. atque Pancratii Mm.:
   name: HH. Nereus, Achilleus, Domitilla, Maagd, en Pancras, Martelaar
 S. Roberti Bellarmino:
   name: H. Robertus Bellarminus
@@ -280,7 +280,7 @@ S. Antonii Mariæ Zaccaria:
   name: H. Antonius Maria Zaccaria
 Ss. Cyrilli et Methodii:
   name: HH. Cyrillus en Methodius
-S. Elisabeth Reg. Portugaliæ Viduæ:
+S. Elisabeth Reginæ Portugaliæ:
   name: H. Elizabeth, Koningin van Portugal
 Ss. Septem Fratrum Mm., ac Rufinæ et Secundæ Vv. et Mm.:
   name: Zeven HH. broeders, Martelaren en Rufina en Secunda, Maagden en Martelaressen
@@ -298,7 +298,7 @@ S. Hieronymi Emiliani:
   name: H. Hiëronymus Aemilianus
 S. Laurentii a Brundusio:
   name: H. Laurentius van Brindisi
-S. Mariæ Magdalenæ Pænitentis:
+S. Mariæ Magdalenæ:
   name: H. Maria Magdalena
 S. Apollinaris:
   name: H. Apollinaris
@@ -355,7 +355,7 @@ S. Nicolai de Tolentino:
   name: H. Nicolaas van Tolentino
 Ssm̃i. Nominis Mariæ:
   name: H. Naam van Maria
-Ss. Cornelii Papæ et Cypriani Episcopi, Martyrum:
+Ss. Cornelii Papæ et Cypriani Ep.:
   name: HH. Cornelius, Paus, en Cyprianus, bisschop
 S. Josephi de Cupertino:
   name: H. Jozef van Cupertino
@@ -421,7 +421,7 @@ S. Gertrudis:
   name: H. Gertrudis
 S. Gregorii Thaumaturgi:
   name: H. Gregorius de wonderdoener
-In Dedicatione Basilicarum Ss. Petri et Pauli:
+In Dedicatione Basilicarum Ss. Petri et Pauli App.:
   name: Wijding van de basilieken van de HH. Petrus en Paulus
 S. Elisabeth:
   name: H. Elizabeth
@@ -609,7 +609,7 @@ S. Theclæ:
   name: H. Thekla
 Beatæ Mariæ Virginis a Mercede:
   name: Onze-Lieve-Vrouw-tot-vrijkoping-van-de-slaven
-Ss. Cypriani et Justinæ Martyrum:
+Ss. Cypriani et Justinæ Virg.:
   name: HH. Cyprianus en Justina
 S. Remigii:
   name: H. Remigius

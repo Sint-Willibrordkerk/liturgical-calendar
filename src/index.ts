@@ -28,13 +28,13 @@ export default function generateCalendar(year: number, lang: string): Calendar {
 }
 
 const WEEKDAYS = {
-  zondag: 0,
-  maandag: 1,
-  dinsdag: 2,
-  woensdag: 3,
-  donderdag: 4,
-  vrijdag: 5,
-  zaterdag: 6,
+  dominica: 0,
+  feriaII: 1,
+  feriaIII: 2,
+  feriaIV: 3,
+  feriaV: 4,
+  feriaVI: 5,
+  sabatto: 6,
 };
 
 type Propers = Record<
@@ -245,7 +245,7 @@ class Calendar_ {
       this.calendar[date.getMonth()][date.getDate()].commemorations.push({
         title: proper.title,
         subtitle: proper.subtitle,
-        type: "feest",
+        type: "festum",
         class: 4,
       });
     }
@@ -360,8 +360,8 @@ class Calendar_ {
         this.set_(month, day, {
           ...saint,
           type:
-            saint.type === "lord"
-              ? "feest"
+            saint.type === "domini"
+              ? "festum"
               : (saint.type as LiturgicalDay["type"]),
         });
     });
@@ -383,7 +383,7 @@ class Calendar_ {
         (typeof type !== "string" ||
           WEEKDAYS[type] === undefined ||
           WEEKDAYS[type] === date.getDay()) &&
-        (dataItem.type !== "zondag" || date.getDay() === 0)
+        (dataItem.type !== "dominica" || date.getDay() === 0)
       ) {
         this.set(date, {
           title: suffix ? `${ordinals[i + 1]} ${suffix}` : undefined,
@@ -418,12 +418,12 @@ class Calendar_ {
           (item) => item.isPrivileged
         );
       if (day.class <= 2) day.commemorations = day.commemorations.slice(0, 1);
-      if (day.type == "zondag")
+      if (day.type == "dominica")
         day.commemorations = day.commemorations.filter(
           (item) =>
             item.type != "feria" &&
-            item.type != "zondag" &&
-            (item.isPrivileged || (item.class <= 2 && item.type != "octaaf"))
+            item.type != "dominica" &&
+            (item.isPrivileged || (item.class <= 2 && item.type != "octava"))
         );
       if (day.type == "feria")
         day.commemorations = day.commemorations.filter(
@@ -464,7 +464,7 @@ class Calendar_ {
     if (!override) value.commemorations = old.commemorations;
     delete old.commemorations;
 
-    if (old.class == 1 && old.type == "feest") {
+    if (old.class == 1 && old.type == "festum") {
       const date_ = new Date(Date.UTC(this.year, month, date));
       while (this.calendar[date_.getMonth()][date_.getDate()].class <= 2)
         date_.setDate(date_.getDate() + 1);

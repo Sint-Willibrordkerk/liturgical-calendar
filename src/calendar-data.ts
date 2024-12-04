@@ -4,13 +4,13 @@ export type CalendarData = ClassData[];
 export type ClassData = DataItem[];
 
 export type Day =
-  | "zondag"
-  | "maandag"
-  | "dinsdag"
-  | "woensdag"
-  | "donderdag"
-  | "vrijdag"
-  | "zaterdag";
+  | "dominica"
+  | "feriaII"
+  | "feriaIII"
+  | "feriaIV"
+  | "feriaV"
+  | "feriaVI"
+  | "sabatto";
 export type DateString = "advent" | "easter";
 export type Propers =
   | "propers3rd"
@@ -23,7 +23,7 @@ export type LiturgicalDay_ = Omit<LiturgicalDay, "class">;
 export type DataItem = (
   | (LiturgicalDay_ & { occurence: Occurence })
   | { type: Saint["type"]; occurence: "saints" }
-  | { type: "feria" | "octaaf" | "quartertemper"; occurence: Occurence }
+  | { type: "feria" | "octava" | "quartertemper"; occurence: Occurence }
   | {
       type: LiturgicalDay["type"];
       occurence:
@@ -64,7 +64,7 @@ export type LiturgicalDay = Commemoration & {
 export interface Commemoration {
   title: string;
   subtitle?: string;
-  type: "zondag" | "feria" | "vigilie" | "feest" | "octaaf";
+  type: "dominica" | "feria" | "vigilia" | "festum" | "octava";
   isPrivileged?: boolean;
   class: 1 | 2 | 3 | 4;
 }
@@ -77,22 +77,22 @@ export const calendarData: CalendarData = [
     {
       title: "Onze Lieve Vrouw op zaterdag",
       type: "feria",
-      occurence: "zaterdag",
+      occurence: "sabatto",
     },
   ],
   // 3rd class
   [
     // 91.26
-    { type: "vigilie", occurence: "saints" },
+    { type: "vigilia", occurence: "saints" },
     // 91.25
     {
       type: "feria",
       occurence: { start: "advent", end: "12-16" },
     },
     // 91.24
-    { type: "feest", occurence: "saints" },
+    { type: "festum", occurence: "saints" },
     // 91.23
-    { type: "feest", occurence: "propers3rd" },
+    { type: "festum", occurence: "propers3rd" },
     // 91.22
     {
       type: "feria",
@@ -103,16 +103,16 @@ export const calendarData: CalendarData = [
   // 2nd class
   [
     // 91.21
-    { type: "vigilie", occurence: "saints" },
+    { type: "vigilia", occurence: "saints" },
     {
       title: "Vigilie van Hemelvaart",
-      type: "vigilie",
+      type: "vigilia",
       occurence: easter(38),
     },
     // 91.20
-    { type: "feest", occurence: "indults2nd" },
+    { type: "festum", occurence: "indults2nd" },
     // 91.19
-    { type: "feest", occurence: "propers2nd" },
+    { type: "festum", occurence: "propers2nd" },
     // 91.18
     {
       type: "feria",
@@ -123,16 +123,16 @@ export const calendarData: CalendarData = [
     quartertemper("09-18"),
     // 91.17
     {
-      type: "octaaf",
+      type: "octava",
       occurence: { start: "12-26", end: "12-31" },
     },
     {
       title: "Zondag onder het octaaf van Kerstmis",
-      type: "zondag",
+      type: "dominica",
       occurence: { start: "12-26", end: "12-31" },
     },
     // 91.16
-    { type: "feest", occurence: "saints" },
+    { type: "festum", occurence: "saints" },
     // 91.15
     sundays("na Driekoningen", "01-07", easter(-70)),
     sunday("Zondag Septuagesima", easter(-63)),
@@ -145,9 +145,9 @@ export const calendarData: CalendarData = [
     // 91.14
     {
       title: "Feest van de H. Naam Jezus",
-      type: "feest",
+      type: "festum",
       occurence: {
-        type: "zondag",
+        type: "dominica",
         start: "01-02",
         end: "01-05",
         default: "01-02",
@@ -155,61 +155,61 @@ export const calendarData: CalendarData = [
     },
     {
       title: "Eerste zondag na Driekoningen, Feest van de H. Familie",
-      type: "feest",
+      type: "festum",
       commemorations: [],
       occurence: {
-        type: "zondag",
+        type: "dominica",
         start: "01-07",
         end: "01-13",
       },
     },
     {
       title: "Sacramentsdag, Tweede zondag na Driekoningen",
-      type: "feest",
+      type: "festum",
       commemorations: [],
       occurence: easter(63),
     },
-    { type: "lord", occurence: "saints" },
+    { type: "domini", occurence: "saints" },
   ],
   // 1st class
   [
     // 91.13
-    { type: "feest", occurence: "indults1st" },
+    { type: "festum", occurence: "indults1st" },
     // 91.12
-    { type: "feest", occurence: "propers1st" },
+    { type: "festum", occurence: "propers1st" },
     // 91.11
-    { type: "feest", occurence: "saints" },
+    { type: "festum", occurence: "saints" },
     // 91.10
     {
-      type: "octaaf",
+      type: "octava",
       occurence: { start: easter(2), end: easter(7) },
     },
     {
       title: "Tweede Paasdag",
-      type: "octaaf",
+      type: "octava",
       occurence: easter(1),
     },
     {
-      type: "octaaf",
+      type: "octava",
       occurence: { start: easter(51), end: easter(56) },
     },
     quartertemper(easter(52)),
     {
       title: "Tweede Pinksterdag",
-      type: "octaaf",
+      type: "octava",
       occurence: easter(50),
     },
     // 91.9
     {
       title: "Vigilie van Pinksteren",
-      type: "vigilie",
+      type: "vigilia",
       occurence: easter(48),
     },
     // 91.8
     {
       type: "feria",
       occurence: {
-        type: "!zondag",
+        type: "!dominica",
         start: "11-02",
         end: "11-03",
       },
@@ -231,34 +231,34 @@ export const calendarData: CalendarData = [
     sunday("Palmzondag", easter(-7)),
     sunday("Beloken Pasen", easter(7)),
     // 91.5
-    { type: "vigilie", occurence: { type: "saints", date: "12-24" } },
-    { type: "octaaf", occurence: { type: "saints", date: "01-01" } },
+    { type: "vigilia", occurence: { type: "saints", date: "12-24" } },
+    { type: "octava", occurence: { type: "saints", date: "01-01" } },
     // 91.4
-    { type: "feest", occurence: { type: "saints", date: "12-08" } },
-    { type: "feest", occurence: { type: "saints", date: "08-15" } },
+    { type: "festum", occurence: { type: "saints", date: "12-08" } },
+    { type: "festum", occurence: { type: "saints", date: "08-15" } },
     // 91.3
-    { type: "feest", occurence: { type: "saints", date: "01-06" } },
+    { type: "festum", occurence: { type: "saints", date: "01-06" } },
     {
       title: "Hemelvaart",
-      type: "feest",
+      type: "festum",
       occurence: easter(39),
     },
     sunday("Feest van de H. Drieëenheid", easter(56)),
     {
       title: "Feest van het Allerheiligst Sacrament",
-      type: "feest",
+      type: "festum",
       occurence: easter(60),
     },
     {
       title: "Feest van het Allerheiligst Hart van Jezus",
-      type: "feest",
+      type: "festum",
       occurence: easter(68),
     },
     {
       title: "Feest van Christus Koning",
-      type: "feest",
+      type: "festum",
       occurence: {
-        type: "zondag",
+        type: "dominica",
         start: "10-25",
         end: "10-31",
       },
@@ -280,15 +280,15 @@ export const calendarData: CalendarData = [
       occurence: easter(-1),
     },
     // 91.1
-    { type: "feest", occurence: { type: "saints", date: "12-25" } },
+    { type: "festum", occurence: { type: "saints", date: "12-25" } },
     {
       title: "Hoogfeest van Pasen",
-      type: "feest",
+      type: "festum",
       occurence: "easter",
     },
     {
       title: "Hoogfeest van Pinksteren",
-      type: "feest",
+      type: "festum",
       occurence: easter(49),
     },
   ],
@@ -308,7 +308,7 @@ function quartertemper(start: RelativeDate): DataItem {
 function sunday(title: string, date: RelativeDate): DataItem {
   return {
     title,
-    type: "zondag",
+    type: "dominica",
     occurence: date,
   };
 }
@@ -319,7 +319,7 @@ function sundays(
   end: RelativeDate
 ): DataItem {
   return {
-    type: "zondag",
+    type: "dominica",
     suffix: `zondag ${suffix}`,
     occurence: {
       start,
