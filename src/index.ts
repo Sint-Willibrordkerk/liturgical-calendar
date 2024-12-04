@@ -34,7 +34,7 @@ const WEEKDAYS = {
   feriaIV: 3,
   feriaV: 4,
   feriaVI: 5,
-  sabatto: 6,
+  sabbato: 6,
 };
 
 type Propers = Record<
@@ -49,137 +49,137 @@ type Propers = Record<
 
 const propers: Propers = {
   propers4th: [
-    {
-      title: "H. Adelbertus",
-      subtitle: "Belijder",
-      occurence: "06-25",
-    },
-    {
-      title: "Overbrenging der relikwieën van de H. Martinus",
-      subtitle: "Bisschop en Belijder",
-      occurence: "07-04",
-    },
+    // {
+    //   title: "H. Adelbertus",
+    //   subtitle: "Belijder",
+    //   occurence: "06-25",
+    // },
+    // {
+    //   title: "Overbrenging der relikwieën van de H. Martinus",
+    //   subtitle: "Bisschop en Belijder",
+    //   occurence: "07-04",
+    // },
   ],
   propers3rd: [
-    {
-      title: "H. Radboud",
-      subtitle: "Bisschop en Belijder",
-      occurence: "11-29",
-    },
-    {
-      title: "H. Hungerus",
-      subtitle: "Bisschop en Belijder",
-      occurence: "12-22",
-    },
-    {
-      title: "H. Switbertus",
-      subtitle: "Bisschop en Belijder",
-      occurence: "03-01",
-    },
-    {
-      title: "H. Albricus",
-      subtitle: "Bisschop en Belijder",
-      occurence: "03-04",
-    },
-    {
-      title: "H. Gertrudis",
-      subtitle: "Maagd",
-      occurence: "03-17",
-    },
-    {
-      title: "H. Ludgerus",
-      subtitle: "Bisschop en Belijder",
-      occurence: "03-26",
-    },
-    {
-      title: "H. Lidwina",
-      subtitle: "Maagd",
-      occurence: "04-14",
-    },
-    {
-      title: "H. Egbertus",
-      subtitle: "Belijder",
-      occurence: "04-24",
-    },
-    {
-      title: "H. Aufridus",
-      subtitle: "Bisschop en Belijder",
-      occurence: "05-12",
-    },
-    {
-      title: "H. Odulfus",
-      subtitle: "Belijder",
-      occurence: "06-12",
-    },
-    {
-      title: "HH. Martelaren van Gorcum",
-      occurence: "07-09",
-    },
-    {
-      title: "H. Marcellinus",
-      subtitle: "Belijder",
-      occurence: "07-14",
-    },
-    {
-      title: "H. Plechelmus",
-      subtitle: "Bisschop en Belijder",
-      occurence: "07-15",
-    },
-    {
-      title: "H. Fredericus",
-      subtitle: "Bisschop en Martelaar",
-      occurence: "07-18",
-    },
-    {
-      title: "H. Bernulfus",
-      subtitle: "Bisschop en Belijder",
-      occurence: "07-19",
-    },
-    {
-      title: "H. Werenfridus",
-      subtitle: "Belijder",
-      occurence: "08-18",
-    },
-    {
-      title: "H. Gregorius",
-      subtitle: "Bisschop en Belijder",
-      occurence: "08-25",
-    },
-    {
-      title: "H. Wilfridus",
-      subtitle: "Bisschop en Belijder",
-      occurence: "10-12",
-    },
+    // {
+    //   title: "H. Radboud",
+    //   subtitle: "Bisschop en Belijder",
+    //   occurence: "11-29",
+    // },
+    // {
+    //   title: "H. Hungerus",
+    //   subtitle: "Bisschop en Belijder",
+    //   occurence: "12-22",
+    // },
+    // {
+    //   title: "H. Switbertus",
+    //   subtitle: "Bisschop en Belijder",
+    //   occurence: "03-01",
+    // },
+    // {
+    //   title: "H. Albricus",
+    //   subtitle: "Bisschop en Belijder",
+    //   occurence: "03-04",
+    // },
+    // {
+    //   title: "H. Gertrudis",
+    //   subtitle: "Maagd",
+    //   occurence: "03-17",
+    // },
+    // {
+    //   title: "H. Ludgerus",
+    //   subtitle: "Bisschop en Belijder",
+    //   occurence: "03-26",
+    // },
+    // {
+    //   title: "H. Lidwina",
+    //   subtitle: "Maagd",
+    //   occurence: "04-14",
+    // },
+    // {
+    //   title: "H. Egbertus",
+    //   subtitle: "Belijder",
+    //   occurence: "04-24",
+    // },
+    // {
+    //   title: "H. Aufridus",
+    //   subtitle: "Bisschop en Belijder",
+    //   occurence: "05-12",
+    // },
+    // {
+    //   title: "H. Odulfus",
+    //   subtitle: "Belijder",
+    //   occurence: "06-12",
+    // },
+    // {
+    //   title: "HH. Martelaren van Gorcum",
+    //   occurence: "07-09",
+    // },
+    // {
+    //   title: "H. Marcellinus",
+    //   subtitle: "Belijder",
+    //   occurence: "07-14",
+    // },
+    // {
+    //   title: "H. Plechelmus",
+    //   subtitle: "Bisschop en Belijder",
+    //   occurence: "07-15",
+    // },
+    // {
+    //   title: "H. Fredericus",
+    //   subtitle: "Bisschop en Martelaar",
+    //   occurence: "07-18",
+    // },
+    // {
+    //   title: "H. Bernulfus",
+    //   subtitle: "Bisschop en Belijder",
+    //   occurence: "07-19",
+    // },
+    // {
+    //   title: "H. Werenfridus",
+    //   subtitle: "Belijder",
+    //   occurence: "08-18",
+    // },
+    // {
+    //   title: "H. Gregorius",
+    //   subtitle: "Bisschop en Belijder",
+    //   occurence: "08-25",
+    // },
+    // {
+    //   title: "H. Wilfridus",
+    //   subtitle: "Bisschop en Belijder",
+    //   occurence: "10-12",
+    // },
   ],
   indults2nd: [],
   propers2nd: [
-    {
-      title: "HH. Bonifatius, Bisschop, en gezellen",
-      subtitle: "Martelaren",
-      occurence: "06-05",
-    },
+    // {
+    //   title: "HH. Bonifatius, Bisschop, en gezellen",
+    //   subtitle: "Martelaren",
+    //   occurence: "06-05",
+    // },
   ],
   indults1st: [],
   propers1st: [
-    {
-      title: "Wijding der metropolitaankerk",
-      occurence: "08-23",
-    },
-    {
-      title: "H. Willibrordus",
-      subtitle: "Bisschop en Belijder",
-      occurence: "11-07",
-    },
-    {
-      title: "H. Martinus",
-      subtitle: "Bisschop en Belijder",
-      occurence: "11-11",
-    },
-    {
-      title: "H. Lebuinus",
-      subtitle: "Belijder",
-      occurence: "11-12",
-    },
+    // {
+    //   title: "Wijding der metropolitaankerk",
+    //   occurence: "08-23",
+    // },
+    // {
+    //   title: "H. Willibrordus",
+    //   subtitle: "Bisschop en Belijder",
+    //   occurence: "11-07",
+    // },
+    // {
+    //   title: "H. Martinus",
+    //   subtitle: "Bisschop en Belijder",
+    //   occurence: "11-11",
+    // },
+    // {
+    //   title: "H. Lebuinus",
+    //   subtitle: "Belijder",
+    //   occurence: "11-12",
+    // },
   ],
 };
 
@@ -230,7 +230,7 @@ class Calendar_ {
     const end = new Date(this.year + 1, 0, 0);
     while (date.getTime() <= end.getTime()) {
       this.calendar[date.getMonth()][date.getDate()] = {
-        title: "Dag door de week",
+        title: "Feria",
         type: "feria",
         class: 4,
         commemorations: [],
@@ -263,12 +263,13 @@ class Calendar_ {
       const class_ = (4 - i) as 1 | 2 | 3 | 4;
       classData.forEach((dataItem) => {
         const occurence = this.getOccurence(dataItem.occurence);
-        let suffix: string;
-        if ("suffix" in dataItem) {
+        let prefix, suffix: string;
+        if ("prefix" in dataItem && "suffix" in dataItem) {
+          prefix = dataItem.prefix;
           suffix = dataItem.suffix;
         }
 
-        this.fillDataItem(dataItem, occurence, suffix, class_);
+        this.fillDataItem(dataItem, occurence, prefix, suffix, class_);
       });
     });
   }
@@ -276,6 +277,7 @@ class Calendar_ {
   private fillDataItem(
     dataItem: DataItem,
     occurence: Occurence_,
+    prefix: string,
     suffix: string,
     class_: 1 | 2 | 3 | 4
   ) {
@@ -325,6 +327,7 @@ class Calendar_ {
         end,
         occurence.default,
         occurence.type,
+        prefix,
         suffix,
         dataItem,
         class_
@@ -372,6 +375,7 @@ class Calendar_ {
     end: Date,
     default_: RelativeDate,
     type: OccurenceType,
+    prefix: string,
     suffix: string,
     dataItem: DataItem,
     class_: 1 | 2 | 3 | 4
@@ -386,7 +390,7 @@ class Calendar_ {
         (dataItem.type !== "dominica" || date.getDay() === 0)
       ) {
         this.set(date, {
-          title: suffix ? `${ordinals[i + 1]} ${suffix}` : undefined,
+          title: suffix ? `${prefix} ${ordinals[i + 1]} ${suffix}` : undefined,
           ...structuredClone(dataItem),
           type: dataItem.type as LiturgicalDay["type"],
           class: class_,

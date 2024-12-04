@@ -10,7 +10,7 @@ export type Day =
   | "feriaIV"
   | "feriaV"
   | "feriaVI"
-  | "sabatto";
+  | "sabbato";
 export type DateString = "advent" | "easter";
 export type Propers =
   | "propers3rd"
@@ -31,7 +31,11 @@ export type DataItem = (
         | RelativeDate
         | { type: "saints"; date: RelativeDate };
     }
-  | (Omit<LiturgicalDay_, "title"> & { suffix: string; occurence: Occurence })
+  | (Omit<LiturgicalDay_, "title"> & {
+      prefix: string;
+      suffix: string;
+      occurence: Occurence;
+    })
 ) & {
   isPrivileged?: boolean;
 };
@@ -63,21 +67,23 @@ export type LiturgicalDay = Commemoration & {
 
 export interface Commemoration {
   title: string;
+  title_?: string; // nl_NL
   subtitle?: string;
   type: "dominica" | "feria" | "vigilia" | "festum" | "octava";
   isPrivileged?: boolean;
   class: 1 | 2 | 3 | 4;
 }
 
-// in accordance with general rubrics 1960 XI:91
+// in accordance with the 1960 general rubrics XI:91
 export const calendarData: CalendarData = [
   // 4th class
   [
     // 91.27
     {
-      title: "Onze Lieve Vrouw op zaterdag",
+      title: "S. Maria in sabbato",
+      title_: "Onze Lieve Vrouw op zaterdag",
       type: "feria",
-      occurence: "sabatto",
+      occurence: "sabbato",
     },
   ],
   // 3rd class
@@ -105,7 +111,8 @@ export const calendarData: CalendarData = [
     // 91.21
     { type: "vigilia", occurence: "saints" },
     {
-      title: "Vigilie van Hemelvaart",
+      title: "In vigilia Ascensionis",
+      title_: "Vigilie van Hemelvaart",
       type: "vigilia",
       occurence: easter(38),
     },
@@ -127,24 +134,30 @@ export const calendarData: CalendarData = [
       occurence: { start: "12-26", end: "12-31" },
     },
     {
-      title: "Zondag onder het octaaf van Kerstmis",
+      title: "Dominica infra octavam Nativitatis Domini",
+      title_: "Zondag onder het octaaf van Kerstmis",
       type: "dominica",
       occurence: { start: "12-26", end: "12-31" },
     },
     // 91.16
     { type: "festum", occurence: "saints" },
     // 91.15
-    sundays("na Driekoningen", "01-07", easter(-70)),
-    sunday("Zondag Septuagesima", easter(-63)),
-    sunday("Zondag Sexagesima", easter(-56)),
-    sunday("Zondag Quinquagesima", easter(-49)),
-    sundays("na Pasen", easter(7), easter(35)),
-    sunday("Tweede zondag na Pasen, Zondag Goede herder", easter(14)),
-    sunday("Zondag na Hemelvaart", easter(42)),
-    sundays("na Pinksteren", easter(56), easter(245)),
+    sundays("post Epiphaniam", "na Driekoningen", "01-07", easter(-70)),
+    sunday("Dominica in Septuagesima", "Zondag Septuagesima", easter(-63)),
+    sunday("Dominica in Sexagesima", "Zondag Sexagesima", easter(-56)),
+    sunday("Dominica in Quinquagesima", "Zondag Quinquagesima", easter(-49)),
+    sundays("post Pascha", "na Pasen", easter(7), easter(35)),
+    sunday(
+      "Dominica II post Pascha",
+      "Tweede zondag na Pasen, Zondag Goede herder",
+      easter(14)
+    ),
+    sunday("Dominica post Ascensionem", "Zondag na Hemelvaart", easter(42)),
+    sundays("post Pentecosten", "na Pinksteren", easter(56), easter(245)),
     // 91.14
     {
-      title: "Feest van de H. Naam Jezus",
+      title: "Ssm̃i Nominis Jesu",
+      title_: "Feest van de H. Naam Jezus",
       type: "festum",
       occurence: {
         type: "dominica",
@@ -154,7 +167,8 @@ export const calendarData: CalendarData = [
       },
     },
     {
-      title: "Eerste zondag na Driekoningen, Feest van de H. Familie",
+      title: "Dominica I post Epiphaniam, Sanctæ Familiæ Jesu, Mariæ, Joseph",
+      title_: "Eerste zondag na Driekoningen, Feest van de H. Familie",
       type: "festum",
       commemorations: [],
       occurence: {
@@ -164,7 +178,8 @@ export const calendarData: CalendarData = [
       },
     },
     {
-      title: "Sacramentsdag, Tweede zondag na Driekoningen",
+      title: "Dominica II post Pentecosten",
+      title_: "Sacramentsdag, Tweede zondag na Pinksteren",
       type: "festum",
       commemorations: [],
       occurence: easter(63),
@@ -185,7 +200,8 @@ export const calendarData: CalendarData = [
       occurence: { start: easter(2), end: easter(7) },
     },
     {
-      title: "Tweede Paasdag",
+      title: "Feria II infra octavam Paschæ",
+      title_: "Tweede Paasdag",
       type: "octava",
       occurence: easter(1),
     },
@@ -195,13 +211,15 @@ export const calendarData: CalendarData = [
     },
     quartertemper(easter(52)),
     {
-      title: "Tweede Pinksterdag",
+      title: "Feria II infra octavam Pentecostes",
+      title_: "Tweede Pinksterdag",
       type: "octava",
       occurence: easter(50),
     },
     // 91.9
     {
-      title: "Vigilie van Pinksteren",
+      title: "Sabbato in vigilia Pentecostes",
+      title_: "Vigilie van Pinksteren",
       type: "vigilia",
       occurence: easter(48),
     },
@@ -216,7 +234,8 @@ export const calendarData: CalendarData = [
     },
     // 91.7
     {
-      title: "Aswoensdag",
+      title: "Feria quarta cinerum",
+      title_: "Aswoensdag",
       type: "feria",
       occurence: easter(-46),
     },
@@ -225,11 +244,11 @@ export const calendarData: CalendarData = [
       occurence: { start: easter(-6), end: easter(-4) },
     },
     // 91.6
-    sundays("van de Advent", "11-27", "12-24"),
-    sundays("van de Vasten", easter(-42), easter(-21)),
-    sunday("Passiezondag", easter(-14)),
-    sunday("Palmzondag", easter(-7)),
-    sunday("Beloken Pasen", easter(7)),
+    sundays("Adventus", "van de Advent", "11-27", "12-24"),
+    sundays("in Quadragesima", "van de Vasten", easter(-42), easter(-21)),
+    sunday("Dominica I Passionis", "Passiezondag", easter(-14)),
+    sunday("Dominica II Passionis seu in Palmis", "Palmzondag", easter(-7)),
+    sunday("Dominica in albis", "Beloken Pasen", easter(7)),
     // 91.5
     { type: "vigilia", occurence: { type: "saints", date: "12-24" } },
     { type: "octava", occurence: { type: "saints", date: "01-01" } },
@@ -243,19 +262,26 @@ export const calendarData: CalendarData = [
       type: "festum",
       occurence: easter(39),
     },
-    sunday("Feest van de H. Drieëenheid", easter(56)),
+    sunday(
+      "In festo Sanctissimæ Trinitatis",
+      "Feest van de H. Drieëenheid",
+      easter(56)
+    ),
     {
-      title: "Feest van het Allerheiligst Sacrament",
+      title: "In festo Ssm̃i Corporis Christi",
+      title_: "Feest van het Allerheiligst Sacrament",
       type: "festum",
       occurence: easter(60),
     },
     {
-      title: "Feest van het Allerheiligst Hart van Jezus",
+      title: "In festo Sacratissimi Cordis Jesu",
+      title_: "Feest van het Allerheiligst Hart van Jezus",
       type: "festum",
       occurence: easter(68),
     },
     {
-      title: "Feest van Christus Koning",
+      title: "D.N. Jesu Christi Regis",
+      title_: "Feest van Christus Koning",
       type: "festum",
       occurence: {
         type: "dominica",
@@ -265,17 +291,20 @@ export const calendarData: CalendarData = [
     },
     // 91.2
     {
-      title: "Witte Donderdag",
+      title: "Feria V in Cena Domini",
+      title_: "Witte Donderdag",
       type: "feria",
       occurence: easter(-3),
     },
     {
-      title: "Goede Vrijdag",
+      title: "Feria VI in Passione et Morte Domini",
+      title_: "Goede Vrijdag",
       type: "feria",
       occurence: easter(-2),
     },
     {
-      title: "Paaszaterdag",
+      title: "Sabbato sancto",
+      title_: "Paaszaterdag",
       type: "feria",
       occurence: easter(-1),
     },
@@ -287,7 +316,8 @@ export const calendarData: CalendarData = [
       occurence: "easter",
     },
     {
-      title: "Hoogfeest van Pinksteren",
+      title: "Dominica Resurrectionis",
+      title_: "Hoogfeest van Pinksteren",
       type: "festum",
       occurence: easter(49),
     },
@@ -305,7 +335,7 @@ function quartertemper(start: RelativeDate): DataItem {
   };
 }
 
-function sunday(title: string, date: RelativeDate): DataItem {
+function sunday(title: string, title_: string, date: RelativeDate): DataItem {
   return {
     title,
     type: "dominica",
@@ -315,12 +345,14 @@ function sunday(title: string, date: RelativeDate): DataItem {
 
 function sundays(
   suffix: string,
+  suffix_: string,
   start: RelativeDate,
   end: RelativeDate
 ): DataItem {
   return {
     type: "dominica",
-    suffix: `zondag ${suffix}`,
+    prefix: "Dominica",
+    suffix,
     occurence: {
       start,
       end,
