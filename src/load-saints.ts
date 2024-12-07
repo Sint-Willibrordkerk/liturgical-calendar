@@ -37,6 +37,10 @@ export function loadSaints(lang: string): Saints {
   const latinSaints: LatinSaints = parse(
     readFileSync(`./assets/saints/la_VA.yml`, "utf-8")
   );
+  const langSaints: RawSaints | null =
+    lang === 'la_VA'
+    ? null
+    : parse(readFileSync(`./assets/saints/${lang}.yml`, "utf-8"));
 
   const saints: Saints = {};
   for (let class_ = 1; class_ <= 4; class_++) {
@@ -51,7 +55,7 @@ export function loadSaints(lang: string): Saints {
           saints[month] ??= {};
           saints[month][day] ??= [];
           saints[month][day].push({
-            title: id.replace("H. ", "H.\u00A0"),
+            title: langSaints ? langSaints[id].name : id,
             subtitle:
               typeof saint.titles === "string"
                 ? saint.titles
