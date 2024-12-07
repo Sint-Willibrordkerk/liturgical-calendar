@@ -8,7 +8,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "build": "tsc"
+    "build": "tsc && cpx --clean \"assets/**\" dist/assets/"
   },
   "files": [
     "dist/**/*.js",
@@ -16,6 +16,7 @@
   ],
   "devDependencies": {
     "@types/node": "^22.9.4",
+    "cpx": "^1.5.0",
     "typescript": "^5.7.2",
     "yaml": "^2.6.1"
   }
