@@ -300,7 +300,7 @@ class Calendar_ {
         delete proper.occurence;
         this.set(date, {
           ...proper,
-          type: "feest",
+          type: "festum",
           class: class_,
         });
       }
