@@ -18,7 +18,7 @@ export type Calendar = Record<
   Record<number, LiturgicalDay & { commemorations: Commemoration[] }>
 >;
 
-export default function generateCalendar(year: number, lang: string): Calendar {
+export default function generateCalendar(year: number, lang: string = 'la_VA'): Calendar {
   return new Calendar_(
     year,
     lang,
