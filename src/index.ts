@@ -185,6 +185,7 @@ const propers: Propers = {
 
 class Calendar_ {
   private year: number;
+  private lang: string;
   private propers: Propers;
   private saints: Saints;
   private advent: Date;
@@ -198,6 +199,7 @@ class Calendar_ {
     propers: Propers
   ) {
     this.year = year;
+    this.lang = lang;
     this.propers = propers;
     this.saints = loadSaints(lang);
     this.calculateAdvent();
@@ -341,6 +343,9 @@ class Calendar_ {
     dataItem: DataItem,
     class_: 1 | 2 | 3 | 4
   ) {
+    if ("title" in dataItem && this.lang === "nl_NL" && "title_" in dataItem) {
+      dataItem.title = dataItem.title_;
+    }
     if (type == "saints") {
       const saint = this.saints[date.getMonth() + 1][date.getDate()][0];
       this.set(date, {
@@ -380,6 +385,9 @@ class Calendar_ {
     dataItem: DataItem,
     class_: 1 | 2 | 3 | 4
   ) {
+    if ("title" in dataItem && this.lang === "nl_NL" && "title_" in dataItem) {
+      dataItem.title = dataItem.title_;
+    }
     let i = 0;
     while (date.getTime() <= end.getTime()) {
       if (
