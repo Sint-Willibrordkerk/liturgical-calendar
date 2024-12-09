@@ -32,10 +32,10 @@ type RawSaints = Record<
 
 export function loadSaints(lang: string): Saints {
   const calendar: RawCalendar = parse(
-    readFileSync("./assets/calendar.yml", "utf-8")
+    readFileSync(__dirname + "/../assets/calendar.yml", "utf-8")
   );
   const latinSaints: LatinSaints = parse(
-    readFileSync(`./assets/saints/la_VA.yml`, "utf-8")
+    readFileSync(__dirname + "/../assets/saints/la_VA.yml", "utf-8")
   );
   const langSaints: RawSaints | null =
     lang === 'la_VA'
