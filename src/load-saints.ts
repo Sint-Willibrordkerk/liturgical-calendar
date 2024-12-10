@@ -55,9 +55,10 @@ function assertObject(
     try {
       return validateEntries([key, val]);
     } catch (err) {
-      throw new Error(
-        `Failed to validate object entry for key: ${key}, caused by ${err.stack}\n`
-      );
+      if (err instanceof Error)
+        throw new Error(
+          `Failed to validate object entry for key: ${key}, caused by ${err.stack}\n`
+        );
     }
   });
 }
@@ -126,7 +127,7 @@ function parseLangSaints(lang: string, latinSaints: LatinSaints) {
 
 function loadSaint(
   name: string,
-  titles: string | string[],
+  titles: string | string[] | undefined,
   type: LatinSaints[string]["type"],
   class_: LiturgicalClass
 ): Saint {
@@ -179,7 +180,7 @@ export function loadSaints(lang: string): Saints {
     Object.values(saints).forEach((month) => {
       Object.values(month).forEach((day) => {
         day.forEach((saint) => {
-          saint.title = langSaints[saint.title].name;
+          saint.title = langSaints[saint.title].name ?? saint.title;
         });
       });
     });

@@ -18,7 +18,10 @@ export type Calendar = Record<
   Record<number, LiturgicalDay & { commemorations: Commemoration[] }>
 >;
 
-export default function generateCalendar(year: number, lang: string = 'la_VA'): Calendar {
+export default function generateCalendar(
+  year: number,
+  lang: string = "la_VA"
+): Calendar {
   return new Calendar_(
     year,
     lang,
@@ -37,13 +40,16 @@ const WEEKDAYS = {
   sabbato: 6,
 };
 
-type Propers = Record<
+type ProperType =
   | "propers4th"
   | "propers3rd"
   | "indults2nd"
   | "propers2nd"
   | "indults1st"
-  | "propers1st",
+  | "propers1st";
+
+type Propers = Record<
+  ProperType,
   { title: string; subtitle?: string; occurence: `${number}-${number}` }[]
 >;
 
@@ -188,8 +194,8 @@ class Calendar_ {
   private lang: string;
   private propers: Propers;
   private saints: Saints;
-  private advent: Date;
-  private easter: Date;
+  private advent: Date | undefined;
+  private easter: Date | undefined;
   public calendar: Calendar = {};
 
   constructor(
@@ -265,7 +271,7 @@ class Calendar_ {
       const class_ = (4 - i) as 1 | 2 | 3 | 4;
       classData.forEach((dataItem) => {
         const occurence = this.getOccurence(dataItem.occurence);
-        let prefix, suffix: string;
+        let prefix, suffix;
         if ("prefix" in dataItem && "suffix" in dataItem) {
           prefix = dataItem.prefix;
           suffix = dataItem.suffix;
@@ -279,8 +285,8 @@ class Calendar_ {
   private fillDataItem(
     dataItem: DataItem,
     occurence: Occurence_,
-    prefix: string,
-    suffix: string,
+    prefix: string | undefined,
+    suffix: string | undefined,
     class_: 1 | 2 | 3 | 4
   ) {
     if (occurence.date)
@@ -294,12 +300,15 @@ class Calendar_ {
       this.fillSaints(dataItem.type as Saint["type"], class_);
     else if (
       typeof occurence.type === "string" &&
-      this.propers[occurence.type]
+      occurence.type in this.propers
     ) {
-      for (let i = 0; i < this.propers[occurence.type].length; i++) {
-        const proper = this.propers[occurence.type][i];
+      for (
+        let i = 0;
+        i < this.propers[occurence.type as ProperType].length;
+        i++
+      ) {
+        const proper = this.propers[occurence.type as ProperType][i];
         const date = this.getDate(proper.occurence);
-        delete proper.occurence;
         this.set(date, {
           ...proper,
           type: "festum",
@@ -339,12 +348,12 @@ class Calendar_ {
 
   private fillDate(
     date: Date,
-    type: OccurenceType,
+    type: OccurenceType | undefined,
     dataItem: DataItem,
     class_: 1 | 2 | 3 | 4
   ) {
     if ("title" in dataItem && this.lang === "nl_NL" && "title_" in dataItem) {
-      dataItem.title = dataItem.title_;
+      dataItem.title = dataItem.title_!;
     }
     if (type == "saints") {
       const saint = this.saints[date.getMonth() + 1][date.getDate()][0];
@@ -378,27 +387,30 @@ class Calendar_ {
   private fillDates(
     date: Date,
     end: Date,
-    default_: RelativeDate,
-    type: OccurenceType,
-    prefix: string,
-    suffix: string,
+    default_: RelativeDate | undefined,
+    type: OccurenceType | undefined,
+    prefix: string | undefined,
+    suffix: string | undefined,
     dataItem: DataItem,
     class_: 1 | 2 | 3 | 4
   ) {
     if ("title" in dataItem && this.lang === "nl_NL" && "title_" in dataItem) {
-      dataItem.title = dataItem.title_;
+      dataItem.title = dataItem.title_!;
     }
     let i = 0;
     while (date.getTime() <= end.getTime()) {
       if (
         (type != "ember" || date.getDay() != 4) &&
         (typeof type !== "string" ||
-          WEEKDAYS[type] === undefined ||
-          WEEKDAYS[type] === date.getDay()) &&
-        (dataItem.type !== "dominica" || date.getDay() === 0)
+          !(type in WEEKDAYS) ||
+          WEEKDAYS[type as keyof typeof WEEKDAYS] === date.getDay()) &&
+        (dataItem.type !== "dominica" || date.getDay() === 0) &&
+        suffix
       ) {
         this.set(date, {
-          title: suffix ? `${prefix} ${ordinals[i + 1]} ${suffix}` : undefined,
+          title: `${prefix} ${
+            ordinals[(i + 1) as keyof typeof ordinals]
+          } ${suffix}`,
           ...structuredClone(dataItem),
           type: dataItem.type as LiturgicalDay["type"],
           class: class_,
@@ -421,10 +433,13 @@ class Calendar_ {
 
   private cleanCalendar() {
     this.eachDay((day) => {
-      day.commemorations = day.commemorations.sort(
-        (day1, day2) =>
-          day1.class - day2.class + +(!!day2.isPrivileged && !day1.isPrivileged)
-      );
+      day.commemorations =
+        day.commemorations?.sort(
+          (day1, day2) =>
+            day1.class -
+            day2.class +
+            +(!!day2.isPrivileged && !day1.isPrivileged)
+        ) ?? [];
       if (day.class == 1)
         day.commemorations = day.commemorations.filter(
           (item) => item.isPrivileged
@@ -474,7 +489,6 @@ class Calendar_ {
     const old = this.calendar[month][date];
     const override = !!value.commemorations;
     if (!override) value.commemorations = old.commemorations;
-    delete old.commemorations;
 
     if (old.class == 1 && old.type == "festum") {
       const date_ = new Date(Date.UTC(this.year, month, date));
@@ -482,7 +496,7 @@ class Calendar_ {
         date_.setDate(date_.getDate() + 1);
       this.set(date_, old);
     } else if (old.class < 4 && !override) {
-      value.commemorations.push(old);
+      value.commemorations?.push(old);
     }
 
     this.calendar[month][date] = value as Required<LiturgicalDay>;
@@ -492,8 +506,11 @@ class Calendar_ {
     this.set_(date.getMonth(), date.getDate(), value);
   }
 
-  private getDate(input: RelativeDate, default_: Date = undefined) {
-    if (!input) return default_;
+  private getDate(
+    input: RelativeDate | undefined,
+    default_: Date | undefined = undefined
+  ): Date {
+    if (!input) return default_!;
     if (typeof input == "string") return this.matchDateString(input);
     else {
       const date = this.matchDateString(input.date);
@@ -505,9 +522,9 @@ class Calendar_ {
   private matchDateString(date: string) {
     switch (date) {
       case "advent":
-        return new Date(this.advent);
+        return new Date(this.advent!);
       case "easter":
-        return new Date(this.easter);
+        return new Date(this.easter!);
       default:
         return new Date(`${this.year}-${date}`);
     }
@@ -516,7 +533,7 @@ class Calendar_ {
   private invalidData(
     dataItem: DataItem,
     class_: number,
-    occurence: Occurence
+    occurence: Occurence | undefined
   ) {
     throw Error(
       `invalid data: ${JSON.stringify(
