@@ -18,7 +18,9 @@
       "jsx": "preserve",
       "baseUrl": ".",
       "outDir": "dist",
-      "target": "ES2023"
+      "target": "ES2023",
+      "sourceMap": true,
+      "declaration": true,
     },
     "include": [
       "**/*.ts",
@@ -26,6 +28,7 @@
     ],
     "exclude": [
       "node_modules",
+      "dist"
     ]
   }
   

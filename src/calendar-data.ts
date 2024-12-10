@@ -66,7 +66,7 @@ export type LiturgicalDay = Commemoration & {
 };
 
 export interface Commemoration {
-  title: string;
+  title?: string;
   title_?: string; // nl_NL
   subtitle?: string;
   type: "dominica" | "feria" | "vigilia" | "festum" | "octava";

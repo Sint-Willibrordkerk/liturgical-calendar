@@ -404,13 +404,15 @@ class Calendar_ {
         (typeof type !== "string" ||
           !(type in WEEKDAYS) ||
           WEEKDAYS[type as keyof typeof WEEKDAYS] === date.getDay()) &&
-        (dataItem.type !== "dominica" || date.getDay() === 0) &&
-        suffix
+        (dataItem.type !== "dominica" || date.getDay() === 0)
       ) {
         this.set(date, {
-          title: `${prefix} ${
-            ordinals[(i + 1) as keyof typeof ordinals]
-          } ${suffix}`,
+          title:
+            suffix || prefix
+              ? `${prefix} ${
+                  ordinals[(i + 1) as keyof typeof ordinals]
+                } ${suffix}`
+              : undefined,
           ...structuredClone(dataItem),
           type: dataItem.type as LiturgicalDay["type"],
           class: class_,
