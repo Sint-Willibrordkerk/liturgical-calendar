@@ -10,6 +10,10 @@ export function assert(condition: any, msg?: string): asserts condition {
   }
 }
 
+export function assertBoolean(val: any): asserts val is boolean {
+  assert(typeof val === "boolean", `value should be boolean: ${val}`);
+}
+
 export function assertString(val: any): asserts val is string {
   assert(typeof val === "string", `value should be string: ${val}`);
 }

@@ -6,7 +6,12 @@ import {
   assertString,
   loadAsset,
 } from "./parse/utils";
-import { parseCalendar, parseSaints, parseSaintsTranslation } from "./parse";
+import {
+  parseCalendar,
+  parseSaints,
+  parseSaintsTranslation,
+  parseTempore,
+} from "./parse";
 
 type LatinSaints = Record<
   string,
@@ -57,6 +62,7 @@ function loadSaint(
 export function loadSaints(lang: string): Saints {
   const latinSaints = parseSaints();
   const calendar = parseCalendar(Object.keys(latinSaints));
+  const tempore = parseTempore();
   const saints: Saints = {};
 
   for (

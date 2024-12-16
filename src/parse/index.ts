@@ -1,6 +1,8 @@
 import { LiturgicalClass } from "src/types";
 import {
   assert,
+  assertArray,
+  assertBoolean,
   assertMaybeArray,
   assertObject,
   assertString,
@@ -18,7 +20,7 @@ export function parseSaints() {
           assertMaybeArray(val, assertString);
           break;
         case "type":
-          assert(/^(vigilia|domini|custom)$/.test(val), `invalid type: ${val}`);
+          assert(/^vigilia|domini|custom$/.test(val), `invalid type: ${val}`);
           break;
         default:
           throw new Error(`unknown key: ${key}`);
@@ -79,4 +81,54 @@ export function parseSaintsTranslation(
   );
 
   return saintsTranslation as Record<string, { name?: string }>;
+}
+
+export function parseTempore() {
+  const tempore = loadAsset(`tempore/base.yml`);
+
+  assertObject(tempore, ([_class, entry]) => {
+    assert(/^[1-4]$/.test(_class), `invalid class: ${_class}`);
+    assertArray(entry, (val) => {
+      assertObject(val, ([key, val]) => {
+        switch (key) {
+          case "title":
+            assertString(val);
+            break;
+          case "type":
+            assert(
+              /^domini|dominica|feria|festum|octava|quartertemper|vigilia$/.test(
+                val
+              ),
+              `invalid type: ${val}`
+            );
+            break;
+          case "occurence":
+            break;
+          case "priviliged":
+            assertBoolean(val);
+            break;
+          default:
+            throw new Error(`unknown key: ${key}`);
+        }
+      });
+    });
+  });
+  assert(Object.keys(tempore).length === 4, "calendar needs the keys 1-4");
+
+  return tempore as Record<
+    LiturgicalClass,
+    {
+      title?: string;
+      type?:
+        | "domini"
+        | "dominica"
+        | "feria"
+        | "festum"
+        | "octava"
+        | "quartertemper"
+        | "vigilia";
+      occurence?: any;
+      priviliged?: boolean;
+    }[]
+  >;
 }
