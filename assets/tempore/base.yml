@@ -192,8 +192,8 @@
   - title: In festo Ssm̃i Corporis Christi
     type: festum
     occurence: { date: easter, difference: 60 }
-  - title: In festo Sacratissimi Cordis Jesu,
-    type: festum,
+  - title: In festo Sacratissimi Cordis Jesu
+    type: festum
     occurence: { date: easter, difference: 68 }
   - title: D.N. Jesu Christi Regis
     type: festum
