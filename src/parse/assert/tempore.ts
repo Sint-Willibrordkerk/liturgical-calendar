@@ -78,7 +78,6 @@ export function assertTempore(tempore: any): asserts tempore is Record<
                 end: assertRelativeDate,
                 date: assertRelativeDate,
                 default: assertRelativeDate,
-                difference: () => {},
               });
           }
         },

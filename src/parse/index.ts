@@ -1,4 +1,3 @@
-import { LiturgicalClass, LiturgicalDate, LiturgicalType } from "src/types";
 import { loadAsset } from "./assert/utils";
 import { assertSaints } from "./assert/saints";
 import { assertCalendar } from "./assert/calendar";
