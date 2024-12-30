@@ -1,4 +1,4 @@
-import { LiturgicalClass } from "./types";
+import { LiturgicalClass } from "../src/types"; //NOTE intentional, must resolve from dist/
 import {
   parseCalendar,
   parseSaints,
