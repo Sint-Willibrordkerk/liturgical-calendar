@@ -13,6 +13,8 @@
   },
   "files": [
     "dist/**/*.js",
+    "dist/**/*.d.ts",
+    "src/**/*.d.ts",
     "assets"
   ],
   "dependencies": {

@@ -1,4 +1,8 @@
-import { LiturgicalClass, LiturgicalType, RelativeDate } from "../../types";
+import {
+  LiturgicalClass,
+  LiturgicalType,
+  RelativeDate
+} from "../../../src/types"; //NOTE intentional, must resolve from dist/
 import {
   assert,
   assertArray,
