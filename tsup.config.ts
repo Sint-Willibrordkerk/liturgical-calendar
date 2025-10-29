@@ -41,7 +41,6 @@ export default defineConfig({
   clean: true,
   outDir: "dist",
   treeshake: true,
-  minify: true,
   esbuildOptions(options) {
     options.banner = {
       js: `const bundledAssets=${JSON.stringify(bundledAssets)};`,

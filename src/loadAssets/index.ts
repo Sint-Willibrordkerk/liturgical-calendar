@@ -15,7 +15,7 @@ export function loadSanctorum() {
 }
 
 export function loadPropers(name: string) {
-  const propers = loadAsset(`propers/${name}.yml`);
+  const propers = loadAsset(`propers\\${name}.yml`);
   assertCalendarData(propers);
   return propers;
 }
