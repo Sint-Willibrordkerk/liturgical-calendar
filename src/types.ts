@@ -2,9 +2,7 @@ import {
   liturgicalTypes,
   sanctorumTypes,
   weekdays,
-  specialOccurenceTypes,
   properTypes,
-  weekdays,
   calendarTypes,
   namedDates,
 } from "./constants";
@@ -72,7 +70,7 @@ export type Calendar = Record<
 
 export type CombinedCalendars = Record<CalendarType, Calendar>;
 
-type CalendarData = {
+export type CalendarData = {
   "valid-types"?: string[];
   "valid-liturgical-classes"?: number[];
   "valid-commemoration-types"?: string[];
