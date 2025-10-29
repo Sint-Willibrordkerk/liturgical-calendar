@@ -1,0 +1,119 @@
+items:
+- slot-name: regionis-patroni-principalis
+  calendar: { 07-11: S. Willibrordi }
+- slot-name: cathedralis-dedicationis
+  calendar: { 23-08: In dedicatione Ecclesiae Metropolitanae }
+- slot-name: dioecesis-2
+  calendar: { 05-06: SS. Bonifatii Episcopi et sociorum Martyres }
+- slot-name: dioecesis-3
+  calendar:
+    01-03: S. Switberti
+    04-03: S. Albrici
+    17-03: S. Gertrudis
+    26-03: S. Ludgeri
+    14-04: S. Lidwinae
+    24-04: S. Egberti
+    12-05: S. Aufridi
+    12-06: S. Odulphi
+    25-06: S. Adelberti
+    09-07: SS. Martyrum Gorcomiensium
+    14-07: S. Marcellini
+    15-07: S. Plechelmi
+    18-07: S. Frederici
+    19-07: S. Bernulphi
+    18-08: S. Werenfridi
+    25-08: S. Gregorii
+    12-10: S. Walphridi
+    12-11: S. Lebuini
+    27-11: S. Willehadi
+    29-11: S. Radbodi
+    22-12: S. Hungeri
+- slot-name: dioecesis-4
+  calendar:
+    25-06: S. Adelberti
+    04-07: In translatione S. Martini
+# sanctorum:
+#   S. Adelberti:
+#     titles: Confessoris
+#   In translatione S. Martini:
+#     titles:
+#       - Episcopi
+#       - Confessoris
+#   S. Switberti:
+#     titles:
+#       - Episcopi
+#       - Confessoris
+#   S. Albrici:
+#     titles:
+#       - Episcopi
+#       - Confessoris
+#   S. Gertrudis:
+#     titles: Virginis
+#   S. Wulfranni:
+#     titles:
+#      - Episcopi
+#      - Confessoris
+#   S. Ludgeri:
+#     titles:
+#       - Episcopi
+#       - Confessoris
+#   S. Lidwinae:
+#     titles: Virginis
+#   S. Egberti:
+#     titles: Confessoris
+#   S. Aufridi:
+#     titles:
+#       - Episcopi
+#       - Confessoris
+#   S. Odulphi:
+#     titles: Confessoris
+#   SS. Martyrum Gorcomiensium: {}
+#   S. Marcellini:
+#     titles: Confessoris
+#   S. Plechelmi:
+#     titles:
+#       - Episcopi
+#       - Confessoris
+#   S. Frederici:
+#     titles:      
+#       - Episcopi
+#       - Martyris
+#   S. Bernulphi:
+#     titles:
+#       - Episcopi
+#       - Confessoris
+#   S. Werenfridi:
+#     titles: Confessoris
+#   S. Gregorii:
+#     titles:
+#       - Episcopi
+#       - Confessoris
+#   S. Walphridi:
+#     titles:
+#       - Episcopi
+#       - Confessoris
+#   S. Willehadi:
+#     titles:
+#       - Episcopi
+#       - Confessoris
+#   S. Radbodi:
+#     titles:
+#       - Episcopi
+#       - Confessoris
+#   S. Hungeri:
+#     titles:
+#       - Episcopi
+#       - Confessoris
+#   SS. Bonifatii Episcopi et sociorum Martyres:
+#     titles: Martyrum
+#   In dedicatione Ecclesiae Metropolitanae: {}
+#   S. Willibrordi:
+#     titles:
+#       - Episcopi
+#       - Confessoris
+#   S. Martini:
+#     titles:
+#       - Episcopi
+#       - Confessoris
+#   S. Lebuini:
+#     titles: Confessoris

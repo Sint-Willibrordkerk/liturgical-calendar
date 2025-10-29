@@ -1,0 +1,553 @@
+valid-types: [dominica, feria, vigilia, festum, octava] #6
+valid-liturgical-classes: [1, 2, 3, 4] #8
+valid-commemoration-types: [default, none, privileged, domini]
+
+type: festum
+commemoration-type: default
+accept-commemoration-types: [default, privileged, domini]
+items:
+  - liturgical-class: 1
+    commemoration-type: privileged
+    accept-commemoration-types: [privileged, domini]
+    items:
+    - calendar: { 25-12: In Nativitate Domini } #91.1
+    - title: Dominica Resurrectionis #91.1 11d
+      occurence: { date: easter }
+    - title: Dominica Pentecostes #91.1 11f
+      occurence: { date: easter, difference: 49 }
+    - type: feria #91.2
+      items:
+      - title: Feria V in Cena Domini 
+        occurence: { date: easter, difference: -3 }
+      - title: Feria VI in Passione et Morte Domini
+        occurence: { date: easter, difference: -2 }
+      - title: Sabbato sancto
+        occurence: { date: easter, difference: -1 }
+    - commemoration-type: domini #91.3 16
+      items:
+      - calendar: { 06-01: In Epiphania Domini }
+      - title: In Ascensione Domini
+        occurence: { date: easter, difference: 39 }
+      - title: In festo Sanctissimæ Trinitatis #17c
+        occurence: { date: easter, difference: 56 }
+      - title: In festo Ssm̃i Corporis Christi
+        occurence: { date: easter, difference: 60 }
+      - title: In festo Sacratissimi Cordis Jesu
+        occurence: { date: easter, difference: 68 }
+      - title: Domine Nostri Jesu Christi Regis #17d
+        occurence: { type: dominica, start: 25-10, end: 31-10 }
+    - calendar: #91.4
+        15-08: In Assumptione Beatæ Mariæ Virginis
+        08-12: In Conceptione Immaculata Beatæ Mariæ Virginis #15
+    - type: vigilia #91.5
+      accept-commemoration-types: []
+      calendar:
+        24-12: In vigilia Nativitatis Domini #30a
+    - type: octava #91.5
+      calendar:
+        01-01: Octava Nativitatis Domini
+    - type: dominica #91.6 11
+      items:
+        - title: Dominica $count Adventus #11a
+          occurence: { type: dominica, start: 27-11, end: 24-12 }
+        - title: Dominica $count in Quadragesima #11b
+          occurence:
+            type: dominica
+            start: { date: easter, difference: -42 }
+            end: { date: easter, difference: -21 }
+        - title: Dominica I Passionis #11c
+          occurence: { date: easter, difference: -14 }
+        - title: Dominica II Passionis seu in Palmis #11c
+          occurence: { date: easter, difference: -7 }
+        - title: Dominica in albis #11e
+          occurence: { date: easter, difference: 7 }
+    - type: feria #91.7 23
+      items:
+      - title: Feria IV cinerum #23a
+        occurence: { date: easter, difference: -46 }
+      - occurence: #23b
+          start: { date: easter, difference: -6 }
+          end: { date: easter, difference: -4 }
+    - title: In Commemoratione Omnium Fidelium Defunctorum #91.8
+      type: feria
+      occurence:
+        type: "!dominica"
+        start: 02-11
+        end: 02-11
+        default: 03-11
+    - title: Sabbato in vigilia Pentecostes #91.9 30b
+      type: vigilia
+      accept-commemoration-types: [] #30
+      occurence: { date: easter, difference: 48 }
+    - type: octava #91.10
+      items:
+      - title: $day infra octavam Paschæ
+        occurence:
+          start: { date: easter, difference: 1 }
+          end: { date: easter, difference: 6 }
+      - title: Feria IV Quatuor Temporum Pentecostes
+        occurence: { date: easter, difference: 52 }
+      - title: Feria VI Quatuor Temporum Pentecostes
+        occurence: { date: easter, difference: 54 }
+      - title: Sabbato Quatuor Temporum Pentecostes
+        occurence: { date: easter, difference: 55 }
+      - title: $day infra octavam Pentecostes
+        occurence:
+          start: { date: easter, difference: 49 }
+          end: { date: easter, difference: 55 }
+    - calendar: #91.11
+        19-03: S. Joseph Sponsi B. Mariæ V.
+        25-03: In Annuntiatione Beate Mariæ Virgine
+        01-05: S. Joseph Opificis
+        24-06: In Nativitate S. Joannis Baptistæ
+        29-06: Ss. Petri et Pauli
+        01-07: Pretiosissimi Sanguinis D.N.I.C
+        29-09: In Dedicatione S. Michælis Archangeli
+        01-11: In festo Omnium Sanctorum
+    - slot: nationis-patroni-principalis #91.12 42a
+    - slot: regionis-patroni-principalis #91.12 42a
+    - slot: dioecesis-patroni-principalis #91.12 43a
+    - slot: cathedralis-dedicationis #91.12 43b
+    - slot: loci-patroni-principalis #91.12 44a
+    - slot: ecclesiae-dedicationis #91.12 45a
+    - slot: ecclesiae-tituli #91.12 45b
+    - slot: congregationis-tituli #91.12 46a
+    - slot: congregationis-fundatoris-canonizati #91.12 46b
+    - slot: congregationis-patroni-principalis #91.12 46c
+    - slot: indulta-1 #91.13
+  - liturgical-class: 2
+    items:
+    - commemoration-type: domini #91.14 16
+      accept-commemoration-types: [privileged]
+      items:
+      - calendar:
+          13-01: In Commemoratione Baptismatis Domini Nostri Jesu Christi
+          06-08: In Transfiguratione Domini Nostri Jesu Christi
+          14-09: In Exaltatione S. Crucis
+          09-11: In Dedic. Archbasilicæ Ssm̃i. Salvatoris
+      - title: Ssm̃i Nominis Jesu #17a
+        occurence: { type: dominica, start: 02-01, end: 05-01, default: 02-01 }
+      - title: Dominica I post Epiphaniam, Sanctæ Familiæ Jesu, Mariæ, Joseph #17b
+        occurence: { type: dominica, start: 07-01, end: 13-01 }
+    - type: dominica #91.15 12
+      commemoration-type: domini
+      accept-commemoration-types: [privileged]
+      items:
+      - title: Dominica infra octavam Nativitatis Domini
+        occurence: { type: dominica, start: 26-12, end: 31-12 }
+      - title: Dominica $count post Epiphaniam
+        occurence:
+          type: dominica
+          start: 07-01
+          end: { date: easter, difference: -70 }
+      - title: Dominica in Septuagesima
+        occurence: { date: easter, difference: -63 }
+      - title: Dominica in Sexagesima
+        occurence: { date: easter, difference: -56 }
+      - title: Dominica in Quinquagesima
+        occurence: { date: easter, difference: -49 }
+      - title: Dominica $count post Pascha
+        occurence:
+          type: dominica
+          start: { date: easter, difference: 7 }
+          end: { date: easter, difference: 35 }
+      - title: Dominica post Ascensionem
+        occurence: { date: easter, difference: 42 }
+      - title: Dominica $count post Pentecosten
+        occurence:
+          type: dominica
+          start: { date: easter, difference: 56 }
+          end: { date: easter, difference: 245 }
+    - calendar: #91.16
+        02-02: In Purificatione Beatæ Mariæ Virginis
+        22-02: In Cathedra S. Petri Ap.
+        24-02: S. Matthiæ
+        25-04: S. Marci
+        11-05: Ss. Philippi et Jacobi
+        31-05: Beatæ Mariæ Virginis Reginæ
+        02-07: In Visitatione B. Mariæ Virginis
+        25-07: S. Jacobi
+        26-07: S. Annæ Matris B.M.V.
+        10-08: S. Laurentii
+        16-08: S. Joachim Patris Beatæ Mariæ Virginis
+        22-08: Immaculati Cordis B. Mariæ Virginis
+        24-08: S. Bartholomæi
+        08-09: In Nativitate Beatæ Mariæ Virginis
+        15-09: Septem Dolorum Beatæ Mariæ Virginis
+        21-09: S. Matthæi
+        07-10: Beatæ Mariæ Virginis a Rosario
+        11-10: Maternitatis Beatæ Mariæ Virginis
+        18-10: S. Lucæ
+        28-10: Ss. Simonis et Judæ
+        30-11: S. Andreæ
+        21-12: S. Thomæ
+        26-12: S. Stephani
+        27-12: S. Joannis
+        28-12: Ss. Innocentium
+    - type: octava #91.17
+      occurence: { start: 26-12, end: 31-12 }
+    - type: feria #91.18 24
+      items:
+      - occurence: { start: 17-12, end: 23-12 } #24a
+      - title: Feria IV Quatuor Temporum Adventus #24b
+        occurence: { date: advent, difference: 17 }
+      - title: Feria VI Quatuor Temporum Adventus #24b
+        occurence: { date: advent, difference: 19 }
+      - title: Sabbato Quatuor Temporum Adventus #24b
+        occurence: { date: advent, difference: 20 }
+      - title: Feria IV Quatuor Temporum Quadragesimae #24b
+        occurence: { date: easter, difference: -39 }
+      - title: Feria VI Quatuor Temporum Quadragesimae #24b
+        occurence: { date: easter, difference: -37 }
+      - title: Sabbato Quatuor Temporum Quadragesimae #24b
+        occurence: { date: easter, difference: -36 }
+      - title: Feria IV Quatuor Temporum septembris #24b
+        occurence: { type: feriaIV, start: 18-09, end: 24-09 }
+      - title: Feria VI Quatuor Temporum septembris #24b
+        occurence: { type: feriaVI, start: 20-09, end: 26-09 }
+      - title: Sabbato Quatuor Temporum septembris #24b
+        occurence: { type: sabbato, start: 21-09, end: 27-09 }
+    - slot: nationis-patroni-secundarii #91.19.1a 42b
+    - slot: regionis-patroni-secundarii #91.19.1b 42b
+    - slot: dioecesis-patroni-secundarii #91.19.1c 43c
+    - slot: loci-patroni-secundarii #91.19.1d 44b
+    - slot: dioecesis-2 #91.19.2 43d
+    - slot: ecclesiae-2 #91.19.3 45c
+    - slot: congregationis-fundatoris-beatificati #91.19.4 46b
+    - slot: congregationis-patroni-secundarii #91.19.5 46d
+    - slot: congregationis-2 #91.19.6 46e
+    - slot: indulta-2 #91.20
+    - type: vigilia #91.21 31
+      items:
+        - title: In vigilia Ascensionis #31a
+          occurence: { date: easter, difference: 38 }
+        - calendar:
+            23-06: In vigilia Nativitatis S. Joannis Baptistæ #31c
+            14-08: In vigilia Assumptionis B. Mariæ Virg. #31b
+            28-06: In vigilia Ss. Petri et Pauli #31d
+  - liturgical-class: 3
+    items:
+    - type: feria #25a
+      commemoration-type: privileged
+      occurence:
+        start: { date: easter, difference: -46 }
+        end: easter
+    - slot: dioecesis-3 #91.23.1
+    - slot: ecclesiae-3 #91.23.2
+    - slot: congregationis-3 #91.23.3
+    - slot: indulta-3 #91.23.3
+    - calendar:
+        14-01: S. Hilarii
+        15-01: S. Pauli
+        16-01: S. Marcelli I
+        17-01: S. Antonii
+        20-01: Ss. Fabiani et Sebastiani
+        21-01: S. Agnetis
+        22-01: Ss. Vincentii et Anastasii
+        23-01: S. Raymundi de Peñafort
+        24-01: S. Timothei
+        25-01: In Conversione S. Pauli Apostoli
+        26-01: S. Polycarpi
+        27-01: S. Joannis Chrysostomi
+        28-01: S. Petri Nolasci
+        29-01: S. Francisci Salesii
+        30-01: S. Martinæ
+        31-01: S. Joannis Bosco
+        01-02: S. Ignatii
+        04-02: S. Andreæ Corsini
+        05-02: S. Agathæ
+        06-02: S. Titi
+        07-02: S. Romualdi
+        08-02: S. Joannis de Matha
+        09-02: S. Cyrilli Ep. Alexandrini Conf. et  Eccl. Doct.
+        10-02: S. Scholasticæ
+        11-02: In Apparitione B. Mariæ V.
+        12-02: Ss. Septem Fundat. Ord. Servorum B. Mariæ V.
+        23-02: S. Petri Damiani
+        27-02: S. Gabrielis a Virgine Perdolente
+        04-03: S. Casimiri
+        06-03: Ss. Perpetuæ et Felicitatis
+        07-03: S. Thomæ de Aquino
+        08-03: S. Joannis de Deo
+        09-03: S. Franciscæ Romanæ
+        10-03: Ss. Quadraginta Martyrum
+        12-03: S. Gregorii I
+        17-03: S. Patricii
+        18-03: S. Cyrilli Hierosolymitani
+        21-03: S. Benedicti
+        24-03: S. Gabrielis
+        27-03: S. Joannis Damasceni
+        28-03: S. Joannis a Capistrano
+        02-04: S. Francisci de Paula
+        04-04: S. Isidori
+        05-04: S. Vincentii Ferrerii
+        11-04: S. Leonis I
+        13-04: S. Hermenegildi
+        14-04: S. Justini
+        21-04: S. Anselmi
+        22-04: Ss. Soteris et Caji
+        24-04: S. Fidelis de Sigmaringa
+        26-04: Ss. Cleti et Marcellini
+        27-04: S. Petri Canisii
+        28-04: S. Pauli a Cruce
+        29-04: S. Petri Martyris
+        30-04: S. Catharina Senensis
+        02-05: S. Athanasii
+        04-05: S. Monicæ
+        05-05: S. Pii V
+        07-05: S. Stanislai
+        09-05: S. Gregorii Nazianzeni
+        10-05: S. Antonini
+        12-05: Ss. Nerei, Achillei et Domitillæ Virg. atque Pancratii Mm.
+        13-05: S. Roberti Bellarmino
+        15-05: S. Joannis Baptistæ de la Salle
+        16-05: S. Ubaldi
+        17-05: S. Paschalis Baylon
+        18-05: S. Venantii
+        19-05: S. Petri Celestini
+        20-05: S. Bernardini Senensis
+        25-05: S. Gregorii VII
+        26-05: S. Philippi Neri
+        27-05: S. Bedæ Venerabilis
+        28-05: S. Augustini
+        29-05: S. Mariæ Magdalenæ de Pazzis
+        01-06: S. Angelæ Mericiæ
+        04-06: S. Francisci Caracciolo
+        05-06: S. Bonifatii
+        06-06: S. Norberti
+        10-06: S. Margaritæ Scotorum Reginae
+        11-06: S. Barnabæ
+        12-06: S. Joannis de S. Facundo
+        13-06: S. Antonii de Padua
+        14-06: S. Basilii Magni
+        17-06: S. Gregorii Barbadici
+        18-06: S. Ephræm Syri
+        19-06: S. Julianæ de Falconeriis
+        21-06: S. Aloisii Gonzagæ
+        22-06: S. Paulini
+        25-06: S. Gulielmi
+        26-06: Ss. Joannis et Pauli
+        30-06: In Commemoratione Sancti Pauli Apostoli
+        03-07: S. Irenæi
+        05-07: S. Antonii Mariæ Zaccaria
+        07-07: Ss. Cyrilli et Methodii
+        08-07: S. Elisabeth Reginæ Portugaliæ
+        10-07: Ss. Septem Fratrum Mm., ac Rufinæ et Secundæ Vv. et Mm.
+        12-07: S. Joannis Gualberti
+        14-07: S. Bonaventuræ
+        15-07: S. Henrici
+        18-07: S. Camilli de Lellis
+        19-07: S. Vincentii a Paulo
+        20-07: S. Hieronymi Emiliani
+        21-07: S. Laurentii a Brundusio
+        22-07: S. Mariæ Magdalenæ
+        23-07: S. Apollinaris
+        28-07: Ss. Nazarii et Celsi Mm., Victoris I Papæ et Mart. ac Innocentii I Papæ et Conf.
+        29-07: S. Marthæ
+        31-07: S. Ignatii Confessoris
+        02-08: S. Alfonsi Mariæ de Ligorio
+        04-08: S. Dominici
+        05-08: In Dedicatione S. Mariæ ad Nives
+        07-08: S. Cajetani
+        08-08: S. Joannis Mariæ Vianney
+        12-08: S. Claræ
+        17-08: S. Hyacinthi
+        19-08: S. Joannis Eudes
+        20-08: S. Bernardi
+        21-08: S. Joannæ Franciscæ Frémiot de Chantal
+        23-08: S. Philippi Benitii
+        25-08: S. Ludovici
+        27-08: S. Josephi Calasanctii
+        28-08: S. Augustini Hipponensis
+        29-08: In Decollatione S. Joannis Baptistæ
+        30-08: S. Rosæ Limanæ
+        31-08: S. Raymundi Nonnati
+        02-09: S. Stephani Regis Hungariæ
+        03-09: S. Pii X
+        05-09: S. Laurentii Justiniani
+        10-09: S. Nicolai de Tolentino
+        12-09: Ssm̃i. Nominis Mariæ
+        16-09: Ss. Cornelii Papæ et Cypriani Ep.
+        18-09: S. Josephi de Cupertino
+        19-09: Ss. Januarii Ep. et Sociorum
+        22-09: S. Thomæ de Villanova
+        23-09: S. Lini
+        27-09: S. Cosmæ et Damiani
+        28-09: S. Wenceslai
+        30-09: S. Hieronymi
+        02-10: Ss. Angelorum Custodum
+        03-10: S. Theresiæ a Jesu Infante
+        04-10: S. Francisci
+        06-10: S. Brunonis
+        08-10: S. Birgittæ
+        09-10: S. Joannis Leonardi
+        10-10: S. Francisci Borgiæ
+        13-10: S. Eduardi
+        14-10: S. Callisti
+        15-10: S. Teresiæ
+        16-10: S. Hedwigis
+        17-10: S. Margaritæ Mariæ Alaquoque
+        19-10: S. Petri de Alcantara
+        20-10: S. Joannis Cantii
+        23-10: S. Antonii Mariæ Claret
+        24-10: S. Raphælis Archangeli
+        04-11: S. Caroli
+        10-11: S. Andreæ Avellini
+        11-11: S. Martini
+        12-11: S. Martini I
+        13-11: S. Didaci
+        14-11: S. Josaphat
+        15-11: S. Alberti Magni
+        16-11: S. Gertrudis
+        17-11: S. Gregorii Thaumaturgi
+        18-11: In Dedicatione Basilicarum Ss. Petri et Pauli App.
+        19-11: S. Elisabeth
+        20-11: S. Felicis de Valois
+        21-11: In Presentatione Beatæ Mariæ Virginis
+        22-11: S. Cæciliæ
+        23-11: S. Clementis I
+        24-11: S. Joannis a Cruce
+        25-11: S. Catharinæ
+        26-11: S. Silvesteri
+        02-12: S. Bibianæ
+        03-12: S. Francisci Xaverii
+        04-12: S. Petri Chrysologi
+        06-12: S. Nicolai
+        07-12: S. Ambrosii
+        11-12: S. Damasi
+        13-12: S. Luciæ
+        16-12: S. Eusebii
+    - type: feria #91.25 25b
+      occurence: { start: advent, end: 25-12 }
+    - type: vigilia #91.26 32
+      calendar: 
+        09-08: In vigilia S. Laurentii
+  - liturgical-class: 4
+    items:
+    - type: feria #91.27
+      commemoration-type: none
+      items:
+      - title: S. Maria in sabbato in tempore Adventus
+        occurence: { type: sabbato, start: advent, end: 24-12 }
+      - title: S. Maria in sabbato a Nativitate Domini usque ad Purificationem
+        occurence: { type: sabbato, start: 01-01, end: 02-02 } # Start at 01-01 for the correct year
+      - title: S. Maria in sabbato a die 3 februari usque ad feriam IV Hebdomadae Sanctae
+        occurence: { type: sabbato, start: 03-02, end: { date: easter, difference: -4 } }
+      - title: S. Maria in sabbato in tempore Paschali
+        occurence: { type: sabbato, start: easter, end: { date: easter, difference: 49 } }
+      - title: S. Maria in sabbato a festo SS. Trinitatis usque ad sabbatum ante dominicam I Adventus
+        occurence: { type: sabbato, start: { date: easter, difference: 56 }, end: advent }
+    - type: feria #91.28 26
+      commemoration-type: none #26
+      occurence: { start: 01-01, end: 31-12 }
+    - slot: dioecesis-4
+    - slot: ecclesiae-4
+    - slot: congregationis-4
+    - calendar:
+        05-01: S. Telesphori
+        11-01: S. Hygini
+        14-01: S. Felicis
+        15-01: S. Mauri
+        18-01: S. Priscæ
+        19-01:
+          - Ss. Marii, Marthæ, Audifacis et Abachum
+          - S. Canuti
+        23-01: S. Emerentianæ
+        25-01: S. Petri
+        28-01: S. Agnetis secundo
+        03-02: S. Blasii
+        06-02: S. Dorotheæ
+        09-02: S. Apolloniæ
+        14-02: S. Valentini
+        15-02: Ss. Faustini et Jovitæ
+        18-02: S. Simeonis
+        04-03: S. Lucii I
+        14-04: Ss. Tiburtii, Valeriani et Maximi
+        17-04: S. Aniceti
+        23-04: S. Georgii
+        03-05: Ss. Alexandri, Eventii et Theoduli Mm. ac Iuvenalis Ep. et Conf.
+        10-05: Ss. Gordiani et Epimachi
+        14-05: S. Bonifacii Martyris
+        19-05: S. Pudentianæ
+        25-05: S. Urbanis I
+        26-05: S. Eleutherii
+        27-05: S. Joannis I
+        30-05: S. Felicis I
+        31-05: S. Petronillæ
+        02-06: Ss. Marcellini, Petri, atque Erasmi
+        09-06: Ss. Primi et Feliciani
+        12-06: Ss. Basilidis, Cyrini, Naboris and Nazarii
+        15-06: Ss. Viti, Modesti atque Crescentiæ
+        18-06: Ss. Marci et Marcelliani
+        19-06: Ss. Gervasii et Protasii
+        20-06: S. Silverii
+        30-06: S. Petri
+        02-07: Ss. Processi et Martiniani
+        11-07: S. Pii I
+        12-07: Ss. Naboris and Felicis
+        16-07: Beatæ Mariæ Virginis de Monte Carmelo
+        17-07: S. Alexii
+        18-07: Ss. Symphorosæ et Septem Filiorum
+        20-07: S. Margaritæ
+        21-07: S. Praxedis
+        23-07: S. Liborii
+        24-07: S. Christinæ
+        25-07: S. Christophori
+        27-07: S. Pantaleonis
+        29-07: Ss. Felicis, Simplicii, Faustini et Beatricis
+        30-07: S. Abdon et Sennen
+        01-08: Ss. Machabæorum
+        02-08: S. Stephani I
+        06-08: Ss. Xysti II Papæ, Felicissimi et Agapiti Mm.
+        07-08: S. Donati
+        08-08: Ss. Cyriaci, Largi et Smaragdi
+        09-08: S. Romani
+        11-08: Ss. Tiburtii et Susannæ
+        13-08: Ss. Hippolyti et Cassiani
+        14-08: S. Eusebii Confessoris
+        18-08: S. Agapiti
+        22-08: Ss. Timothei, Hippolyti et Symphoriani
+        26-08: S. Zephirini
+        28-08: S. Hermetis
+        29-08: S. Sabina
+        30-08: Ss. Felicis et Adaucti
+        01-09:
+          - S. Ægidii
+          - Ss. duodecim Fratrum Martyrum
+        08-09: S. Adriani
+        09-09: S. Gorgonii
+        11-09: Ss. Proti et Hyacinthi
+        15-09: S. Nicomedis
+        16-09: Ss. Euphemiæ Virg., Luciæ et Geminiani Mm.
+        17-09: Impressionis Ss. Stigmatum S. Francisci
+        20-09: Ss. Eustachii et Sociorum
+        22-09: Ss. Mauritii et Sociorum
+        23-09: S. Theclæ
+        24-09: Beatæ Mariæ Virginis a Mercede
+        26-09: Ss. Cypriani et Justinæ Virg.
+        01-10: S. Remigii
+        05-10: Ss. Placidi et Sociorum
+        07-10: S. Marci I
+        08-10: Ss. Sergii, Bacchi, Marcelli et Apuleji
+        09-10: Ss. Dionysii Ep., Rustici et Eleutherii, Mm.
+        21-10:
+          - S. Hilarionis
+          - Ss. Ursulæ et Sociarum Vv. et Mm.
+        25-10: Ss. Chrysanthi et Dariæ
+        26-10: S. Evaristi
+        04-11: Ss. Vitalis et Agricola
+        08-11: Ss. Quatuor Coronatorum
+        09-11: S. Theodori
+        10-11: Ss. Tryphone, Respicio et Nympha Virg.
+        11-11: S. Mennæ
+        19-11: S. Pontiani
+        23-11: S. Felicitatis
+        24-11: S. Chrysogoni
+        26-11: S. Petri Alexandrini
+        29-11: S. Saturnini
+        04-12: S. Barbaræ
+        05-12: S. Sabbæ
+        10-12: S. Melchiadis
+        25-12: S. Anastasiæ
+        29-12: S. Thomæ de Cantuariae
+        31-12: S. Silvestri

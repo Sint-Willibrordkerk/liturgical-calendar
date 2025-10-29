@@ -1,4 +1,4 @@
-export default {
+export const ordinals = {
   1: "I",
   2: "II",
   3: "III",
@@ -26,6 +26,16 @@ export default {
   25: "XXV",
   26: "XXVI",
   27: "XXVII",
+};
+
+export const days = {
+  1: "Dominica",
+  2: "Feria II",
+  3: "Feria III",
+  4: "Feria IV",
+  5: "Feria V",
+  6: "Feria VI",
+  7: "Sabbato",
 };
 
 export const nl_NL = {

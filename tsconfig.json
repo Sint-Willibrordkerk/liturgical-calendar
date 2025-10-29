@@ -9,6 +9,7 @@
       "skipLibCheck": true,
       "strict": true,
       "forceConsistentCasingInFileNames": true,
+      "noUncheckedIndexedAccess": true,
       "incremental": true,
       "esModuleInterop": true,
       "module": "CommonJS",
@@ -24,7 +25,8 @@
     },
     "include": [
       "**/*.ts",
-      "**/*.tsx"
+      "**/*.tsx",
+      "**/*.d.ts"
     ],
     "exclude": [
       "node_modules",

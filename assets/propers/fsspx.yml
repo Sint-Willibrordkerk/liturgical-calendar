@@ -1,0 +1,10 @@
+items:
+- slot-name: congregationis-patroni-principalis
+  calendar: { 03-09: S. Pii X }
+
+# sanctorum:
+#   S. Pii X:
+#     titles:
+#       - Papæ
+#       - Confessoris
+#     calendarType: congregationis-tituli

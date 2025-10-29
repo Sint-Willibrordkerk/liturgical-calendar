@@ -48,9 +48,15 @@ export function assertArray(val: any[], assertValue: (val: any) => void) {
   });
 }
 
-export function assertMaybeArray(val: any, assert: (val: any) => void) {
-  if (Array.isArray(val)) assertArray(val, assert);
-  else assert(val);
+export function assertMaybeArray(val: any, assertItem: (val: any) => void) {
+  if (Array.isArray(val)) {
+    assertArray(val, assertItem);
+    assert(
+      val.length !== 1,
+      "Array is used where a simple value could be used."
+    );
+    assert(val.length !== 0, "Array is empty.");
+  } else assertItem(val);
 }
 
 export function assertObject(

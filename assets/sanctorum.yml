@@ -1,7 +1,5 @@
-Octava Nativitatis Domini:
-  type: custom
-In Epiphania Domini:
-  type: custom
+Octava Nativitatis Domini: {}
+In Epiphania Domini: {}
 S. Joseph Sponsi B. Mariæ V.:
   titles:
     - Confessoris
@@ -15,21 +13,15 @@ In Nativitate S. Joannis Baptistæ: {}
 Ss. Petri et Pauli:
   titles: Apostolorum
 Pretiosissimi Sanguinis D.N.I.C: {}
-In Assumptione Beatæ Mariæ Virginis:
-  type: custom
+In Assumptione Beatæ Mariæ Virginis: {}
 In Dedicatione S. Michælis Archangeli:
   titles: Archangeli
 In festo Omnium Sanctorum: {}
 In Commemoratione Omnium Fidelium Defunctorum:
-  type: custom
-In Conceptione Immaculata Beatæ Mariæ Virginis:
-  type: custom
-In vigilia Nativitatis Domini:
-  type: custom
-In Nativitate Domini:
-  type: custom
-In Commemoratione Baptismatis Domini Nostri Jesu Christi:
-  type: domini
+In Conceptione Immaculata Beatæ Mariæ Virginis: {}
+In vigilia Nativitatis Domini: {}
+In Nativitate Domini: {}
+In Commemoratione Baptismatis Domini Nostri Jesu Christi: {}
 In Purificatione Beatæ Mariæ Virginis: {}
 In Cathedra S. Petri Ap.: {}
 S. Matthiæ:
@@ -40,22 +32,18 @@ Ss. Philippi et Jacobi:
   titles: Apostolorum
 Beatæ Mariæ Virginis Reginæ:
   titles: Reginæ
-In vigilia Nativitatis S. Joannis Baptistæ:
-  type: vigilia
+In vigilia Nativitatis S. Joannis Baptistæ: {}
 In vigilia Ss. Petri et Pauli:
   titles: Apostolorum
-  type: vigilia
 In Visitatione B. Mariæ Virginis: {}
 S. Jacobi:
   titles: Apostoli
 S. Annæ Matris B.M.V.:
   titles: Moeder van de H. Virginis Maria
-In Transfiguratione D.N.I.C:
-  type: domini
+In Transfiguratione Domini Nostri Jesu Christi: {}
 S. Laurentii:
   titles: Martyris
-In vigilia Assumptionis B. Mariæ Virg.:
-  type: vigilia
+In vigilia Assumptionis B. Mariæ Virg.: 
 S. Joachim Patris Beatæ Mariæ Virginis:
   titles:
     - Patris B.M.V.
@@ -64,8 +52,7 @@ Immaculati Cordis B. Mariæ Virginis: {}
 S. Bartholomæi:
   titles: Apostoli
 In Nativitate Beatæ Mariæ Virginis: {}
-In Exaltatione S. Crucis:
-  type: domini
+In Exaltatione S. Crucis: {}
 Septem Dolorum Beatæ Mariæ Virginis: {}
 S. Matthæi:
   titles:
@@ -444,7 +431,6 @@ S. Joannis Mariæ Vianney:
   titles: Confessoris
 In vigilia S. Laurentii:
   titles: Martyris
-  type: vigilia
 S. Claræ:
   titles: Virginis
 S. Hyacinthi:
