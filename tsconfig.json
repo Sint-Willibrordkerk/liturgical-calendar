@@ -10,7 +10,6 @@
       "strict": true,
       "forceConsistentCasingInFileNames": true,
       "noUncheckedIndexedAccess": true,
-      "incremental": true,
       "esModuleInterop": true,
       "module": "CommonJS",
       "moduleResolution": "node",

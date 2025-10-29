@@ -1,8 +1,12 @@
-import { readFileSync } from "fs";
-import { parse } from "yaml";
+// Use bundled assets instead of reading from files
+declare const bundledAssets: Record<string, any>;
 
-export const loadAsset = (path: string) =>
-  parse(readFileSync(`${__dirname}/../../../assets/${path}`, "utf-8"));
+export const loadAsset = (path: string) => {
+  if (typeof bundledAssets !== "undefined" && bundledAssets[path]) {
+    return bundledAssets[path];
+  }
+  throw new Error(`Asset ${path} not found`);
+};
 
 export function assert(condition: any, msg?: string): asserts condition {
   if (!condition) {

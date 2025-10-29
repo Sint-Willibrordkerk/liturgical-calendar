@@ -19,7 +19,7 @@ export function calculateEaster(year: number) {
     e = (2 * b + 4 * c + 6 * d + n) % 7,
     march_easter = d + e + 22,
     april_easter = d + e - 9;
-  console.log(a, b, c, k, p, q, m, n, d, e, march_easter, april_easter);
+
   if (march_easter <= 31) {
     return new Date(Date.UTC(year, 2, march_easter));
   } else {

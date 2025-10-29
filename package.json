@@ -1,27 +1,35 @@
 {
   "name": "liturgical-calendar",
-  "version": "2.0.0",
-  "main": "dist/index.js",
-  "browser": "dist/index.js",
+  "version": "2.0.1",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "browser": "./dist/index.js",
   "repository": "https://github.com/Sint-Willibrordkerk/liturgical-calendar.git",
   "author": "Sint Willibrordus Stichting",
   "description": "Generate a (local) Catholic liturgical calendar in accordance with the 1960 rubrics.",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
-    "start": "tsc && node scripts/main.js",
+    "build": "tsup",
+    "start": "pnpm build && node scripts/main.js",
     "test": "vitest"
   },
   "files": [
-    "dist",
-    "assets"
+    "dist"
   ],
-  "dependencies": {
-    "yaml": "^2.6.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/node": "^22.9.4",
+    "tsup": "^8.5.0",
     "typescript": "^5.7.2",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "yaml": "^2.6.1"
   }
 }
