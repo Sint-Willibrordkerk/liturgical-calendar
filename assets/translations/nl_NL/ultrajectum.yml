@@ -1,110 +1,25 @@
-type: dioecesis
-
-calendar:
-  1:
-    23-08: Wijding der metropolitaankerk
-    07-11: H. Willibrordus
-  2:
-    05-06: HH. Bonifatius, Bisschop, en gezellen
-  3:
-    01-03: H. Switbertus
-    04-03: H. Albricus
-    17-03: H. Gertrudis
-    26-03: H. Ludgerus
-    14-04: H. Lidwina
-    24-04: H. Egbertus
-    12-05: H. Aufridus
-    12-06: H. Odulfus
-    09-07: HH. Martelaren van Gorcum
-    14-07: H. Marcellinus
-    15-07: H. Plechelmus
-    18-07: H. Fredericus
-    19-07: H. Bernulfus
-    18-08: H. Werenfridus
-    25-08: H. Gregorius
-    12-10: H. Wilfridus
-    12-11: H. Lebuinus
-    27-11: S. Willehadi
-    29-11: H. Radboud
-    22-12: H. Hungerus
-  4:
-    25-06: H. Adelbertus
-    04-07: Overbrenging der relikwieën van de H. Martinus
-
-sanctorum:
-  H. Adelbertus:
-    titles: Confessoris
-  Overbrenging der relikwieën van de H. Martinus:
-    titles:
-      - Episcopi
-      - Confessoris
-  H. Radboud:
-    titles:
-      - Episcopi
-      - Confessoris
-  H. Hungerus:
-    titles:
-      - Episcopi
-      - Confessoris
-  H. Switbertus:
-    titles:
-      - Episcopi
-      - Confessoris
-  H. Albricus:
-    titles:
-      - Episcopi
-      - Confessoris
-  H. Gertrudis:
-    titles: Virginis
-  H. Ludgerus:
-    titles:
-      - Episcopi
-      - Confessoris
-  H. Lidwina:
-    titles: Virginis
-  H. Egbertus:
-    titles: Confessoris
-  H. Aufridus:
-    titles:
-      - Episcopi
-      - Confessoris
-  H. Odulfus:
-    titles: Confessoris
-  HH. Martelaren van Gorcum: {}
-  H. Marcellinus:
-    titles: Confessoris
-  H. Plechelmus:
-    titles:
-      - Episcopi
-      - Confessoris
-  H. Fredericus:
-    titles:      
-      - Episcopi
-      - Martyris
-  H. Bernulfus:
-    titles:
-      - Episcopi
-      - Confessoris
-  H. Werenfridus:
-    titles: Confessoris
-  H. Gregorius:
-    titles:
-      - Episcopi
-      - Confessoris
-  H. Wilfridus:
-    titles:
-      - Episcopi
-      - Confessoris
-  HH. Bonifatius, Bisschop, en gezellen:
-    titles: Martyrum
-  Wijding der metropolitaankerk: {}
-  H. Willibrordus:
-    titles:
-      - Episcopi
-      - Confessoris
-  H. Martinus:
-    titles:
-      - Episcopi
-      - Confessoris
-  H. Lebuinus:
-    titles: Confessoris
+S. Willibrordi: H. Willibrordus
+In dedicatione Ecclesiae Metropolitanae: Wijding der metropolitaankerk
+SS. Bonifatii Episcopi et sociorum Martyres: HH. Bonifatius, Bisschop, en gezellen
+S. Switberti: H. Switbertus
+S. Albrici: H. Albricus
+S. Gertrudis: H. Gertrudis
+S. Ludgeri: H. Ludgerus
+S. Lidwinae: H. Lidwina
+S. Egberti: H. Egbertus
+S. Aufridi: H. Aufridus
+S. Odulphi: H. Odulfus
+S. Adelberti: H. Adelbertus
+SS. Martyrum Gorcomiensium: HH. Martelaren van Gorcum
+S. Marcellini: H. Marcellinus
+S. Plechelmi: H. Plechelmus
+S. Frederici: H. Fredericus
+S. Bernulphi: H. Bernulfus
+S. Werenfridi: H. Werenfridus
+S. Gregorii: H. Gregorius
+S. Walphridi: H. Wilfridus
+S. Lebuini: H. Lebuinus
+S. Willehadi: S. Willehadi
+S. Radbodi: H. Radboud
+S. Hungeri: H. Hungerus
+In translatione S. Martini: Overbrenging der relikwieën van de H. Martinus
