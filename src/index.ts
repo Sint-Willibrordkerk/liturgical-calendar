@@ -15,8 +15,8 @@ function deleteFields(day: Partial<LiturgicalDay | Commemoration>) {
   delete day.acceptCommemorationTypes;
 }
 
-export default (year: number, propers: string[], lang: string) => {
-  const translations = loadTranslations(lang);
+export default (year: number, propers: string[] = [], lang?: string) => {
+  const translations = lang ? loadTranslations(lang) : {};
   const calendar = parseCalendarData(year, propers, translations);
 
   eachDay(year, ({ month, day }) => {
