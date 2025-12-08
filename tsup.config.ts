@@ -14,7 +14,9 @@ function readAssetsFromFolder(
 
   for (const item of items) {
     const fullPath = join(folderPath, item);
-    const relativePath = basePath ? join(basePath, item) : item;
+    let relativePath = basePath ? join(basePath, item) : item;
+    // Normalize paths to use forward slashes for cross-platform compatibility
+    relativePath = relativePath.replace(/\\/g, "/");
 
     if (statSync(fullPath).isDirectory()) {
       // Recursively read subdirectories

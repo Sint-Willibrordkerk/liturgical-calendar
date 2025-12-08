@@ -1,5 +1,18 @@
-S. Maria in sabbato: Onze Lieve Vrouw op zaterdag
+S. Maria in sabbato in tempore Adventus: Onze Lieve Vrouw op zaterdag in de Advent
+S. Maria in sabbato a Nativitate Domini usque ad Purificationem: Onze Lieve Vrouw op zaterdag vanaf Kerstmis tot Maria Lichtmis
+S. Maria in sabbato a die 3 februari usque ad feriam IV Hebdomadae Sanctae: Onze Lieve Vrouw op zaterdag vanaf 3 februari tot woensdag in de Goede Week
+S. Maria in sabbato in tempore Paschali: Onze Lieve Vrouw op zaterdag in de Paastijd
+S. Maria in sabbato a festo SS. Trinitatis usque ad sabbatum ante dominicam I Adventus: Onze Lieve Vrouw op zaterdag vanaf Zondag Trinitate tot de zaterdag voor de eerste zondag van de Advent
 In vigilia Ascensionis: Vigilie van Hemelvaart
+Feria IV Quatuor Temporum Adventus: Quatertemperwoensdag in de Advent
+Feria VI Quatuor Temporum Adventus: Quatertempervrijdag in de Advent
+Sabbato Quatuor Temporum Adventus: Quatertemperzaterdag in de Advent
+Feria IV Quatuor Temporum Quadragesimae: Quatertemperwoensdag in de Vasten
+Feria VI Quatuor Temporum Quadragesimae: Quatertempervrijdag in de Vasten
+Sabbato Quatuor Temporum Quadragesimae: Quatertemperzaterdag in de Vasten
+Feria IV Quatuor Temporum septembris: Quatertemperwoensdag in september
+Feria VI Quatuor Temporum septembris: Quatertempervrijdag in september
+Sabbato Quatuor Temporum septembris: Quatertemperzaterdag in september
 Dominica infra octavam Nativitatis Domini: Zondag onder het octaaf van Kerstmis
 Dominica $count post Epiphaniam: $count zondag na Driekoningen
 Dominica in Septuagesima: Zondag Septuagesima
@@ -15,7 +28,7 @@ Dominica II post Pentecosten: Sacramentsdag, Tweede zondag na Pinksteren
 Feria II infra octavam Paschæ: Tweede Paasdag
 Feria II infra octavam Pentecostes: Tweede Pinksterdag
 Sabbato in vigilia Pentecostes: Vigilie van Pinksteren
-Feria quarta cinerum: Aswoensdag
+Feria IV cinerum: Aswoensdag
 Dominica $count Adventus: $count zondag van de Advent
 Dominica $count in Quadragesima: $count zondag van de Vasten
 Dominica I Passionis: Passiezondag
@@ -26,6 +39,10 @@ In festo Sanctissimæ Trinitatis: Feest van de H. Drieëenheid
 In festo Ssm̃i Corporis Christi: Feest van het Allerheiligst Sacrament
 In festo Sacratissimi Cordis Jesu: Feest van het Allerheiligst Hart van Jezus
 Domine Nostri Jesu Christi Regis: Feest van Christus Koning
+Feria IV Quatuor Temporum Pentecostes: Quatertemperwoensdag in het octaaf van Pinksteren
+Feria VI Quatuor Temporum Pentecostes: Quatertempervrijdag in het octaaf van Pinksteren
+Sabbato Quatuor Temporum Pentecostes: Quatertemperzaterdag in het octaaf van Pinksteren
+$day infra octavam Paschæ: $day in het octaaf van Pasen
 Feria V in Cena Domini: Witte Donderdag
 Feria VI in Passione et Morte Domini: Goede Vrijdag
 Sabbato sancto: Paaszaterdag

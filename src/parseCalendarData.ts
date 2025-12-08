@@ -11,6 +11,16 @@ import { weekdays } from "./constants";
 import { loadCalendarData, loadPropers } from "./loadAssets";
 import { ordinals, days } from "./ordinals";
 
+type Translations = Record<string, string>;
+
+function translate(
+  str: string | undefined,
+  translations?: Translations
+): string | undefined {
+  if (!str || !translations) return str;
+  return translations[str] || str;
+}
+
 type ParsedCalendarData = {
   type: string;
   title?: string;
@@ -117,7 +127,11 @@ function getDates(
   return dates;
 }
 
-export function parseCalendarData(year: number, propers: string[]) {
+export function parseCalendarData(
+  year: number,
+  propers: string[],
+  translations?: Translations
+) {
   const calendarData = loadCalendarData();
   const calendarBuilder = new CalendarBuilder();
 
@@ -138,11 +152,24 @@ export function parseCalendarData(year: number, propers: string[]) {
     if (item.occurence) {
       const dates = getDates(item.occurence, advent, easter, year);
       dates.forEach((date, index) => {
+        const originalTitle = translate(item.title, translations);
+        const ordinal = translate(
+          ordinals[(index + 1) as keyof typeof ordinals],
+          translations
+        );
+        const day = translate(
+          days[(date.getDay() + 1) as keyof typeof days],
+          translations
+        );
+
+        let title = translate(
+          originalTitle?.replace("$count", ordinal!).replace("$day", day!),
+          translations
+        );
+
         calendarBuilder.add(date.getMonth() + 1, date.getDate(), {
           ...item,
-          title: item.title
-            ?.replace("$count", ordinals[(index + 1) as keyof typeof ordinals])
-            .replace("$day", days[(date.getDay() + 1) as keyof typeof days]),
+          title,
         });
       });
     }

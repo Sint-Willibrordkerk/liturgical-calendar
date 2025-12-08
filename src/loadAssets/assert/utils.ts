@@ -2,9 +2,18 @@
 declare const bundledAssets: Record<string, any>;
 
 export const loadAsset = (path: string) => {
+  // Normalize path to handle both forward and backward slashes
+  const normalizedPath = path.replace(/\\/g, "/");
+
+  if (typeof bundledAssets !== "undefined" && bundledAssets[normalizedPath]) {
+    return bundledAssets[normalizedPath];
+  }
+
+  // Try with original path as fallback
   if (typeof bundledAssets !== "undefined" && bundledAssets[path]) {
     return bundledAssets[path];
   }
+
   throw new Error(`Asset ${path} not found`);
 };
 
