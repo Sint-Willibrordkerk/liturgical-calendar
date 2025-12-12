@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 // Use bundled assets instead of reading from files
 declare const bundledAssets: Record<string, any>;
 
@@ -17,87 +19,45 @@ export const loadAsset = (path: string) => {
   throw new Error(`Asset ${path} not found`);
 };
 
-export function assert(condition: any, msg?: string): asserts condition {
-  if (!condition) {
-    throw new Error(msg);
+export function zRegex<T extends string>(
+  expr: string,
+  type: string
+): z.ZodType<T> {
+  return z.string().regex(new RegExp(expr), {
+    message: `invalid ${type}`,
+  }) as unknown as z.ZodType<T>;
+}
+
+export function issueOption<T extends readonly unknown[]>(
+  ctx: z.RefinementCtx,
+  name: string,
+  options: T,
+  value?: unknown
+) {
+  if (value && options.length === 0) {
+    ctx.addIssue({
+      code: "custom",
+      message: `options array cannot be empty`,
+      path: [name],
+    });
+  }
+
+  if (value && !options.includes(value)) {
+    ctx.addIssue({
+      code: "custom",
+      message: `invalid ${name}: ${value}`,
+      path: [name],
+    });
   }
 }
 
-export function assertBoolean(val: any): asserts val is boolean {
-  assert(typeof val === "boolean", `value should be boolean: ${val}`);
-}
-
-export function assertNumber(val: any): asserts val is number {
-  assert(typeof val === "number", `value should be number: ${val}`);
-}
-
-export function assertString(val: any): asserts val is string {
-  assert(typeof val === "string", `value should be string: ${val}`);
-}
-
-export function assertRegex(expr: RegExp, val: any, type: string) {
-  assert(new RegExp(`^${expr.source}$`).test(val), `invalid ${type}: ${val}`);
-}
-
-export function assertOption(
-  options: readonly string[],
-  val: any,
-  type: string
-) {
-  assert(options.includes(val), `invalid ${type}: ${val}`);
-}
-
-export function assertArray(val: any[], assertValue: (val: any) => void) {
-  assert(Array.isArray(val), `value should be array: ${val}`);
-  val.forEach((val, index) => {
-    try {
-      assertValue(val);
-    } catch (err) {
-      if (err instanceof Error)
-        throw new Error(
-          `Failed to validate array entry for index: ${index}, caused by ${err.stack}\n`
-        );
-    }
-  });
-}
-
-export function assertMaybeArray(val: any, assertItem: (val: any) => void) {
-  if (Array.isArray(val)) {
-    assertArray(val, assertItem);
-    assert(
-      val.length !== 1,
-      "Array is used where a simple value could be used."
-    );
-    assert(val.length !== 0, "Array is empty.");
-  } else assertItem(val);
-}
-
-export function assertObject(
-  val: any,
-  optionalKeys: { [key: string]: (val: any) => void },
-  requiredKeys: { [key: string]: (val: any) => void } = {},
-  validateEntries?: ([key, val]: [string, any]) => void
-) {
-  assert(typeof val === "object", `Value should be object: ${val}`);
-  Object.entries(val).forEach(([key, val]) => {
-    try {
-      if (optionalKeys[key]) optionalKeys[key](val);
-      else if (requiredKeys[key]) requiredKeys[key](val);
-      else if (validateEntries) validateEntries([key, val]);
-      else throw new Error(`unknown key: ${key}`);
-    } catch (err) {
-      if (err instanceof Error)
-        throw new Error(
-          `Failed to validate object entry for key: ${key}, caused by ${err.stack}\n`
-        );
-      else throw err;
-    }
-  });
-
-  Object.keys(requiredKeys).forEach((requiredKey) =>
-    assert(
-      Object.keys(val).includes(requiredKey),
-      `Object is missing required key: ${requiredKey}`
-    )
-  );
+// Helper function to create a maybe array schema
+export function maybeArraySchema<T extends z.ZodTypeAny>(itemSchema: T) {
+  return z.union([
+    itemSchema,
+    z
+      .array(itemSchema)
+      .min(2, "Array is used where a simple value could be used.")
+      .min(1, "Array is empty."),
+  ]);
 }

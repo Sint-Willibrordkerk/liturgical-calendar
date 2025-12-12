@@ -42,5 +42,3 @@ export const properTypes = [
 ] as const;
 
 export const sanctorumTypes = ["vigilia", "domini", "custom"] as const;
-
-export const calendarTypes = ["sanctorum", ...properTypes] as const;

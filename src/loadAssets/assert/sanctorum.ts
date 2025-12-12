@@ -1,21 +1,18 @@
+import { z } from "zod";
 import type { Sanctorum } from "../../types";
-import {
-  assertMaybeArray,
-  assertObject,
-  assertOption,
-  assertString,
-} from "./utils";
-import { calendarTypes, sanctorumTypes } from "../../constants";
+import { sanctorumTypes } from "../../constants";
+import { maybeArraySchema as zMaybeArray } from "./utils";
+
+export const sanctorumSchema: z.ZodType<Sanctorum> = z.record(
+  z.string(),
+  z.object({
+    titles: zMaybeArray(z.string()).optional(),
+    type: z.enum(sanctorumTypes).optional(),
+  })
+);
 
 export function assertSanctorum(
   sanctorum: any
 ): asserts sanctorum is Sanctorum {
-  assertObject(sanctorum, {}, {}, ([name, val]) => {
-    assertString(name);
-    assertObject(val, {
-      titles: (val) => assertMaybeArray(val, assertString),
-      type: (val) => assertOption(sanctorumTypes, val, "type"),
-      calendarType: (val) => assertOption(calendarTypes, val, "calendarType"),
-    });
-  });
+  sanctorumSchema.parse(sanctorum);
 }

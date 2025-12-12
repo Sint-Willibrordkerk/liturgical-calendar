@@ -24,7 +24,9 @@
   "files": [
     "dist"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "zod": "^4.1.13"
+  },
   "devDependencies": {
     "@types/node": "^22.9.4",
     "tsup": "^8.5.0",

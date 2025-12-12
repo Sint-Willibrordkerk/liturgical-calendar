@@ -3,7 +3,6 @@ import {
   sanctorumTypes,
   weekdays,
   properTypes,
-  calendarTypes,
   namedDates,
 } from "./constants";
 
@@ -21,10 +20,9 @@ export type LiturgicalDate = DateString | NamedDate | RelativeDate;
 export type SanctorumType = (typeof sanctorumTypes)[number];
 export type LiturgicalType = (typeof liturgicalTypes)[number];
 export type ProperType = (typeof properTypes)[number];
-export type CalendarType = (typeof calendarTypes)[number];
 
 export type Weekday = keyof typeof weekdays;
-export type OccurenceType = CalendarType | Weekday | `!${Weekday}`;
+export type OccurenceType = Weekday | `!${Weekday}`;
 
 export type Occurence =
   | OccurenceType
@@ -47,7 +45,6 @@ export type Sanctorum = Record<
   {
     titles?: string | string[];
     type?: SanctorumType;
-    calendarType?: CalendarType;
   }
 >;
 
@@ -67,8 +64,6 @@ export type Calendar = Record<
   number,
   Record<number, LiturgicalDay | undefined> | undefined
 >;
-
-export type CombinedCalendars = Record<CalendarType, Calendar>;
 
 export type CalendarData = {
   "valid-types"?: string[];

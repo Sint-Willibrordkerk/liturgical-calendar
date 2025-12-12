@@ -8,9 +8,9 @@ importers:
 
   .:
     dependencies:
-      yaml:
-        specifier: ^2.6.1
-        version: 2.8.1
+      zod:
+        specifier: ^4.1.13
+        version: 4.1.13
     devDependencies:
       '@types/node':
         specifier: ^22.9.4
@@ -24,6 +24,9 @@ importers:
       vitest:
         specifier: ^3.2.4
         version: 3.2.4(@types/node@22.18.6)(yaml@2.8.1)
+      yaml:
+        specifier: ^2.6.1
+        version: 2.8.1
 
 packages:
 
@@ -857,6 +860,9 @@ packages:
     engines: {node: '>= 14.6'}
     hasBin: true
 
+  zod@4.1.13:
+    resolution: {integrity: sha512-AvvthqfqrAhNH9dnfmrfKzX5upOdjUVJYFqNSlkmGf64gRaTzlPwz99IHYnVs28qYAybvAlBV+H7pn0saFY4Ig==}
+
 snapshots:
 
   '@esbuild/aix-ppc64@0.25.10':
@@ -1571,3 +1577,5 @@ snapshots:
       strip-ansi: 7.1.2
 
   yaml@2.8.1: {}
+
+  zod@4.1.13: {}

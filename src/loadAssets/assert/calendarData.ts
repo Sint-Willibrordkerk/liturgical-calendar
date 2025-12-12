@@ -1,88 +1,114 @@
+import { z } from "zod";
 import type { CalendarData, Occurence, OccurenceType } from "src/types";
-import {
-  assertArray,
-  assertMaybeArray,
-  assertNumber,
-  assertObject,
-  assertOption,
-  assertRegex,
-} from "./utils";
-
-import { assertString } from "./utils";
 import { weekdays } from "../../constants";
-import { assertLiturgicalDate } from "./relativeDate";
+import {
+  dateStringSchema,
+  liturgicalDateSchema,
+  relativeDateSchema,
+} from "./relativeDate";
+import { issueOption, maybeArraySchema, zRegex } from "./utils";
 
-function assertOccurenceType(
-  occurenceType: any
-): asserts occurenceType is OccurenceType {
-  assertRegex(
-    new RegExp(`!?(${Object.keys(weekdays).join("|")})`),
-    occurenceType,
-    "occurence"
-  );
-}
+const weekdayKeys = Object.keys(weekdays);
 
-function assertOccurence(occurence: any): asserts occurence is Occurence {
-  if (typeof occurence === "string") assertOccurenceType(occurence);
-  else {
-    if (typeof occurence === "object" && "difference" in occurence)
-      assertLiturgicalDate(occurence);
-    else
-      assertObject(occurence, {
-        type: assertOccurenceType,
-        start: assertLiturgicalDate,
-        end: assertLiturgicalDate,
-        date: assertLiturgicalDate,
-        default: assertLiturgicalDate,
+const occurenceTypeSchema: z.ZodType<OccurenceType> = zRegex(
+  `!?(${weekdayKeys.join("|")})`,
+  "occurence type"
+);
+
+const occurenceSchema: z.ZodType<Occurence> = z.union([
+  occurenceTypeSchema,
+  relativeDateSchema,
+  z.object({
+    type: occurenceTypeSchema.optional(),
+    start: liturgicalDateSchema.optional(),
+    end: liturgicalDateSchema.optional(),
+    date: liturgicalDateSchema.optional(),
+    default: liturgicalDateSchema.optional(),
+  }),
+]);
+
+// This needs to be a function because it's recursive and uses context
+export function createCalendarDataSchema(
+  parent?: Partial<CalendarData>
+): z.ZodType<CalendarData> {
+  return z
+    .object({
+      "valid-types": z.array(z.string()).optional(),
+      "valid-liturgical-classes": z.array(z.number()).optional(),
+      "valid-commemoration-types": z.array(z.string()).optional(),
+      type: z.string().optional(),
+      title: z.string().optional(),
+      "liturgical-class": z.number().optional(),
+      "commemoration-type": z.string().optional(),
+      "accept-commemoration-types": z.array(z.string()).optional(),
+      occurence: occurenceSchema.optional(),
+      calendar: z
+        .record(dateStringSchema as z.ZodString, maybeArraySchema(z.string()))
+        .optional(),
+      slot: z.string().optional(),
+      "slot-name": z.string().optional(),
+      items: z.array(z.unknown()).optional() as z.ZodType<CalendarData[]>,
+    })
+    .superRefine((data, ctx) => {
+      const {
+        "valid-types": validTypes,
+        "valid-liturgical-classes": validLiturgicalClasses,
+        "valid-commemoration-types": validCommemorationTypes,
+      } = {
+        "valid-types": [],
+        "valid-liturgical-classes": [],
+        "valid-commemoration-types": [],
+        ...parent,
+        ...data,
+      };
+
+      issueOption(ctx, "type", validTypes, data.type);
+      issueOption(
+        ctx,
+        "liturgical-class",
+        validLiturgicalClasses,
+        data["liturgical-class"]
+      );
+      issueOption(
+        ctx,
+        "commemoration-type",
+        validCommemorationTypes,
+        data["commemoration-type"]
+      );
+
+      data["accept-commemoration-types"]?.forEach((type, index) => {
+        issueOption(
+          ctx,
+          "accept-commemoration-types",
+          validCommemorationTypes,
+          type
+        );
       });
-  }
+
+      if (data.items) {
+        const { items: _items, ...childData } = data;
+        const childSchema = createCalendarDataSchema({
+          ...parent,
+          ...childData,
+        });
+        data.items.forEach((item, index) => {
+          const result = childSchema.safeParse(item);
+          if (!result.success) {
+            result.error.issues.forEach((issue) => {
+              ctx.addIssue({
+                ...issue,
+                path: ["items", index, ...issue.path],
+              });
+            });
+          }
+        });
+      }
+    });
 }
 
 export function assertCalendarData(
   calendarData: any,
   parent?: any
 ): asserts calendarData is CalendarData {
-  const validTypes =
-    typeof calendarData === "object" && "valid-types" in calendarData
-      ? calendarData["valid-types"]
-      : parent?.["valid-types"] ?? [];
-  const validLiturgicalClasses =
-    typeof calendarData === "object" &&
-    "valid-liturgical-classes" in calendarData
-      ? calendarData["valid-liturgical-classes"]
-      : parent?.["valid-liturgical-classes"] ?? [];
-  const validCommemorationTypes =
-    typeof calendarData === "object" &&
-    "valid-commemoration-types" in calendarData
-      ? calendarData["valid-commemoration-types"]
-      : parent?.["valid-commemoration-types"] ?? [];
-  const { items: _items, ...childData } = calendarData;
-
-  assertObject(calendarData, {
-    "valid-types": (val) => assertArray(val, assertString),
-    "valid-liturgical-classes": (val) => assertArray(val, assertNumber),
-    "valid-commemoration-types": (val) => assertArray(val, assertString),
-    type: (val) => assertOption(validTypes, val, "type"),
-    title: (val) => assertString(val),
-    "liturgical-class": (val) =>
-      assertOption(validLiturgicalClasses, val, "liturgical-class"),
-    "commemoration-type": (val) =>
-      assertOption(validCommemorationTypes, val, "commemoration-type"),
-    "accept-commemoration-types": (val) =>
-      assertArray(val, (val) =>
-        assertOption(validCommemorationTypes, val, "commemoration-type")
-      ),
-    occurence: assertOccurence,
-    calendar: (val) =>
-      assertObject(val, {}, {}, ([date, titles]) => {
-        assertLiturgicalDate(date);
-        assertMaybeArray(titles, assertString);
-      }),
-    slot: assertString,
-    "slot-name": assertString,
-    items: (val) =>
-      assertArray(val, (val) =>
-        assertCalendarData(val, { ...parent, ...childData })
-      ),
-  });
+  createCalendarDataSchema(parent).parse(calendarData);
 }
