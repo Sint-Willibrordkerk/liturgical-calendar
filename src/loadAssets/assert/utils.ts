@@ -57,7 +57,6 @@ export function maybeArraySchema<T extends z.ZodTypeAny>(itemSchema: T) {
     itemSchema,
     z
       .array(itemSchema)
-      .min(2, "Array is used where a simple value could be used.")
-      .min(1, "Array is empty."),
+      .min(2, "Array is empty or array is used where a simple value could be used.")
   ]);
 }

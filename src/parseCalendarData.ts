@@ -8,7 +8,8 @@ import type {
 import { CalendarBuilder } from "./parse";
 import { calculateAdvent, calculateEaster, getDate } from "./utils";
 import { weekdays } from "./constants";
-import { loadCalendarData, loadPropers } from "./loadAssets";
+import { loadCalendarData, loadPropers, loadMassPropers } from "./loadAssets";
+import type { MassProper } from "./types";
 import { ordinals, days } from "./ordinals";
 
 type Translations = Record<string, string>;
@@ -148,6 +149,14 @@ export function parseCalendarData(
   const advent = calculateAdvent(year);
   const easter = calculateEaster(year);
 
+  // Load mass propers early to use for matching
+  let massPropers: Record<string, MassProper> | null = null;
+  try {
+    massPropers = loadMassPropers();
+  } catch {
+    // Mass propers file may not exist yet, ignore silently
+  }
+
   list.reverse().forEach((item) => {
     if (item.occurence) {
       const dates = getDates(item.occurence, advent, easter, year);
@@ -162,6 +171,19 @@ export function parseCalendarData(
           translations
         );
 
+        // Build title with variable substitution but before translation for mass proper matching
+        // Use Latin ordinals and day names (not translated) to match mass propers data
+        const latinOrdinal = ordinals[(index + 1) as keyof typeof ordinals] || "";
+        const latinDay = days[(date.getDay() + 1) as keyof typeof days] || "";
+        const titleWithSubstitution = item.title
+          ?.replace("$count", latinOrdinal)
+          .replace("$day", latinDay);
+        
+        // Find mass proper using original title (before translation) with variable substitution
+        const mass: MassProper | undefined = massPropers && titleWithSubstitution
+          ? massPropers[titleWithSubstitution]
+          : undefined;
+
         let title = translate(
           originalTitle?.replace("$count", ordinal!).replace("$day", day!),
           translations
@@ -170,6 +192,7 @@ export function parseCalendarData(
         calendarBuilder.add(date.getMonth() + 1, date.getDate(), {
           ...item,
           title,
+          mass,
         });
       });
     }

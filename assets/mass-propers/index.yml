@@ -1,0 +1,48 @@
+# Mass Propers Data
+# Maps liturgical day titles to their mass proper parts
+# Each proper part includes both references and full text
+
+In Nativitate Domini:
+  introit:
+    antiphon:
+      text: "Puer natus est nobis, et filius datus est nobis: cujus imperium super humerum ejus: et vocabitur nomen ejus, magni consilii Angelus."
+      references: "Is 9:6"
+    verse:
+      references: "Ps 97:1"
+      text: "Cantate Domino canticum novum: quia mirabilia fecit."
+    gloriaPatri: true
+  offertory:
+    antiphon:
+      text: "Lætentur cæli, et exsultet terra ante faciem Domini: quoniam venit."
+      references: "Ps 95:11-13"
+  collect:
+    text: "Deus, qui hanc sacratissimam noctem veri luminis fecisti illustratione clarescere: da, quæsumus; ut cujus lucis mysteria in terra cognovimus, ejus quoque gaudiis in cælo perfruamur."
+    ending: "Qui tecum vivit et regnat in unitate Spiritus Sancti Deus, per omnia sæcula sæculorum. Amen."
+  epistle:
+    reference:
+      book: "Tit"
+      chapter: 2
+      verses: "11-15"
+      reference: "Tit 2:11-15"
+    text: "Carissime: Apparuit gratia Dei Salvatoris nostri omnibus hominibus..."
+  alleluia:
+    alleluia: "Alleluia, alleluia."
+    verse:
+      references: "Ps 109:3"
+      text: "Tecum principium in die virtutis tuæ: in splend-oribus sanctorum."
+  gospel:
+    reference:
+      book: "Lc"
+      chapter: 2
+      verses: "1-14"
+      reference: "Lc 2:1-14"
+    text: "In illo tempore: Exiit edictum a Cæsare Augusto, ut describeretur universus orbis..."
+  secret:
+    text: "Munera nostra, quæsumus, Domine, nativitatis hodiernæ mysteriis apta proveniant, ut sicut homo genitus idem refulsit et Deus..."
+    ending: "Per eumdem Dominum nostrum Jesum Christum Filium tuum, qui tecum vivit et regnat in unitate Spiritus Sancti Deus, per omnia sæcula sæculorum. Amen."
+  communion:
+    antiphon:
+      text: "In splendoribus sanctorum, ex utero ante luciferum genui te."
+  postcommunion:
+    text: "Da nobis, quæsumus, Domine Deus noster, ut qui Nativitatem Domini nostri Jesu Christi mysteriis nos frequentare gaudemus..."
+    ending: "Per eumdem Dominum nostrum Jesum Christum Filium tuum, qui tecum vivit et regnat in unitate Spiritus Sancti Deus, per omnia sæcula sæculorum. Amen."

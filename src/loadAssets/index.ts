@@ -1,6 +1,7 @@
 import { loadAsset } from "./assert/utils";
 import { assertSanctorum } from "./assert/sanctorum";
 import { assertCalendarData } from "./assert/calendarData";
+import { assertMassPropers, type MassPropersData } from "./assert/massPropers";
 
 // Access bundled assets from global scope (injected by tsup)
 declare const bundledAssets: Record<string, any>;
@@ -21,6 +22,12 @@ export function loadPropers(name: string) {
   const propers = loadAsset(`propers/${name}.yml`);
   assertCalendarData(propers);
   return propers;
+}
+
+export function loadMassPropers(): MassPropersData {
+  const massPropers = loadAsset("mass-propers/index.yml");
+  assertMassPropers(massPropers);
+  return massPropers;
 }
 
 export function loadTranslations(lang: string): Record<string, string> {

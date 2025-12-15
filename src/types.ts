@@ -54,10 +54,96 @@ export type Commemoration = {
   liturgicalClass: number;
   commemorationType?: string;
   acceptCommemorationTypes?: string[];
+  mass?: MassProper;
 };
 
 export type LiturgicalDay = Commemoration & {
   commemorations: Commemoration[];
+};
+
+// Mass Proper Types
+
+export type BiblicalReference = {
+  book: string;
+  chapter: number;
+  verses: string; // e.g., "1-7" or "5"
+  reference: string; // Display string like "Rom 1:1-7"
+};
+
+export type VerseText = {
+  references?: string | string[]; // Single reference or array of references (e.g., "Ps 90:1" or ["Ps 90:15-16", "Ps 90:1"])
+  text: string;
+};
+
+export type IntroitProper = {
+  antiphon: VerseText;
+  verse: VerseText;
+  gloriaPatri: boolean;
+};
+
+export type CollectProper = {
+  text: string;
+  ending: string;
+};
+
+export type EpistleProper = {
+  reference: BiblicalReference;
+  incipit?: string;
+  text: string;
+};
+
+export type GradualProper = {
+  response: string;
+  verse: VerseText;
+};
+
+export type AlleluiaProper = {
+  alleluia: string;
+  verse: VerseText;
+};
+
+export type TractProper = {
+  verses: string[];
+};
+
+export type GospelProper = {
+  reference: BiblicalReference;
+  incipit?: string;
+  text: string;
+};
+
+export type OffertoryProper = {
+  antiphon: VerseText;
+  verse?: VerseText;
+};
+
+export type SecretProper = {
+  text: string;
+  ending: string;
+};
+
+export type CommunionProper = {
+  antiphon: VerseText;
+  verse?: VerseText;
+};
+
+export type PostcommunionProper = {
+  text: string;
+  ending: string;
+};
+
+export type MassProper = {
+  introit?: IntroitProper;
+  collect?: CollectProper;
+  epistle?: EpistleProper;
+  gradual?: GradualProper;
+  alleluia?: AlleluiaProper;
+  tract?: TractProper;
+  gospel?: GospelProper;
+  offertory?: OffertoryProper;
+  secret?: SecretProper;
+  communion?: CommunionProper;
+  postcommunion?: PostcommunionProper;
 };
 
 export type Calendar = Record<

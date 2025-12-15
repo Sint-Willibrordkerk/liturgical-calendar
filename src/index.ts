@@ -13,6 +13,7 @@ function deleteFields(day: Partial<LiturgicalDay | Commemoration>) {
 
   delete day.commemorationType;
   delete day.acceptCommemorationTypes;
+  // Note: mass field is preserved and not deleted
 }
 
 export default (year: number, propers: string[] = [], lang?: string) => {
