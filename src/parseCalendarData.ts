@@ -10,6 +10,7 @@ import { calculateAdvent, calculateEaster, getDate } from "./utils";
 import { weekdays } from "./constants";
 import { loadCalendarData, loadPropers, loadMassPropers } from "./loadAssets";
 import type { MassProper } from "./types";
+import type { MassPropersData } from "./loadAssets/assert/massPropers";
 import { ordinals, days } from "./ordinals";
 
 type Translations = Record<string, string>;
@@ -150,11 +151,12 @@ export function parseCalendarData(
   const easter = calculateEaster(year);
 
   // Load mass propers early to use for matching
-  let massPropers: Record<string, MassProper> | null = null;
+  let massPropers: MassPropersData | null = null;
   try {
     massPropers = loadMassPropers();
-  } catch {
+  } catch (error) {
     // Mass propers file may not exist yet, ignore silently
+    console.error(error);
   }
 
   list.reverse().forEach((item) => {
@@ -173,16 +175,20 @@ export function parseCalendarData(
 
         // Build title with variable substitution but before translation for mass proper matching
         // Use Latin ordinals and day names (not translated) to match mass propers data
-        const latinOrdinal = ordinals[(index + 1) as keyof typeof ordinals] || "";
+        const latinOrdinal =
+          ordinals[(index + 1) as keyof typeof ordinals] || "";
         const latinDay = days[(date.getDay() + 1) as keyof typeof days] || "";
         const titleWithSubstitution = item.title
           ?.replace("$count", latinOrdinal)
           .replace("$day", latinDay);
-        
-        // Find mass proper using original title (before translation) with variable substitution
-        const mass: MassProper | undefined = massPropers && titleWithSubstitution
-          ? massPropers[titleWithSubstitution]
-          : undefined;
+
+        // Find mass proper(s) using original title (before translation) with variable substitution
+        let massData =
+          massPropers && titleWithSubstitution
+            ? massPropers[titleWithSubstitution]
+            : undefined;
+
+        const mass: MassProper | MassProper[] | undefined = massData;
 
         let title = translate(
           originalTitle?.replace("$count", ordinal!).replace("$day", day!),

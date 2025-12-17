@@ -54,7 +54,7 @@ export type Commemoration = {
   liturgicalClass: number;
   commemorationType?: string;
   acceptCommemorationTypes?: string[];
-  mass?: MassProper;
+  mass?: MassProper | MassProper[];
 };
 
 export type LiturgicalDay = Commemoration & {
@@ -62,13 +62,6 @@ export type LiturgicalDay = Commemoration & {
 };
 
 // Mass Proper Types
-
-export type BiblicalReference = {
-  book: string;
-  chapter: number;
-  verses: string; // e.g., "1-7" or "5"
-  reference: string; // Display string like "Rom 1:1-7"
-};
 
 export type VerseText = {
   references?: string | string[]; // Single reference or array of references (e.g., "Ps 90:1" or ["Ps 90:15-16", "Ps 90:1"])
@@ -78,7 +71,6 @@ export type VerseText = {
 export type IntroitProper = {
   antiphon: VerseText;
   verse: VerseText;
-  gloriaPatri: boolean;
 };
 
 export type CollectProper = {
@@ -86,46 +78,29 @@ export type CollectProper = {
   ending: string;
 };
 
-export type EpistleProper = {
-  reference: BiblicalReference;
-  incipit?: string;
-  text: string;
-};
+export type EpistleProper = VerseText;
 
 export type GradualProper = {
-  response: string;
+  antiphon: VerseText;
   verse: VerseText;
 };
 
-export type AlleluiaProper = {
-  alleluia: string;
-  verse: VerseText;
-};
+export type AlleluiaProper = VerseText;
 
 export type TractProper = {
   verses: string[];
 };
 
-export type GospelProper = {
-  reference: BiblicalReference;
-  incipit?: string;
-  text: string;
-};
+export type GospelProper = VerseText;
 
-export type OffertoryProper = {
-  antiphon: VerseText;
-  verse?: VerseText;
-};
+export type OffertoryProper = VerseText;
 
 export type SecretProper = {
   text: string;
   ending: string;
 };
 
-export type CommunionProper = {
-  antiphon: VerseText;
-  verse?: VerseText;
-};
+export type CommunionProper = VerseText;
 
 export type PostcommunionProper = {
   text: string;

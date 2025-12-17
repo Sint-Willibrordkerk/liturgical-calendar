@@ -32,7 +32,7 @@ const calendar = generateCalendar(2026);
 
 // Access a specific day
 const january1 = calendar[1][1]; // January 1st
-console.log(january1.title); // "Octava Nativitatis Domini"
+console.log(january1.title); // "In Octava Nativitatis Domini"
 ```
 
 ### Parameters

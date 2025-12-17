@@ -1,7 +1,6 @@
 import { z } from "zod";
 import type {
   MassProper,
-  BiblicalReference,
   VerseText,
   IntroitProper,
   CollectProper,
@@ -17,13 +16,6 @@ import type {
 } from "../../types";
 import { maybeArraySchema } from "./utils";
 
-const biblicalReferenceSchema: z.ZodType<BiblicalReference> = z.object({
-  book: z.string(),
-  chapter: z.number(),
-  verses: z.string(),
-  reference: z.string(),
-});
-
 const verseTextSchema: z.ZodType<VerseText> = z.object({
   references: maybeArraySchema(z.string()).optional(),
   text: z.string(),
@@ -32,7 +24,6 @@ const verseTextSchema: z.ZodType<VerseText> = z.object({
 const introitProperSchema: z.ZodType<IntroitProper> = z.object({
   antiphon: verseTextSchema,
   verse: verseTextSchema,
-  gloriaPatri: z.boolean(),
 });
 
 const collectProperSchema: z.ZodType<CollectProper> = z.object({
@@ -40,46 +31,29 @@ const collectProperSchema: z.ZodType<CollectProper> = z.object({
   ending: z.string(),
 });
 
-const epistleProperSchema: z.ZodType<EpistleProper> = z.object({
-  reference: biblicalReferenceSchema,
-  incipit: z.string().optional(),
-  text: z.string(),
-});
+const epistleProperSchema: z.ZodType<EpistleProper> = verseTextSchema;
 
 const gradualProperSchema: z.ZodType<GradualProper> = z.object({
-  response: z.string(),
+  antiphon: verseTextSchema,
   verse: verseTextSchema,
 });
 
-const alleluiaProperSchema: z.ZodType<AlleluiaProper> = z.object({
-  alleluia: z.string(),
-  verse: verseTextSchema,
-});
+const alleluiaProperSchema: z.ZodType<AlleluiaProper> = verseTextSchema;
 
 const tractProperSchema: z.ZodType<TractProper> = z.object({
   verses: z.array(z.string()),
 });
 
-const gospelProperSchema: z.ZodType<GospelProper> = z.object({
-  reference: biblicalReferenceSchema,
-  incipit: z.string().optional(),
-  text: z.string(),
-});
+const gospelProperSchema: z.ZodType<GospelProper> = verseTextSchema;
 
-const offertoryProperSchema: z.ZodType<OffertoryProper> = z.object({
-  antiphon: verseTextSchema,
-  verse: verseTextSchema.optional(),
-});
+const offertoryProperSchema: z.ZodType<OffertoryProper> = verseTextSchema;
 
 const secretProperSchema: z.ZodType<SecretProper> = z.object({
   text: z.string(),
   ending: z.string(),
 });
 
-const communionProperSchema: z.ZodType<CommunionProper> = z.object({
-  antiphon: verseTextSchema,
-  verse: verseTextSchema.optional(),
-});
+const communionProperSchema: z.ZodType<CommunionProper> = verseTextSchema;
 
 const postcommunionProperSchema: z.ZodType<PostcommunionProper> = z.object({
   text: z.string(),
@@ -100,11 +74,11 @@ export const massProperSchema: z.ZodType<MassProper> = z.object({
   postcommunion: postcommunionProperSchema.optional(),
 });
 
-export type MassPropersData = Record<string, MassProper>;
+export type MassPropersData = Record<string, MassProper | MassProper[]>;
 
 export const massPropersDataSchema: z.ZodType<MassPropersData> = z.record(
   z.string(),
-  massProperSchema
+  maybeArraySchema(massProperSchema)
 );
 
 export function assertMassPropers(

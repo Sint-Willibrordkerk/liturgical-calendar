@@ -45,7 +45,7 @@ items:
         24-12: In vigilia Nativitatis Domini #30a
     - type: octava #91.5
       calendar:
-        01-01: Octava Nativitatis Domini
+        01-01: In Octava Nativitatis Domini
     - type: dominica #91.6 11
       items:
         - title: Dominica $count Adventus #11a
