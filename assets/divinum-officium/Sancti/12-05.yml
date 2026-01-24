@@ -1,0 +1,19 @@
+officium:
+  - S. Sabbæ Abbatis
+rank:
+  - ""
+  - Simplex
+  - "1.1"
+  - "@C5b"
+rule:
+  - vide C5b;
+name:
+  - Sabbæ
+  - Secreta=Sabbas
+  - Postcommunio=Sabbas
+oratio:
+  - "@Commune/C5b:Oratio:s/N\\./Sabbas/"
+secreta:
+  - "@Commune/C5b:Secreta:s/N\\./Sabbas/"
+postcommunio:
+  - "@Commune/C5b:Postcommunio:s/N\\./Sabbas/"

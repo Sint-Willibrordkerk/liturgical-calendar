@@ -1,0 +1,246 @@
+references:
+  references: "@Commune/C2"
+  officium:
+    - Commune Unius Martyris
+  missa:
+    - In virtute
+  oratio:
+    - "Præsta, quǽsumus, omnípotens Deus: ut, qui beáti N. Mártyris tui
+      natalítia cólimus, intercessióne ejus in tui nóminis amóre roborémur."
+    - $Per Dominum
+  oratio-altera:
+    - "Da, quǽsumus, omnípotens Deus: ut, qui beáti N., Mártyris tui, solémnia
+      cólimus, ejus apud te intercessiónibus adjuvémur."
+    - $Per Dominum
+  lectio1:
+    - "@Commune/C3"
+  lectio2:
+    - "@Commune/C3"
+  lectio3:
+    - "@Commune/C3"
+  lectio7:
+    - "@Commune/C2:Lectio7 in 3 loco"
+  lectio8:
+    - "@Commune/C2:Lectio8 in 3 loco"
+  lectio9:
+    - "@Commune/C2:Lectio9 in 3 loco"
+  introitus:
+    - "!Ps 20:2-3"
+    - "v. In virtúte tua, Dómine, lætábitur justus: et super salutáre tuum
+      exsultábit veheménter: desidérium ánimæ ejus tribuísti ei."
+    - "!Ps 20:4"
+    - "Quóniam prævenísti eum in benedictiónibus dulcédinis: posuísti in cápite
+      ejus corónam de lápide pretióso."
+    - "&Gloria"
+    - "v. In virtúte tua, Dómine, lætábitur justus: et super salutáre tuum
+      exsultábit veheménter: desidérium ánimæ ejus tribuísti ei."
+  lectio:
+    - Léctio libri Sapiéntiæ
+    - "!Sap 10:10-14"
+    - "Justum dedúxit Dóminus per vias rectas, et ostendit illi regnum Dei, et
+      dedit illi sciéntiam sanctórum: honestávit illum in labóribus, et
+      complévit labores illíus. In fraude circumveniéntium illum áffuit illi, et
+      honéstum fecit illum. Custodívit illum ab inimícis, et a seductóribus
+      tutávit illum, et certámen forte dedit illi, ut vínceret et sciret,
+      quóniam ómnium poténtior est sapiéntia. Hæc vénditum justum non
+      derelíquit, sed a peccatóribus liberávit eum: descendítque cum illo in
+      fóveam, et in vínculis non derelíquit illum, donec afférret illi sceptrum
+      regni, et poténtiam advérsus eos, qui eum deprimébant: et mendáces
+      osténdit, qui maculavérunt illum, et dedit illi claritátem ætérnam,
+      Dóminus, Deus noster."
+  graduale:
+    - "!Ps 111:1-2"
+    - "Beátus vir, qui timet Dóminum: in mandátis ejus cupit nimis."
+    - "V. Potens in terra erit semen ejus: generátio rectórum benedicétur."
+    - Allelúja, allelúja.
+    - "!Ps 20:4"
+    - Posuísti, Dómine, super caput ejus corónam de lápide pretióso. Allelúja.
+  gradualep:
+    - Allelúja, allelúja.
+    - "!Ps 88:6."
+    - "Confitebúntur cœli mirabília tua, Dómine: étenim veritátem tuam in
+      ecclésia sanctórum. Allelúja."
+    - "!Ps 20:4"
+    - Posuísti, Dómine, super caput ejus corónam de lápide pretióso. Allelúja.
+  tractus:
+    - "!Ps 111:1-2."
+    - "Beátus vir, qui timet Dóminum: in mandátis ejus cupit nimis."
+    - "V. Potens in terra erit semen ejus: generátio rectórum benedicétur."
+    - _
+    - "!Tractus"
+    - "!Ps 20:3-4"
+    - "Desidérium ánimæ ejus tribuísti ei: et voluntáte labiórum ejus non
+      fraudásti eum."
+    - V. Quóniam prævenísti eum in benedictiónibus dulcédinis.
+    - V. Posuísti in cápite ejus corónam de lápide pretióso.
+  evangelium:
+    - Sequéntia ++ sancti Evangélii secúndum Matthǽum
+    - "!Matt 10:34-42"
+    - "In illo témpore: Dixit Jesus discípulis suis: Nolíte arbitrári, quia
+      pacem vénerim míttere in terram: non veni pacem míttere, sed gládium. Veni
+      enim separáre hóminem advérsus patrem suum, et fíliam advérsus matrem
+      suam, et nurum advérsus socrum suam: et inimíci hóminis doméstici ejus.
+      Qui amat patrem aut matrem plus quam me, non est me dignus: et qui amat
+      fílium aut fíliam super me, non est me dignus. Et qui non áccipit crucem
+      suam, et séquitur me, non est me dignus. Qui invénit ánimam suam, perdet
+      illam: et qui perdíderit ánimam suam propter me, invéniet eam. Qui récipit
+      vos, me récipit: et qui me récipit, récipit eum, qui me misit. Qui récipit
+      prophétam in nómine prophétæ, mercédem prophétæ accípiet: et qui récipit
+      justum in nómine justi, mercédem justi accípiet. Et quicúmque potum
+      déderit uni ex mínimis istis cálicem aquæ frígidæ tantum in nómine
+      discípuli: amen, dico vobis, non perdet mercédem suam."
+  offertorium:
+    - "!Ps 8:6-7"
+    - "Glória et honóre coronásti eum: et constituísti eum super ópera mánuum
+      tuárum, Dómine."
+  secreta:
+    - "Munéribus nostris, quǽsumus, Dómine, precibúsque suscéptis: et cœléstibus
+      nos munda mystériis, et cleménter exáudi."
+    - $Per Dominum
+  communio:
+    - "!Matt 16:24"
+    - Qui vult veníre post me, ábneget semetípsum, et tollat crucem suam, et
+      sequátur me.
+  postcommunio:
+    - "Da, quǽsumus, Dómine, Deus noster: ut, sicut tuórum commemoratióne
+      Sanctórum temporáli gratulámur offício; ita perpétuo lætémur aspéctu."
+    - $Per Dominum
+missa:
+  - Laetabitur
+oratio:
+  - "Præsta, quǽsumus, omnípotens Deus: ut, intercedénte beáto N. Mártyre tuo,
+    et a cunctis adversitátibus liberémur in córpore, et a pravis cogitatiónibus
+    mundémur in mente."
+  - $Per Dominum
+lectio7:
+  - Léctio sancti Evangélii secúndum Matthǽum
+  - "!Matt 10:26-32"
+  - "In illo témpore: Dixit Jesus discípulis suis: Nihil est opértum, quod non
+    revelábitur; et occúltum, quod non sciétur. Et réliqua."
+  - _
+  - Homilía sancti Hilárii Epíscopi
+  - "!Comment. in Matthaeum, can. 10 post medium"
+  - "Dóminus diem judícii osténdit, quæ abstrúsam voluntátis nostræ consciéntiam
+    prodet: et ea quæ nunc occúlta existimántur, luce cognitiónis públicæ
+    déteget. Ígitur non minas, non consília, non potestátes insectántium monet
+    esse metuéndas: quia dies judícii nulla hæc fuísse, atque inánia revelábit.
+    Et quod dico vobis in ténebris, dícite in lúmine: et quod in aure audítis,
+    prædicáte super tecta. Non légimus Dóminum sólitum fuísse nóctibus
+    sermocinári, et doctrínam in ténebris tradidísse: sed quia omnis sermo ejus
+    carnálibus ténebræ sunt, et verbum ejus infidélibus nox est."
+lectio8:
+  - "Ítaque id quod a se dictum est, cum libertáte fídei et confessiónis vult
+    esse loquéndum. Idcírco quæ in ténebris dicta sunt prædicári jussit in
+    lúmine: ut quæ secréto áurium commíssa sunt, super tecta, id est, excélso
+    loquéntium præcónio audiántur. Constánter enim Dei ingerénda cognítio est,
+    et profúndum doctrínæ evangélicæ secrétum in lúmine prædicatiónis apostólicæ
+    revelándum: non timéntes eos, quibus cum sit licéntia in córpora, tamen in
+    ánimam jus nullum est: sed timéntes pótius Deum, cui perdéndæ in gehénna et
+    ánimæ et córporis sit potéstas."
+lectio9:
+  - "Nolíte timére eos qui occídunt corpus. Nullus ígitur córporum nostrórum
+    casus est pertimescéndus, neque ullus interiméndæ carnis admitténdus est
+    dolor: quando pro natúræ suæ atque oríginis conditióne resolúta, in
+    substántiam spirituális ánimæ refundátur. Et quia doctrínis tálibus
+    confirmátos opórtet líberam confiténdi Dei habére constántiam, étiam
+    conditiónem, qua tenerémur, adjécit: negatúrum se eum Patri in cælis, qui se
+    homínibus in terra negásset: eum porro qui conféssus coram homínibus se
+    fuísset, a se in cælis confiténdum: qualésque nos nóminis sui testes
+    homínibus fuissémus, tali nos apud Deum Patrem testimónio ejus usúros."
+  - "&teDeum"
+introitus:
+  - "!Ps 63:11"
+  - "v. Lætábitur justus in Dómino, et sperábit in eo: et laudabúntur omnes
+    recti corde. (Allelúja, allelúja.)"
+  - "!Ps 63:2"
+  - "Exáudi, Deus, oratiónem meam cum déprecor: a timóre inimíci éripe ánimam
+    meam."
+  - "&Gloria"
+  - "v. Lætábitur justus in Dómino, et sperábit in eo: et laudabúntur omnes
+    recti corde. (Allelúja, allelúja.)"
+lectio:
+  - Léctio Epístolæ beáti Pauli Apóstoli ad Timótheum
+  - "!2 Tim 2:8-10; 3:10-12."
+  - "Caríssime: Memor esto, Dóminum Jesum Christum resurrexísse a mórtuis ex
+    sémine David, secúndum Evangélium meum, in quo labóro usque ad víncula,
+    quasi male óperans: sed verbum Dei non est alligátum. Ideo ómnia sustíneo
+    propter eléctos, ut et ipsi salútem consequántur, quæ est in Christo Jesu,
+    cum glória coelésti. Tu autem assecútus es meam doctrínam, institutiónem,
+    propósitum, fidem, longanimitátem, dilectiónem, patiéntiam, persecutiónes,
+    passiónes: quália mihi facta sunt Antiochíæ, Icónii et Lystris: quales
+    persecutiónes sustínui, et ex ómnibus erípuit me Dóminus. Et omnes, qui pie
+    volunt vívere in Christo Jesu, persecutiónem patiéntur."
+graduale:
+  - "!Ps 36:24"
+  - "Justus cum cecíderit, non collidétur: quia Dóminus suppónit manum suam."
+  - "!Ps 36:26"
+  - "Tota die miserétur, et cómmodat: et semen ejus in benedictióne erit.
+    Allelúja, allelúja"
+  - "!Joann 8:12"
+  - "Qui séquitur me, non ámbulat in ténebris: sed habébit lumen vitæ ætérnæ.
+    Allelúja."
+tractus:
+  - "!Ps 36:24"
+  - "Justus cum cecíderit, non collidétur: quia Dóminus suppónit manum suam."
+  - "!Ps 36:26"
+  - "Tota die miserétur, et cómmodat: et semen ejus in benedictióne erit."
+  - "!Ps 111:1-3"
+  - "Beátus vir, qui timet Dóminum: in mandátis ejus cupit nimis."
+  - "V. Potens in terra erit semen ejus: generátio rectórum benedicétur."
+  - "V. Glória et divítiæ in domo ejus: et justítia ejus manet in sǽculum
+    sǽculi."
+evangelium:
+  - Sequéntia ++ sancti Evangélii secúndum Matthǽum
+  - "!Matt 10:26-32"
+  - "In illo témpore: Dixit Jesus discípulis suis: Nihil est opértum, quod non
+    revelábitur; et occúltum, quod non sciétur. Quod dico vobis in ténebris,
+    dícite in lúmine: et quod in aure audítis, prædicáte super tecta. Et nolíte
+    timére eos, qui occídunt corpus, ánimam autem non possunt occídere; sed
+    pótius timéte eum, qui potest et ánimam et corpus pérdere in gehénnam. Nonne
+    duo pásseres asse véneunt: et unus ex illis non cadet super terram sine
+    Patre vestro? Vestri autem capílli cápitis omnes numeráti sunt. Nolíte ergo
+    timére: multis passéribus melióres estis vos. Omnis ergo, qui confitébitur
+    me coram homínibus, confitébor et ego eum coram Patre meo, qui in coelis
+    est."
+offertorium:
+  - "!Ps 20:4-5"
+  - "Posuísti, Dómine, in cápite ejus corónam de lápide pretióso: vitam pétiit a
+    te, et tribuísti ei, allelúja."
+secreta:
+  - "Accépta sit in conspéctu tuo, Dómine, nostra devótio: et ejus nobis fiat
+    supplicatióne salutáris, pro cujus sollemnitáte defértur."
+  - $Per Dominum
+communio:
+  - "!Joann 12:26"
+  - "Qui mihi mínistrat, me sequátur: et ubi sum ego, illic et miníster meus
+    erit. (Allelúja.)"
+postcommunio:
+  - "Refécti participatióne múneris sacri, quǽsumus, Dómine, Deus noster: ut,
+    cujus exséquimur cultum, intercedénte beáto N. Mártyre tuo, sentiámus
+    efféctum."
+  - $Per Dominum
+lectio-in-2-loco:
+  - Léctio Epístolæ beáti Jacóbi Apóstoli
+  - "!Jac 1:2-12."
+  - "Caríssimi: Omne gáudium existimáte, cum in tentatiónes várias incidéritis:
+    sciéntes, quod probátio fídei vestræ patiéntiam operátur. Patiéntia autem
+    opus perféctum habet: ut sitis perfécti et íntegri, in nullo deficiéntes. Si
+    quis autem vestrum índiget sapiéntia, póstulet a Deo, qui dat ómnibus
+    affluénter, et non impróperat: et dábitur ei. Póstulet autem in fide nihil
+    hǽsitans: qui enim hǽsitat, símilis est flúctui maris, qui a vento movétur
+    et circumfértur. Non ergo ǽstimet homo ille, quod accípiat áliquid a Dómino.
+    Vir duplex ánimo incónstans est in ómnibus viis suis. Gloriétur autem frater
+    húmilis in exaltatióne sua: dives autem in humilitáte sua, quóniam sicut
+    flos fæni transíbit: exórtus est enim sol cum ardóre, et arefécit fænum, et
+    flos ejus décidit et decor vultus ejus depériit: ita et dives in itinéribus
+    suis marcéscet. Beátus vir, qui suffert tentatiónem: quóniam, cum probátus
+    fúerit, accípiet corónam vitæ, quam repromísit Deus diligéntibus se."
+lectio-in-3-loco:
+  - Léctio Epístolæ beáti Pauli Apóstoli ad Corínthios
+  - "!2 Cor 10:17-18; 11:1-2"
+  - "Fratres: Qui gloriátur, in Dómino gloriétur. Non enim, qui seípsum
+    comméndat, ille probátus est; sed quem Deus comméndat. Utinam sustinerétis
+    módicum quid insipiéntiæ meæ, sed et supportáte me: æmulor enim vos Dei
+    æmulatióne. Despóndi enim vos uni viro vírginem castam exhibére Christo."
+evangelium-in-2-loco:
+  - "@Sancti/02-01"

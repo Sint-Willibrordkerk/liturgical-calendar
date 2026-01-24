@@ -1,0 +1,142 @@
+officium:
+  - In Octava S. Laurentii Martyris
+rank:
+  - ""
+  - Duplex
+  - "3.1"
+  - "@Sancti/08-10"
+rubrica-divino/rank:
+  - ""
+  - Simplex
+  - "1.4"
+  - "@Sancti/08-10"
+rule:
+  - vide Sancti/08-10;
+  - 9 lectiones
+  - Gloria
+  - CredoDA
+introitus:
+  - "!Ps 16:3"
+  - "v. Probásti, Dómine, cor meum, et visitásti nocte: igne me examinásti, et
+    non est invénta in me iníquitas."
+  - "!Ps 16:1"
+  - "Exáudi, Dómine, justítiam meam: inténde deprecatiónem meam."
+  - "&Gloria"
+  - "v. Probásti, Dómine, cor meum, et visitásti nocte: igne me examinásti, et
+    non est invénta in me iníquitas."
+oratio:
+  - "Excita, Dómine, in Ecclésia tua Spíritum, cui beátus Laurentius Levita
+    servívit: ut, eódem nos repleti, studeamus amare quod amavit, et ópere
+    exercere quod docuit."
+  - $Per Dominum eiusdem
+lectio:
+  - Léctio Epístolæ beáti Pauli Apóstoli ad Corínthios
+  - "!2 Cor 9:6-10"
+  - "Fratres: Qui parce séminat, parce et metet: et qui séminat in
+    benedictiónibus, de benedictiónibus et metet. Unusquísque prout destinávit
+    in corde suo, non ex tristítia aut ex necessitáte: hílarem enim datórem
+    díligit Deus. Potens est autem Deus omnem grátiam abundáre fácere in vobis,
+    ut, in ómnibus semper omnem sufficiéntiam habéntes, abundétis in omne opus
+    bonum, sicut scriptum est: Dispérsit, dedit paupéribus: justítia ejus manet
+    in sǽculum sǽculi. Qui autem adminístrat semen seminánti: et panem ad
+    manducándum præstábit, et multiplicábit semen vestrum, et augébit increménta
+    frugum justítiæ vestræ."
+graduale:
+  - "!Ps 8:6-7"
+  - Glória et honóre coronásti eum, Dómine.
+  - V. Et constituísti eum super ópera mánuum tuárum.
+  - Allelúja, allelúja.
+  - "V. Levíta Lauréntius bonum opus operátus est: qui per signum crucis cœcos
+    illuminávit. Allelúja."
+evangelium:
+  - Sequéntia ++ sancti Evangélii secúndum Joánnem
+  - "!Joann 12:24-26"
+  - "In illo témpore: Dixit Jesus discípulis suis: Amen, amen, dico vobis, nisi
+    granum fruménti cadens in terram, mórtuum fúerit, ipsum solum manet: si
+    autem mórtuum fúerit, multum fructum affert. Qui amat ánimam suam, perdet
+    eam: et qui odit ánimam suam in hoc mundo, in vitam ætérnam custódit eam. Si
+    quis mihi mínistrat, me sequátur: et ubi sum ego, illic et miníster meus
+    erit. Si quis mihi ministráverit, honorificábit eum Pater meus."
+offertorium:
+  - "@Commune/C5-1"
+secreta:
+  - "Sacrifícium nostrum tibi, Dómine, quǽsumus, beáti Lauréntii precátio sancta
+    concíliet: ut, cujus honóre sollémniter exhíbetur, ejus méritis efficiátur
+    accéptum."
+  - $Per Dominum
+communio:
+  - "!Matt 16:24"
+  - Qui vult veníre post me, ábneget semetípsum, et tollat crucem suam, et
+    sequátur me.
+postcommunio:
+  - "Súpplices te rogámus, omnípotens Deus: ut, quos donis cœléstibus satiásti,
+    intercedénte beáto Lauréntio Mártyre tuo, perpétua protectióne custódias."
+  - $Per Dominum
+rubrica-cisterciensis/rank:
+  - ""
+  - Commemoratio
+  - "1"
+  - "@Sancti/08-10"
+lectio4:
+  - Ex Tractatu sancti Augustíni Epíscopi in Joánnem.
+  - "!Tractatus 27. in fine."
+  - "Certi sumus, fratres, quia omnes, qui sumus in corpore Domini, et manemus
+    in illo, ut et ipse maneat in nobis, in hoc sæculo necesse habemus usque in
+    finem inter malos vivere; non inter illos dico malos, qui blasphemant
+    Christum; raro enim jam inveniuntur, qui lingua blasphemant, sed multi, qui
+    vita. Necesse est ergo, ut inter illos usque in finem vivamus. Sed quid est
+    quod ait, Qui manet in me, et ego in illo? Quid, nisi quod Martyres
+    audiebant: Qui perseveraverit usque in finem, hic salvus erit?"
+lectio5:
+  - "Quomodo mansit in illo sanctus Laurentius, cujus hodie festum diem
+    celebramus? Mansit usque ad tentationem, mansit usque ad tyrannicam
+    interrogationem, mansit usque ad acerrimam comminationem, mansit usque ad
+    peremptionem. Parum est: usque ad immanem excruciationem mansit. Non enim
+    occisus est cito, sed cruciatus est in igne. Diu vivere permissus est: immo
+    non diu vivere permissus est, sed tarde mori compulsus est. In illa ergo
+    longa morte, in illis tormentis, quia bene manducaverat, et bene biberat,
+    tamquam illa esca saginatus, et illo calice ebrius, tormenta non sensit."
+lectio6:
+  - "Dixerat autem illi Xystus Martyr sanctus, cujus diem quinto abhinc retro
+    die celebravimus: Noli merere fili: (episcopus enim erat ille, iste
+    diaconus) noli merere, inquit, sequeris me post triduum. Triduum autem dixit
+    medium inter diem passionis sancti Xysti, et diem hodiernam passionis sancti
+    Laurentii. Triduum est medium. O consolatio! Non ait, Noli merere fili,
+    desinet persecutio, et securus eris: sed, Noli merere: quo ego præcedo, tu
+    sequeris; nec consecutio tua differtur. Triduum medium erit, et mecum eris.
+    Accepit oraculum, vicit diabolum, pervenit ad triumphum."
+lectio7:
+  - Léctio sancti Evangélii secúndum Joánnem.
+  - "!Joannes 12:24-28"
+  - "In illo témpore: Dixit Jesus discipulis suis: Amen, amen dico vobis, nisi
+    granum frumenti cadens in terram, mortuum fuerit; ipsum solum manet. Et
+    réliqua."
+  - _
+  - Homilia sancti Joannis Chrysostomi.
+  - "!Homilia 66. in Joánnem."
+  - "Dulcis præsens vita est, et multæ plena voluptatis, non tamen omnibus, sed
+    iis tantum, qui illi sunt affixi. Quod si quis in cælum suspexerit, et quæ
+    ibi præclara sunt, contemplatus fuerit, statim hanc contemnet, ac nullius
+    pretii existimabit. Nam et corporum pulchritudo, quoad pulchrius non
+    deprehenditur, in admiratione habetur: cum vero aliud præstantius
+    apparuerit, illa prior despicitur. Quod si illam pulchritudinem étiam nos
+    intueri voluerimus, et cælestis regni speciem considerare, confestim nos
+    hujus sæculi vinculis dissolvemus."
+lectio8:
+  - "Vinculum namque est terrenarum rerum affectio: ad cujus dissolutionem ut
+    nos induceret Christus, quid dicat, attende. Qui amat animam suam, perdet
+    eam: et qui odit animam suam in hoc mundo, in vitam ætérnam custodit eam.
+    Enigmati simile hoc dictum videtur: non tamen ita est, immo vero præcipuæ
+    sapientiæ plenum. Et quomodo qui amat animam suam, perdet eam? Qui absurdis
+    ejus cupiditatibus obtemperat, qui præter debitum ei indulget: quemadmodum e
+    contrario, qui odit eam in hoc mundo, custodit eam: hoc est, qui non paret
+    ei, cum noxia jubet."
+lectio9:
+  - "Et non dixit: Qui non paret, sed, Qui odit. Sicuti enim quos odio
+    habemus,'ne vocem quidem audire, nec vultum eorum videre æquo animo patimur:
+    ita et animæ, si quid præter Dei voluntatem nobis imperat, vehementer
+    aversari oportet. Cum enim jam de morte ad eos verba facturus esset, de
+    morte videlicet sua, et prævideret eorum tristitiam et exanimationem, per
+    excessum locutus est, inquiens: Quid dico, si mortem meam generose non
+    feretis? Nisi vos ipsi moriamini, nullum vos sequetur emolumentum."
+  - "&teDeum"

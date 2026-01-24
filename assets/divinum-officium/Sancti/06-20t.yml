@@ -1,0 +1,8 @@
+references: "@Sancti/06-20"
+rule:
+  - "@Sancti/06-20"
+  - 1 et 2 lectiones
+lectio2:
+  - "@Sancti/06-20:Lectio93:s/\\. Quam.*/./s"
+lectio93:
+  - "@Sancti/06-20:Lectio93:s/.*\\. Quam/Quam/"

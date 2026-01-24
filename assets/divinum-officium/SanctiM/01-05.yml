@@ -1,0 +1,120 @@
+references: "@Sancti/01-05"
+rule:
+  - ex SanctiM/01-01
+  - Doxology=Nat
+  - 3 lectiones
+  - Psalmi Dominica
+  - Antiphonas horas
+  - Omit preces
+  - (rubrica cisterciensis) no prima vespera
+feria-1/rule:
+  - ex SanctiM/01-01
+  - (sed rubrica cisterciensis) ex TemporaM/Nat1-0
+  - Doxology=Nat
+  - 12 lectiones
+  - Psalmi Dominica
+  - Antiphonas horas
+  - Omit preces
+  - Lectio1 TempNat
+feria-1-et-rubrica-cisterciensis/versum-1:
+  - "@Tempora/Nat1-0"
+feria-1-et-rubrica-cisterciensis/ant-1:
+  - "@Tempora/Nat1-0"
+feria-1/ant-matutinum-3n:
+  - "@SanctiM/01-01"
+ant-matutinum:
+  - "@Sancti/01-01::7 s/;;\\d+//"
+  - ;;
+  - ;;
+  - ;;
+  - ;;
+  - ;;
+  - "@Sancti/01-01::9 s/;;\\d+//"
+  - ;;
+  - ;;
+  - ;;
+  - ;;
+  - ;;
+  - (feria 1) ;;263;264;265
+rubrica-divino/nocturn-2-versum:
+  - "@Sancti/12-25:Nocturn 1 Versum"
+feria-1/rubrica-divino/nocturn-2-versum:
+  - "@Sancti/12-25"
+nocturn-3-versum:
+  - "@Sancti/12-25:Nocturn 1 Versum"
+feria-1/nocturn-3-versum:
+  - "@Sancti/12-25"
+rubrica-tridentina-aut-rubrica-divino/lectio1:
+  - "@Sancti/01-05:Lectio7"
+responsory1:
+  - "@Sancti/01-01:Responsory1"
+feria-3/responsory1:
+  - "@Sancti/01-01:Responsory4"
+feria-6/responsory1:
+  - "@Sancti/01-01:Responsory4"
+feria-4/responsory1:
+  - "@Sancti/12-25:Responsory6"
+feria-7/responsory1:
+  - "@Sancti/12-25:Responsory6"
+lectio2:
+  - "@Sancti/01-05:Lectio8"
+responsory2:
+  - "@Sancti/01-01:Responsory2"
+feria-3/responsory2:
+  - "@Sancti/01-01:Responsory5"
+feria-6/responsory2:
+  - "@Sancti/01-01:Responsory5"
+feria-4/responsory2:
+  - "@Sancti/01-01:Responsory8"
+feria-7/responsory2:
+  - "@Sancti/01-01:Responsory8"
+lectio3:
+  - "@Sancti/01-05:Lectio9"
+responsory3:
+  - "@Sancti/01-01:Responsory3"
+feria-3/responsory3:
+  - "@Sancti/01-01:Responsory6"
+feria-6/responsory3:
+  - "@Sancti/01-01:Responsory6"
+feria-4/responsory3:
+  - "@SanctiM/01-01:Responsory11"
+feria-7/responsory3:
+  - "@SanctiM/01-01:Responsory11"
+lectio5:
+  - "@Sancti/01-05:Lectio4: s/Factus.*//s"
+lectio6:
+  - "@Sancti/01-05:Lectio4: s/.*(Factus)/$1/s s/$/~/s"
+  - "@Sancti/01-05:Lectio5: s/Factus.*//s"
+lectio7:
+  - "@Sancti/01-05:Lectio5: s/.*(Factus)/$1/s"
+lectio8:
+  - "@Sancti/01-05:Lectio6"
+lectio9:
+  - "@Sancti/01-05:Lectio7"
+lectio10:
+  - "@Sancti/01-05:Lectio8"
+lectio11:
+  - "@Sancti/01-05:Lectio9: s/Nazarǽus sanctus//s"
+lectio12_:
+  - "Possumus et aliter dicere: quod etiam eisdem verbis, juxta Hebraicam
+    veritatem, in Isaia scriptum sit: Exiet virga de radice Jesse, et Nazaræus
+    de radice ejus conscendet."
+lectio12:
+  - "@Sancti/01-05:Lectio9: s/.*(Nazarǽus sanctus)/$1/s s/$/~/"
+  - "@:Lectio12_"
+responsory12:
+  - "@SanctiM/01-01"
+responsory12c:
+  - "@:Responsory12"
+mm-capitulum:
+  - "@Tempora/Nat1-0:Capitulum Sexta"
+  - _
+  - "@Sancti/12-25:Versum 2"
+rubrica-cisterciensis/versum-2:
+  - "@Tempora/Nat1-0"
+responsory-tertiam:
+  - "@SanctiM/12-25"
+responsory-sextam:
+  - "@SanctiM/12-25"
+responsory-nonam:
+  - "@SanctiM/12-25"

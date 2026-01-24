@@ -1,0 +1,21 @@
+officium:
+  - S. Saturnini Martyris
+rank:
+  - ""
+  - Simplex
+  - "1.1"
+  - "@C2a-1"
+rule:
+  - vide C2a-1;
+oratio:
+  - "Deus, qui nos beáti Saturníni Mártyris tui concédis natalícia pérfrui: ejus
+    nos tríbue méritis adjuvári."
+  - $Per Dominum
+secreta:
+  - "Múnera, Dómine, tibi dicáta sanctífica: et, intercedénte beáto Saturníno
+    Mártyre tuo, per hæc eádem nos placátus inténde."
+  - $Per Dominum
+postcommunio:
+  - "Sanctíficet nos, quǽsumus, Dómine, tui percéptio sacraménti: et
+    intercessióne Sanctórum tuórum tibi reddat accéptos."
+  - $Per Dominum

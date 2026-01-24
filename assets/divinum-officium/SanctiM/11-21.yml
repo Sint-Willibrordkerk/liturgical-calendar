@@ -1,0 +1,18 @@
+references: "@Sancti/11-21"
+rule:
+  - (nisi rubrica 1963) 12 lectiones
+  - Doxology=Nat
+rubrica-1963/responsory3:
+  - "@Commune/C11:Responsory1"
+lectio5:
+  - "@Sancti/11-21:Lectio4:s/ In lucem.*//"
+lectio6:
+  - "@Sancti/11-21:Lectio4:s/.* (?=In lucem)//s"
+lectio7:
+  - "@Sancti/11-21:Lectio5"
+responsory7:
+  - "@CommuneM/C11"
+lectio8:
+  - "@Sancti/11-21:Lectio6"
+responsory9:
+  - "@Commune/C11:Responsory7:s/festivitátem/Præsentatiónem/"

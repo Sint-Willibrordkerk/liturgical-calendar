@@ -1,0 +1,136 @@
+references:
+  references: "@CommuneCist/C1p"
+  officium:
+    - "@Commune/C2p"
+  hymnus-vespera:
+    - "@Commune/C2"
+  hymnusm-vespera:
+    - "@Commune/C2"
+  versum-1:
+    - V. Justi in perpétuum vivent, allelúia.
+    - R. Et apud Dóminum est merces eórum, allelúia.
+  oratio:
+    - "@Commune/C2"
+  hymnus-matutinum:
+    - "@Commune/C2:Hymnus Vespera"
+  hymnusm-matutinum:
+    - "@Commune/C2:HymnusM Vespera"
+  ant-matutinum:
+    - Allelúia, * allelúia, Allelúia.;;1
+    - ;;2
+    - ;;4
+    - ;;5
+    - ;;8
+    - ;;10
+    - Allelúia, * allelúia, Allelúia.;;14
+    - ;;20
+    - ;;23
+    - ;;63
+    - ;;64
+    - ;;91
+    - Allelúia, * allelúia, Allelúia.;;256;257;258
+  nocturn-1-versum:
+    - "@CommuneCist/C3::s/\\.$/, allelúia.$/g"
+  nocturn-2-versum:
+    - "@CommuneCist/C3::s/\\.$/, allelúia.$/g"
+  nocturn-3-versum:
+    - "@CommuneCist/C3::s/\\.$/, allelúia.$/g"
+  lectio1:
+    - "@CommuneM/C2p"
+  responsory1:
+    - "@CommuneCist/C1p:Responsory11"
+  lectio2:
+    - "@CommuneM/C2p"
+  responsory2:
+    - "@Commune/C2"
+  lectio3:
+    - "@CommuneM/C2p"
+  responsory3:
+    - "@CommuneCist/C2:Responsory6"
+  lectio4:
+    - "@CommuneM/C2p"
+  responsory4:
+    - "@Tempora/Pasc0-2:Responsory2:1-4"
+  lectio5:
+    - "@Commune/C2p:Lectio4 in 2 loco"
+  responsory5:
+    - "@CommuneCist/C1p:Responsory7"
+  lectio6:
+    - "@Commune/C2p:Lectio5 in 2 loco:s/Inexpugnábilem.*//"
+  responsory6:
+    - "@Commune/C1p:Responsory2"
+  lectio7:
+    - "@Commune/C2p:Lectio5 in 2 loco:s/.*Inexpugnábilem/Inexpugnábilem/ s/$/~/"
+    - "@Commune/C2p:Lectio6 in 2 loco:s/Pretiósa mors.*//"
+  responsory7:
+    - R. Justórum ánimæ in manu Dei sunt,
+    - "* Et non tanget illos torméntum mortis, allelúia, allelúia."
+    - V. Visi sunt óculis insipiéntium mori, illi autem sunt in pace.
+    - R. Et non tanget illos torméntum mortis, allelúia, allelúia.
+  lectio8:
+    - "@Commune/C2p:Lectio6 in 2 loco:s/.*Pretiósa mors/Pretiósa mors/"
+  responsory8:
+    - "@CommuneCist/C1p:Responsory9"
+  lectio9:
+    - "@Commune/C2p:Lectio7"
+  responsory9:
+    - "@CommuneCist/C1p:Responsory3"
+  lectio10:
+    - "@Commune/C2p:Lectio8:s/Sed cum .*//s"
+  lectio11:
+    - "@Commune/C2p:Lectio9:s/Secúndum hoc .*//s"
+  responsory11:
+    - "@CommuneM/C2p:Responsory12"
+  lectio12:
+    - "@Commune/C2p:Lectio9:s/.* Secúndum hoc /Secúndum hoc /s"
+  responsory12:
+    - R. Lavérunt stolas suas,
+    - "* Et cándidas eas fecérunt in sánguine Agni, Allelúia, allelúia,
+      allelúia."
+    - "V. Isti sunt qui venérunt ex magna tribulatióne, et lavérunt stolas suas:"
+    - R. Et cándidas eas fecérunt in sánguine Agni, Allelúia, allelúia, allelúia.
+  hymnus-laudes:
+    - "@Commune/C2"
+  hymnusm-laudes:
+    - "@Commune/C2"
+  versum-2:
+    - "@:Versum 1"
+  responsory-breve-tertia:
+    - R.br. Sancti tui, Dómine, benedícent te. Allelúja, allelúja.
+    - R. Sancti tui, Dómine, benedícent te. Allelúja, allelúja.
+    - V. Glóriam regni tui dicent, et poténtiam tuam loquéntur.
+    - R. Allelúja, allelúja.
+  responsory-breve-sexta:
+    - R.br. Exúltent justi in conspéctu Dei, * Allelúia, allelúia.
+    - R. Exúltent justi in conspéctu Dei, * Allelúia, allelúia.
+    - V. Et delecténtur in lætítia.
+    - R. Allelúia, allelúia.
+  versum-3:
+    - "@:Versum 1"
+  evangelium:
+    - "@Commune/C2p"
+  lectio5-in-2-loco:
+    - "@Commune/C2p:Lectio4 in 2 loco"
+  lectio6-in-2-loco:
+    - "@Commune/C2p:Lectio5 in 2 loco:s/Inexpugnábilem .*//s"
+  lectio7-in-2-loco:
+    - "@Commune/C2p:Lectio5 in 2 loco:s/.* Inexpugnábilem /Inexpugnábilem /s
+      s/$/~/"
+    - "@Commune/C2p:Lectio6 in 2 loco:s/Pretiósa est .*//s"
+  lectio8-in-2-loco:
+    - "@Commune/C2p:Lectio6 in 2 loco:s/.* Pretiósa est /Pretiósa est /s"
+  lectio9-in-2-loco:
+    - "@Commune/C2p:Lectio7 in 2 loco:s/Quamvis .*//s"
+  lectio10-in-2-loco:
+    - "@Commune/C2p:Lectio7 in 2 loco:s/.* Quamvis /Quamvis /s s/$/~/"
+    - "@Commune/C2p:Lectio8 in 2 loco:s/Ligna .*//s"
+  lectio11-in-2-loco:
+    - "@Commune/C2p:Lectio8 in 2 loco:s/.* Ligna /Ligna /s"
+  lectio12-in-2-loco:
+    - "@Commune/C2p:Lectio9 in 2 loco"
+  evangelium-in-2-loco:
+    - "@Commune/C3p:Evangelium"
+oratio:
+  - "Præsta, quǽsumus, omnípotens Deus: ut, qui beáti N. Mártyris tui natalítia
+    cólimus, intercessióne ejus in tui nóminis amóre roborémur."
+  - $Per Dominum

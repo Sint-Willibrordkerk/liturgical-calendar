@@ -1,0 +1,50 @@
+references: "@Sancti/07-22"
+rule:
+  - 12 lectiones
+rubrica-196/rule: []
+lectio1:
+  - "@Sancti/07-22"
+lectio2:
+  - "@Sancti/07-22::1-3 s/-4/-2/"
+lectio3:
+  - "@Sancti/07-22:Lectio2:1 s/1-4/3-5/"
+  - "@Sancti/07-22:Lectio2:4-5"
+  - "@Sancti/07-22:Lectio3:2"
+lectio4:
+  - "@Sancti/07-22:Lectio3:1 s/5-/6-/"
+  - "@Sancti/07-22:Lectio3:3-4"
+responsory4:
+  - "@Tempora/Pasc0-0:Responsory2:s/, all.*/./g"
+lectio5:
+  - "@Sancti/07-22:Lectio4"
+responsory5:
+  - "@Commune/C6:Responsory4"
+lectio6:
+  - "@Sancti/07-22:Lectio5"
+responsory6:
+  - "@Commune/C6:Responsory5"
+lectio7:
+  - "@Sancti/07-22:Lectio6:s/ Quæréntes.*//"
+responsory7:
+  - "@Commune/C7:Responsory6"
+lectio8:
+  - "@Sancti/07-22:Lectio6:s/.* Quæréntes/Quæréntes/"
+lectio9:
+  - "@Sancti/07-22:Lectio7:s/Nóverat.*//"
+responsory9:
+  - "@Commune/C7:Responsory7"
+lectio10:
+  - "@Sancti/07-22:Lectio7:s/.*Nóverat/Nóverat/s s/$/~/"
+  - "@Sancti/07-22:Lectio8:s/Quia.*//"
+responsory10:
+  - "@Commune/C7:Responsory8"
+lectio11:
+  - "@Sancti/07-22:Lectio8:s/.* Quia/Quia/"
+lectio12:
+  - "@Sancti/07-22:Lectio9"
+responsory12:
+  - "@CommuneM/C7::s/N\\./María Magdaléna/"
+rubrica-1963/ant-3:
+  - "@:Ant 1"
+evangelium:
+  - "@Tempora/Quad5-4"

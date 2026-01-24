@@ -1,0 +1,111 @@
+references: "@Sancti/12-25"
+rule:
+  - 12 lectiones
+responsory-vespera-1:
+  - R.br. Hódie sciétis * Quia véniet Dóminus.
+  - R. Hódie sciétis * Quia véniet Dóminus.
+  - V. Et mane vidébitis glóriam ejus.
+  - R. Hódie sciétis * Quia véniet Dóminus.
+  - "&Gloria"
+  - R. Hódie sciétis * Quia véniet Dóminus.
+rubrica-barroux/responsory-vespera-1:
+  - "@:RV1:s/Responsorium. O Juda/R. Judæa/ s/ \\*/\\n*/"
+responsory-vespera:
+  - "@:Responsory Breve Tertia"
+antmatutinumm:
+  - Elevámini, * portæ æternáles, † et introíbit Rex glóriæ.;;23
+  - "In princípio * et ante sǽcula Deus erat Verbum: † ipse natus est nobis
+    Salvátor mundi.;;96"
+  - "Nato * Dómino Angelórum chorus canébat, dicens: Salus Deo nostro,
+    allelúja.;;98"
+ant-matutinum-3n:
+  - "Párvulus * fílius hódie natus est nobis: † et vocábitur Deus, Fortis,
+    allelúja, allelúja."
+ant-matutinum:
+  - "@Sancti/12-25::1-2"
+  - "@:AntMatutinumM:1"
+  - "@Sancti/12-25::3-8"
+  - "@:AntMatutinumM:2"
+  - "@Sancti/12-25::9"
+  - "@:AntMatutinumM:3"
+  - ;;263;264;265
+lectio1:
+  - "@Sancti/12-25:Lectio1"
+lectio2:
+  - "@Sancti/12-25:Lectio2:s/-8/-3/ s/4 .*//s"
+lectio3:
+  - "@Sancti/12-25:Lectio2:s/1-/4-/ s/1 .*4 /4 /s"
+lectio4:
+  - "@Sancti/12-25:Lectio3"
+responsory4:
+  - "R. Descéndit de cælis Deus verus a Patre génitus, † introívit in úterum
+    Vírginis, nobis ut apparéret visíbilis, indútus carne humána protoparénte
+    édita:"
+  - "* Et exívit per portam clausam † Deus et homo, Lux et vita, cónditor mundi."
+  - V. Tamquam sponsus † Dóminus procédens de thálamo suo.
+  - R. Et exívit per portam clausam † Deus et homo, Lux et vita, cónditor mundi.
+lectio5:
+  - "@Sancti/12-25:Lectio4:s/Exsúltet .*//s"
+responsory5:
+  - "@Sancti/12-25:Responsory4"
+lectio6:
+  - "@Sancti/12-25:Lectio4:s/.* Exsúltet /Exsúltet /s"
+responsory6:
+  - "@Sancti/12-25:Responsory5"
+lectio7:
+  - "@Sancti/12-25:Lectio5"
+responsory7:
+  - "@Sancti/12-25:Responsory6"
+lectio8:
+  - "@Sancti/12-25:Lectio6"
+responsory8:
+  - "R. Angelus ad pastóres ait: Annúntio vobis gáudium magnum: quod erit omni
+    pópulo: † quia natus est vobis Salvátor,"
+  - "* Qui est Christus Dóminus, in civitáte David."
+  - V. Inveniétis infántem pannis involútum et pósitum in præsépio.
+  - R. Qui est Christus Dóminus, in civitáte David.
+lectio9:
+  - Léctio sancti Evangélii secúndum Matthǽum
+  - "!Matt 1:1-6"
+  - Liber generatiónis Jesu Christi, fílii David, fílii Abraham. Abraham génuit
+    Isaac, Isaac autem génuit Jacob. Et réliqua.
+  - _
+  - Homilía sancti Hierónymi Presbýteri
+  - "!Lib. 1 Comment. in Matth. v. 1"
+  - "In Isaía légimus: Generatiónem ejus quis enarrábit? Non ergo putémus
+    Evangelístam Prophétæ esse contrárium, ut quod ille impossíbile dixit
+    effátu, hic narráre incípiat: quia ibi de generatióne Divinitátis, hic de
+    incarnatióne est dictum. A carnálibus autem cœpit, ut per hóminem, Deum
+    díscere incipiámus. Fílii David, fílii Abraham. Ordo præpósterus, sed
+    necessário commutátus. Si enim primum posuísset Abraham et póstea David,
+    rursus ei repeténdus fúerat Abraham, ut generatiónis séries texerétur."
+responsory9:
+  - "@Sancti/01-01:Responsory1"
+lectio10:
+  - "@Sancti/12-25:Lectio7"
+responsory10:
+  - "@Sancti/12-25:Responsory7"
+lectio11:
+  - "@Sancti/12-25:Lectio8"
+responsory11:
+  - R. In princípio erat Verbum, et Verbum erat apud Deum, † et Deus erat Verbum.
+  - "* Hoc erat in princípio apud Deum."
+  - V. Omnia per ipsum facta sunt, et sine ipso factum est nihil.
+  - R. Hoc erat in princípio apud Deum.
+lectio12:
+  - "@Sancti/12-25:Lectio9"
+responsory12:
+  - "@Sancti/12-25:Responsory8"
+rv1:
+  - "Responsorium. O Juda et Jerúsalem, nolíte timére: * Cras egrediémini, et
+    Dóminus erit vobíscum."
+  - V. Constántes estóte, vidébitis auxílium Dómini super vos.
+  - R. Cras egrediémini, et Dóminus erit vobíscum.
+responsory-tertiam:
+  - "@Sancti/12-25:Versum Nona"
+responsory-sextam:
+  - "@Sancti/12-25:Versum 2"
+responsory-nonam:
+  - "@Sancti/12-25:Versum Sexta"
+evangelium:
+  - "@Sancti/09-08"

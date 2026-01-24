@@ -1,0 +1,375 @@
+references:
+  references: "@Commune/C1"
+  officium:
+    - Commune Apostolorum tempore Paschali
+  rule:
+    - Psalmi Dominica
+    - Antiphonas horas
+    - Psalm5 Vespera=116
+    - Psalm5 Vespera3=138
+    - Una Antiphona
+  ant-vespera:
+    - "Sancti tui, * Dómine, florébunt sicut lílium, allelúja: et sicut odor
+      bálsami erunt ante te, allelúja."
+    - "In cæléstibus regnis * Sanctórum habitátio est, allelúja: et in ætérnum
+      réquies eórum, allelúja."
+    - In velaménto * clamábant Sancti tui, Dómine, allelúja, allelúja, allelúja.
+    - Spíritus et ánimæ * justórum hymnum dícite Deo nostro, allelúja, allelúja.
+    - Fulgébunt justi * sicut sol in conspéctu Dei, allelúja.
+  hymnus-vespera:
+    - "{:H-Tristeserantapostoli:}v. Tristes erant Apóstoli"
+    - De Christi acérbo fúnere,
+    - Quem morte crudelíssima
+    - Servi necárant ímpii.
+    - _
+    - Sermóne verax Angelus
+    - "Muliéribus prædíxerat:"
+    - Mox ore Christus gáudium
+    - Gregi feret fidélium.
+    - _
+    - Ad ánxios Apóstolos
+    - Currunt statim dum núntiæ,
+    - Illæ micántis óbvia
+    - Christi tenent vestígia.
+    - _
+    - Galilǽæ ad alta móntium
+    - Se cónferunt Apóstoli,
+    - Jesúque, voti cómpotes,
+    - Almo beántur lúmine.
+    - _
+    - Ut sis perénne méntibus
+    - Paschále Jesu gáudium;
+    - A morte dira críminum
+    - Vitæ renátos líbera.
+    - _
+    - "* Deo Patri sit glória"
+    - Et Filio, qui a mórtuis
+    - Surréxit, ac Paráclito
+    - In sempitérna sǽcula.
+    - Amen.
+  hymnusm-vespera:
+    - v. Tristes erant Apóstoli
+    - De nece sui Dómini,
+    - Quem pœna mortis crudéli
+    - Servi damnárant ímpii.
+    - _
+    - Sermóne blando Angelus
+    - "Prædíxit muliéribus:"
+    - In Galilǽa Dóminus
+    - Vidéndus est quantócius.
+    - _
+    - Illæ dum pergunt cóncitæ,
+    - Apóstolis hoc dícere,
+    - Vidéntes eum vívere,
+    - Osc[u]lántur pedes Dómini.
+    - _
+    - Quo ágnito, discípuli
+    - In Galilǽam própere
+    - Pergunt vidére fáciem
+    - Desiderátam Dómini.
+    - _
+    - Quǽsumus, Auctor ómnium,
+    - In hoc pascháli gáudio,
+    - Ab omni mortis ímpetu
+    - Tuum defénde pópulum.
+    - _
+    - "* Glória tibi Dómine,"
+    - Qui surrexíst[i] a mórtuis,
+    - Cum Patr[e] et Sancto Spíritu,
+    - In sempitérna sǽcula.
+    - Amen.
+  versum-1:
+    - V. Sancti et justi in Dómino gaudéte, allelúja.
+    - R. Vos elégit Deus in hereditátem sibi, allelúja.
+  ant-1:
+    - Lux perpétua * lucébit Sanctis tuis, Dómine, et ætérnitas témporum,
+      allelúja.
+  invit:
+    - Regem Apostolórum Dóminum, * Veníte, adorémus, allelúja.
+  hymnus-matutinum:
+    - "@:Hymnus Vespera"
+  hymnusm-matutinum:
+    - "@:HymnusM Vespera"
+  ant-matutinum:
+    - Stabunt justi * in magna constántia advérsus eos, qui se angustiavérunt,
+      allelúja.;;18
+    - ;;33
+    - ;;44
+    - Ecce * quómodo computáti sunt inter fílios Dei, et inter sanctos sors
+      illórum est, allelúja.;;46
+    - ;;60
+    - ;;63
+    - Lux perpétua * lucébit Sanctis tuis, Dómine, et ætérnitas témporum,
+      allelúja.;;74
+    - ;;96
+    - ;;98
+  nocturn-2-versum:
+    - V. Lux perpétua lucébit Sanctis tuis, Dómine, allelúja.
+    - R. Et ætérnitas témporum, allelúja.
+  nocturn-3-versum:
+    - V. Lætítia sempitérna super cápita eórum, allelúja.
+    - R. Gáudium et exsultatiónem obtinébunt, allelúja.
+  responsory1:
+    - "R. Beátus vir qui métuit Dóminum, allelúja:"
+    - "* In mandátis ejus cupit nimis, allelúja, allelúja, allelúja."
+    - V. Glória et divítiæ in domo ejus, et justítia ejus manet in sǽculum
+      sǽculi.
+    - R. In mandátis ejus cupit nimis, allelúja, allelúja, allelúja.
+  responsory2:
+    - R. Tristítia vestra, allelúja,
+    - "* Convertétur in gáudium, allelúja, allelúja."
+    - V. Mundus autem gaudébit, vos vero contristabímini, sed tristítia vestra.
+    - R. Convertétur in gáudium, allelúja, allelúja.
+  responsory3:
+    - R. Pretiósa in conspéctu Dómini, allelúja,
+    - "* Mors Sanctórum ejus, allelúja."
+    - V. Custódit Dóminus ómnia ossa eórum, unum ex his non conterétur.
+    - R. Mors Sanctórum ejus, allelúja.
+    - "&Gloria"
+    - R. Mors Sanctórum ejus, allelúja.
+  responsory4:
+    - R. Lux perpétua lucébit Sanctis tuis, Dómine,
+    - "* Et ætérnitas témporum, allelúja, allelúja."
+    - "V. Lætítia sempitérna erit super cápita eórum: gáudium et exsultatiónem
+      obtinébunt."
+    - R. Et ætérnitas témporum, allelúja, allelúja.
+  responsory5:
+    - R. Virtúte magna reddébant Apóstoli
+    - "* Testimónium resurrectiónis Jesu Christi Dómini nostri, allelúja,
+      allelúja."
+    - V. Repléti quidem Spíritu Sancto, loquebántur cum fidúcia verbum Dei.
+    - R. Testimónium resurrectiónis Jesu Christi Dómini nostri, allelúja,
+      allelúja.
+  responsory6:
+    - R. Isti sunt agni novélli, qui annuntiavérunt, allelúja, modo venérunt ad
+      fontes,
+    - "* Repléti sunt claritáte, allelúja, allelúja."
+    - V. In conspéctu Agni amícti sunt stolis albis, et palmæ in mánibus eórum.
+    - R. Repléti sunt claritáte, allelúja, allelúja.
+    - "&Gloria"
+    - R. Repléti sunt claritáte, allelúja, allelúja.
+  responsory7:
+    - "R. Ego sum vitis vera, et vos pálmites:"
+    - "* Qui manet in me, et ego in eo, hic fert fructum multum, allelúja,
+      allelúja."
+    - V. Sicut diléxit me Pater, et ego diléxi vos.
+    - R. Qui manet in me, et ego in eo, hic fert fructum multum, allelúja,
+      allelúja.
+  responsory8:
+    - "R. Cándidi facti sunt Nazarǽi ejus, allelúja: splendórem Deo dedérunt,
+      allelúja:"
+    - "* Et sicut lac coaguláti sunt, allelúja, allelúja."
+    - V. Candidióres nive, nitidióres lacte, rubicundióres ébore antíquo,
+      sapphíro pulchrióres.
+    - R. Et sicut lac coaguláti sunt, allelúja, allelúja.
+    - "&Gloria"
+    - R. Et sicut lac coaguláti sunt, allelúja, allelúja.
+  ant-laudes:
+    - "@:Ant Vespera"
+  capitulum-laudes:
+    - "!Sap 5:1"
+    - v. Stabunt justi in magna constántia advérsus eos qui se angustiavérunt et
+      qui abstulérunt labóres eórum.
+    - $Deo gratias
+  hymnus-laudes:
+    - "{:H-Paschalemundogaudium:}v. Paschále mundo gáudium"
+    - Sol núntiat formósior,
+    - Cum luce fulgéntem nova
+    - Jesum vident Apóstoli.
+    - _
+    - In carne Christi vúlnera
+    - Micáre tamquam sídera
+    - Mirántur, et quidquid vident
+    - Testes fidéles prǽdicant.
+    - _
+    - Rex Christe clementíssime,
+    - "Tu corda nostra pósside:"
+    - Ut lingua grates débitas
+    - Tuo repéndat nómini.
+    - _
+    - Ut sis perénne méntibus
+    - Paschále Jesu gáudium;
+    - A morte dira críminum
+    - Vitæ renátos líbera.
+    - _
+    - "* Deo Patri sit glória,"
+    - Et Fílio, qui a mórtuis
+    - Surréxit, ac Paráclito,
+    - In sempitérna sǽcula.
+    - Amen.
+  hymnusm-laudes:
+    - v. Claro pascháli gáudio
+    - Sol mundo nitet rádio,
+    - Cum Christum jam Apóstoli
+    - Visu cernunt corpóreo.
+    - _
+    - Osténsa sibi vúlnera
+    - In Christi carne fúlgida,
+    - Resurrexísse Dóminum
+    - Voce faténtur pública.
+    - _
+    - Rex Christe clementíssime,
+    - Tu corda nostra pósside,
+    - Ut tibi laudes débitas
+    - Reddámus omni témpore.
+    - _
+    - Quǽsumus, Auctor ómnium,
+    - In hoc pascháli gáudio,
+    - Ab omni mortis ímpetu
+    - Tuum defénde pópulum.
+    - _
+    - "* Glória tibi Dómine,"
+    - Qui surrexíst[i] a mórtuis,
+    - Cum Patr[e] et Sancto Spíritu,
+    - In sempitérna sǽcula.
+    - Amen.
+  versum-2:
+    - V. Pretiósa in conspéctu Dómini, allelúja.
+    - R. Mors Sanctórum ejus, allelúja.
+  ant-2:
+    - Fíliæ Jerúsalem, * veníte et vidéte Mártyres cum corónis, quibus coronávit
+      eos Dóminus in die solemnitátis et lætítiæ, allelúja, allelúja.
+  lectio-prima:
+    - "!Rom 8:28"
+    - v. Scimus quóniam diligéntibus Deum ómnia cooperántur in bonum, iis qui
+      secúndum propósitum vocáti sunt sancti.
+  responsory-breve-tertia:
+    - "@:Versum 1:1 s/V./R.br./ s/\\, al.*/./"
+    - "@:Versum 1:1 s/V./R./ s/\\, al.*/./"
+    - "@:Versum 1:2 s/R./V./ s/\\, al.*/./"
+    - "@Psalterium/Common/Prayers:Alleluia Duplex: s/^/R. /"
+    - "&Gloria"
+    - "@:Versum 1:1 s/V./R./ s/\\, al.*/./"
+  capitulum-sexta:
+    - "!Sap. 5:5"
+    - v. Ecce quómodo computáti sunt inter fílios Dei, et inter sanctos sors
+      illórum est.
+    - $Deo gratias
+  responsory-breve-sexta:
+    - "@:Nocturn 2 Versum:1 s/V./R.br./ s/\\, al.*/./"
+    - "@:Nocturn 2 Versum:1 s/V./R./ s/\\, al.*/./"
+    - "@:Nocturn 2 Versum:2 s/R./V./ s/\\, al.*/./"
+    - "@Psalterium/Common/Prayers:Alleluia Duplex: s/^/R. /"
+    - "&Gloria"
+    - "@:Nocturn 2 Versum:1 s/V./R./ s/\\, al.*/./"
+  capitulum-nona:
+    - "@:Lectio Prima"
+    - $Deo gratias
+  responsory-breve-nona:
+    - "@:Nocturn 3 Versum:1 s/V./R.br./ s/\\, al.*/./"
+    - "@:Nocturn 3 Versum:1 s/V./R./ s/\\, al.*/./"
+    - "@:Nocturn 3 Versum:2 s/R./V./ s/\\, al.*/./"
+    - "@Psalterium/Common/Prayers:Alleluia Duplex: s/^/R. /"
+    - "&Gloria"
+    - "@:Nocturn 3 Versum:1 s/V./R./ s/\\, al.*/./"
+  ant-vespera-3:
+    - "@:Ant Vespera:1 s/$/;;109/"
+    - "@:Ant Vespera:2 s/$/;;112/"
+    - "@:Ant Vespera:3 s/$/;;115/"
+    - "@:Ant Vespera:4 s/$/;;125/"
+    - "@:Ant Vespera:5 s/$/;;138/"
+  versum-3:
+    - "@:Versum 2"
+  ant-3:
+    - "Sancti et justi * in Dómino gaudéte, allelúja: vos elégit Deus in
+      hereditátem sibi, allelúja."
+officium:
+  - Commune Evangelistarum tempore Paschali
+lectio1:
+  - Incipit liber Ezechiélis Prophétæ
+  - "!Ezech 1:1-4"
+  - 1 Et factum est in trigésimo anno, in quarto, in quinta mensis, cum essem in
+    médio captivórum juxta flúvium Chobar, apérti sunt cæli, et vidi visiónes
+    Dei.
+  - 2 In quinta mensis, ipse est annus quintus transmigratiónis regis Jóachim,
+  - "3 factum est verbum Dómini ad Ezechiélem fílium Buzi sacerdótem, in terra
+    Chaldæórum, secus flumen Chobar: et facta est super eum ibi manus Dómini."
+  - "4 Et vidi, et ecce ventus túrbinis veniébat ab Aquilóne, et nubes magna, et
+    ignis invólvens, et splendor in circúitu ejus: et de médio ejus, quasi
+    spécies eléctri, id est, de médio ignis:"
+lectio2:
+  - "!Ezech 1:5-9"
+  - 5 Et in médio ejus similitúdo quátuor animálium, et hic aspéctus eórum,
+    similitúdo hóminis in eis.
+  - 6 Quátuor fácies uni, et quátuor pennæ uni.
+  - "7 Pedes eórum, pedes recti, et planta pedis eórum quasi planta pedis
+    vítuli: et scintíllæ quasi aspéctus æris candéntis."
+  - "8 Et manus hóminis sub pennis eórum, in quátuor pártibus: et fácies et
+    pennas per quátuor partes habébant,"
+  - 9 junctǽque erant pennæ eórum altérius ad álterum. Non revertebántur cum
+    incéderent, sed unumquódque ante fáciem suam gradiebátur.
+lectio3:
+  - "!Ezech 1:10-12"
+  - 10 Similitúdo autem vultus eórum, fácies hóminis et fácies leónis a dextris
+    ipsórum quátuor, fácies autem bovis a sinístris ipsórum quátuor, et fácies
+    áquilæ désuper ipsórum quátuor.
+  - "11 Fácies eórum et pennæ eórum exténtæ désuper: duæ pennæ singulórum
+    jungebántur, et duæ tegébant córpora eórum:"
+  - "12 et unumquódque eórum coram fácie sua ambulábat: ubi erat ímpetus
+    spíritus, illuc gradiebántur, nec revertebántur cum ambulárent."
+lectio4:
+  - De Expositióne sancti Gregórii Papæ super Ezechiélem Prophétam
+  - "!Homilia 3, Lib. 1"
+  - "Sancta quátuor animália, quæ prophetíæ spíritu futúra prævidéntur, subtíli
+    narratióne describúntur, cum dícitur: Quátuor fácies uni, et quátuor pennæ
+    uni. Quid per fáciem, nisi notítia; et quid per pennas, nisi volátus
+    exprímitur? Per fáciem quippe unusquísque cognóscitur: per pennas vero in
+    altum ávium córpora sublevántur. Fácies ítaque ad fidem pértinet, penna ad
+    contemplatiónem. Per fidem namque ab omnipoténti Deo cognóscimur, sicut ipse
+    de suis óvibus dicit: Ego sum pastor bonus, et cognósco oves meas, et
+    cognóscunt me meæ. Qui rursus ait: Ego scio quos elégerim. Per
+    contemplatiónem vero, qua super nosmetípsos tóllimur, quasi in áëra
+    levámur."
+lectio5:
+  - "Quátuor ergo fácies uni sunt: quia si requíras quid Matthǽus de
+    incarnatióne Dómini séntiat: hoc nimírum sentit, quod Marcus, Lucas, et
+    Joánnes. Si quæras quid Joánnes séntiat; hoc procul dúbio, quod Lucas,
+    Marcus, et Matthǽus. Si quæras quid Marcus; hoc quod Matthǽus, Joánnes, et
+    Lucas. Si quæras quid Lucas; hoc quod Joánnes, Matthǽus, et Marcus sentit.
+    Quátuor ergo fácies uni sunt: quia notítia fídei, qua cognoscúntur a Deo,
+    ipsa est in uno, quæ est simul in quátuor. Quidquid enim in uno invéneris,
+    hoc in ómnibus simul quátuor cognósces."
+lectio6:
+  - "Et quátuor pennæ uni: quia Dei omnipoténtis Fílium Dóminum! nostrum Jesum
+    Christum simul omnes concórditer prǽdicant: et ad divinitátem ejus mentis
+    óculos levántes, penna contemplatiónis volant. Evangelistárum ergo fácies ad
+    humanitátem Dómini pértinet, penna ad divinitátem: quia in eum, quem
+    corpóreum aspíciunt, quasi fácies inténdunt: sed dum hunc esse
+    incircumscríptum atque incorpóreum ex divinitáte annúntiant, per
+    contemplatiónis pennam quasi in áëra levántur. Quia ítaque una est fides
+    incarnatiónis ejus in ómnibus, et par contemplátio divinitátis ejus in
+    síngulis, recte nunc dícitur: Quátuor fácies uni, et quátuor pennæ uni."
+lectio7:
+  - Léctio sancti Evangélii secúndum Lucam
+  - "!Luc 10:1-9"
+  - "In illo témpore: Designávit Dóminus et álios septuagínta duos: et misit
+    illos binos ante fáciem suam, in omnem civitátem et locum, quo erat ipse
+    ventúrus. Et réliqua."
+  - _
+  - Homilía sancti Gregórii Papæ
+  - "!Homilia 17 in Evangelia"
+  - "Dóminus et Salvátor noster, fratres caríssimi, aliquándo nos sermónibus,
+    aliquándo vero opéribus ádmonet. Ipsa étenim facta ejus præcépta sunt: quia
+    dum áliquid tácitus facit, quid ágere debeámus innotéscit. Ecce enim binos
+    in prædicatiónem discípulos mittit: quia duo sunt præcépta caritátis, Dei
+    vidélicet amor, et próximi: et minus quam inter duos cáritas habéri non
+    potest. Nemo enim próprie ad semetípsum habére caritátem dícitur: sed
+    diléctio in álterum tendit, ut cáritas esse possit."
+lectio8:
+  - "Ecce enim binos ad prædicándum discípulos Dóminus mittit: quátenus hoc
+    nobis tácitus ínnuat, quia qui caritátem erga álterum non habet,
+    prædicatiónis offícium suscípere nullátenus debet. Bene autem dícitur, quia
+    misit eos ante fáciem suam in omnem civitátem et locum, quo erat ipse
+    ventúrus. Prædicatóres enim suos Dóminus séquitur: quia prædicátio prǽvenit,
+    et tunc ad mentis nostræ habitáculum Dóminus venit, quando verba
+    exhortatiónis præcúrrunt: atque per hoc véritas in mente suscípitur."
+lectio9:
+  - "Hinc namque eísdem prædicatóribus Isaías dicit: Paráte viam Dómini, rectas
+    fácite sémitas Dei nostri. Hinc fíliis Psalmísta ait: Iter fácite ei, qui
+    ascéndit super occásum. Super occásum namque Dóminus ascéndit: quia unde in
+    passióne occúbuit, inde majórem suam glóriam resurgéndo manifestávit. Super
+    occásum vidélicet ascéndit; quia mortem quam pértulit, resurgéndo calcávit.
+    Ei ergo qui ascéndit super occásum, iter fácimus, cum nos ejus glóriam
+    vestris méntibus prædicámus, ut eas et ipse post véniens, per amóris sui
+    præséntiam illústret."
+  - "&teDeum"

@@ -1,0 +1,115 @@
+officium:
+  - Feria Quinta infra Hebdomadam III in Quadragesima
+rank:
+  - ""
+  - Feria major
+  - "2.1"
+rubrica-1930/rank:
+  - ""
+  - Feria major
+  - "4.9"
+rubrica-196/rank:
+  - ""
+  - Feria major
+  - "3.9"
+rule:
+  - no Gloria
+  - Suffragium=Sanctorum;Vivis;;
+  - Super popul
+introitus:
+  - "v. Salus pópuli ego sum, dicit Dóminus: de quacúmque tribulatióne
+    clamáverint ad me, exáudiam eos: et ero illórum Dóminus in perpétuum"
+  - "!Ps 77:1"
+  - "Atténdite, pópule meus, legem meam: inclináte aurem vestram in verba oris
+    mei."
+  - "&Gloria"
+  - "v. Salus pópuli ego sum, dicit Dóminus: de quacúmque tribulatióne
+    clamáverint ad me, exáudiam eos: et ero illórum Dóminus in perpétuum"
+oratio:
+  - "Magníficet te, Dómine, sanctórum tuórum Cosmæ et Damiáni beáta solémnitas:
+    qua et illis glóriam sempitérnam, et opem nobis ineffábili providéntia
+    contulísti."
+  - $Per Dominum
+lectio:
+  - Léctio Jeremíæ Prophétæ.
+  - "!Jer 7:1-7"
+  - "In diébus illis: Factum est verbum Dómini ad me, dicens: Sta in porta domus
+    Dómini: et prǽdica ibi verbum istud, et dic: Audíte verbum Dómini, omnis
+    Juda, qui ingredímini per portas has, ut adorétis Dóminum. Hæc dicit Dóminus
+    exercítuum, Deus Israël: Bonas fácite vias vestras et stúdia vestra: et
+    habitábo vobíscum in loco isto. Nolíte confídere in verbis mendácii,
+    dicéntes: Templum Dómini, templum Dómini, templum Dómini est. Quóniam si
+    bene direxéritis vias vestras et stúdia vestra: si fecéritis judícium inter
+    virum et próximum ejus, ádvenæ et pupíllo et víduæ non fecéritis calúmniam,
+    nec sánguinem innocéntem effudéritis in loco hoc, et post deos aliénos non
+    ambulavéritis in malum vobismetípsis: habitábo vobíscum in loco isto, in
+    terra, quam dedi pátribus vestris a sǽculo et usque in sǽculum: ait Dóminus
+    omnípotens."
+graduale:
+  - "!Ps 144:15-16"
+  - "Oculi ómnium in te sperant, Dómine: et tu das illis escam in témpore
+    opportúno,"
+  - "V. Aperis tu manum tuam: et imples omne ánimal benedictióne."
+evangelium:
+  - "@Tempora/Pasc7-6"
+offertorium:
+  - "!Ps 137:7"
+  - "Si ambulávero in médio tribulatiónis, vivificábis me, Dómine: et super iram
+    inimicórum meorum exténdes manum tuam, et salvum me fáciet déxtera tua."
+secreta:
+  - In tuorum, Dómine, pretiósa morte justórum sacrifícium illud offérimus, de
+    quo martýrium sumpsit omne princípium.
+  - $Per Dominum
+communio:
+  - "!Ps 118:4-5"
+  - "Tu mandásti, mandáta tua custodíri nimis: útinam dirigántur viæ meæ, ad
+    custodiéndas justificatiónes tuas."
+postcommunio:
+  - "Sit nobis, Dómine, sacraménti tui certa salvátio: quæ cum beatórum Mártyrum
+    tuórum Cosmæ et Damiáni méritis implorátur."
+  - $Per Dominum
+super-populum:
+  - "!Oratio super populum"
+  - v. Orémus.
+  - v. Humiliáte cápita vestra Deo.
+  - "v. Subjéctum tibi pópulum, quǽsumus, Dómine, propitiátio cœléstis
+    amplíficet: et tuis semper fáciat servíre mandátis."
+  - $Per Dominum
+lectio1:
+  - "@Tempora/Pasc7-6:Lectio1"
+responsory1:
+  - "@Tempora/Quad3-0:Responsory1"
+lectio2:
+  - "@Tempora/Pasc7-6:Lectio2"
+responsory2:
+  - "@Tempora/Quad3-0:Responsory2"
+lectio3:
+  - "Et bene sábbato cœpit, ut ipsum se osténderet Creatórem, qui ópera opéribus
+    intéxeret, et prosequerétur opus, quod ipse jam cœ́perat: ut si domum faber
+    renováre dispónat, non a fundaméntis, sed a culmínibus íncipit sólvere
+    vetustátem. Itaque ibi prius manum ádmovet, ubi ante desíerat: deínde a
+    minóribus íncipit, ut ad majóra pervéniat. Liberáre a dǽmone et hómines, sed
+    in verbo Dei possunt: resurrectiónem mórtuis imperáre, divínæ solíus est
+    potestátis. Fortássis étiam in typo mulíeris illíus socrus Simónis et
+    Andréæ, váriis críminum fébribus caro nostra languébat, et diversárum
+    cupiditátum immódicis æstuábat illécebris. Nec minórem febrem amóris esse
+    díxerim, quam calóris. Itaque illa ánimum, hæc corpus inflámmat. Febris enim
+    nostra, avarítia est: febris nostra, libído est: febris nostra, luxúria est:
+    febris nostra, ambítio est: febris nostra, iracúndia est."
+responsory3:
+  - "@Tempora/Quad3-0:Responsory3"
+ant-2:
+  - "Exíbant autem dæmónia * a multis clamántia, et dicéntia, Quia tu es
+    Christus Fílius Dei: et íncrepans non sinébat ea loqui, quia sciébant ipsum
+    esse Christum."
+oratio-2:
+  - "Magníficet te, Dómine, sanctórum tuórum Cosmæ et Damiáni beáta solémnitas:
+    qua et illis glóriam sempitérnam, et opem nobis ineffábili providéntia
+    contulísti."
+  - $Per Dominum
+ant-3:
+  - Omnes qui habébant infírmos, * ducébant illos ad Jesum, et sanabántur.
+oratio-3:
+  - "Subjéctum tibi pópulum, quǽsumus, Dómine, propitiátio cæléstis amplíficet:
+    et tuis semper fáciat servíre mandátis."
+  - $Per Dominum

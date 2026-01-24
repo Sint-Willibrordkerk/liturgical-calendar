@@ -1,0 +1,196 @@
+references: "@Sancti/06-24"
+rule:
+  - 12 lectiones
+  - Psalmi Dominica
+ant-vespera:
+  - "@Sancti/06-24::1-4"
+rubrica-cisterciensis/ant-vespera: []
+rubrica-barroux/responsory-vespera-1:
+  - "@Sancti/06-24:Responsory7"
+antmatutinumm:
+  - "Nazarǽus * vocábitur puer iste: † vinum et síceram non bibet, et omne
+    immúndum non manducábit ex útero matris suæ.;;63"
+  - "Erit enim * magnus coram Dómino: † nam et manus ejus cum ipso est.;;64"
+  - Ipse præíbit * ante illum in spíritu et virtúte Elíæ † paráre Dómino plebem
+    perféctam.;;91
+rubrica-cisterciensis/antmatutinumm:
+  - Joánnes * est nomen ejus, vinum et síceram non bibet, et multi in nativitáte
+    ejus gaudébunt.;;63
+  - Ipse præíbit * ante illum in spíritu et virtúte Elíæ paráre Dómino plebem
+    perféctam.;;64
+  - "Nazarǽus * vocábitur puer iste: vinum et síceram non bibet, et omne
+    immúndum non manducábit ex útero matris suæ.;;91"
+ant-matutinum-3n:
+  - "Descéndit * angelus Dómini ad Zacharíam, dicens: † Accípe púerum in
+    senectúte tua, et habébit nomen Joánnes Baptísta."
+rubrica-cisterciensis/ant-matutinum-3n:
+  - Pro eo * quod non credidísti verbis meis, eris tacens, et non póteris loqui
+    usque in diem nativitátis ejus.
+ant-matutinum:
+  - "@Sancti/06-24::1-3 s/3/4/"
+  - "@Sancti/06-24::4-9 s/8/10/ s/5/8/ s/4/5/"
+  - "@:AntMatutinumM"
+  - ;;256;257;258
+rubrica-cisterciensis/ant-matutinum:
+  - "@Sancti/06-24::1-3 s/3/4/"
+  - "@Sancti/06-24::4-9 s/8/10/ s/5/8/ s/4/5/"
+  - "@:AntMatutinumM"
+  - Pro eo * quod non credidísti verbis meis, eris tacens, et non póteris loqui
+    usque in diem nativitátis ejus.;;256;257;258
+lectio1:
+  - "@Sancti/06-24:Lectio1:1-5 s/-5/-3/"
+lectio2:
+  - "@Sancti/06-24:Lectio1:2-7 s/1-5/4-7/ s/1 .*4 /4 /s"
+  - "@Sancti/06-24:Lectio2:s/!.*// s/8 .*//s"
+rubrica-cisterciensis/responsory2:
+  - "@Sancti/06-24::1-2"
+  - "@:Responsory8_:3"
+  - "@Sancti/06-24::4"
+lectio3:
+  - "@Sancti/06-24:Lectio2:s/6-/8-/ s/6 .*8 /8 /s"
+rubrica-cisterciensis/responsory3:
+  - "@Sancti/06-24::1-2"
+  - "V. Ne tímeas a fácie eórum: quia tecum ego sum:"
+  - "@Sancti/06-24::4"
+lectio4:
+  - "@Sancti/06-24:Lectio3"
+responsory4:
+  - "R. De ventre matris meæ vocávit me Dóminus nómine meo: et pósuit os meum ut
+    gládium acútum: † sub teguménto manus suæ protéxit me,"
+  - "* Pósuit me quasi sagíttam eléctam."
+  - V. Et glorificátus sum in óculis Dómini, et Deus meus factus est fortitúdo
+    mea.
+  - R. Pósuit me quasi sagíttam eléctam.
+rubrica-cisterciensis/responsory4:
+  - R. Ecce constítui te hódie super Gentes, et super regna, dicit Dóminus, ut
+    evéllas, et díssipes, et ædífices, et plantes.
+  - "* In nómine meo."
+  - V. Ad ómnia quæ mittam te, ibis, et univérsa, quæ mandávero tibi, loquéris.
+  - "* In nómine meo."
+lectio5:
+  - Sermo sancti Máximi Epíscopi
+  - "!#"
+  - "Festivátem præséntis diéi, fratres caríssimi, venerándi Joánnis Baptístæ
+    genuína natívitas consecrávit: qui idcírco in hoc sǽculum supérna
+    dispensatióne diréctus est, ut non solum ipse prophetáli sublimarétur
+    glória, sed ut et ómnium étiam per eum prophetárum præcónia firmaréntur. Nec
+    immérito illum præcípuo honóre nunc venerámur, qui speciáli quadam grátia,
+    ob hoc Redemptórem mundi novíssimus prophetávit, ut osténderet eum primus."
+rubrica-cisterciensis/lectio5:
+  - "@Sancti/06-24:Lectio4:s/In áliis c.*//s"
+responsory5:
+  - "@Sancti/06-24:Responsory4"
+rubrica-cisterciensis/responsory5:
+  - "@Sancti/06-24:Responsory8"
+lectio6:
+  - "Hic enim est prophetárum, qui Dóminum nostrum Jesum Christum, quem álii in
+    longa témpora futúrum præsciérunt, própriis óculis vidére méruit, et
+    annuntiáre præséntem. Hic est ille, quem inspiránte Deo, prǽscius annúntiat
+    Isaías, dicens: Vox clamántis in desérto: Paráte viam Dómini. Quam cóngrue,
+    fratres caríssimi, beátus Joánnes prædicátus est vox, qui cæléstis Verbi et
+    præco mittebátur et testis."
+rubrica-cisterciensis/lectio6:
+  - "@Sancti/06-24:Lectio4:s/.*(In áliis c)/$1/s s/Joánnes autem.*//s"
+responsory6:
+  - "@Sancti/06-24:Responsory5"
+rubrica-cisterciensis/responsory6:
+  - "@:Responsory11_"
+lectio7:
+  - "Hic est ille, cujus per Angelum Gabriélem prænuntiátur natívitas, et nomen,
+    et méritum. Hic est étiam, qui judício cæléstis senténtiæ cunctis mortálibus
+    antefértur, dicénte Dómino: Non surréxit inter natos mulíerum major Joánne
+    Baptísta. Quam pulchre dictum est, inter natos mulíerum non esse majórem
+    Joánne; quia ille omnímodis major erat, qui de Vírgine nascebátur."
+rubrica-cisterciensis/lectio7:
+  - "@Sancti/06-24:Lectio4:s/.*(Joánnes autem)/$1/s s/$/~/"
+  - "@Sancti/06-24:Lectio5:s/Ergo quia.*//s"
+responsory7:
+  - "@Sancti/06-24:Responsory6"
+rubrica-cisterciensis/responsory7:
+  - "R. Locútus est Angelus Dómini ad Zacharíam, dicens: Generábis púerum in
+    senectúte tua,"
+  - "* Et habébit nomen Joánnes."
+  - "V. Iste puer erit magnus coram Dómino, nam et manus ejus cum ipso est:"
+  - R. Et habébit nomen Joánnes.
+lectio8:
+  - "Quibus prospéctis, advértite, dilectíssimi, quantam huic reveréntiam,
+    quantum devotiónis debeámus impéndere: qui, ut honorábilis sit, a Sancto est
+    Spíritu prophetátus, promíssus ab Angelo, laudátus a Dómino, et perpétua
+    sanctæ mortis consecrátus. Decébat namque, ut mýsticam nativitátem ejus
+    mirábilis vita sequerétur, et sanctam perfectámque vitam mors Deo devóta
+    conclúderet. Propter quod, fratres toto hódie orbe Christi Ecclésia
+    primórdia nativitátis ejus lætíssima festivitáte concélebrat, qui ætérna
+    mortálibus adésse gáudia, stupénti mundo testis fidelíssimus revelávit."
+rubrica-cisterciensis/lectio8:
+  - "@Sancti/06-24:Lectio5:s/.*(Ergo quia)/$1/s s/$/~/"
+  - "@Sancti/06-24:Lectio6:s/(tenebátur inclúsus\\.).*/$1/s"
+responsory8_:
+  - R. Inter natos mulíerum non surréxit major Joánne Baptísta
+  - "* Qui viam Dómini præparávit in erémo."
+  - V. Hic venit in testimónium, ut testimónium perhibéret de lúmine.
+  - R. Qui viam Dómini præparávit in erémo.
+responsory8:
+  - "@:Responsory8_"
+rubrica-cisterciensis/responsory8:
+  - "@:Responsory8C"
+responsory8c:
+  - R. Ingrésso Zacharía templum Dómini, appáruit ei Gábriel Angelus,
+  - "* Stans a dextris altáris incénsi."
+  - "V. Et Zacharías turbátus est videns, et timor magnus írruit super eum:"
+  - R. Stans a dextris altáris incénsi.
+lectio9:
+  - "@Sancti/06-24:Lectio7:s/Et ídeo in Evangélio.*//s"
+rubrica-cisterciensis/lectio9:
+  - "@Sancti/06-24:Lectio7:s/Pulchre autem.*//s"
+responsory9:
+  - "@Sancti/06-24:Responsory7"
+rubrica-cisterciensis/responsory9:
+  - "@Sancti/06-24:Responsory6:s/os/íllico os/g"
+lectio10:
+  - "@Sancti/06-24:Lectio7:s/.*(Et ídeo in Evangélio)/$1/s s/$/~/"
+  - "@Sancti/06-24:Lectio8:s/Et quidem.*//s"
+rubrica-cisterciensis/lectio10:
+  - "@Sancti/06-24:Lectio7:s/.*(Pulchre autem)/$1/s"
+responsory10:
+  - "@Sancti/06-24:Responsory8"
+rubrica-cisterciensis/responsory10:
+  - "@Sancti/06-24:Responsory5:1-2:s/est præcúrsor dil/Præcúrsor dir/"
+  - "V. Fuit in desérto prædicans baptísmum pœniténtiæ in remissiónem
+    peccatórum:"
+  - "@Sancti/06-24:Responsory5:4"
+lectio11:
+  - "@Sancti/06-24:Lectio8:s/.*(Et quidem)/$1/s s/$/~/"
+  - "@Sancti/06-24:Lectio9:s/Habent.*//s"
+rubrica-cisterciensis/lectio11:
+  - "@Sancti/06-24:Lectio8:s/Et quidem.*//s"
+responsory11_:
+  - "R. Ipse præíbit ante illum in spíritu et virtúte Elíæ:"
+  - "* Ut convértat corda patrum in fílios, et incrédulos ad prudéntiam
+    justórum, † paráre Dómino plebem perféctam."
+  - V. Erit enim magnus coram Dómino, et Spíritu Sancto replébitur.
+  - R. Ut convértat corda patrum in fílios, et incrédulos ad prudéntiam
+    justórum, † paráre Dómino plebem perféctam.
+responsory11:
+  - "@:Responsory11_"
+rubrica-cisterciensis/responsory11:
+  - "@Sancti/06-24:Responsory7"
+lectio12:
+  - "@Sancti/06-24:Lectio9:s/.*(Habent)/$1/s"
+rubrica-cisterciensis/lectio12:
+  - "@Sancti/06-24:Lectio8:s/.*(Et quidem)/$1/s s/$/~/"
+  - "@Sancti/06-24:Lectio9:s/Habent.*//s"
+responsory12:
+  - "R. Tu puer, Prophéta Altíssimi vocáberis:"
+  - "* Præíbis enim ante fáciem Dómini paráre vias ejus."
+  - V. Ad dandam sciéntiam salutis plebi ejus in remissiónem peccatórum.
+  - R. Præíbis enim ante fáciem Dómini paráre vias ejus.
+rubrica-cisterciensis/responsory12:
+  - "@:Responsory8_:1-2"
+  - "@Sancti/06-24:Responsory2:3"
+  - "@:Responsory8_:4"
+responsory-tertiam:
+  - "@Sancti/06-24:Versum 1"
+responsory-sextam:
+  - "@Sancti/06-24:Versum Tertia"
+responsory-nonam:
+  - "@Sancti/06-24:Versum Sexta"

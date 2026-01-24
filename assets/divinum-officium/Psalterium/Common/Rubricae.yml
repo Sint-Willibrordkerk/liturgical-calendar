@@ -1,0 +1,173 @@
+pater-secreto:
+  - "/:« Pater Noster » dicitur secreto usque ad « Et ne nos indúcas in
+    tentatiónem: »:/"
+pater-totum-secreto:
+  - /:« Pater Noster » dicitur totum secreto.:/
+credo-secreto:
+  - /:« Credo » dicitur secreto usque ad « Carnis resurrectiónem. »:/
+pater-post_:
+  - /:Deinde dicitur tantum « Pater Noster » secreto, nisi sequatur alia Hora.:/
+pater-post-v_:
+  - /:Et si tunc terminetur Officium, dicitur tantum « Pater Noster » secreto.:/
+ant-maria-post:
+  - "/:Si discedendum sit a Choro: eoque recitato, subjungitur « Dóminus det. »
+    Et immediate dicitur, cum suis Versu et Oratione, una ex finalibus beatæ
+    Mariæ Virginis Antiphonis. <i>(sicut ad Laudes)</i>:/"
+pater-post:
+  - /:Deinde dicitur tantum « Pater Noster » secreto, nisi sequatur alia Hora.:/
+  - (rubrica 1617 aut rubrica 1930)@:Ant Maria post
+pater-post-v:
+  - /:Et si tunc terminetur Officium, dicitur tantum « Pater Noster » secreto.:/
+  - (rubrica 1617 aut rubrica 1930)@:Ant Maria post
+secreto_:
+  - /:secreto:/
+secreto_c:
+  - /:In Choro, finita Officio parvo B.M.V., dicitur secreto::/
+secreto:
+  - /:secreto:/
+rubrica-cisterciensis/secreto:
+  - /:In Choro, finita Officio parvo B.M.V., dicitur secreto::/
+die-in-cœna-domini/secreto:
+  - /:secreto:/
+die-in-parasceve/secreto:
+  - /:secreto:/
+die-sabbato-sancto/secreto:
+  - /:secreto:/
+secreto-a-laudibus:
+  - /:Si Matutinum a Laudibus separatur, tunc dicitur secreto::/
+rubrica-monastica/secreto-a-laudibus:
+  - /:In Festi Simplicis, et in Officio Ferialis, et si Matutinum a Laudibus
+    separatur, tunc dicitur secreto::/
+rubrica-cisterciensis/secreto-a-laudibus:
+  - /:Præterquam Officio duodecim Lectionum dicitur secreto::/
+secus-absolute-parvum:
+  - /:Dicto Responsorio breve « Dignáre me », absolute incipiuntur, ut
+    sequitur::/
+clara-voce_:
+  - /:Deinde, clara voce, dicitur Versus::/
+clara-voce_c:
+  - /:In Choro, facimus signum Crucis + atque ad signum Superioris inclinamus
+    Altari.:/
+  - /:Deinde alta voce et graviter dicitur Versus::/
+clara-voce:
+  - /:Deinde, clara voce, dicitur Versus::/
+rubrica-cisterciensis/clara-voce:
+  - /:In Choro, facimus signum Crucis + atque ad signum Superioris inclinamus
+    Altari.:/
+  - /:Deinde alta voce et graviter dicitur Versus::/
+secus-absolute:
+  - /:Secus absolute incipiuntur, ut sequitur::/
+rubrica-tridentina/secus-absolute:
+  - /:Dicto Hymno «Te Deum laudamus» vel ultimo Responsorio, absolute dicitur
+    Versus::/
+matutinum:
+  - "!Reliqua omittuntur, nisi %Laudes% separandæ sint."
+rubrica-tridentina/matutinum:
+  - "!Dicto Hymno « Te Deum » aut nono vel tertio Responsorio ejus loco ponitur,
+    statim inchoantur %Laudes%, præterquam in Nocte Nativitatis Domini; quia
+    tunc dicitur Oratio, postea celebratur Missa, ut suo loco notatur."
+rubrica-monastica/matutinum:
+  - "!Reliqua omittuntur, nisi %Laudes% separandæ sint."
+rubrica-tridentina/rubrica-monastica/matutinum:
+  - "!Reliqua omittuntur in Officium duodecim Lectionum, quando immediatæ
+    subsequuntur %Laudes%. Sed in Festi Simplicis, et in Officio Ferialis tam
+    trium, quam unius Lectionis semper dicuntur ut sequitur."
+rubrica-divino/rubrica-monastica/matutinum:
+  - "!Reliqua omittuntur in Officium duodecim Lectionum, quando immediatæ
+    subsequuntur %Laudes%. Sed in Festi Simplicis, et in Officio Ferialis tam
+    trium, quam unius Lectionis semper dicuntur ut sequitur."
+rubrica-cisterciensis/rubrica-monastica/matutinum:
+  - "!Reliqua omittuntur in Officium xij. Lectionum, quas immediatæ subsequuntur
+    %Laudes%. Sed tam in Feriis, quam in Festis iij. Lectionum, in Hieme et in
+    Æstate semper dicuntur ut sequitur."
+matutinum-parvum:
+  - "!Reliqua omittuntur, et statim inchoatur %Laudes%."
+deinde-secreto:
+  - /:Deinde dicitur secreto:/
+pac-ad-completorium:
+  - /:Si post Completorium immediate sequatur Matutinum, tunc bis dicitur «Pater
+    noster, Ave Maria» et «Credo,» pro fine videlicet Officii diei præcedentis,
+    et pro initio Officii diei sequentis.:/
+defunctv:
+  - "&Dominus_vobiscum"
+  - "&Benedicamus_Domino"
+  - "! Post Vesperas diei dicuntur %Vesperae Defunctorum%."
+defunctvc:
+  - "&Dominus_vobiscum"
+  - "&Benedicamus_Domino"
+  - "&Divinum_auxilium"
+  - "! Post Vesperas diei dicuntur %Vesperae Defunctorum%."
+defunctlc:
+  - "&Dominus_vobiscum"
+  - "&Benedicamus_Domino"
+  - "! Post Laudes diei dicuntur %Laudes Defunctorum%."
+defunctm:
+  - "&Dominus_vobiscum"
+  - "&Benedicamus_Domino"
+  - "! Post Laudes diei dicuntur %Matutinum et Laudes Defunctorum%."
+rubrica-monastica/martyrologium:
+  - /:Deinde in Choro legitur Martyrologium, quod laudabiliter fit etiam extra
+    Chorum.:/
+rubrica-tridentina/rubrica-monastica/martyrologium:
+  - /:Quo dicto Prima de B. Maria, si dicenda est. Deinde immediate legitur
+    Martyrologium et reliqua iuxta Rubrica generalem. Extra Conventum non
+    legitur Martyrologium, sed immediate post Orationem Primæ, dicto
+    «Benedicamus Domino,» dicitur «Preiósa,» cum reliquis, ut infra.:/
+rubrica-cisterciensis/rubrica-monastica/martyrologium:
+  - /:Hic expletur Prima. Deinde legitur Martyrologium in Capitulo sine
+    benedictione. Extra Conventum non legitur Martyrologium, sed immediate
+    incipitur « Pretiósa. » ut infra.:/
+rubrica-monastica/regula:
+  - /:Extra Chorum etiam laudabiliter dicitur lectio ex S. Regulæ; secus dicitur
+    Lectio brevis.:/
+rubrica-cisterciensis/rubrica-monastica/regula:
+  - /:Cum vero recitatur privatim, hæc erit brevis Lectio per totum annum.:/
+rubrica-cisterciensis/regula-ante:
+  - /:In Capitulo legitur unum caput, vel pars capitis ex Regula S. Benedicti.:/
+examen:
+  - /:Examen conscientiæ vel «Pater Noster» totum secreto.:/
+preces-flexis-genibus:
+  - /:flexis genibus:/
+ante:
+  - /:Antequam inchoëtur Officium laudabiliter dicitur, sub singulari semper
+    numero, sequens Oratio; pro qua Summus Pontifex Pius Pp. XI sub die 17
+    Novembris 1933 Indulgentiam trium annorum concessit.:/
+post:
+  - /:Cum expletum fuerit Officium, laudabiliter dicitur sequens Oratio; pro qua
+    Summus Pontifex Pius Papa XI sub die 1 Decembris 1933 indulgentiam trium
+    annorum concessit. Prreterea Clericis in sacris constitutis et Sacerdotibus
+    eam devote post Officium recitantibus Summus Pontifex Leo X defectus et
+    culpas in eo persolvendo ex humana fragilitate contractas, indulsit. Dicitur
+    autem  flexis semper genibus in privata etiam recitatione, præter quam ab
+    iis, qui ob certam infirmitatem vel gravioris impedimenti causam nequeant
+    genuflectere.:/
+rubrica-cisterciensis/superior:
+  - /:Superior::/
+rubrica-altovadensis/incipit:
+  - /:Finita Commemoratione officii parvi B.M.V., facimus signum Crucis + atque
+    ad signum Superioris inclinamus Altari.:/
+  - /:In Choro, facimus signum Crucis + atque ad signum Superioris inclinamus
+    Altari.:/
+  - /:Deinde alta voce et graviter dicitur Versus::/
+rubrica-altovadensis/incipitl:
+  - /:Dicta Oratione Matutina aut finita Commemoratione officii parvi B.M.V. in
+    Officio feriali vel  iij. Lectionum, facimus signum Crucis + atque ad signum
+    Superioris inclinamus Altari.:/
+antiphona:
+  - /:inchoatur in officio quod cum cantu celebratur tantum:/
+completbmv:
+  - /:Postea dicitur Completorium B. Mariæ.:/
+completbmv2:
+  - /:Quo finito per totum annum, excepta Feria v. et vj. majoris hebdomadæ,
+    cantatur solemniter:/
+sine-oremus:
+  - /:Et sine «Orémus» ::/
+rubrica-altovadensis/sine-oremus:
+  - /:Et sine «Orémus» prosequitur Hebdomadarius.:/
+conclusio-cisterciensis:
+  - /:Et quandocumque terminata Hora discendum est a Choro (nisi quando
+    immediate subsequitur Missa aut cum Officio diei Officium Defunctorum, vel
+    Sepultura, vel Processio, aut Litaniæ, ut in Rogationibus, etc.) dicitur::/
+jube:
+  - "/:Extra Chorum, quando ab uno tantum recitatur Officium dicitur: «Jube,
+    Dómine, benedícere;» et subjungitur congruens Benedictio.:/"

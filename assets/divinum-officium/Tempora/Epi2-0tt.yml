@@ -1,0 +1,18 @@
+references: "@Tempora/Epi2-0"
+officium:
+  - De Dominica II post Epiphaniam
+rank:
+  - ""
+  - Simplex Dominica anticipata
+  - "2.5"
+rule:
+  - 3 lectiones
+  - Symbolum Athanasium
+  - No prima vespera
+  - No secunda vespera
+lectio1:
+  - "@Tempora/Epi2-0:Lectio7"
+lectio2:
+  - "@Tempora/Epi2-0:Lectio8"
+lectio3:
+  - "@Tempora/Epi2-0:Lectio9"

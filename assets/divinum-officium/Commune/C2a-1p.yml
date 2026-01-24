@@ -1,0 +1,28 @@
+references:
+  references: "@Commune/C2p"
+  oratio:
+    - "@Commune/C2a"
+  lectio1:
+    - "@Commune/C3"
+  lectio2:
+    - "@Commune/C3"
+  lectio3:
+    - "@Commune/C3"
+  secreta:
+    - "@Commune/C2a"
+  postcommunio:
+    - "@Commune/C2a"
+oratio:
+  - "Præsta, quǽsumus, omnípotens Deus: ut, intercedénte beáto N. Mártyre tuo,
+    et a cunctis adversitátibus liberémur in córpore, et a pravis cogitatiónibus
+    mundémur in mente."
+  - $Per Dominum
+secreta:
+  - "Accépta sit in conspéctu tuo, Dómine, nostra devótio: et ejus nobis fiat
+    supplicatióne salutáris, pro cujus sollemnitáte defértur."
+  - $Per Dominum
+postcommunio:
+  - "Refécti participatióne múneris sacri, quǽsumus, Dómine, Deus noster: ut,
+    cujus exséquimur cultum, intercedénte beáto N. Mártyre tuo, sentiámus
+    efféctum."
+  - $Per Dominum

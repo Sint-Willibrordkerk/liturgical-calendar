@@ -1,0 +1,36 @@
+references: "@Sancti/12-11bmv"
+rule:
+  - "@SanctiM/12-09bmv"
+ant-matutinum_:
+  - "@Sancti/12-08:Ant Matutinum:5 s/;;\\d+//"
+  - ;;
+  - ;;
+  - ;;
+  - ;;
+  - ;;
+  - "@SanctiM/12-08:AntMatutinumM:1 s/;;\\d+//"
+  - ;;
+  - ;;
+  - ;;
+  - ;;
+  - ;;
+ant-matutinum:
+  - "@:Ant Matutinum_"
+feria-2/ant-matutinum:
+  - "@SanctiM/12-10bmv:Ant Matutinum_"
+feria-3/ant-matutinum:
+  - "@SanctiM/12-10bmv:Ant Matutinum_"
+lectio1:
+  - "@Sancti/12-12bmv:Lectio4"
+responsory1:
+  - "@SanctiM/12-09bmv"
+lectio2:
+  - "@Sancti/12-12bmv:Lectio5"
+responsory2:
+  - "@SanctiM/12-09bmv"
+lectio3:
+  - "@Sancti/12-12bmv:Lectio6"
+responsory3:
+  - "@SanctiM/12-09bmv"
+mm-capitulum:
+  - "@SanctiM/12-09bmv"

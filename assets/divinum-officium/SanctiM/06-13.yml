@@ -1,0 +1,29 @@
+references: "@Sancti/06-13"
+rubrica-cisterciensis/officium:
+  - S. Antonii de Padua, Confessoris et Ecclesiæ Doctoris
+rubrica-altovadensis/rank:
+  - ""
+  - Semiduplex
+  - "2.2"
+  - "@C5"
+rubrica-altovadensis/rule:
+  - ex C5;
+  - 12 lectiones
+  - Psalmi Dominica
+comment:
+  - This Cistercian Holy Office stems from times before he was declared Doctor
+    of Church, therefore everything is C5, only [Ant 1] from Commune Doctorum.
+rubrica-cisterciensis/ant-1:
+  - "@Commune/C4a::s/N\\./Antóni/"
+rubrica-cisterciensis/lectio5:
+  - "@Sancti/06-13:Lectio4:s/Mox eódem.*//"
+rubrica-cisterciensis/lectio6:
+  - "@Sancti/06-13:Lectio4:s/.*(Mox eódem)/$1/ s/$/~/"
+  - "@Sancti/06-13:Lectio5:s/Póstea, sacris.*//"
+rubrica-cisterciensis/lectio7:
+  - "@Sancti/06-13:Lectio5:s/.*(Póstea, sacris)/$1/ s/$/~/"
+  - "@Sancti/06-13:Lectio6:s/Multis vero.*//"
+rubrica-cisterciensis/lectio8:
+  - "@Sancti/06-13:Lectio6:s/.*(Multis vero)/$1/"
+rubrica-altovadensis/ant-3:
+  - "@Commune/C5"

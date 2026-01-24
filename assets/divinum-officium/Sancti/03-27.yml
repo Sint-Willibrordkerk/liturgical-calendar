@@ -1,0 +1,204 @@
+officium:
+  - S. Joannis Damasceni Confessoris et Ecclesiæ Doctoris
+rank:
+  - ""
+  - Duplex
+  - "3"
+  - "@C5a"
+rubrica-1960/rank:
+  - ""
+  - Duplex
+  - "2.1"
+  - "@C4a"
+rubrica-innovata/rank:
+  - ""
+  - Duplex
+  - "2.1"
+  - "@C4a"
+rubrica-1963/rank:
+  - ""
+  - Simplex
+  - "1.1"
+  - "@C5"
+rule:
+  - vide C5;mtv
+  - 9 lectiones
+  - Evangelium non appropriatum
+  - vide C5;
+  - Gloria
+  - CredoDA
+introitus:
+  - "!Ps 72:24"
+  - "v. Tenuísti manum déxteram meam: et in voluntáte tua deduxísti me, et cum
+    glória suscepísti me."
+  - "!Ps 72:1."
+  - Quam bonus Israël Deus his, qui recto sunt corde!
+  - "&Gloria"
+  - "v. Tenuísti manum déxteram meam: et in voluntáte tua deduxísti me, et cum
+    glória suscepísti me."
+oratio:
+  - "Omnípotens sempitérne Deus, qui, ad cultum sacrárum imáginum asseréndum,
+    beátum Joánnem cœlésti doctrína et admirábili spíritus fortitúdine imbuísti:
+    concéde nobis ejus intercessióne et exémplo; ut, quorum cólimus imagines,
+    virtútes imitémur et patrocínia sentiámus."
+  - $Per Dominum
+lectio:
+  - "@Commune/C2a:Lectio"
+graduale:
+  - "Deus, qui præcínxit me virtúte: et pósuit immaculátam viam meam."
+  - "V. Qui docet manus meas ad prœ́lium: et posuísti, ut arcum æreum, bráchia
+    mea."
+  - Allelúja, allelúja.
+  - "V. Dedísti mihi protectiónem salútis tuæ: et déxtera tua suscépit me.
+    Allelúja."
+gradualep:
+  - Allelúja, allelúja
+  - "!Ps 25:26 et 28"
+  - "Dóminus salvávit manum tuam tibi: quia prœ́lia Dómini tu prœliáris.
+    Allelúja."
+  - "!Ps 143:1"
+  - Benedíctus Dóminus, Deus meus, qui docet manus meas ad prœ́lium, et dígitos
+    meos ad bellum. Allelúja.
+tractus:
+  - "!Ps 17:33 et 35"
+  - "Deus, qui præcínxit me virtúte: et pósuit immaculátam viam meam."
+  - "V. Qui docet manus meas ad prœ́lium: et posuísti, ut arcum æreum, bráchia
+    mea."
+  - _
+  - "!Tractus"
+  - "!Ps 38:39 et 50"
+  - Pérsequar inimícos meos, et comprehéndam illos.
+  - "V. Confríngam illos, nec poterunt stare: cadent subtus pedes meos."
+  - V. Proptérea confitébor in natiónibus, Dómine, et nómini tuo psalmum dicam.
+evangelium:
+  - Sequéntia ++ sancti Evangélii secúndum Lucam
+  - "!Luc 6:6-11"
+  - "In illo témpore: Factum est et in álio sábbato, ut intráret Jesus in
+    synagógam et docéret. Et erat ibi homo, et manus ejus déxtera erat árida.
+    Observábant autem scribæ et pharisæi, si in sábbato curáret: ut invenírent,
+    unde accusárent eum. Ipse vero sciébat cogitatiónes eórum. Et ait hómini,
+    qui habébat manum áridam: Surge et sta in médium. Et surgens stetit. Ait
+    autem ad illos Jesus: Intérrogo vos, si licet sábbatis benefácere, an male:
+    ánimam salvam fácere, an pérdere? Et circumspéctis ómnibus dixit hómini:
+    Exténde manum tuam. Et exténdit: et restitúta est manus ejus. Ipsi autem
+    repléti sunt insipiéntia, et colloquebántur ad ínvicem, quidnam fácerent
+    Jesu."
+offertorium:
+  - "!Job 14:7"
+  - "Lignum habet spem: si præcísum fúerit, rursum viréscit, et rami ejus
+    púllulant."
+secreta:
+  - "Ut, quæ tibi, Dómine, offérimus, dona tuo sint digna conspéctu: beáti
+    Joánnis et Sanctórum, quos ejus ópera expósitos in templis cólimus, pia
+    suffragátio conspíret."
+  - $Per Dominum
+communio:
+  - "!Ps 36:17"
+  - Bráchia peccatórum conteréntur, confírmat autem justos Dóminus.
+postcommunio:
+  - "Sumpta nos, quǽsumus, Dómine, dona cœléstibus armis tueántur: et beáti
+    Joánnis patrocínia circúmdent Sanctórum unánimi suffrágio cumuláta; quorum
+    imágines evícit in Ecclésia esse venerándas."
+  - $Per Dominum
+comment:
+  - Leo PP. XIII., anno 1890, Doctor Ecclesiæ declaratus est
+name:
+  - Joannes
+lectio1:
+  - "@Commune/C4a:Lectio1"
+lectio2:
+  - "@Commune/C4a:Lectio2"
+lectio3:
+  - "@Commune/C4a:Lectio3"
+lectio4:
+  - Joánnes, a pátrio loco Damascenus dictus, nobili genere natus, humanis
+    divinisque litteris a Cosma monacho Constantinopoli fuit excultus; cumque ea
+    tempestáte imperátor Leo Isáuricus nefario bello sacrárum imaginum cultum
+    insectarétur, Joánnes, hortatu Gregórii tertii Romani Pontificis, et sermóne
+    et scriptis sanctitátem illíus cultus sédulo propugnávit. Quo facto tantam
+    Leónis advérsum se invidiam concitávit, ut hic confictis litteris ipsum
+    tamquam proditórem accusarit apud Damasci calípham, qui Joánne consiliario
+    et administro utebátur. Credulus fraudi princeps Joánni nequidquam calumniam
+    ejuranti præcídi déxteram jussit. Verum innocéntiæ vindex ádfuit cliénti suo
+    sanctíssima Virgo, cujus opem precibus enixe imploraverat, ejusque beneficio
+    trunca manus restituta ita brácchio coáluit, ac si divisa numquam fuísset.
+    Quo maxime miraculo permotus Joánnes, quod pridem animo conceperat, éxsequi
+    státuit. Itaque ægre a calípha impetrato secessu, suas omnes facultates in
+    egénos distríbuit, et servos libertáte donávit; tum sacra Palæstinæ loca
+    peregrínus lustrávit, ac demum una cum Cosma institutore suo in lauram
+    sancti Sabbæ prope Hierosolymam concessit, ibique présbyter initiátus est.
+lectio5:
+  - In religióne vitæ palæstra præclarióra virtútum exempla monachis præbuit,
+    demissiónis potíssimum et obediéntiæ. Abjectíssima quæque cœnobii munia
+    véluti sibi propria deposcebat, ac sédulo obíbat. Contextas a se spórtulas
+    venditare Damasci jussus, in ea nimirum civitáte ubi olim summis honóribus
+    perfunctus fuerat, irrisiónes ac ludíbria vulgi ávide captábat. Obediéntiam
+    ádeo cóluit, ut non modo ad quémlibet præsidum nutum præsto esset; sed ne
+    causam quidem eórum quæ præcipiebántur, quamvis ardua essent et insolita,
+    quæréndam sibi umquam putarit. Inter has virtútum exercitatiónes, catholicum
+    dogma de sanctárum imaginum cultu impense tueri numquam déstitit. Quare ut
+    ante Leónis Isáurici, ita postmodum Constantini Coprónymi advérsum se odia
+    vexatiónesque provocávit; eo vel magis quod líbere arrogantiam imperatórum
+    retúnderet, qui fidei negotia pertractare, deque his senténtiam arbitratu
+    suo ferre audebant.
+lectio6:
+  - Mirum sane est quam multa tum ad fidem tutandam, tum ad pietátem fovéndam,
+    et soluta et adstricta numeris oratióne, Joánnes elucubráverit; dignus sane
+    qui ab áltera Nicæna synodo amplíssimis laudibus celebrarétur, et ob aureum
+    oratiónis flumen Chrysórrhoas appellarétur. Neque solum contra Iconómachos
+    orthodoxam fidem deféndit; sed omnes ferme hæreticos, præsertim Acéphalos,
+    Monothelitas, Theopaschitas strenue impugnávit. Ecclésiæ jura potestátemque
+    egregie vindicávit. Primátum Principis Apostolórum disertíssimis verbis
+    asseruit; ipsumque ecclesiárum cólumen, infractam petram, orbis terrárum
+    magistrum et moderatórem sæpius nóminat. Universa autem ejus scripta non
+    modo eruditióne et doctrina præstant, sed étiam quemdam ingenuæ pietátis
+    sensum præférunt, præcipue cum Genitrícis Dei laudes prædicat, quam
+    singulari cultu et amóre prosequebátur. Illud vero maxime in laudem Joánnis
+    cedit, quod primus universam theologíam recto ordine comprehénderit et
+    sancti Thomæ viam complanáverit ad sacram doctrinam tam præclára méthodo
+    tractandam. Tandem vir sanctíssimus meritis plenus devexáque jam ætate, in
+    pace Christi quiévit anno circiter septingentésimo quinquagesimo quarto.
+    Ejus Offícium et Missam Leo décimus tertius Pontifex maximus, áddito
+    Doctoris título, univérsæ Ecclésiæ concessit.
+lectio7:
+  - Léctio sancti Evangélii secúndum Lucam
+  - "!Luc 6:6-11"
+  - "In illo témpore: Factum est et in alio sabbato, ut intraret Jesus in
+    synagógam, et docéret: et erat ibi homo, et manus ejus déxtera erat árida.
+    Et réliqua."
+  - _
+  - Homilía sancti Petri Chrysologi
+  - "!Sermo 32"
+  - "In hoc hómine ómnium hóminum imago figurátur, in hoc geritur cura
+    cunctórum, in hoc universórum sánitas diu exspectáta reparátur. Arúerat enim
+    manus hóminis magis stupore fidei quam siccitate nervórum, et plus culpa
+    consciéntiæ quam debilitate carnali. Antíqua ista nimis erat, et quæ in ipso
+    mundi principio contígerat ægritúdo; nec arte hóminis aut beneficio póterat
+    hæc curari, quæ Dei fuerat indignatióne contracta. Tetigerat vétita,
+    inconcessa præsumpserat, cum se ad árborem sciéndi bonum malumque
+    porrexerat: Auctore indigebat, non qui malagma impóneret, sed qui posset
+    illatam relaxare senténtiam, et ignoscéndo resólvere quod religáverat
+    indignando."
+lectio8:
+  - "In hoc hómine nostræ tantum géritur umbra sanitátis; perfécta autem salus
+    nobis reservátur in Christo: quia tunc aríditas nostræ manus miseranda
+    dissolvitur, cum cruore perfunditur Dominicæ passiónis, cum in illo vitali
+    ligno crucis exténditur, cum carpit fructuosam de dolóre virtútem, cum totam
+    árborem salútis amplectitur, cum clavis Dómini corpus affígitur, quo numquam
+    ad árborem concupiscéntiæ et áridæ redeat voluptátis. Et ait hómini habénti
+    manum áridam: Surge in médium, professor debilitátis própriæ, supernæ
+    pietátis exactor, testis divinæ virtútis, Judáicæ incredulitátis assertor:
+    surge in médium; ut quos non compungit virtus tanta signórum, quos non ópera
+    tantæ salútis inclínant, vel debilitátis tantæ miserátio constringat et
+    mítiget."
+lectio9:
+  - "Dixit homini: Extende manum tuam; et extendit, et restituta est manus
+    illius. Extende manum tuam: jussione solvitur, qua fuerat jussione
+    convincta. Extende manum tuam: agnovit pœna judicem, opus Deum, indulgentia
+    prodidit conditorem. Orate, fratres, ut sola synagoga tali debilitate
+    fuscetur, nec sit in Ecclesia cujus manum arefaciat cupiditas, contrahat
+    avaritia, rapina debilitet, tenacitas ægrotam constringat; sed si acciderit
+    id ipsum, audiat Dominum et cito eam in opere pietatis extendat, relaxet et
+    in misericordia, in eleemosynis porrigat. Sanari nescit, qui nescit pauperi
+    fœnerari."
+  - "&teDeum"

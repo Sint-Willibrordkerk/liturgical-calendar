@@ -1,0 +1,568 @@
+references:
+  references: "@Commune/C6"
+  antmatutinumm:
+    - Unguéntum effúsum * nomen tuum; ideo adolescéntulæ dilexérunt te nimis;;96
+    - Pulchra es * et decóra fília Jerúsalem, terríbilis ut castrórum ácies
+      ordináta.;;97
+    - Accínxit * fortitúdine lumbos suos, et roborávit bráchium suum; ideóque
+      lucérna ejus non exstinguétur in sempitérnum.;;98
+    - "Média nocte * clamor factus est: Ecce sponsus venit: exíte óbviam
+      ei.;;249;250;251"
+  ant-matutinum:
+    - "@Commune/C6:: s/95/84/ s/96/86/ s/97/95/"
+    - "@:AntMatutinumM"
+  lectio1:
+    - "@Commune/C6::1-6 s/-31/-28/"
+  lectio2:
+    - "@Commune/C6:Lectio1:2 s/25-/29-/"
+    - "@Commune/C6:Lectio1:7-9"
+  lectio3:
+    - "@Commune/C6:Lectio2"
+  lectio4:
+    - "@Commune/C6:Lectio3"
+  responsory4:
+    - R. Hæc est Virgo prudens,
+    - "* Quæ veniénte Sponso accépit óleum in vasis suis, et ornátis lampádibus
+      introívit cum eo ad núptias."
+    - V. Hæc est Virgo sapiens, et una de número prudéntum.
+    - R. Quæ veniénte Sponso accépit óleum in vasis suis, et ornátis lampádibus
+      introívit cum eo ad núptias.
+  lectio5:
+    - "@Commune/C6:Lectio4:s/ E c.*/ /"
+  responsory5:
+    - "@Commune/C6:Responsory4"
+  lectio6:
+    - "@Commune/C6:Lectio4:s/.* E c/E c/s s/$/~/s"
+    - "@Commune/C6:Lectio5:s/. Nam.*/. /"
+  responsory6:
+    - "@Commune/C6:Responsory5"
+  lectio7:
+    - "@Commune/C6:Lectio5:s/.* Nam /Nam /"
+  responsory7:
+    - R. Prudéntes vírgines, aptáte vestras lámpades.
+    - "* Ecce sponsus venit, exíte óbviam ei."
+    - "V. Média nocte clamor factus est:"
+    - R. Ecce sponsus venit, exíte óbviam ei.
+  rubrica-cisterciensis/responsory7: []
+  lectio8:
+    - "@Commune/C6:Lectio6"
+  responsory8:
+    - "@Commune/C6:Responsory6"
+  lectio9:
+    - "@Commune/C6:Lectio7:s/. Ecce.*/. /"
+  responsory9:
+    - "@Commune/C6:Responsory7"
+  lectio10:
+    - "@Commune/C6:Lectio7:s/.*vacuétur. Ecce /Ecce /s s/$/~/s"
+    - "@Commune/C6:Lectio8:s/ Sed sc.*/ /"
+  responsory10:
+    - "@Commune/C6:Responsory8"
+  lectio11:
+    - "@Commune/C6:Lectio8:s/.* Sed sc/Sed sc/"
+  responsory11:
+    - R. Índuit me Dóminus vestiménto salútis, et induménto lætítiæ circúmdedit
+      me, et tamquam sponsam
+    - "* Decorávit me coróna."
+    - V. Quasi sponsum decorátum coróna et quasi sponsam ornátam monílibus suis.
+    - R. Decorávit me coróna.
+  lectio12:
+    - "@Commune/C6:Lectio9"
+  responsory12:
+    - R. Símile est regnum cælórum decem virgínibus, quæ accipiéntes lámpadas
+      suas
+    - "* Exiérunt óbviam sponso et sponsæ."
+    - V. Quinque autem ex eis erunt fátue, et quinque prudéntes.
+    - R. Exiérunt óbviam sponso et sponsæ.
+  mm-capitulum:
+    - "@Commune/C7:Capitulum Sexta"
+    - _
+    - "V. Dilexísti justítiam, et odísti iniquitátem:"
+    - R. Proptérea unxit te Deus, Deus tuus, óleo lætítiæ.
+  lectio1-in-2-loco:
+    - "@Commune/C6::1-5 s/-7/-3/"
+  lectio2-in-2-loco:
+    - "@Commune/C6:Lectio1 in 2 loco:2 s/1-/4-/"
+    - "@Commune/C6:Lectio1 in 2 loco:6-9"
+  lectio3-in-2-loco:
+    - "@Commune/C6:Lectio2 in 2 loco"
+  lectio4-in-2-loco:
+    - "@Commune/C6:Lectio3 in 2 loco"
+  lectio5-in-2-loco:
+    - "@Commune/C6:Lectio4 in 2 loco"
+  lectio6-in-2-loco:
+    - "@Commune/C6:Lectio5 in 2 loco:s/est. S.*/est. /"
+  lectio7-in-2-loco:
+    - "@Commune/C6:Lectio5 in 2 loco:s/.* est. S/S/ s/$/~/s"
+    - "@Commune/C6:Lectio6 in 2 loco:s/. Neque.*/. /"
+  lectio8-in-2-loco:
+    - "@Commune/C6:Lectio6 in 2 loco:s/.*t. Neque /Neque /"
+  lectio9-in-2-loco:
+    - "@CommuneM/C7:Lectio9"
+  lectio10-in-2-loco:
+    - "@CommuneM/C7:Lectio10"
+  lectio11-in-2-loco:
+    - "@CommuneM/C7:Lectio11"
+  lectio12-in-2-loco:
+    - "@CommuneM/C7:Lectio12"
+  evangelium-in-2-loco:
+    - "@Commune/C6-1:Evangelium"
+  lectio9-in-3-loco:
+    - "@Commune/C6:Lectio7 in 3 loco:s/ sub med./ n. 3/ s/Quibus.*//"
+  lectio10-in-3-loco:
+    - "@Commune/C6:Lectio7 in 3 loco:s/.* Quibus /Quibus /s s/$/~/s"
+    - "@Commune/C6:Lectio8 in 3 loco:s/Grátias.*//"
+  lectio11-in-3-loco:
+    - "@Commune/C6:Lectio8 in 3 loco:s/.* Grátias /Grátias /"
+  lectio12-in-3-loco:
+    - "@Commune/C6:Lectio9 in 3 loco"
+  evangelium-in-3-loco:
+    - "@Commune/C6-1:Evangelium in 2 loco"
+  lectio9-in-4-loco:
+    - Léctio sancti Evangélii secúndum Matthǽum
+    - "!Matt 25:1-13"
+    - "In illo témpore: Dixit Jesus discípulis suis parábolam hanc: Simile erit
+      regnum cælórum decem virgínibus, quæ, accipiéntes lámpades suas, exiérunt
+      obviam sponso et sponsæ. Et réliqua."
+    - _
+    - Homilía sancti Augustíni Epíscopi
+    - "!Sermo 93 de verbis Domini, cap. II-IV"
+    - "Intelligámus, caríssimi, ad omnes nos, id est, ad univérsam omníno
+      Ecclésiam, istam pertinére parábolam, non ad solos præpósitos, nec ad
+      solas plebes: sed prorsus ad omnes. Istæ quinque et quinque vírgines,
+      omnes omníno sunt ánimæ Christianórum. Sed, ut dicámus vobis, quod Deo
+      inspiránte sentímus, non qualescúmque ánimæ; sed tales animæ, quæ habent
+      Cathólicam fidem, et habére vidéntur bona ópera in Ecclésia Dei: et tamen
+      ex ipsis quinque sunt prudéntes, et quinque fátuæ."
+  lectio10-in-4-loco:
+    - "Quare ergo appellátæ sunt quinque; et quare vírgines, prius videámus.
+      Omnis ánima in córpore ídeo quinário número censétur, quia quinque
+      sénsibus útitur. Qui ergo se ábstinet ab illícito visu, ab illícito
+      audítu, ab illícito odorátu, ab illícito gustátu, ab illícito tactu,
+      propter ipsam integritátem, vírginis nomen accépit. Sed si bonum est,
+      abstinére ab illícitis sentiéndi mótibus, et ídeo unaquæque ánima
+      Christiána vírginis nomen accépit: quare quinque admittúntur, et quinque
+      repellúntur?"
+  lectio11-in-4-loco:
+    - "Et vírgines sunt, et repellúntur. Parum est quia vírgines sunt: et
+      lámpades habent. Vírgines, propter abstinéntiam ab sensibus; lámpades
+      habent, propter ópera bona. De quibus opéribus Dóminus dicit: Lúceant
+      ópera vestra coram homínibus. Item discípulis dicit: Sint lumbi vestri
+      accíncti, et lucérnæ ardéntes. In lumbis accínctis, virgínitas; in
+      lucérnis ardéntibus, ópera bona. Si ergo ab illícitis abstinéntia bona
+      est; unde virgínitas nomen accépit, et ópera bona laudabília sunt, quæ
+      significántur lampádibus: quare quinque admittúntur, et quinque
+      repellúntur?"
+  lectio12-in-4-loco:
+    - "Alias dixit prudéntes, alias stultas. Unde intuémur? unde discérnimus? De
+      óleo. Aliquid magnum signíficat óleum, et valde magnum. Putas, num cáritas
+      est? Quæréndo dícimus, non senténtiam præcipitámus. Unde mihi videátur
+      óleum caritátem significáre, dicam vobis. Apóstolus dicit: Adhuc
+      supereminentiórem vobis viam demónstro. Si linquis hóminum loquar et
+      Angelórum, caritátem autem non hábeam, factus sum æraméntum sonans, aut
+      cýmbalum tínniens. Ipsa est superéminens via: id est cáritas, quæ mérito
+      óleo significátur. Omnibus enim humóribus óleum superéminet."
+  lectio9-in-5-loco:
+    - Léctio sancti Evangélii secúndum Matthǽum
+    - "!Matt 25:1-13"
+    - "In illo témpore: Dixit Jesus discípulis suis parábolam hanc: Simile erit
+      regnum cælórum decem virgínibus, quæ, accipiéntes lámpades suas, exiérunt
+      obviam sponso et sponsæ. Et réliqua."
+    - _
+    - Homilía sancti Augustíni Epíscopi
+    - "!Sermo 93 de verbis Domini, cap. VI-VIII et X"
+    - "Disceptémus, fratres, de quinque virgínibus prudéntibus et quinque
+      fátuis. Voluérunt ire óbviam sponso, corde ire, exspectáre ejus advéntum.
+      Sed ille tardábat. Dum tardat ille, dormiérunt omnes. Quid est somnus
+      iste? Ne forte tardánte sponso, quóniam abúndat iníquitas, refrigéscit
+      cáritas multórum, subjécit et ait: Qui autem perseveráverit usque in
+      finem, hic salvus erit. Non ergo eis obrépsit frigus caritátis, non in eis
+      refríguit cáritas; sed fervet usque in finem. Est álius somnus, quem nemo
+      evádit. Non recordámini Apóstolum dicéntem: De dormiéntibus autem nolo vos
+      ignoráre, fratres: id est, de his qui mórtui sunt? fátua sit virgo,
+      prudens sit virgo, somnum mortis omnes patiúntur. Ad novíssimam tubam
+      surgent omnes."
+  lectio10-in-5-loco:
+    - "Prudéntes autem illæ tulérunt óleum secum in vasis suis: stultæ vero illæ
+      non tulérunt óleum secum.  Ibi óleum, magnum óleum. De dono Dei est hoc
+      óleum. Tu ergo tecum porta, intus porta, ubi videt Deus, ibi porta
+      testimónium consciéntiæ tuæ. Qui autem ámbulat ad testimónium aliénum,
+      óleum non portat secum. Inténdat ítaque Cáritas vestra. Sapiéntium
+      lámpades ardébant de óleo intérno, de consciéntiæ securitáte, de interióre
+      glória, de íntima caritáte. Ardébant tamen et illárum fatuárum. Quare tunc
+      ardébant? Quia non déerant laudes hóminum."
+  lectio11-in-5-loco:
+    - "Postea vero, quam surrexérunt, id est, in resurrectióne a mórtuis,
+      cœpérunt aptáre lámpades suas, id est, paráre Deo óperum suórum réddere
+      ratiónem. Et quia tunc nemo est qui laudet, omnis homo causæ suæ vacat;
+      non erant, qui óleum vénderent, cœpérunt defícere lámpades. Clausum est
+      óstium. Et quid illis dictum est? Non novi vos. Non illas novit, qui ómnia
+      novit? Quid ergo est: Non novi vos? Improbo vos, réprobo vos. In arte mea
+      non vos agnósco; ars mea nescit vítia, et júdicat vítia; nescit faciéndo,
+      júdicat arguéndo: sic ergo non novi vos. Iérunt, intravérunt quinque
+      prudéntes."
+  lectio12-in-5-loco:
+    - "Sint in vobis quinque prudéntes ad istam prudéntiam quinárii númeri
+      pertinéntes. Véniet enim hora, et quando nescímus, véniet. Sic clausit
+      Evangélium: Vigiláte, quia nescítis diem neque horam. Corde vígila, fide
+      vígila, spe vígila, caritáte vígila, opéribus vígila: et quando córpore
+      dormíveris, véniet tempus ut surgas. Cum autem surréxeris, præpara
+      lámpades. Tunc non exstinguántur, tunc interióre consciéntiæ óleo
+      vegeténtur: tunc sponsus ille incorpóreis néxibus amplectátur, tunc te
+      introdúcat in domum, ubi numquam dórmias, ubi nunquam possit tua lampas
+      exstíngui. Hódie vero laborámus, et lámpades nostræ inter ventos sæculi
+      hujus tentationésque flúctuant; sed árdeat in róbore flamma nostra, ut
+      ventus tentatiónis áugeat ignem pótius, quam exstínguat."
+  lectio9-in-6-loco:
+    - Léctio sancti Evangélii secúndum Matthæum.
+    - "!Lk 25:1-13"
+    - "In illo témpore: Dixit Jesus discípulis suis parábolam hanc: Simile erit
+      regnum coelórum decem virgínibus, quæ, accipiéntes lampades suas, exiérunt
+      obviam sponso et sponsæ. Et réliqua."
+    - _
+    - Homilía sancti Joánnis Chrysóstomi.
+    - "!Homilía 79. in Matth."
+    - "Magna quædam de virginitáte disserúerat dicens: Sunt eunuchi, qui seipsos
+      castravérunt propter regnum coelórum; et, Qui potest cápere, cápiat. Nec
+      ignorábat, de virginitáte magnam esse vulgo existimatiónem, quippe cum sit
+      ea res natúra sublímis: quod inde patet, quia neque in véteri Testaménto a
+      priscis illis sanctísque viris culta fuit, et in novo nulla legis
+      necessitáte jubétur. Non enim id imperávit, sed fidélium voluntáti
+      permísit."
+  lectio10-in-6-loco:
+    - Quóniam ígitur et magna res erat, ac de ea apud multos magna erat
+      existimátio, ne quis, ea perfécta, se totum perfécisse putáret ac cetera
+      negligeret, hanc parábolam pósuit; ut osténderet, virginitátem, quamvis
+      cetera hábeat, si misericórdiæ bonis carúerit, cum fornicatóribus éjici.
+      Ac mérito quidem inhumánum ac misericórdia caréntem cum illis cóllocat;
+      fornicátor enim córporum, istæ vero pecuniárum cupiditáte vincúntur.
+  lectio11-in-6-loco:
+    - Non est autem córporum et pecúniæ par cupíditas; sed ácrior multo atque
+      veheméntior illa córporum est. Quanto ígitur cum imbecillióre luctántur,
+      tanto minus vénia dignæ sunt, si vincántur. Idcírco etiam fátuas
+      appellávit; quóniam, majóri certámine superáto, in facíliore totum
+      perdidérunt.
+  lectio12-in-6-loco:
+    - "Lámpades autem hoc loco illud ipsum virginitátis domum appéllat et
+      sanctimóniæ puritátem; óleum vero benignitátem, eleemósynam, impénsum
+      indigéntibus auxílium. Tardánte autem sponso dormitavérunt omnes, et
+      dormiérunt. Non parvum témporis rursus spátium interjéctum osténdit, ut
+      discípulos, regnum ipsíus mox futúrum exspectántes, ab ea opinióne
+      dedúceret; id enim illi sperábant: quaprópter crebro ab hujúsmodi eos spe
+      révocat."
+rule:
+  - Antiphonas horas
+ant-vespera:
+  - Hæc est Virgo sápiens, * et una de número prudéntum.;;109
+  - Hæc est Virgo sápiens, * quam Dóminus vigilántem invénit.;;112
+  - Invénta bona margaríta, * dedit ómnia sua, et comparávit eam.;;121
+  - "Média nocte * clamor factus est: Ecce sponsus venit, exíte óbviam ei.;;126"
+  - Tunc surrexérunt omnes * Vírgines illæ, et ornavérunt lámpades suas.
+tempore-paschali/ant-vespera:
+  - Allelúia, * allelúia, allelúia.
+hymnusm-vespera:
+  - "{:H-Jesucoronavirginum:}v. Jesu, coróna Vírginum,"
+  - Quem Mater illa cóncipit
+  - Quæ sola Virgo párturit,
+  - "Hæc vota clemens áccipe:"
+  - _
+  - Qui pergis inter lília
+  - Septus choréis Vírginum,
+  - Sponsus decórus glória
+  - Sponsísque reddens prǽmia.
+  - _
+  - Quocúmque tendis, Vírgines
+  - Sequúntur, atque láudibus
+  - Post te canéntes cúrsitant,
+  - Hymnósque dulces pérsonant;
+  - _
+  - Te deprecámur súpplices,
+  - Nostris ut addas sénsibus
+  - Nescíre prorsus ómnia
+  - Corruptiónis vúlnera.
+  - _
+  - "* Virtus, honor, laus, glória"
+  - Deo Patri cum Fílio,
+  - Sancto simul Paráclito,
+  - In sæculórum sǽcula.
+  - Amen.
+versum-1:
+  - V. Diffúsa est grátia in lábiis tuis.
+  - R. Proptérea benedíxit te Deus in ætérnum.
+tempore-paschali/ant-1:
+  - Veni, Sponsa Christi, * áccipe corónam, quam tibi Dóminus præparávit in
+    ætérnum. Allelúia, allelúia.
+tempore-paschali/invit:
+  - Allelúia, allelúia, * Allelúia.
+ant-matutinum:
+  - O quam pulchra * est casta generátio cum claritáte!;;8
+  - Nigra sum, * sed formósa, fíliæ Jerúsalem; ídeo diléxit me Rex, et
+    introdúxit me in cubículum suum.;;18
+  - Pulchra es * et decóra fília Jerúsalem, terríbilis ut castrórum ácies
+    ordináta.;;23
+  - Spécie tua * et pulchritúdine tua inténde, próspere procéde, et regna.;;44
+  - "Adjuvábit eam * Deus vultu suo: Deus in médio ejus, non commovébitur.;;45"
+  - Hæc est quæ nescívit, * thorum in delícto, habébit fructum in respectióne
+    animárum sanctárum.;;47
+  - Unguéntum effúsum * nomen tuum; ideo adolescéntulæ dilexérunt te nimis.;;84
+  - Revértere, * revértere, Sunamítis; revértere, ut intueámur te.;;86
+  - Dum esset Rex * in accúbitu suo, nardus mea dedit odórem suum.;;95
+  - "Símile est * regnum cælórum hómini negotiatóri quærénti bonas margarítas:
+    invénta una pretiósa, dedit ómnia sua, et comparávit eam.;;96"
+  - Veniénte sponso, * prudens Virgo præparáta introívit cum eo ad núptias.;;97
+  - Veni * elécta mea, et ponam in te thronum meum, quia concupívit Rex spéciem
+    tuam.;;98
+  - "Prudéntes Vírgines, * aptáte vestras lámpades: ecce sponsus venit, exíte
+    óbviam ei.;;249;250;251"
+tempore-paschali/ant-matutinum:
+  - Allelúia, * allelúia, Allelúia;;8
+  - ;;18
+  - ;;23
+  - ;;44
+  - ;;45
+  - ;;47
+  - Allelúia, * allelúia, Allelúia;;84
+  - ;;86
+  - ;;95
+  - ;;96
+  - ;;97
+  - ;;98
+  - Allelúia, * allelúia, Allelúia;;249;250;251
+nocturn-1-versum:
+  - V. Spécie tua et pulchritúdine tua.
+  - R. Inténde, próspere procéde, et regna.
+nocturn-3-versum:
+  - V. Elégit eam Dóminus.
+  - R. In hæreditátem sibi.
+responsory1:
+  - R. Diffúsa est grátia in lábiis tuis,
+  - "* Proptérea benedíxit te Deus in ætérnum."
+  - V. Spécie tua et pulchritúdine tua inténde, próspere procéde, et regna.
+  - R. Proptérea benedíxit te Deus in ætérnum.
+  - "R. Dilexísti justítiam, et odísti iniquitátem:"
+  - "* Proptérea unxit te Deus, Deus tuus, óleo lætítiæ."
+  - V. Propter veritátem, et mansuetúdinem, et justítiam.
+  - R. Proptérea unxit te Deus, Deus tuus, óleo lætítiæ.
+  - R. Diffúsa est grátia in lábiis tuis,
+  - "* Proptérea benedíxit te Deus in ætérnum."
+  - V. Spécie tua et pulchritúdine tua inténde, próspere procéde, et regna.
+  - R. Proptérea benedíxit te Deus in ætérnum.
+responsory2:
+  - R. Spécie tua et pulchritúdine tua
+  - "* Inténde, próspere procéde, et regna."
+  - V. Diffúsa est grátia in lábiis tuis, proptérea benedíxit te Deus in ætérnum.
+  - R. Inténde, próspere procéde, et regna.
+  - "&Gloria"
+  - R. Inténde, próspere procéde, et regna.
+  - "R. Dilexísti justítiam, et odísti iniquitátem:"
+  - "* Proptérea unxit te Deus, Deus tuus, óleo lætítiæ."
+  - V. Propter veritátem, et mansuetúdinem, et justítiam.
+  - R. Proptérea unxit te Deus, Deus tuus, óleo lætítiæ.
+  - R. Spécie tua et pulchritúdine tua
+  - "* Inténde, próspere procéde, et regna."
+  - V. Diffúsa est grátia in lábiis tuis, proptérea benedíxit te Deus in ætérnum.
+  - R. Inténde, próspere procéde, et regna.
+  - "&Gloria"
+  - R. Inténde, próspere procéde, et regna.
+responsory3:
+  - "R. Propter veritátem, et mansuetúdinem, et justítiam:"
+  - "* Et dedúcet te mirabíliter déxtera tua."
+  - V. Spécie tua et pulchritúdine tua inténde, próspere procéde, et regna.
+  - R. Et dedúcet te mirabíliter déxtera tua.
+  - "V. Audi fília, et vide, et inclína aurem tuam: et oblivíscere pópulum tuum,
+    et domum patris tui:"
+  - "R. Propter veritátem, et mansuetúdinem, et justítiam:"
+  - "* Et dedúcet te mirabíliter déxtera tua."
+  - V. Spécie tua et pulchritúdine tua inténde, próspere procéde, et regna.
+  - R. Et dedúcet te mirabíliter déxtera tua.
+lectio4:
+  - "!1 Cor 7:36-40"
+  - "36 Si quis autem turpem se vidéri exístimat super vírgine sua, quod sit
+    superadúlta, et ita opórtet fíeri; quod vult fáciat: non peccat, si nubat."
+  - 37 Nam, qui státuit in corde suo firmus, non habens necessitátem, potestátem
+    autem habens suæ voluntátis, et hoc judicávit in corde suo, serváre vírginem
+    suam, bene facit.
+  - 38 Ígitur et qui matrimónio jungit vírginem suam, bene facit; et qui non
+    jungit, mélius facit.
+  - 39 Múlier alligáta est legi quanto témpore, vir ejus vivit. Quod, si
+    dormíerit vir ejus, liberáta est; cui vult nubat, tantum in Dómino.
+  - 40 Beátior autem erit, si sic permánserit, secúndum meum consílium; puto
+    autem quod et ego Spíritum Dei hábeam.
+responsory4:
+  - R. Quinque prudéntes vírgines accepérunt óleum in vasis suis,
+  - "* Cum lampádibus."
+  - "V. Média autem nocte clamor factus est: Ecce, sponsus venit: exíte óbviam
+    ei."
+  - R. Cum lampádibus.
+  - "&Gloria"
+  - R. Cum lampádibus.
+responsory5:
+  - "R. Dilexísti justítiam, et odísti iniquitátem:"
+  - "* Proptérea unxit te Deus, Deus tuus, óleo lætítiæ."
+  - V. Propter veritátem, et mansuetúdinem, et justítiam.
+  - R. Proptérea unxit te Deus, Deus tuus, óleo lætítiæ.
+  - R. Spécie tua et pulchritúdine tua
+  - "* Inténde, próspere procéde, et regna."
+  - V. Diffúsa est grátia in lábiis tuis, proptérea benedíxit te Deus in ætérnum.
+  - R. Inténde, próspere procéde, et regna.
+  - "&Gloria"
+  - R. Inténde, próspere procéde, et regna.
+  - "R. Dilexísti justítiam, et odísti iniquitátem:"
+  - "* Proptérea unxit te Deus, Deus tuus, óleo lætítiæ."
+  - V. Propter veritátem, et mansuetúdinem, et justítiam.
+  - R. Proptérea unxit te Deus, Deus tuus, óleo lætítiæ.
+responsory6:
+  - R. Veni Sponsa Christi, áccipe corónam, quam tibi Dóminus præparávit,
+  - "* Pro cujus amóre sánguinem tuum fudísti, et cum Ángelis in paradísum
+    introísti."
+  - V. Veni, elécta mea, et ponam in te thronum meum;  quia concupívit Rex
+    spéciem tuam.
+  - R. Pro cujus amóre sánguinem tuum fudísti, et cum Ángelis in paradísum
+    introísti.
+responsory7:
+  - "R. Hæc est Virgo sápiens, quam Dóminus vigilántem invénit, quæ accéptis
+    lampádibus sumpsit secum óleum:"
+  - "* Et veniénte Dómino, introívit cum eo ad núptias."
+  - "V. Média nocte clamor factus est: Ecce sponsus venit, exíte óbviam ei."
+  - R. Et veniénte Dómino, introívit cum eo ad núptias.
+  - "V. Accínxit fortitúdine lumbos suos, et roborávit bráchium suum:"
+  - "R. Hæc est Virgo sápiens, quam Dóminus vigilántem invénit, quæ accéptis
+    lampádibus sumpsit secum óleum:"
+  - "* Et veniénte Dómino, introívit cum eo ad núptias."
+  - "V. Média nocte clamor factus est: Ecce sponsus venit, exíte óbviam ei."
+  - R. Et veniénte Dómino, introívit cum eo ad núptias.
+responsory8:
+  - R. Afferéntur Regi Vírgines post eam, próximæ ejus afferéntur tibi,
+  - "* In lætítia et exsultatióne."
+  - "V. Prudéntes Vírgines, aptáte lámpades vestras: ecce sponsus venit, exíte
+    óbviam ei:"
+  - R. In lætítia et exsultatióne.
+  - "&Gloria"
+  - R. In lætítia et exsultatióne.
+responsory9:
+  - R. Símile est regnum cælórum decem virgínibus, quæ accipiéntes lámpadas suas
+  - "* Exiérunt óbviam sponso et sponsæ."
+  - V. Quinque autem ex eis erunt fátue, et quinque prudéntes.
+  - R. Exiérunt óbviam sponso et sponsæ.
+responsory10:
+  - "R. Veni, elécta mea, et ponam in te thronum meum:"
+  - "* Quia concupívit Rex spéciem tuam."
+  - V. Surge, própera, amíca mea, veni de Líbano, et coronáberis.
+  - R. Quia concupívit Rex spéciem tuam.
+responsory11:
+  - "R. Surge, própera, amíca mea, et veni: jam enim hiems tránsiit, imber ábiit
+    et recéssit:"
+  - "* Flores apparuérunt in terra."
+  - V. Vox túrturis audíta est in terra nostra, ficus prótulit grossos suos.
+  - R. Flores apparuérunt in terra.
+lectio12:
+  - In quinque autem córporis sénsibus unusquísque subsístit;  geminátus autem
+    quinárius denárium pérficit. Et, quia ex utróque sexu fidélium multitúdo
+    collígitur, sancta Ecclésia decem virgínibus símilis esse denuntiátur. In
+    qua quia mali cum bonis et réprobi cum eléctis admíxti sunt, recte símilis
+    virgínibus prudéntibus et fátuis esse perhibétur. Sunt namque pleríque
+    continéntes, qui ab appetítu se exterióri custódiunt et spe ad interióra
+    rapiúntur, carnem mácerant, et toto desidério ad supérnam pátriam anhélant,
+    ætérna prǽmia éxpetunt, pro labóribus suis recípere laudes humánas nolunt.
+    Hi nimírum glóriam suam non in ore hóminum ponunt, sed intra consciéntiam
+    cóntegunt. Et sunt pleríque, qui corpus per abstinéntiam afflígunt, sed de
+    ipsa sua abstinéntia humános favóres éxpetunt.
+  - "&teDeum"
+responsory12:
+  - "R. Audi, fília, et vide, et inclína aurem tuam, et oblivíscere pópulum
+    tuum, et domum Patris tui, et concupíscet Rex spéciem tuam:"
+  - "* Quóniam ipse est Dóminus Deus tuus."
+  - "V. Induit te Dóminus vestiméntis salútis, et induménto lætítiæ circúmdedit
+    te:"
+  - R. Quóniam ipse est Dóminus Deus tuus.
+  - "&Gloria"
+  - R. Quóniam ipse est Dóminus Deus tuus.
+mm-capitulum:
+  - "!2 Cor 11:2"
+  - v. Æmulor enim vos Dei æmulatióne. Despóndi enim vos uni viro vírginem
+    castam exhibére Christo.
+  - $Deo gratias
+  - _
+  - V. Adjuvábit eam Deus vultu suo.
+  - R. Deus in médio ejus, non commovébitur.
+ant-laudes:
+  - Hæc est Virgo sápiens, * et una de número prudéntum.;;109
+  - Hæc est Virgo sápiens, * quam Dóminus vigilántem invénit.;;112
+  - Invénta bona margaríta, * dedit ómnia sua, et comparávit eam.;;121
+  - "Média nocte * clamor factus est: Ecce sponsus venit, exíte óbviam ei.;;126"
+  - Tunc surrexérunt omnes * Vírgines illæ, et ornavérunt lámpades suas.
+hymnusm-laudes:
+  - "{:H-Jesucoronavirginum:}v. Jesu, coróna Vírginum,"
+  - Quem Mater illa cóncipit
+  - Quæ sola Virgo párturit,
+  - "Hæc vota clemens áccipe:"
+  - _
+  - Qui pergis inter lília
+  - Septus choréis Vírginum,
+  - Sponsus decórus glória
+  - Sponsísque reddens prǽmia.
+  - _
+  - Quocúmque tendis, Vírgines
+  - Sequúntur, atque láudibus
+  - Post te canéntes cúrsitant,
+  - Hymnósque dulces pérsonant;
+  - _
+  - Te deprecámur súpplices,
+  - Nostris ut addas sénsibus
+  - Nescíre prorsus ómnia
+  - Corruptiónis vúlnera.
+  - _
+  - "* Virtus, honor, laus, glória"
+  - Deo Patri cum Fílio,
+  - Sancto simul Paráclito,
+  - In sæculórum sǽcula.
+  - Amen.
+versum-2:
+  - "@Commune/C6:Versum 2"
+ant-2:
+  - "Símile est * regnum cœlórum sagénæ, missæ in mare, et ex omni génere
+    píscium cóngreganti: quam, cum impléta esset, educéntes, et secus littus
+    sedéntes, elegérunt bonos in vasa sua, malos autem foras misérunt."
+versum-3:
+  - "@Commune/C6:Versum 2"
+ant-3:
+  - "Quinque prudéntes Vírgines * accepérunt óleum in vasis suis cum lampádibus:
+    média autem nocte clamor factus est: Ecce sponsus venit, exite óbviam
+    Christo Dómino."
+comment:
+  - Aliæ Lectiones Pro Virginibus ex Brev. Cist., pag. 145*
+lectio5-in-2-loco:
+  - Ex libro S. Cypriáni, Epíscopi et Mártyris, de disciplína et hábitu Vírginum
+  - "!Lib. de hab. Virg. n. 3-5"
+  - "Nunc nobis ad vírgines sermo est, quarum quo sublímior glória est, major et
+    cura est. Flos est ille ecclesiástici gérminis, decus atque ornaméntum
+    grátiæ spiritális, læta índoles, laudis et honóris opus íntegrum atque
+    incorrúptum, Dei imágo respóndens ad sanctimóniam Dómini, illústrior pórtio
+    gregis Christi. Gaudet per illas atque in illis lárgiter floret Ecclésiæ
+    matris gloriósa fœcúnditas: quantóque plus copiósa virgínitas número suo
+    addit, tanto plus gáudium matris augéscit. Ad has lóquimur, has adhortámur
+    affectióne pótius quam potestáte: non quod, extrémi et mínimi et humilitátis
+    nostræ ádmodum cónscii, áliquid ad censúram licéntiæ vindicémus; sed quod ad
+    sollicitúdinem magis cauti, plus de diáboli infestatióne timeámus."
+lectio6-in-2-loco:
+  - Ex libro S. Cypriáni, Epíscopi et Mártyris, de disciplína et hábitu Vírginum
+  - "!Lib. de hab. Virg. n. 3-5"
+  - "Nunc nobis ad vírgines sermo est, quarum quo sublímior glória est, major et
+    cura est. Flos est ille ecclesiástici gérminis, decus atque ornaméntum
+    grátiæ spiritális, læta índoles, laudis et honóris opus íntegrum atque
+    incorrúptum, Dei imágo respóndens ad sanctimóniam Dómini, illústrior pórtio
+    gregis Christi. Gaudet per illas atque in illis lárgiter floret Ecclésiæ
+    matris gloriósa fœcúnditas: quantóque plus copiósa virgínitas número suo
+    addit, tanto plus gáudium matris augéscit. Ad has lóquimur, has adhortámur
+    affectióne pótius quam potestáte: non quod, extrémi et mínimi et humilitátis
+    nostræ ádmodum cónscii, áliquid ad censúram licéntiæ vindicémus; sed quod ad
+    sollicitúdinem magis cauti, plus de diáboli infestatióne timeámus."
+lectio7-in-2-loco:
+  - "Neque enim inánis hæc cáutio est, et vana formído, quæ ad salútis viam
+    cónsulit, quæ domínica et vitália præcépta custódit, ut quæ se Christo
+    dicáverint, et a carnáli concupiscéntia recedéntes tam carne, quam mente se
+    Deo vóverint, consúmment opus suum magno prǽmio destinátum, nec ornári jam,
+    aut placére cuíquam, nisi Dómino suo, stúdeant, a quo et mercédem
+    virginitátis expéctant, dicénte ipso: Non omnes cápiunt verbum, sed illi
+    quibus datum est. Sunt enim spadónes, qui ex útero matris sic nati sunt: et
+    sunt spadónes, qui coácti sunt ab homínibus; et sunt spadónes, qui seípsos
+    castravérunt propter regnum cœlórum."

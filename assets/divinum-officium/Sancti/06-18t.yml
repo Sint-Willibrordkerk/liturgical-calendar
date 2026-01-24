@@ -1,0 +1,61 @@
+officium:
+  - SS. Marci et Marcelliani Martyrum
+rank:
+  - ""
+  - Simplex
+  - "1.1"
+  - "@C3a-1"
+rule:
+  - vide C3a-1;
+  - Gloria
+oratio:
+  - "Præsta, quǽsumus, omnípotens Deus: ut, qui sanctórum Mártyrum tuórum Marci
+    et Marcelliáni natalítia cólimus; a cunctis malis imminéntibus eórum
+    intercessiónibus liberémur."
+  - $Per Dominum
+lectio:
+  - "@Tempora/Pasc7-6"
+graduale:
+  - "!Sap 3:1-2; 3:3"
+  - Justórum ánimæ in manu Dei sunt, et non tanget illos torméntum malítiæ.
+  - "V. Visi sunt óculis insipiéntium mori: illi autem sunt in pace."
+  - Allelúja, allelúja.
+  - "V. Hæc est vera fratérnitas, quæ numquam potuit violári certámine: qui,
+    effúso sánguine, secúti sunt Dóminum. Allelúja."
+gradualep:
+  - Allelúja, allelúja.
+  - "V. Hæc est vera fratérnitas, quæ numquam potuit violári certámine: qui,
+    effúso sánguine, secúti sunt Dóminum. Allelúja."
+  - V. Te Mártyrum candidátus laudat exércitus, Dómine. Allelúja.
+evangelium:
+  - "@Sancti/10-25"
+offertorium:
+  - "!Ps 123:7"
+  - "Anima nostra, sicut passer, erépta est de láqueo venántium: láqueus
+    contrítus est, et nos liberáti sumus."
+secreta:
+  - "Múnera tibi, Dómine, dicáta sanctífica: et, intercedéntibus sanctis
+    Martýribus tuis Marco et Marcelliáno, per éadem nos placátus inténde."
+  - $Per Dominum
+communio:
+  - "@Tempora/Quad1-1:Communio"
+postcommunio:
+  - "Salutáris tui, Dómine, múnere satiáti, súpplices exorámus: ut, cujus
+    lætámur gustu, intercedéntibus sanctis Martýribus tuis Marco et Marcelliáno,
+    renovémur efféctu."
+  - $Per Dominum
+rubrica-cisterciensis/rank:
+  - ""
+  - Commemoratio et M.
+  - "1"
+  - "@C3a-1"
+lectio93:
+  - "Marcus et Marcellianus fratres Romani, propter christianam fidem a Fabiano
+    duce comprehensi, ad stipitem alligati sunt, pedibus clavis confixis. Ad
+    quos cum ita loqueretur judex: Ille suscipe miseri, et vos ipsos ab his
+    cruciatibus eripite: responderunt: Numquam tam jucunde epulati sumus, quam
+    hæc libenter Jesu Christi causa perferimus, in cujus amóre nunc fixi esse
+    cœpimus: utinam tamdiu nos hæc pati sinat, quamdiu hoc corruptibili corpore
+    vestiti erimus. Qui diem noctemque in tormentis divinas laudes canentes,
+    denique telis transfixi, ad martyrii gloriam pervenerunt. Quorum corpora via
+    Ardeatina sepulta sunt."

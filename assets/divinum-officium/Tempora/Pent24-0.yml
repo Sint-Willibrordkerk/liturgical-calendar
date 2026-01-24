@@ -1,0 +1,111 @@
+references: "@Tempora/Pent23-0"
+officium:
+  - Dominica XXIV et Ultima post Pentecosten
+rank:
+  - ""
+  - Semiduplex
+  - "5"
+rule:
+  - 9 lectiones
+  - Psalmi Dominica
+  - Antiphonas horas
+  - Symbolum Athanasium
+  - Gloria
+  - Credo
+  - Prefatio=Trinitate
+  - Suffr=Sanctorum;Maria3,Ecclesiæ,Papa;;
+oratio:
+  - "Excita, quǽsumus, Dómine, tuórum fidélium voluntátes: ut, divíni óperis
+    fructum propénsius exsequéntes; pietátis tuæ remédia majóra percípiant."
+  - $Per Dominum
+lectio:
+  - Léctio Epístolæ beáti Pauli Apóstoli ad Colossénses
+  - "!Col 1:9-14"
+  - "Fratres: Non cessámus pro vobis orántes et postulántes, ut impleámini
+    agnitióne voluntátis Dei, in omni sapiéntia et intelléctu spiritáli: ut
+    ambulétis digne Deo per ómnia placéntes: in omni ópere bono fructificántes,
+    et crescéntes in scientia Dei: in omni virtúte confortáti secúndum poténtiam
+    claritátis ejus in omni patiéntia, et longanimitáte cum gáudio, grátias
+    agentes Deo Patri, qui dignos nos fecit in partem sortis sanctórum in
+    lúmine: qui erípuit nos de potestáte tenebrárum, et tránstulit in regnum
+    Fílii dilectiónis suæ, in quo habémus redemptiónem per sánguinem ejus,
+    remissiónem peccatórum."
+evangelium:
+  - Sequéntia ++ sancti Evangélii secúndum Matthǽum
+  - "!Matt 24:15-35"
+  - "In illo témpore: Dixit Jesus discípulis suis: Cum vidéritis abominatiónem
+    desolatiónis, quæ dicta est a Daniéle Prophéta, stantem in loco sancto: qui
+    legit, intélligat: tunc qui in Judǽa sunt, fúgiant ad montes: et qui in
+    tecto, non descéndat tóllere áliquid de domo sua: et qui in agro, non
+    revertátur tóllere túnicam suam. Væ autem prægnántibus et nutriéntibus in
+    illis diébus. Oráte autem, ut non fiat fuga vestra in híeme vel sábbato.
+    Erit enim tunc tribulátio magna, qualis non fuit ab inítio mundi usque modo,
+    neque fiet. Et nisi breviáti fuíssent dies illi, non fíeret salva omnis
+    caro: sed propter eléctos breviabúntur dies illi. Tunc si quis vobis
+    díxerit: Ecce, hic est Christus, aut illic: nolíte crédere. Surgent enim
+    pseudochrísti et pseudoprophétæ, et dabunt signa magna et prodígia, ita ut
+    in errórem inducántur - si fíeri potest - étiam elécti. Ecce, prædíxi vobis.
+    Si ergo díxerint vobis: Ecce, in desérto est, nolíte exíre: ecce, in
+    penetrálibus, nolíte crédere. Sicut enim fulgur exit ab Oriénte et paret
+    usque in Occidéntem: ita erit et advéntus Fílii hóminis. Ubicúmque fúerit
+    corpus, illic congregabúntur et áquilæ. Statim autem post tribulatiónem
+    diérum illórum sol obscurábitur, et luna non dabit lumen suum, et stellæ
+    cadent de cælo, et virtútes cœlórum commovebúntur: et tunc parébit signum
+    Fílii hóminis in cœlo: et tunc plangent omnes tribus terræ: et vidébunt
+    Fílium hóminis veniéntem in núbibus cæli cum virtúte multa et majestáte. Et
+    mittet Angelos suos cum tuba et voce magna: et congregábunt eléctos ejus a
+    quátuor ventis, a summis cœlórum usque ad términos eórum. Ab árbore autem
+    fici díscite parábolam: Cum jam ramus ejus tener fúerit et fólia nata,
+    scitis, quia prope est æstas: ita et vos cum vidéritis hæc ómnia, scitóte,
+    quia prope est in jánuis. Amen, dico vobis, quia non præteríbit generátio
+    hæc, donec ómnia hæc fiant. Cœlum et terra transíbunt, verba autem mea non
+    præteríbunt."
+secreta:
+  - "Propítius esto, Dómine, supplicatiónibus nostris: et, pópuli tui
+    oblatiónibus precibúsque suscéptis, ómnium nostrum ad te corda convérte; ut,
+    a terrenis cupiditátibus liberáti, ad cœléstia desidéria transeámus."
+  - $Per Dominum
+postcommunio:
+  - "Concéde nobis, quǽsumus, Dómine: ut per hæc sacraménta quæ súmpsimus,
+    quidquid in nostra mente vitiósum est, ipsorum medicatiónis dono curétur."
+  - $Per Dominum
+lectio7:
+  - Léctio sancti Evangélii secúndum Matthǽum
+  - "!Matt 24:15-35"
+  - "In illo témpore: Dixit Jesus discípulis suis: Cum vidéritis abominatiónem
+    desolatiónis, quæ dicta est a Daniéle prophéta, stantem in loco sancto: qui
+    legit, intéllegat. Et réliqua."
+  - _
+  - Homilía sancti Hierónymi Presbýteri
+  - "!Liber 4 Comment. in cap. 24 Matthæi"
+  - "Quando ad intellegéntiam provocámur, mýsticum monstrátur esse quod dictum
+    est. Légimus autem in Daniéle hoc modo: Et in dimídio hebdómadis auferétur
+    sacrifícium et libámina; et in templo abominátio desolatiónum erit, usque ad
+    consummatiónem témporis, et consummátio dábitur super solitúdinem. De hoc et
+    Apóstolus lóquitur, quod homo iniquitátis, et adversárius elevándus sit
+    contra omne quod dícitur Deus et cólitur; ita ut áudeat stare in templo Dei,
+    et osténdere quod ipse sit Deus: cujus advéntus secúndum operatiónem sátanæ
+    déstruat eos, et ad Dei solitúdinem rédigat, qui se suscéperint."
+lectio8:
+  - Potest autem simpliciter aut de Antichristo accipi, aut de imagine Cæsaris,
+    quam Pilátus pósuit in templo, aut de Hadriáni equestri státua, quæ in ipso
+    sancto sanctórum loco usque in præséntem diem stetit. Abominátio quoque
+    secúndum veterem Scripturam idolum nuncupátur; et idcirco additur,
+    desolatiónis, quod in desolato templo atque destructo idolum positum sit.
+lectio9:
+  - "Abominátio desolatiónis intelligi potest et omne dogma perversum: quod cum
+    vidérimus stare in loco sancto, hoc est in Ecclésia, et se osténdere Deum,
+    debémus fugere de Judæa ad montes, hoc est, dimissa occidénte littera, et
+    Judáica pravitáte, appropinquare móntibus ætérnis, de quibus illúminat
+    mirabíliter Deus; et esse in tecto et in dómate, quo non possint igníta
+    diaboli jácula perveníre, nec descéndere et tóllere aliquid de domo
+    conversatiónis prístinæ, nec quærere quæ retrórsum sunt, sed magis sérere in
+    agro spiritualium Scripturárum, ut fructus capiámus ex eo; nec tóllere
+    álteram túnicam, quam Apóstoli habére prohibentur."
+  - "&teDeum"
+ant-2:
+  - "Cum vidéritis * abominatiónem desolatiónis quæ dicta est a Daniéle
+    prophéta, stantem in loco sancto: qui legit, intéllegat."
+ant-3:
+  - "Amen dico vobis * quia non præteríbit generátio hæc, donec ómnia fiant:
+    cælum et terra transíbunt, verba autem mea non transíbunt, dicit Dóminus."

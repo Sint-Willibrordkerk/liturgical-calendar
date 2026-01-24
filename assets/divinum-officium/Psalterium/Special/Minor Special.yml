@@ -1,0 +1,1258 @@
+dominica-tertia:
+  - "!1 Joann. 4:16"
+  - "v. Deus cáritas est: et qui manet in caritáte, in Deo manet, et Deus in eo."
+  - $Deo gratias
+responsory-breve-dominica-tertia:
+  - R.br. Inclína cor meum, Deus, * In testimónia tua.
+  - R. Inclína cor meum, Deus, * In testimónia tua.
+  - "V. Avérte óculos meos, ne vídeant vanitátem: in via tua vivífica me."
+  - R. In testimónia tua.
+  - "&Gloria"
+  - R. Inclína cor meum, Deus, * In testimónia tua.
+versum-dominica-tertia_:
+  - "V. Ego dixi: Dómine, miserére mei."
+  - R. Sana ánimam meam, quia peccávi tibi.
+versum-dominica-tertia:
+  - "V. Ego dixi: Dómine, miserére mei."
+  - R. Sana ánimam meam, quia peccávi tibi.
+rubrica-praedicatorum/versum-dominica-tertia:
+  - V. Adjútor meus, esto, ne derelínquas me.
+  - R. Neque despícias me, Deus, salutáris meus.
+responsory-dominica-tertiam:
+  - "@:Versum Dominica Tertia_"
+dominica-sexta_:
+  - "!Gal 6:2"
+  - v. Alter altérius ónera portáte, et sic adimplébitis legem Christi.
+  - $Deo gratias
+dominica-sextaop:
+  - "!2 Cor 13:13"
+  - v. Grátia Dómini nostri Jesu Christi et cáritas Dei et communicátio Sancti
+    Spíritus sit cum ómnibus vobis. Amen.
+  - $Deo gratias
+dominica-sexta:
+  - "!Gal 6:2"
+  - v. Alter altérius ónera portáte, et sic adimplébitis legem Christi.
+  - $Deo gratias
+rubrica-praedicatorum/dominica-sexta:
+  - "!2 Cor 13:13"
+  - v. Grátia Dómini nostri Jesu Christi et cáritas Dei et communicátio Sancti
+    Spíritus sit cum ómnibus vobis. Amen.
+  - $Deo gratias
+responsory-breve-dominica-sexta:
+  - R.br. In ætérnum, Dómine, * Pérmanet verbum tuum.
+  - R. In ætérnum, Dómine, * Pérmanet verbum tuum.
+  - V. In sǽculum sǽculi véritas tua.
+  - R. Pérmanet verbum tuum.
+  - "&Gloria"
+  - R. In ætérnum, Dómine, * Pérmanet verbum tuum.
+versum-dominica-sexta:
+  - V. Dóminus regit me, et nihil mihi déerit.
+  - R. In loco páscuæ ibi me collocávit.
+responsory-dominica-sextam:
+  - V. Dóminus regit me, et nihil mihi déerit.
+  - R. In loco páscuæ ibi me collocávit.
+dominica-nona_:
+  - "!1 Cor 6:20"
+  - v. Empti enim estis prétio magno. Glorificáte et portáte Deum in córpore
+    vestro.
+  - $Deo gratias
+dominica-nonaop:
+  - "!1 Joann. 5:7"
+  - "v. Tres sunt, qui testimónium dant in cælo: Pater, Verbum et Spíritus
+    Sanctus, et hi tres unum sunt."
+  - $Deo gratias
+dominica-nona:
+  - "!1 Cor 6:20"
+  - v. Empti enim estis prétio magno. Glorificáte et portáte Deum in córpore
+    vestro.
+  - $Deo gratias
+rubrica-praedicatorum/dominica-nona:
+  - "!1 Joann. 5:7"
+  - "v. Tres sunt, qui testimónium dant in cælo: Pater, Verbum et Spíritus
+    Sanctus, et hi tres unum sunt."
+  - $Deo gratias
+responsory-breve-dominica-nona:
+  - "R.br. Clamávi in toto corde meo: * Exáudi me, Dómine."
+  - "R. Clamávi in toto corde meo: * Exáudi me, Dómine."
+  - V. Justificatiónes tuas requíram.
+  - R. Exáudi me, Dómine.
+  - "&Gloria"
+  - "R. Clamávi in toto corde meo: * Exáudi me, Dómine."
+versum-dominica-nona:
+  - V. Ab occúltis meis munda me, Dómine.
+  - R. Et ab aliénis parce servo tuo.
+responsory-dominica-nonam:
+  - V. Ab occúltis meis munda me, Dómine.
+  - R. Et ab aliénis parce servo tuo.
+feria-tertia:
+  - "!Jer 17:14"
+  - "v. Sana me, Dómine, et sanábor: salvum me fac, et salvus ero: quóniam laus
+    mea tu es."
+  - $Deo gratias
+responsory-breve-feria-tertia:
+  - R.br. Sana ánimam meam, * Quia peccávi tibi.
+  - R. Sana ánimam meam, * Quia peccávi tibi.
+  - "V. Ego dixi: Dómine, miserére mei."
+  - R. Quia peccávi tibi.
+  - "&Gloria"
+  - R. Sana ánimam meam, * Quia peccávi tibi.
+versum-feria-tertia:
+  - V. Adjútor meus, esto, ne derelínquas me.
+  - R. Neque despícias me, Deus, salutáris meus.
+responsory-feria-tertiam:
+  - V. Adjútor meus, esto, ne derelínquas me.
+  - R. Neque despícias me, Deus, salutáris meus.
+feria-sexta_:
+  - "!Rom 13:8"
+  - "v. Némini quidquam debeátis, nisi ut ínvicem diligátis: qui enim díligit
+    próximum, legem implévit."
+  - $Deo gratias
+feria-sexta:
+  - "!Rom 13:8"
+  - "v. Némini quidquam debeátis, nisi ut ínvicem diligátis: qui enim díligit
+    próximum, legem implévit."
+  - $Deo gratias
+rubrica-monastica/feria-sexta:
+  - "!Gal 6:2"
+  - v. Alter altérius ónera portáte, et sic adimplébitis legem Christi.
+  - $Deo gratias
+rubrica-praedicatorum/feria-sexta:
+  - "!Gal 6:2"
+  - v. Alter altérius ónera portáte, et sic adimplébitis legem Christi.
+  - $Deo gratias
+responsory-breve-feria-sexta:
+  - R.br. Benedícam Dóminum * In omni témpore.
+  - R. Benedícam Dóminum * In omni témpore.
+  - V. Semper laus ejus in ore meo.
+  - R. In omni témpore.
+  - "&Gloria"
+  - R. Benedícam Dóminum * In omni témpore.
+versum-feria-sexta:
+  - V. Dóminus regit me, et nihil mihi déerit.
+  - R. In loco páscuæ ibi me collocávit.
+responsory-feria-sextam:
+  - V. Dóminus regit me, et nihil mihi déerit.
+  - R. In loco páscuæ ibi me collocávit.
+feria-nona_:
+  - "!1 Pet 1:17-19"
+  - "v. In timóre incolátus vestri témpore conversámini: sciéntes quod non
+    corruptibílibus auro vel argénto redémpti estis, sed pretióso sánguine quasi
+    Agni immaculáti Christi."
+  - $Deo gratias
+feria-nona:
+  - "!1 Pet 1:17-19"
+  - "v. In timóre incolátus vestri témpore conversámini: sciéntes quod non
+    corruptibílibus auro vel argénto redémpti estis, sed pretióso sánguine quasi
+    Agni immaculáti Christi."
+  - $Deo gratias
+rubrica-monastica/feria-nona:
+  - "!1 Cor 6:20"
+  - v. Empti enim estis prétio magno. Glorificáte et portáte Deum in córpore
+    vestro.
+  - $Deo gratias
+rubrica-praedicatorum/feria-nona:
+  - "!1 Cor 6:20"
+  - v. Empti enim estis prétio magno. Glorificáte et portáte Deum in córpore
+    vestro.
+  - $Deo gratias
+responsory-breve-feria-nona:
+  - R.br. Rédime me, Dómine, * Et miserére mei.
+  - R. Rédime me, Dómine, * Et miserére mei.
+  - V. Pes enim meus stetit in via recta.
+  - R. Et miserére mei.
+  - "&Gloria"
+  - R. Rédime me, Dómine, * Et miserére mei.
+versum-feria-nona:
+  - V. Ab occúltis meis munda me, Dómine.
+  - R. Et ab aliénis parce servo tuo.
+responsory-feria-nonam:
+  - V. Ab occúltis meis munda me, Dómine.
+  - R. Et ab aliénis parce servo tuo.
+adv-tertia:
+  - "!Jer 23:5"
+  - "v. Ecce dies véniunt, dicit Dóminus, et suscitábo David germen justum: et
+    regnábit rex, et sápiens erit: et fáciet judícium et justítiam in terra."
+  - $Deo gratias
+responsory-breve-adv-tertia:
+  - R.br. Veni ad liberándum nos, * Dómine, Deus virtútum.
+  - R. Veni ad liberándum nos, * Dómine, Deus virtútum.
+  - V. Osténde fáciem tuam, et salvi érimus.
+  - R. Dómine, Deus virtútum.
+  - "&Gloria"
+  - R. Veni ad liberándum nos, * Dómine, Deus virtútum.
+versum-adv-tertia:
+  - V. Timébunt gentes nomen tuum, Dómine.
+  - R. Et omnes reges terræ glóriam tuam.
+responsory-adv-tertiam_:
+  - V. Veni ad liberándum nos, Dómine, Deus virtútum.
+  - R. Osténde fáciem tuam, et salvi érimus.
+responsory-adv-tertiam:
+  - V. Veni ad liberándum nos, Dómine, Deus virtútum.
+  - R. Osténde fáciem tuam, et salvi érimus.
+rubrica-cisterciensis/responsory-adv-tertiam:
+  - V. Timébunt gentes nomen tuum, Dómine.
+  - R. Et omnes reges terræ glóriam tuam.
+adv-sexta:
+  - "!Jer 23:6"
+  - "v. In diébus illis salvábitur Juda, et Israël habitábit confidénter: et hoc
+    est nomen, quod vocábunt eum, Dóminus justus noster."
+  - $Deo gratias
+responsory-breve-adv-sexta:
+  - R.br. Osténde nobis, Dómine, * Misericórdiam tuam.
+  - R. Osténde nobis, Dómine, * Misericórdiam tuam.
+  - V. Et salutáre tuum da nobis.
+  - R. Misericórdiam tuam.
+  - "&Gloria"
+  - R. Osténde nobis, Dómine, * Misericórdiam tuam.
+versum-adv-sexta:
+  - V. Meménto nostri, Dómine, in beneplácito pópuli tui.
+  - R. Vísita nos in salutári tuo.
+responsory-adv-sextam_:
+  - V. Osténde nobis, Dómine, misericórdiam tuam.
+  - R. Et salutáre tuum da nobis.
+responsory-adv-sextam:
+  - V. Osténde nobis, Dómine, misericórdiam tuam.
+  - R. Et salutáre tuum da nobis.
+rubrica-cisterciensis/responsory-adv-sextam:
+  - V. Meménto nostri, Dómine, in beneplácito pópuli tui.
+  - R. Vísita nos in salutári tuo.
+adv-nona:
+  - "!Isa 14:1"
+  - "v. Prope est ut véniat tempus ejus, et dies ejus non elongabúntur:
+    miserébitur enim Dóminus Jacob, et Israël salvábitur."
+  - $Deo gratias
+rubrica-praedicatorum/adv-nona:
+  - "!Isa 2:2"
+  - "v. Erit in novíssimis diébus præparátus mons domus Dómini in vértice
+    móntium, et elevábitur super colles: et fluent ad eum omnes gentes."
+  - $Deo gratias
+responsory-breve-adv-nona:
+  - R.br. Super te, Jerúsalem, * Oriétur Dóminus.
+  - R. Super te, Jerúsalem, * Oriétur Dóminus.
+  - V. Et glória ejus in te vidébitur.
+  - R. Oriétur Dóminus.
+  - "&Gloria"
+  - R. Super te, Jerúsalem, * Oriétur Dóminus.
+versum-adv-nona:
+  - V. Veni, Dómine, et noli tardáre.
+  - R. Reláxa facínora plebi tuæ.
+rubrica-praedicatorum/versum-adv-nona:
+  - R. Dómine Deus virtútum, convérte nos.
+  - V. Et osténde fáciem tuam et salvi érimus.
+responsory-adv-nonam_:
+  - V. Super te, Jerúsalem, oriétur Dóminus.
+  - R. Et glória ejus in te vidébitur.
+responsory-adv-nonam:
+  - V. Super te, Jerúsalem, oriétur Dóminus.
+  - R. Et glória ejus in te vidébitur.
+rubrica-cisterciensis/responsory-adv-nonam:
+  - "V. Ego dixi: Dómine, miserére mei."
+  - R. Sana ánimam meam quia peccávi tibi.
+  - V. Convértere, Dómine, úsquequo?
+  - R. Et deprecábilis esto super servos tuos.
+  - V. Fiat misericórdia tua, Dómine, super nos.
+  - R. Quemádmodum sperávimus in te.
+  - V. Sacerdótes tui induántur justítiam.
+  - R. Et sancti tui exsúltent.
+  - V. Orémus pro beatíssimo Papa nostro~
+  - r. N.
+  - R. Dóminus consérvet eum, et vivíficet eum, et beátum fáciat eum in terra,
+    et non tradat eum in ánimam inimicórum ejus.
+  - V. Orémus et pro Antístite nostro ~
+  - r. N.
+  - R. Stet et pascat in fortitúdine tua, Dómine, in sublimitáte nóminis tui.
+  - /:Romæ præcedens Versus cum suo Responsorio omittitur; alibi vero ad
+    litteram N. ab omnibus nomen diœcesani Episcopi exprimatur, Vacante
+    Apostolica vel Episcopali Sede, alteruter vel uterque respectivus Versus cum
+    suo Responsorio præteritur.:/
+  - V. Dómine, salvum fac regem.
+  - R. Et exáudi nos in die, qua invocavérimus te.
+  - V. Salvum fac pópulum tuum, Dómine, et bénedic hereditáti tuæ.
+  - R. Et rege eos, et extólle illos usque in ætérnum.
+  - V. Meménto Congregatiónis tuæ.
+  - R. Quam possedísti ab inítio.
+  - V. Fiat pax in virtúte tua.
+  - R. Et abundántia in túrribus tuis.
+  - V. Orémus pro benefactóribus nostris.
+  - R. Retribúere dignáre, Dómine, ómnibus, nobis bona faciéntibus propter nomen
+    tuum, vitam ætérnam.  Amen.
+  - (deinde dicitur)
+  - V. Orémus pro fidélibus defúnctis.
+  - R. Réquiem ætérnam dona eis, Dómine, et lux perpétua lúceat eis.
+  - V. Requiéscant in pace.
+  - R. Amen.
+  - V. Pro frátribus nostris abséntibus.
+  - R. Salvos fac servos tuos, Deus meus, sperántes in te.
+  - V. Pro afflíctis et captívis.
+  - R. Líbera eos, Deus Israël, ex ómnibus tribulatiónibus suis.
+  - V. Mitte eis, Dómine, auxílium de sancto.
+  - R. Et de Sion tuére eos.
+  - _
+  - "&psalm(129)"
+  - _
+  - V. Dómine, Deus virtútum, convérte nos.
+  - R. Et osténde fáciem tuam, et salvi érimus.
+  - V. Exsúrge, Christe, ádjuva nos.
+  - R. Et líbera nos propter nomen tuum.
+quad-tertia:
+  - "!Joël 2:12-13"
+  - v. Convertímini ad me in toto corde vestro, in jejúnio, et fletu, et
+    planctu. Et scíndite corda vestra, et non vestiménta vestra, ait Dóminus
+    omnípotens.
+  - $Deo gratias
+responsory-breve-quad-tertia:
+  - R.br. Ipse liberávit me * De láqueo venántium.
+  - R. Ipse liberávit me * De láqueo venántium.
+  - V. Et a verbo áspero.
+  - R. De láqueo venántium.
+  - "&Gloria"
+  - R. Ipse liberávit me * De láqueo venántium.
+rubrica-praedicatorum/responsory-quad-tertia:
+  - R. Partícipem me fac, Deus, ómnium timéntium te.
+  - "* Et custodiéntium mandáta tua."
+  - V. Aspice in me, et miserére mei secúndum judícium diligéntium nomen tuum.
+  - R. Et custodiéntium mandáta tua.
+  - "&Gloria"
+  - R. Partícipem me fac, Deus, ómnium timéntium te,
+  - _
+  - "V. Dicet Dómino: Suscéptor meus es tu."
+  - R. Et refúgium meum, Deus meus.
+rubrica-praedicatorum/responsory-quad3-tertia:
+  - R. Bonum mihi, Dómine, quod humiliásti me.
+  - "* Bonum mihi lex oris tui super mília auri, et argénti."
+  - "V. Manus tuæ fecérunt me, et plasmavérunt me: da mihi intelléctum, ut
+    discam mandáta tua."
+  - R. Bonum mihi lex oris tui super mília auri, et argénti.
+  - "&Gloria"
+  - R. Bonum mihi, Dómine, quod humiliásti me.
+  - _
+  - R. Partícipem me fac, Deus, ómnium timéntium te.
+  - "* Et custodiéntium mandáta tua."
+  - V. Aspice in me, et miserére mei secúndum judícium diligéntium nomen tuum.
+  - R. Et custodiéntium mandáta tua.
+  - "&Gloria"
+  - R. Partícipem me fac, Deus, ómnium timéntium te,
+  - _
+  - "V. Dicet Dómino: Suscéptor meus es tu."
+  - R. Et refúgium meum, Deus meus.
+rubrica-praedicatorum/responsory-quad-sexta:
+  - "R. Ab omni via mala prohíbui pedes meos:"
+  - "* Ut custódiam mandáta tua Dómine."
+  - V. A judíciis tuis non declinávi, quia tu legem posuísti mihi.
+  - R. Ut custódiam mandáta tua Dómine.
+  - "&Gloria"
+  - R. Ab omni via mala prohíbui pedes meos.
+  - _
+  - V. Ipse liberávit me de láqueo venántium.
+  - R. Et a verbo áspero.
+rubrica-praedicatorum/responsory-quad3-sexta:
+  - "R. Servus tuus ego sum:"
+  - "* Da mihi intelléctum, Dómine."
+  - V. Ut discam mandáta tua.
+  - R. Da mihi intelléctum, Dómine.
+  - "&Gloria"
+  - R. Servus tuus ego sum.
+  - _
+  - V. Ipse liberávit me de láqueo venántium.
+  - R. Et a verbo áspero.
+rubrica-praedicatorum/responsory-quad-nona:
+  - R. Sépties in die laudem dixi tibi, Dómine Deus meus.
+  - "* Ne perdas me."
+  - "V. Errávi sicut ovis quæ períerat: * requíre servum tuum, Dómine, quia
+    mandáta tua non sum oblítus."
+  - R. Ne perdas me.
+  - "&Gloria"
+  - R. Sépties in die laudem dixi tibi, Dómine Deus meus.
+  - _
+  - V. Scápulis suis obumbrábit tibi.
+  - R. Et sub pennis ejus sperábis.
+rubrica-praedicatorum/responsory-quad3-nona:
+  - "R. Declára super nos, Deus:"
+  - "* Tuam misericórdiam."
+  - V. Declarátio sermónum tuórum dat intelléctum, Dómine.
+  - R. Tuam misericórdiam.
+  - "&Gloria"
+  - R. Declára super nos, Deus:, tuam misericórdiam.
+  - _
+  - V. Scápulis suis obumbrábit tibi.
+  - R. Et sub pennis ejus sperábis.
+versum-quad-tertia:
+  - V. Scápulis suis obumbrábit tibi.
+  - R. Et sub pennis ejus sperábis.
+responsory-quad-tertiac_:
+  - "V. Dicet Dómino: Suscéptor meus es tu, et refúgium meum."
+  - R. Deus meus, sperábo in eum.
+responsory-quad-tertiam_:
+  - V. Ipse liberávit me de láqueo venántium.
+  - R. Et a verbo áspero.
+responsory-quad-tertiam:
+  - V. Ipse liberávit me de láqueo venántium.
+  - R. Et a verbo áspero.
+rubrica-cisterciensis/responsory-quad-tertiam:
+  - "V. Dicet Dómino: Suscéptor meus es tu, et refúgium meum."
+  - R. Deus meus, sperábo in eum.
+quad-sexta:
+  - "!Isa 55:7"
+  - v. Derelínquat ímpius viam suam, et vir iníquus cogitatiónes suas, et
+    revertátur ad Dóminum, et miserébitur ejus, et ad Deum nostrum, quóniam
+    multus est ad ignoscéndum.
+  - $Deo gratias
+responsory-breve-quad-sexta:
+  - R.br. Scápulis suis * Obumbrábit tibi.
+  - R. Scápulis suis * Obumbrábit tibi.
+  - V. Et sub pennis ejus sperábis.
+  - R. Obumbrábit tibi.
+  - "&Gloria"
+  - R. Scápulis suis * Obumbrábit tibi.
+versum-quad-sexta:
+  - V. Scuto circúmdabit te véritas ejus.
+  - R. Non timébis a timóre noctúrno.
+responsory-quad-sextam:
+  - V. Scápulis suis obumbrábit tibi.
+  - R. Et sub pennis ejus sperábis.
+rubrica-cisterciensis/responsory-quad-sextam:
+  - V. Ipse liberávit me de láqueo venántium.
+  - R. Et a verbo áspero.
+quad-nona_:
+  - "!Isa 58:7"
+  - "v. Frange esuriénti panem tuum, et egénos vagósque induc in domum tuam: cum
+    víderis nudum, óperi eum, et carnem tuam ne despéxeris."
+  - $Deo gratias
+quad-nona:
+  - "!Isa 58:7"
+  - "v. Frange esuriénti panem tuum, et egénos vagósque induc in domum tuam: cum
+    víderis nudum, óperi eum, et carnem tuam ne despéxeris."
+  - $Deo gratias
+rubrica-praedicatorum/quad-nona:
+  - "!Isa 58:7"
+  - "v. Frange esuriénti panem tuum, et egénos vagósque induc in domum tuam: cum
+    víderis nudum, óperi eum, et carnem tuam ne despéxeris."
+  - $Deo gratias
+responsory-breve-quad-nona:
+  - R.br. Scuto circúmdabit te * Véritas ejus.
+  - R. Scuto circúmdabit te * Véritas ejus.
+  - V. Non timébis a timóre noctúrno.
+  - R. Véritas ejus.
+  - "&Gloria"
+  - R. Scuto circúmdabit te * Véritas ejus.
+versum-quad-nona:
+  - V. Ángelis suis Deus mandávit de te.
+  - R. Ut custódiant te in ómnibus viis tuis.
+responsory-quad-nonam:
+  - V. Scuto circúmdabit te véritas ejus.
+  - R. Non timébis a timóre noctúrno.
+rubrica-cisterciensis/responsory-quad-nonam:
+  - V. Scápulis suis obumbrábit tibi.
+  - R. Et sub pennis ejus sperábis.
+quad5-tertia_:
+  - "!Jer 17:13"
+  - "v. Dómine, omnes qui te derelínquunt, confundéntur: recedéntes a te, in
+    terra scribéntur: quóniam dereliquérunt venam aquárum vivéntium Dóminum."
+  - $Deo gratias
+quad5-tertia:
+  - "!Jer 17:13"
+  - "v. Dómine, omnes qui te derelínquunt, confundéntur: recedéntes a te, in
+    terra scribéntur: quóniam dereliquérunt venam aquárum vivéntium Dóminum."
+  - $Deo gratias
+rubrica-praedicatorum/quad5-tertia:
+  - "!Jer 11:20"
+  - "v. Tu autem, Dómine Sábaoth, qui júdicas juste, et probas renes et corda,
+    vídeam ultiónem tuam ex eis: tibi enim revelávi causam meam, Dómine, Deus
+    meus."
+  - $Deo gratias
+responsory-breve-quad5-tertia_:
+  - R.br. Érue a frámea, * Deus, ánimam meam.
+  - R. Érue a frámea, * Deus, ánimam meam.
+  - V. Et de manu canis únicam meam.
+  - R. Deus, ánimam meam.
+  - "&Gloria"
+  - R. Érue a frámea, * Deus, ánimam meam.
+responsory-breve-quad5-tertiaop:
+  - R.br. Érue a frámea, * Deus, ánimam meam.
+  - R. Érue a frámea, * Deus, ánimam meam.
+  - V. Et de manu canis únicam meam.
+  - R. Deus, ánimam meam.
+  - "&Gloria"
+  - R. Érue a frámea, * Deus, ánimam meam.
+  - V. Salva me ex ore leónis, et a córnibus unicórnium humilitátem meam.~
+  - R.br. Érue a frámea, * Deus, ánimam meam.
+  - R. Érue a frámea, * Deus, ánimam meam.
+  - V. Et de manu canis únicam meam.
+  - R. Deus, ánimam meam.
+  - "&Gloria"
+  - R. Érue a frámea, * Deus, ánimam meam.
+  - R.br. Érue a frámea, * Deus, ánimam meam.
+  - R. Érue a frámea, * Deus, ánimam meam.
+  - V. Et de manu canis únicam meam.
+  - R. Deus, ánimam meam.
+  - "&Gloria"
+  - R. Érue a frámea, * Deus, ánimam meam.
+responsory-breve-quad5-tertia:
+  - R.br. Érue a frámea, * Deus, ánimam meam.
+  - R. Érue a frámea, * Deus, ánimam meam.
+  - V. Et de manu canis únicam meam.
+  - R. Deus, ánimam meam.
+  - "&Gloria"
+  - R. Érue a frámea, * Deus, ánimam meam.
+rubrica-praedicatorum/responsory-breve-quad5-tertia:
+  - "@:Responsory breve Quad5 Tertia_:2-3 s/\\* // s/V\\./*/"
+  - V. Salva me ex ore leónis, et a córnibus unicórnium humilitátem meam.~
+  - "@:Responsory breve Quad5 Tertia_:3 s/V.//"
+  - "@:Responsory breve Quad5 Tertia_:2 s/\\* //"
+versum-quad5-tertia:
+  - V. De ore leónis líbera me, Dómine.
+  - R. Et a córnibus unicórnium humilitátem meam.
+responsory-quad5-tertiac_:
+  - V. Divisérunt sibi vestiménta mea.
+  - R. Et super vestem meam misérunt sortem.
+responsory-quad5-tertiam_:
+  - V. Érue a frámea, Deus, ánimam meam.
+  - R. Et de manu canis únicam meam.
+responsory-quad5-tertiam:
+  - V. Érue a frámea, Deus, ánimam meam.
+  - R. Et de manu canis únicam meam.
+rubrica-cisterciensis/responsory-quad5-tertiam:
+  - V. Divisérunt sibi vestiménta mea.
+  - R. Et super vestem meam misérunt sortem.
+quad5-sexta_:
+  - "!Jer 17:18"
+  - "v. Confundántur qui me persequúntur, et non confúndar ego: páveant illi, et
+    non páveam ego: induc super eos diem afflictiónis, et dúplici contritióne
+    cóntere eos, Dómine Deus noster."
+  - $Deo gratias
+quad5-sexta:
+  - "!Jer 17:18"
+  - "v. Confundántur qui me persequúntur, et non confúndar ego: páveant illi, et
+    non páveam ego: induc super eos diem afflictiónis, et dúplici contritióne
+    cóntere eos, Dómine Deus noster."
+  - $Deo gratias
+rubrica-praedicatorum/quad5-sexta:
+  - "!Isa 50:6-7"
+  - v. Fáciem meam non avérti ab increpántibus, et conspuéntibus in me. Dóminus
+    Deus auxiliátor meus, et ídeo non sum confúsus.
+  - $Deo gratias
+responsory-breve-quad5-sexta_:
+  - R.br. De ore leónis * Líbera me, Dómine.
+  - R. De ore leónis * Líbera me, Dómine.
+  - V. Et a córnibus unicórnium humilitátem meam.
+  - R. Líbera me, Dómine.
+  - "&Gloria"
+  - R. De ore leónis * Líbera me, Dómine.
+responsory-breve-quad5-sextaop:
+  - R.br. De ore leónis * Líbera me, Dómine.
+  - R. De ore leónis * Líbera me, Dómine.
+  - V. Et a córnibus unicórnium humilitátem meam.
+  - R. Líbera me, Dómine.
+  - "&Gloria"
+  - R. De ore leónis * Líbera me, Dómine.
+  - V. Érue a frámea, Deus, ánimam meam.
+  - R. Et de manu canis únicam meam.
+  - R.br. De ore leónis * Líbera me, Dómine.
+  - R. De ore leónis * Líbera me, Dómine.
+  - V. Et a córnibus unicórnium humilitátem meam.
+  - R. Líbera me, Dómine.
+  - "&Gloria"
+  - R. De ore leónis * Líbera me, Dómine.
+  - R.br. De ore leónis * Líbera me, Dómine.
+  - R. De ore leónis * Líbera me, Dómine.
+  - V. Et a córnibus unicórnium humilitátem meam.
+  - R. Líbera me, Dómine.
+  - "&Gloria"
+  - R. De ore leónis * Líbera me, Dómine.
+responsory-breve-quad5-sexta:
+  - R.br. De ore leónis * Líbera me, Dómine.
+  - R. De ore leónis * Líbera me, Dómine.
+  - V. Et a córnibus unicórnium humilitátem meam.
+  - R. Líbera me, Dómine.
+  - "&Gloria"
+  - R. De ore leónis * Líbera me, Dómine.
+rubrica-praedicatorum/responsory-breve-quad5-sexta:
+  - "@:Responsory breve Quad5 Sexta_:2-3 s/\\* // s/V\\./*/"
+  - "@:Responsory Quad5 TertiaM_:s/.\\nR. (.)/, \\l$1/ s/$/~/"
+  - "@:Responsory breve Quad5 Sexta_:3 s/V.//"
+  - "@:Responsory breve Quad5 Sexta_:2 s/\\* //"
+versum-quad5-sexta:
+  - V. Ne perdas cum ímpiis, Deus, ánimam meam.
+  - R. Et cum viris sánguinum vitam meam.
+responsory-quad5-sextac_:
+  - V. Insurrexérunt in me testes iníqui.
+  - R. Et mentíta est iníquitas sibi.
+responsory-quad5-sextam:
+  - V. De ore leónis líbera me, Dómine.
+  - R. Et a córnibus unicórnium humilitátem meam.
+rubrica-cisterciensis/responsory-quad5-sextam:
+  - V. Insurrexérunt in me testes iníqui.
+  - R. Et mentíta est iníquitas sibi.
+quad5-nona_:
+  - "!Jer 18:20"
+  - v. Recordáre quod stéterim in conspéctu tuo, ut lóquerer pro eis bonum, et
+    avérterem indignatiónem tuam ab eis.
+  - $Deo gratias
+quad5-nona:
+  - "!Jer 18:20"
+  - v. Recordáre quod stéterim in conspéctu tuo, ut lóquerer pro eis bonum, et
+    avérterem indignatiónem tuam ab eis.
+  - $Deo gratias
+rubrica-praedicatorum/quad5-nona:
+  - "!Jer 17:18"
+  - "v. Confundántur qui me persequúntur, et non confúndar ego: páveant illi, et
+    non páveam ego: induc super eos diem afflictiónis, et dúplici contritióne
+    cóntere eos, Dómine Deus noster."
+  - $Deo gratias
+responsory-breve-quad5-nona_:
+  - R.br. Ne perdas cum ímpiis, * Deus ánimam meam.
+  - R. Ne perdas cum ímpiis, * Deus ánimam meam.
+  - V. Et cum viris sánguinum vitam meam.
+  - R. Deus ánimam meam.
+  - "&Gloria"
+  - R. Ne perdas cum ímpiis, * Deus ánimam meam.
+responsory-breve-quad5-nonaop:
+  - R. Príncipes persecúti sunt me gratis, et a verbis tuis formidávit cor meum.
+  - "* Lætábor ego super elóquia tua."
+  - V. Quasi qui invénit spólia multa. Lætábor ego super elóquia tua.
+  - R. Príncipes persecúti sunt me gratis, et a verbis tuis formidávit cor meum.
+responsory-breve-quad5-nona:
+  - R.br. Ne perdas cum ímpiis, * Deus ánimam meam.
+  - R. Ne perdas cum ímpiis, * Deus ánimam meam.
+  - V. Et cum viris sánguinum vitam meam.
+  - R. Deus ánimam meam.
+  - "&Gloria"
+  - R. Ne perdas cum ímpiis, * Deus ánimam meam.
+rubrica-praedicatorum/responsory-breve-quad5-nona:
+  - R. Príncipes persecúti sunt me gratis, et a verbis tuis formidávit cor meum.
+  - "* Lætábor ego super elóquia tua."
+  - V. Quasi qui invénit spólia multa. Lætábor ego super elóquia tua.
+  - R. Príncipes persecúti sunt me gratis, et a verbis tuis formidávit cor meum.
+versum-quad5-nona:
+  - V. Éripe me, Dómine, ab hómine malo.
+  - R. A viro iníquo éripe me.
+responsory-quad5-nonam:
+  - V. Ne perdas cum ímpiis, Deus, ánimam meam.
+  - R. Et cum viris sánguinum vitam meam.
+pasch-tertia:
+  - "!Rom 6:9-10"
+  - "v. Christus resúrgens ex mórtuis jam non móritur, mors illi ultra non
+    dominábitur. Quod enim mórtuus est peccáto, mórtuus est semel: quod autem
+    vivit, vivit Deo."
+  - $Deo gratias
+responsory-breve-pasch-tertia_:
+  - R.br. Surréxit Dóminus de sepúlcro, * Allelúja, allelúja.
+  - R. Surréxit Dóminus de sepúlcro, * Allelúja, allelúja.
+  - V. Qui pro nobis pepéndit in ligno.
+  - R. Allelúja, allelúja.
+  - "&Gloria"
+  - R. Surréxit Dóminus de sepúlcro, * Allelúja, allelúja.
+responsory-breve-pasch-tertiaop_:
+  - R.br. Resurréxit Dóminus, * Allelúja, allelúja.
+  - R. Resurréxit Dóminus, * Allelúja, allelúja.
+  - V. Sicut dixit vobis.
+  - R. Allelúja, allelúja.
+  - "&Gloria"
+  - R. Resurréxit Dóminus, * Allelúja, allelúja.
+responsory-breve-pasch-tertia:
+  - R.br. Surréxit Dóminus de sepúlcro, * Allelúja, allelúja.
+  - R. Surréxit Dóminus de sepúlcro, * Allelúja, allelúja.
+  - V. Qui pro nobis pepéndit in ligno.
+  - R. Allelúja, allelúja.
+  - "&Gloria"
+  - R. Surréxit Dóminus de sepúlcro, * Allelúja, allelúja.
+rubrica-praedicatorum/responsory-breve-pasch-tertia:
+  - R.br. Resurréxit Dóminus, * Allelúja, allelúja.
+  - R. Resurréxit Dóminus, * Allelúja, allelúja.
+  - V. Sicut dixit vobis.
+  - R. Allelúja, allelúja.
+  - "&Gloria"
+  - R. Resurréxit Dóminus, * Allelúja, allelúja.
+versum-pasch-tertia:
+  - V. Surréxit Dóminus vere, allelúja.
+  - R. Et appáruit Simóni, allelúja.
+responsory-pasch-tertiam:
+  - V. Surréxit Dóminus de sepúlcro, allelúja.
+  - R. Qui pro nobis pepéndit in ligno, allelúja.
+pasch-sexta:
+  - "!1 Cor 15:20-22"
+  - "v. Christus resurréxit a mórtuis primítiæ dormiéntium: quóniam quidem per
+    hóminem mors, et per hóminem resurréctio mortuórum. Et sicut in Adam omnes
+    moriúntur, ita et in Christo omnes vivificabúntur."
+  - $Deo gratias
+rubrica-praedicatorum/pasch-sexta:
+  - "!Col 3:1-2"
+  - "v. Si consurrexístis cum Christo, quæ sursum sunt quǽrite, ubi Christus est
+    in déxtera Dei sedens: quæ sursum sunt sápite, non quæ super terram."
+  - $Deo gratias
+responsory-breve-pasch-sexta:
+  - R.br. Surréxit Dóminus vere, * Allelúja, allelúja.
+  - R. Surréxit Dóminus vere, * Allelúja, allelúja.
+  - V. Et appáruit Simóni.
+  - R. Allelúja, allelúja.
+  - "&Gloria"
+  - R. Surréxit Dóminus vere, * Allelúja, allelúja.
+versum-pasch-sexta_:
+  - V. Gavísi sunt discípuli, allelúja.
+  - R. Viso Dómino, allelúja.
+versum-pasch-sexta:
+  - V. Gavísi sunt discípuli, allelúja.
+  - R. Viso Dómino, allelúja.
+rubrica-praedicatorum/versum-pasch-sexta:
+  - V. Surréxit Dóminus de sepúlcro, allelúja.
+  - R. Qui pro nobis pepéndit in ligno, allelúja.
+responsory-pasch-sextam:
+  - V. Surréxit Dóminus vere, allelúja.
+  - R. Et appáruit Simóni, allelúja.
+pasch-nona:
+  - "!1 Pet 3:18"
+  - v. Christus semel pro peccátis nostris mórtuus est, justus pro injústis, ut
+    nos offérret Deo, mortificátus quidem carne, vivificátus autem spíritu.
+  - $Deo gratias
+rubrica-praedicatorum/pasch-nona:
+  - "!Col 3:4"
+  - v. Cum autem Christus apparúerit, vita vestra, tunc et vos apparébitis cum
+    ipso in glória.
+  - $Deo gratias
+responsory-breve-pasch-nona:
+  - R.br. Gavísi sunt discípuli, * Allelúja, allelúja.
+  - R. Gavísi sunt discípuli, * Allelúja, allelúja.
+  - V. Viso Dómino.
+  - R. Allelúja, allelúja.
+  - "&Gloria"
+  - R. Gavísi sunt discípuli, * Allelúja, allelúja.
+rubrica-praedicatorum/responsory-breve-pasch-nona:
+  - R.br. Surréxit Dóminus de sepúlcro, * Allelúja, allelúja.
+  - R. Surréxit Dóminus de sepúlcro, * Allelúja, allelúja.
+  - V. Qui pro nobis pepéndit in ligno.
+  - R. Allelúja, allelúja.
+  - "&Gloria"
+  - R. Surréxit Dóminus de sepúlcro, * Allelúja, allelúja.
+versum-pasch-nona:
+  - V. Mane nobíscum, Dómine, allelúja.
+  - R. Quóniam advesperáscit, allelúja.
+rubrica-praedicatorum/versum-pasch-nona:
+  - V. Gavísi sunt discípuli, allelúja.
+  - R. Viso Dómino, allelúja.
+responsory-pasch-nonac_:
+  - V. Cognovérunt Dóminum, allelúia.
+  - R. In fractióne panis, allelúia.
+responsory-pasch-nonam:
+  - "@:Versum Pasch Sexta_"
+rubrica-cisterciensis/responsory-pasch-nonam:
+  - V. Cognovérunt Dóminum, allelúia.
+  - R. In fractióne panis, allelúia.
+hymnus-pasc7-tertia:
+  - /:Prima stropha hymni sequentis dicitur flexibus genibus.:/
+  - v. Veni Creátor Spíritus,
+  - Mentes tuórum vísita,
+  - Imple supérna grátia,
+  - Quæ tu creásti péctora.
+  - _
+  - Qui díceris Paráclitus,
+  - Altíssimi donum Dei,
+  - Fons vivus, ignis, cáritas,
+  - Et spiritális únctio.
+  - _
+  - Tu septifórmis múnere,
+  - Dígitus patérnæ déxteræ,
+  - Tu rite promíssum Patris,
+  - Sermóne ditans gúttura.
+  - _
+  - "Accénde lumen sénsibus:"
+  - "Infúnde amórem córdibus:"
+  - Infírma nostri córporis
+  - Virtúte firmans pérpeti.
+  - _
+  - Hostem repéllas lóngius,
+  - "Pacémque dones prótinus:"
+  - Ductóre sic te prǽvio
+  - Vitémus omne nóxium.
+  - _
+  - Per te sciámus da Patrem,
+  - Noscámus atque Fílium,
+  - Teque utriúsque Spíritum
+  - Credámus omni témpore.
+  - _
+  - "* Deo Patri sit glória,"
+  - Et Fílio, qui a mórtuis
+  - Surréxit, ac Paráclito,
+  - In sæculórum sǽcula.
+  - Amen.
+hymnusm-pasc7-tertia:
+  - /:Prima stropha hymni sequentis dicitur flexibus genibus.:/
+  - v. Veni Creátor Spíritus,
+  - Mentes tuórum vísita,
+  - Imple supérna grátia,
+  - Quæ tu creásti péctora.
+  - _
+  - Qui díceris Paráclitus,
+  - Altíssimi donum Dei,
+  - Fons vivus, ignis, cáritas,
+  - Et spiritális únctio.
+  - _
+  - Tu septifórmis múnere,
+  - Dígitus patérnæ déxteræ,
+  - Tu rite promíssum Patris,
+  - Sermóne ditans gúttura.
+  - _
+  - "Accénde lumen sénsibus:"
+  - "Infúnde amórem córdibus:"
+  - Infírma nostri córporis
+  - Virtúte firmans pérpeti.
+  - _
+  - Hostem repéllas lóngius,
+  - "Pacémque dones prótinus:"
+  - Ductóre sic te prǽvio
+  - Vitémus omne nóxium.
+  - _
+  - Per te sciámus da Patrem,
+  - Noscámus atque Fílium,
+  - Teque utriúsque Spíritum
+  - Credámus omni témpore.
+  - _
+  - "* Deo Patri sit glória,"
+  - Et Fílio, qui a mórtuis
+  - Surréxit, ac Paráclito,
+  - In sæculórum sǽcula.
+  - Amen.
+hymnus-tertia:
+  - v. Nunc, Sancte, nobis, Spíritus,
+  - Unum Patri cum Fílio,
+  - Dignáre promptus íngeri
+  - Nostro refúsus péctori.
+  - _
+  - Os, lingua, mens, sensus, vigor
+  - Confessiónem pérsonent.
+  - Flamméscat igne cáritas,
+  - Accéndat ardor próximos.
+  - _
+  - "* Præsta, Pater piíssime,"
+  - Patríque compar Únice,
+  - Cum Spíritu Paráclito
+  - Regnans per omne sǽculum.
+  - Amen.
+hymnus-sexta:
+  - v. Rector potens, verax Deus,
+  - Qui témperas rerum vices,
+  - Splendóre mane illúminas,
+  - "Et ígnibus merídiem:"
+  - _
+  - Exstíngue flammas lítium,
+  - Aufer calórem nóxium,
+  - Confer salútem córporum,
+  - Verámque pacem córdium.
+  - _
+  - "* Præsta, Pater piíssime,"
+  - Patríque compar Únice,
+  - Cum Spíritu Paráclito
+  - Regnans per omne sǽculum.
+  - Amen.
+hymnusm-sexta:
+  - v. Rector potens, verax Deus,
+  - Qui témperas rerum vices,
+  - Splendóre mane illúminas,
+  - "Et ígnibus merídiem:"
+  - _
+  - Exstíngue flammas lítium,
+  - Aufer calórem nóxium,
+  - Confer salútem córporum,
+  - Verámque pacem córdium.
+  - _
+  - "* Præsta, Pater piíssime,"
+  - Patríque compar Únice,
+  - Cum Spíritu Paráclito
+  - Regnans per omne sǽculum.
+  - Amen.
+rubrica-cisterciensis/hymnusm-sexta:
+  - v. Rector potens, verax Deus,
+  - Qui témperas rerum vices,
+  - Splendóre mane illúminas,
+  - "Et ígnibus merídiem:"
+  - _
+  - Exstíngue flammas lítium,
+  - Aufer calórem nóxium,
+  - Confer salútem córporum,
+  - Verámque pacem córdium.
+  - _
+  - "* Præsta, Pater piíssime,"
+  - Patríque compar Únice,
+  - Cum Spíritu Paráclito
+  - Regnans per omne sǽculum.
+  - Amen.
+hymnus-nona:
+  - v. Rerum, Deus, tenax vigor,
+  - Immótus in te pérmanens,
+  - Lucis diúrnæ témpora
+  - "Succéssibus detérminans:"
+  - _
+  - Largíre lumen véspere,
+  - Quo vita nusquam décidat,
+  - Sed prǽmium mortis sacræ
+  - Perénnis instet glória.
+  - _
+  - "* Præsta, Pater piíssime,"
+  - Patríque compar Únice,
+  - Cum Spíritu Paráclito
+  - Regnans per omne sǽculum.
+  - Amen.
+hymnusm-nona:
+  - v. Rerum, Deus, tenax vigor,
+  - Immótus in te pérmanens,
+  - Lucis diúrnæ témpora
+  - "Succéssibus detérminans:"
+  - _
+  - Largíre lumen véspere,
+  - Quo vita nusquam décidat,
+  - Sed prǽmium mortis sacræ
+  - Perénnis instet glória.
+  - _
+  - "* Præsta, Pater piíssime,"
+  - Patríque compar Únice,
+  - Cum Spíritu Paráclito
+  - Regnans per omne sǽculum.
+  - Amen.
+hymnus-completorium:
+  - v. Te lucis ante términum,
+  - Rerum Creátor, póscimus,
+  - Ut pro tua cleméntia
+  - Sis præsul et custódia.
+  - _
+  - Procul recédant sómnia,
+  - Et nóctium phantásmata;
+  - Hostémque nostrum cómprime,
+  - Ne polluántur córpora.
+  - _
+  - "* Præsta, Pater piíssime,"
+  - Patríque compar Únice,
+  - Cum Spíritu Paráclito
+  - Regnans per omne sǽculum.
+  - Amen.
+hymnusm-completorium:
+  - v. Te lucis ante términum,
+  - Rerum Creátor, póscimus,
+  - Ut pro tua cleméntia
+  - Sis præsul et custódia.
+  - _
+  - Procul recédant sómnia,
+  - Et nóctium phantásmata;
+  - Hostémque nostrum cómprime,
+  - Ne polluántur córpora.
+  - _
+  - "* Præsta, Pater piíssime,"
+  - Patríque compar Únice,
+  - Cum Spíritu Paráclito
+  - Regnans per omne sǽculum.
+  - Amen.
+hymnus-completorium-quad:
+  - Christe, qui lux es et dies,
+  - Noctis tenébras détegis,
+  - Lucísque lumen créderis,
+  - Lumen beátum prǽdicans.
+  - _
+  - Precámur sancte Dómine,
+  - "defénde nos in hac nocte:"
+  - Sit nobis in te réquies,
+  - Quiétam noctem tríbue.
+  - _
+  - Ne gravis somnus írruat,
+  - Nec hostis nos subrípiat,
+  - Nec caro illi conséntiens
+  - Nos tibi reos státuat.
+  - _
+  - Oculi somnum cápiant,
+  - "Cor ad te semper vígilet:"
+  - Déxtera tua prótegat
+  - Fámulos, qui te díligunt.
+  - _
+  - Defénsor noster áspice,
+  - Insidiántes réprime,
+  - Gubérna tuos fámulos,
+  - /:Ad hunc Vers. genuflectatur:/
+  - Quos Sánguine mercátus es.
+  - _
+  - Meménto nostri, Dómine,
+  - "In gravi isto córpore:"
+  - Qui es defénsor ánimæ,
+  - Adésto nobis, Dómine.
+  - _
+  - Præsta Pater omnípotens,
+  - Per Jesum Christum Dóminum,
+  - Qui tecum in perpétuum
+  - Regnat cum Sancto Spíritu.
+  - Amen.
+hymnus-completorium-quad5:
+  - Christe, qui lux es et dies,
+  - Noctis tenébras détegis,
+  - Lucísque lumen créderis,
+  - Lumen beátum prǽdicans.
+  - _
+  - Precámur sancte Dómine,
+  - "defénde nos in hac nocte:"
+  - Sit nobis in te réquies,
+  - Quiétam noctem tríbue.
+  - _
+  - Ne gravis somnus írruat,
+  - Nec hostis nos subrípiat,
+  - Nec caro illi conséntiens
+  - Nos tibi reos státuat.
+  - _
+  - Oculi somnum cápiant,
+  - "Cor ad te semper vígilet:"
+  - Déxtera tua prótegat
+  - Fámulos, qui te díligunt.
+  - _
+  - Defénsor noster áspice,
+  - Insidiántes réprime,
+  - Gubérna tuos fámulos,
+  - /:Ad hunc Vers. genuflectatur:/
+  - Quos Sánguine mercátus es.
+  - _
+  - Meménto nostri, Dómine,
+  - "In gravi isto córpore:"
+  - Qui es defénsor ánimæ,
+  - Adésto nobis, Dómine.
+  - _
+  - Præsta Pater omnípotens,
+  - Per Jesum Christum Dóminum,
+  - Qui tecum in perpétuum
+  - Regnat cum Sancto Spíritu.
+  - Amen.
+rubrica-ordo-praedicatorum/hymnus-completorium-pasch:
+  - v. Jesu nostra redémptio,
+  - Amor et desidérium,
+  - Deus Creátor ómnium,
+  - "Homo in fine témporum:"
+  - _
+  - Quæ te vicit cleméntia,
+  - Ut ferres nostra crímina,
+  - Crudélem mortem pátiens,
+  - Ut nos a morte tólleres!
+  - _
+  - Inférni claustra pénetrans,
+  - Tuos captívos rédimens,
+  - Victor triúmpho nóbili
+  - Ad dextram Patris résidens.
+  - _
+  - Ipsa te cogat píetas,
+  - Ut mala nostra súperes
+  - Parcénd[o], et voti cómpotes
+  - Nos tuo vultu sáties.
+  - _
+  - Tu esto nostrum gáudium,
+  - Qui es futúrus prǽmium,
+  - Sit nostra in te glória,
+  - Per cuncta semper sǽcula.
+  - Amen.
+  - v. Ad cenam Agni próvidi,
+  - Et stolis albis cándidi,
+  - Post tránsitum maris Rubri,
+  - Christo canámus Príncipi.
+  - _
+  - Cujus corpus sanctíssimum,
+  - In ara crucis tórridum,
+  - Cruóre ejus róseo
+  - Gustándo vívimus Deo.
+  - _
+  - Protécti Paschæ véspere
+  - A devastánte Angelo,
+  - Erépti de duríssimo
+  - Pharaónis império.
+  - _
+  - Jam Pascha nostrum Christus est,
+  - "Qui immolátus agnus est:"
+  - Sinceritátis ázyma,
+  - Caro ejus obláta est.
+  - _
+  - O vere digna hóstia,
+  - Per quam fracta sunt tártara,
+  - Redémpta plebs captiváta,
+  - Réddita vitæ prǽmia.
+  - _
+  - Consúrgit Christus túmulo,
+  - Victor redit de bárathro,
+  - Tyránnum trudens vínculo,
+  - Et Paradísum réserans.
+  - _
+  - Quǽsumus, Auctor ómnium,
+  - In hoc pascháli gáudio,
+  - Ab omni mortis ímpetu
+  - Tuum defénde pópulum.
+  - _
+  - Glória tibi Dómine,
+  - Qui surrexíst[i] a mórtuis,
+  - Cum Patr[e] et Sancto Spíritu,
+  - In sempitérna sǽcula.
+  - Amen.
+rubrica-ordo-praedicatorum/hymnus-completorium-asc:
+  - v. Jesu nostra redémptio,
+  - Amor et desidérium,
+  - Deus Creátor ómnium,
+  - "Homo in fine témporum:"
+  - _
+  - Quæ te vicit cleméntia,
+  - Ut ferres nostra crímina,
+  - Crudélem mortem pátiens,
+  - Ut nos a morte tólleres!
+  - _
+  - Inférni claustra pénetrans,
+  - Tuos captívos rédimens,
+  - Victor triúmpho nóbili
+  - Ad dextram Patris résidens.
+  - _
+  - Ipsa te cogat píetas,
+  - Ut mala nostra súperes
+  - Parcénd[o], et voti cómpotes
+  - Nos tuo vultu sáties.
+  - _
+  - Tu esto nostrum gáudium,
+  - Qui es futúrus prǽmium,
+  - Sit nostra in te glória,
+  - Per cuncta semper sǽcula.
+  - Amen.
+  - _
+  - Glória tibi Dómine,
+  - Qui scandis super sídera,
+  - Cum Patre, et Sancto Spíritu,
+  - In sempitérna sǽcula.
+  - Amen.
+rubrica-ordo-praedicatorum/hymnus-completorium-pent:
+  - v. Jesu nostra redémptio,
+  - Amor et desidérium,
+  - Deus Creátor ómnium,
+  - "Homo in fine témporum:"
+  - _
+  - Quæ te vicit cleméntia,
+  - Ut ferres nostra crímina,
+  - Crudélem mortem pátiens,
+  - Ut nos a morte tólleres!
+  - _
+  - Inférni claustra pénetrans,
+  - Tuos captívos rédimens,
+  - Victor triúmpho nóbili
+  - Ad dextram Patris résidens.
+  - _
+  - Ipsa te cogat píetas,
+  - Ut mala nostra súperes
+  - Parcénd[o], et voti cómpotes
+  - Nos tuo vultu sáties.
+  - _
+  - Tu esto nostrum gáudium,
+  - Qui es futúrus prǽmium,
+  - Sit nostra in te glória,
+  - Per cuncta semper sǽcula.
+  - Amen.
+  - "{:H-Beatanobisgaudia:}v. Beáta nobis gáudia"
+  - Anni redúxit órbita,
+  - Cum Spíritus Paráclitus
+  - Illápsus est Apóstolis.
+  - _
+  - Ignis vibránte lúmine
+  - Linguæ figúram détulit,
+  - Verbis ut essent próflui,
+  - Et caritáte férvidi.
+  - _
+  - Linguis loquúntur ómnium;
+  - Turbæ pavent Gentílium,
+  - Musto madére députant
+  - Quos Spíritus repléverat.
+  - _
+  - Patráta sunt hæc mýstice,
+  - Paschæ perácto témpore,
+  - Sacro diérum círculo,
+  - Quo lege fit remíssio.
+  - _
+  - Te nunc, Deus piíssime,
+  - "Vultu precámur cérnuo:"
+  - Illápsa nobis cǽlitus
+  - Largíre dona Spíritus.
+  - _
+  - Dudum sacráta péctora
+  - "Tua replésti grátia:"
+  - Dimítte nostra crímina,
+  - Et da quiéta témpora.
+  - _
+  - "* Deo Patri sit glória,"
+  - Et Fílio, qui a mórtuis
+  - Surréxit, ac Paráclito,
+  - In sæculórum sǽcula.
+  - Amen.
+  - "*"
+lectio-completorium:
+  - "!1 Pet 5:8-9"
+  - "v. Fratres: Sóbrii estóte, et vigiláte: quia adversárius vester diábolus
+    tamquam leo rúgiens círcuit, quærens quem dévoret: cui resístite fortes in
+    fide."
+  - $Tu autem
+completorium_:
+  - "!Jer 14:9"
+  - "v. Tu autem in nobis es, Dómine, et nomen sanctum tuum invocátum est super
+    nos: ne derelínquas nos, Dómine, Deus noster."
+  - $Deo gratias
+completorium:
+  - "!Jer 14:9"
+  - "v. Tu autem in nobis es, Dómine, et nomen sanctum tuum invocátum est super
+    nos: ne derelínquas nos, Dómine, Deus noster."
+  - $Deo gratias
+rubrica-ordo-praedicatorum/completorium:
+  - "!Jer 14:9"
+  - "v. Tu autem in nobis es, Dómine, et nomen sanctum tuum invocátum est super
+    nos: ne derelínquas nos, Dómine, Deus noster."
+  - $Deo gratias
+responsory-completorium:
+  - R.br. In manus tuas, Dómine, * Comméndo spíritum meum.
+  - R. In manus tuas, Dómine, * Comméndo spíritum meum.
+  - V. Redemísti nos, Dómine, Deus veritátis.
+  - R. Comméndo spíritum meum.
+  - "&Gloria1"
+  - R. In manus tuas, Dómine, * Comméndo spíritum meum.
+rubrica-ordo-praedicatorum/responsory-completorium:
+  - R.br. In manus tuas, Dómine, * Comméndo spíritum meum.
+  - R. In manus tuas, Dómine, * Comméndo spíritum meum.
+  - V. Redemísti me, Dómine, Deus veritátis.
+  - R. Comméndo spíritum meum.
+  - "&Gloria1"
+  - R. In manus tuas, Dómine, * Comméndo spíritum meum.
+responsory-completorium-op-quad:
+  - R. In pace in idípsum * Dórmiam et requiéscam.
+  - "V. Si dédero somnum óculis meis, * et pálpebris meis dormitatiónem:"
+  - R. Dórmiam et requiéscam.
+  - "&Gloria1"
+  - R. In pace in idípsum * Dórmiam et requiéscam.
+versum-4:
+  - V. Custódi nos, Dómine, ut pupíllam óculi.
+  - R. Sub umbra alárum tuárum prótege nos.
+ant-4:
+  - Salva nos, * Dómine, vigilántes, custódi nos dormiéntes; ut vigilémus cum
+    Christo, et requiescámus in pace.
+ant-4-quad:
+  - Evígila super nos, * ætérne Salvátor, ne nos apprehéndat cállidus tentátor,
+    quia tu nobis factus es sempitérnus adjútor.
+ant-4-quad3:
+  - "Média vita in morte sumus: quem quǽrimus adjutórem, nisi te, Dómine, qui
+    pro peccátis nostris juste irásceris? * Sancte Deus, Sancte fortis, Sancte
+    et miséricors Salvátor, amáræ morti ne tradas nos."
+  - V. Ne projícias nos in témpore senectutis; cum defécerit virtus nostra, ne
+    derelínquas nos, Dómine. Sancte Deus.
+ant-4-quad5:
+  - "O Rex glorióse inter Sanctos tuos, qui semper es laudábilis et tamen
+    ineffábilis: tu in nobis es, Dómine, et nomen sanctum tuum invocátum est
+    super nos: ne derelínquas nos Deus noster: ut in die judícii nos collocáre
+    dignéris inter Sanctos et Eléctos tuos, Rex benedícte."
+ant-4-pasch:
+  - "Allelúja. Resurréxit Dóminus, allelúja: sicut dixit vobis, allelúja,
+    allelúja."
+ant-4-asc:
+  - Allelúja. Ascéndens Christus in altum, allelúja, captívam duxit
+    captivitátem, allelúja, allelúja.
+ant-4-pent:
+  - Allelúja. Spíritus Paráclitus, allelúja, docébit vos ómnia, allelúja,
+    allelúja.
+preces-feriales:
+  - $Kyrie
+  - $rubrica Pater secreto
+  - $Pater noster Et
+  - $Preces feriales minora
+preces-dominicales:
+  - $Kyrie
+  - $rubrica Pater secreto
+  - $Pater noster Et
+  - $rubrica Credo secreto
+  - $Credo Carnis
+  - $Preces dominicales Completorium
+  - $Domine exaudi

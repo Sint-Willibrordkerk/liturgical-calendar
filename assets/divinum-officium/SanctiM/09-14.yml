@@ -1,0 +1,115 @@
+references: "@Sancti/09-14"
+rule:
+  - 12 lectiones
+  - Psalmi Dominica
+ant-vespera:
+  - "@:Ant Laudes"
+hymnus-vespera:
+  - "@Psalterium/Special/Major Special:HymnusM Quad5 Vespera"
+versum-1:
+  - "@Sancti/05-03"
+ant-1:
+  - "@Sancti/05-03"
+rubrica-cisterciensis/ant-1: []
+hymnus-matutinum:
+  - "@Psalterium/Special/Matutinum Special:HymnusM Quad5"
+antmatutinumm:
+  - Dulce lignum, * dulces clavos, dulce pondus sustínuit, † quæ sola digna fuit
+    portáre prétium hujus sǽculi.;;8
+  - "Virga tua, et báculus tuus: * ipsa me consoláta sunt, † Dómine, Deus
+    meus.;;22"
+  - Adorámus Crucis signáculum, * per quod salútis súmpsimus sacraméntum.;;98
+ant-matutinum-3n:
+  - "Mihi autem * absit gloriári, nisi in cruce Dómini nostri Jesu Christi: per
+    quem mihi mundus crucifíxus est, et ego mundo."
+ant-matutinum:
+  - "@Sancti/09-14::1-3 s/3/4/"
+  - "@Sancti/09-14::4 s/4/5/"
+  - "@:AntMatutinumM:1"
+  - "@Sancti/09-14::5-6"
+  - "@:AntMatutinumM:2"
+  - "@Sancti/09-14::7-9"
+  - "@:AntMatutinumM:3"
+  - ;;246;247;248
+lectio1:
+  - "@Sancti/09-14:Lectio1:s/-3/-2/ s/.3 .*//s"
+responsory1:
+  - "@Sancti/05-03:Responsory1"
+lectio2:
+  - "@Sancti/09-14:Lectio1:s/.*!/!/s s/1-3/3-4/ s/1 .*3 /3 /s"
+  - "@Sancti/09-14:Lectio2:s/!.*// s/ Et .*//s"
+responsory2:
+  - "@Sancti/05-03:Responsory2"
+lectio3:
+  - "@Sancti/09-14:Lectio2:s/6-9/4-6/ s/4 .* Et /4 Et /s"
+responsory3:
+  - "@Sancti/09-14:Responsory3"
+lectio4:
+  - "@Sancti/09-14:Lectio3"
+responsory4:
+  - R. O crux benedícta,
+  - "* Quæ sola fuísti digna portáre Regem cælórum et Dóminum!"
+  - V. O crux gloriósa et admirábilis o crux veneránda!
+  - R. Quæ sola fuísti digna portáre Regem cælórum et Dóminum!
+lectio5:
+  - "@Sancti/09-14:Lectio4"
+responsory5:
+  - "@Sancti/05-03:Responsory4"
+lectio6:
+  - "@Sancti/09-14:Lectio5:s/ Ergo.*//s"
+responsory6:
+  - "@Sancti/05-03:Responsory5"
+lectio7:
+  - "@Sancti/09-14:Lectio5:s/.* Ergo/Ergo/s s/$/~/"
+  - "@Sancti/09-14:Lectio6:s/ Cumque.*//s"
+responsory7:
+  - "@Sancti/05-03:Responsory6"
+lectio8:
+  - "@Sancti/09-14:Lectio6:s/.* Cumque/Cumque/s"
+responsory8:
+  - R. Per signum Crucis de inimícis nostris
+  - "* Líbera nos, Deus noster."
+  - V. Salva nos, Christe Salvátor, per virtútem crucis.
+  - R. Líbera nos, Deus noster.
+lectio9:
+  - "@Sancti/09-14:Lectio7:s/Noster .*//s"
+responsory9:
+  - "@Sancti/05-03:Responsory7"
+lectio10:
+  - "@Sancti/09-14:Lectio7:s/.* Noster/Noster/s s/$/~/"
+  - "@Sancti/09-14:Lectio8:s/ Traxísti, .*//s"
+responsory10:
+  - "@Sancti/05-03:Responsory8"
+lectio11:
+  - "@Sancti/09-14:Lectio8:s/.*? Traxísti,/Traxísti,/s"
+responsory11:
+  - "R. Tuam Crucem adorámus Dómine: † tuam gloriósam recólimus passiónem:"
+  - "* Miserére nostri, qui passus es pro nobis."
+  - "V. Adorámus te, Christe, et benedícimus tibi: † quia per Crucem tuam
+    redemísti mundum."
+  - R. Miserére nostri, qui passus es pro nobis.
+lectio12:
+  - "@Sancti/09-14:Lectio9"
+responsory12:
+  - R. Ecce Crucem Dómini, fúgite partes advérsæ, vicit Leo de tribu Juda,
+  - "* Radix David, allelúja."
+  - V. Crux benedícta, in qua triumphávit Rex Angelórum.
+  - R. Radix David, allelúja.
+capitulum-laudes:
+  - "@Sancti/05-03"
+hymnus-laudes:
+  - "@Psalterium/Special/Major Special:HymnusM Quad5 Laudes"
+versum-2:
+  - "@Sancti/05-03"
+ant-2:
+  - "@Sancti/05-03"
+responsory-tertiam:
+  - "@Sancti/05-03:Versum 1"
+capitulum-sexta:
+  - "@Sancti/05-03"
+responsory-sextam:
+  - "@Sancti/05-03:Versum 2"
+capitulum-nona:
+  - "@Sancti/05-03"
+responsory-nonam:
+  - "@Sancti/05-03:Nocturn 3 Versum"

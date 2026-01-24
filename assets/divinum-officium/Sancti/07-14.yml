@@ -1,0 +1,138 @@
+officium:
+  - S. Bonaventuræ Episcopi Confessoris et Ecclesiæ Doctoris
+rubrica-1570/officium:
+  - S. Bonaventuræ Episcopi Confessoris
+rank:
+  - ""
+  - Duplex
+  - "3"
+  - "@C4a"
+rubrica-1570/rank:
+  - ""
+  - Semiduplex
+  - "2.2"
+  - "@C4-1"
+rule:
+  - vide C4;mtv
+  - 9 lectiones
+  - vide C4a;
+  - Gloria
+  - CredoDA
+rubrica-1570/rule:
+  - vide C4;mtv
+  - 9 lectiones
+name:
+  - Bonaventúræ
+  - Ant=Bonaventúra
+  - Secreta=Bonaventúræ
+  - Postcommunio=Bonaventúræ
+rubrica-1570/name:
+  - Bonaventúræ
+  - Ant=Bonaventúra
+graduale:
+  - "!Ps 36:30-31"
+  - Os justi meditábitur sapiéntiam, et lingua ejus loquétur judícium.
+  - "V. Lex Dei ejus in corde ipsíus: et non supplantabúntur gressus ejus.
+    Allelúja, allelúja."
+  - "!Ps 109:4"
+  - "Jurávit Dóminus, et non pœnitébit eum: Tu es sacérdos in ætérnum, secúndum
+    órdinem Melchísedech. Allelúja."
+offertorium:
+  - "@Commune/C2"
+secreta:
+  - "@Commune/C4-1"
+communio:
+  - "@Commune/C4"
+postcommunio:
+  - "@Commune/C4-1"
+rubrica-cisterciensis/rank:
+  - ""
+  - Simplex
+  - "1.2"
+  - "@C4a"
+rubrica-cisterciensis/rule:
+  - vide C4a;mtv
+  - 3 lectiones
+comment:
+  - Xysto PP. V, anno 1588, Doctor Seraphicus declaratus est
+lectio4:
+  - "Bonaventúra, Balneorégii in Etrúria natus, a letháli morbo adhuc puer,
+    beáti Francísci précibus, cujus religióni, si convaluísset, voto matris
+    dicátus fúerat, evásit incólumis.  Itaque adoléscens, fratrum Minórum
+    institútum amplécti vóluit, in quo ad eam doctrinæ præstántium Alexándro de
+    Ales magístro pervénit, ut séptimo post anno Parísiis magistérii láuream
+    adéptus, libros Sententiárum públice summa cum laude sit interpretátus, quos
+    étiam præcláris póstea commentáriis illustrávit.  Nec sciéntiæ solum
+    eruditióne, sed et morum integritáte vitæque innocéntia, humilitáte,
+    mansuetúdine, terrenárum rerum contémptu et cæléstium desidério mirífice
+    excélluit; dignus plane, qui tamquam perfectiónis exémplar haberétur, et a
+    beáto Thoma Aquináte, cui summa caritáte conjúnctus erat, sanctus
+    appellarétur.  Is enim, cum sancti Francísci vitam illum scribéntem
+    comperísset: Sinámus, ait, Sanctum pro Sancto laboráre."
+rubrica-1570/lectio4:
+  - "Bonaventura, Balneoregii in Etrutria natus, cum infans incidisset in vitæ
+    periculum, mater ejus vovit, si inde evasisset, se eum religioni beati
+    Francisci dicaturam. Itaque adolescens in ordinem fratrem Minorum adscribi
+    voluit: ubi Alexandro de Ales magistro, ad eam doctrinæ perfectionem brevi
+    pervenit, ut septimo post anno libros Sententiarum Parisiis publice summa
+    cum laude sit interpretatus: quos étiam præclaris postea commentariis
+    illustravit. Post sex annos sui ordinis Generalis minister Romæ factus, ea
+    prudentie ac sanctitatis laude ministerium gessit, ut in omnium ore et
+    admiratione esset."
+lectio5:
+  - Divíni amóris flamma succénsus, erga Christi Dómini passiónem, quam júgiter
+    meditabátur, ac Deíparam Vírginem, cui se totum devóverat, singulári
+    ferebátur pietátis afféctu; quem in áliis étiam verbo et exémplo excitáre,
+    scriptísque opúsculis augére summópere stúduit.  Hinc illa morum suávitas,
+    grátia sermónis et cáritas in omnes effúsa, qua singulórum ánimos sibi
+    arctíssime devinciébat.  Quam ob rem, vix quinque et trigínta annos natus,
+    Romæ summo ómnium consénsu generális órdinis miníster eléctus est;
+    susceptúmque munus per duodevigínti annos admirábili prudéntia gessit ac
+    laude sanctitátis.  Plura constítuit regulári disciplínæ et amplificándo
+    órdini utília; quem una cum áliis ordínibus mendicántibus advérsus
+    obtrectatórum calúmnias felíciter propugnávit.
+rubrica-1570/lectio5:
+  - "Multa scripsit, in quibus summam eruditionem cum pari pietatis ardore
+    conjungens, lectorem docendo movet. Quem Gregorius decimus, ejus sanctimoniæ
+    et sapientiæ fama commotus, Cardinalem et Episcopum Albanensem creavit.
+    Eumdem adhuc viventem beatus Thomas Aquinas sanctum appellavit. Cum enim
+    vitam sancti Francisci scribentem comperisset: Sinamus, inquit, sanctum pro
+    sancto laborare. Migravit e vita pridie Idus Julii, in concilio Lugdunensi,
+    quinquaginta tres annos natus, multis editis miraculis. Quem Xystus quartus
+    Pontifex Maximus retulit in sanctorum numerum."
+lectio6_:
+  - "Ad Lugdunénse concílium a beáto Gregório décimo accersítus et cardinális
+    epíscopus Albanénsis creátus, árduis concílii rebus egrégiam navávit óperam;
+    qua et schísmatis dissídia, compósita sunt, et ecclesiástica dógmata
+    vindicáta.  Quibus in labóribus, anno ætátis suæ quinquagésimo tértio,
+    salútis vero millésimo ducentésimo septuagésimo quarto, summo ómnium mæróre
+    decéssit, ab univérso concílio, ipso præsénte Románo Pontífice, fúnere
+    honestátus.  Eum Xystus quartus, plúrimis maximísque clarum miráculis, in
+    Sanctórum  númerum rétulit.  Multa scripsit, in quibus summam eruditiónem
+    cum pietátis ardóre conjúngens, lectórem docéndo movet: quare a Xysto quinto
+    Doctóris Seráphici nómine mérito est insignítus."
+lectio6:
+  - "@:Lectio6_"
+rubrica-1570/lectio6:
+  - "@Commune/C4a:Lectio4"
+lectio94:
+  - Bonaventúra, Balneorégii in Etrúria natus adoléscens religiónem sancti
+    Francísci Assisiénsis suscépit; in qua stúdio litterárum déditus, Alexándro
+    de Ales præceptóre tantum profécit, ut séptimo post anno Parísiis libros
+    Sententiárum públice summa cum laude sit interpretátus. Vir summæ
+    mansuetúdinis ac humilitátis, erga Christi Dómini passiónem piíssime
+    afféctus, vix quinque et trigínta annos natus, creátus est totíus órdinis
+    miníster generális. Quod munus prudénter administrándo, præcláram est laudem
+    consecútus non solum doctrínæ et sanctimóniæ, sed étiam ingénii et
+    dexteritátis. Qua fama ductus Gregórius Papa décimus cardinálem ipsum et
+    epíscopum Albanénsem creávit. Multa ópera doctíssime conscrípsit, in primis
+    Commentária in quátuor libros Sententiárum. Obiit Lugdúni, duránte concílio,
+    ætátis suæ anno quinquagésimo tértio, et a Xysto quarto inter Sanctos
+    relátus est. Xystus vero quintus Doctóris Seráphici nómini eum insignívit.
+  - "&teDeum"
+lectio7:
+  - "@Commune/C4a:Lectio7 in 3 loco"
+lectio8:
+  - "@Commune/C4a:Lectio8 in 3 loco"
+lectio9:
+  - "@Commune/C4a:Lectio9 in 3 loco"

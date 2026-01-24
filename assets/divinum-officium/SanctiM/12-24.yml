@@ -1,0 +1,11 @@
+references: "@Sancti/12-24"
+mm-capitulum:
+  - "@Sancti/12-24:Capitulum Sexta"
+  - _
+  - "@Sancti/12-24:Versum Tertia"
+responsory-tertiam:
+  - "@Sancti/12-24:Versum Tertia"
+responsory-sextam:
+  - "@Sancti/12-24:Versum Sexta"
+responsory-nonam:
+  - "@Sancti/12-24:Versum Nona"

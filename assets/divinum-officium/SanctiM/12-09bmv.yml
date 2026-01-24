@@ -1,0 +1,59 @@
+references: "@Sancti/12-09bmv"
+rule:
+  - vide Sancti/12-08;
+  - 3 Lectiones
+  - Doxology=Nat
+  - No prima Vespera
+ant-matutinum:
+  - "@Sancti/12-08::1 s/;;\\d+//"
+  - ;;
+  - ;;
+  - ;;
+  - ;;
+  - ;;
+  - "@Sancti/12-08::2 s/;;\\d+//"
+  - ;;
+  - ;;
+  - ;;
+  - ;;
+  - ;;
+lectio1:
+  - "@Sancti/12-09bmv:Lectio4"
+responsory1:
+  - "@Sancti/12-08:Responsory1"
+feria-3/responsory1:
+  - "@Sancti/12-08:Responsory4"
+feria-6/responsory1:
+  - "@Sancti/12-08:Responsory4"
+feria-4/responsory1:
+  - "@Sancti/12-08:Responsory7"
+feria-7/responsory1:
+  - "@Sancti/12-08:Responsory7"
+lectio2:
+  - "@Sancti/12-09bmv:Lectio5"
+responsory2:
+  - "@Sancti/12-08:Responsory2"
+feria-3/responsory2:
+  - "@Sancti/12-08:Responsory5"
+feria-6/responsory2:
+  - "@Sancti/12-08:Responsory5"
+feria-4/responsory2:
+  - "@Sancti/12-08:Responsory8"
+feria-7/responsory2:
+  - "@Sancti/12-08:Responsory8"
+lectio3:
+  - "@Sancti/12-09bmv:Lectio6"
+responsory3:
+  - "@Sancti/12-08:Responsory3"
+feria-3/responsory3:
+  - "@Sancti/12-08:Responsory6"
+feria-6/responsory3:
+  - "@Sancti/12-08:Responsory6"
+feria-4/responsory3:
+  - "@SanctiM/12-08:Responsory11"
+feria-7/responsory3:
+  - "@SanctiM/12-08:Responsory11"
+mm-capitulum:
+  - "@CommuneM/C10:MM Capitulum:1-3"
+  - _
+  - "@Commune/C6:Versum 2"

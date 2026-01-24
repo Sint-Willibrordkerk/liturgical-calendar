@@ -1,0 +1,12 @@
+officium:
+  - Feria V in Octava Ascensionis
+rank:
+  - ""
+  - Duplex majus
+  - "4.1"
+  - "@Tempora/Pasc5-4"
+rule:
+  - ex Tempora/Pasc5-4;
+  - Gloria
+  - Suffr=Maria3;Ecclesiæ,Papa;;
+references: "@Tempora/Pasc6-4"

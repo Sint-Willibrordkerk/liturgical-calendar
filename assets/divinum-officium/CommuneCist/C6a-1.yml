@@ -1,0 +1,20 @@
+references:
+  references: "@CommuneCist/C6"
+  officium:
+    - "@Commune/C6a"
+  oratio:
+    - "@Commune/C6a"
+  hymnusm-matutinum:
+    - "@Commune/C6"
+  responsory6:
+    - R. Gaudeámus omnes in Dómino,
+    - "* Diem festum celebrántes, sub honóre beátæ N. Vírginis, de cujus
+      solemnitáte gaudent Angeli, et colláudant Fílium Dei."
+    - "V. Exultémus omnes in Dómino, et spiritáli jucunditáte lætémur:"
+    - R. Diem festum celebrántes, sub honóre beátæ N. Vírginis, de cujus
+      solemnitáte gaudent Angeli, et colláudant Fílium Dei.
+  lectio-prima:
+    - "@Commune/C6a"
+  capitulum-nona:
+    - "@:Lectio Prima"
+    - $Deo gratias

@@ -1,0 +1,53 @@
+officium:
+  - In Conversione S. Pauli Apostoli
+rank:
+  - ""
+  - Duplex majus
+  - "4"
+  - "@Sancti/01-25"
+rule:
+  - ex Sancti/01-25;
+  - Sub unica concl
+  - Psalmi Dominica
+  - ex Sancti/06-30;
+  - Gloria
+  - no Credo
+  - Prefatio=Apostolis
+  - Sub unica conclusione
+introitus:
+  - "@Sancti/01-25"
+oratio:
+  - "@Sancti/01-25"
+commemoratio-oratio:
+  - "@Sancti/01-25"
+lectio:
+  - "@Sancti/01-25"
+graduale:
+  - "@Sancti/01-25"
+tractus:
+  - "@Sancti/01-25"
+evangelium:
+  - "@Commune/C5-1"
+offertorium:
+  - "@Sancti/01-25"
+secreta:
+  - "@Sancti/01-25"
+commemoratio-secreta:
+  - "@Sancti/01-25"
+communio:
+  - "@Commune/C5-1"
+postcommunio:
+  - "@Sancti/01-25"
+commemoratio-postcommunio:
+  - "@Sancti/01-25"
+lectio1:
+  - "@Sancti/01-25"
+responsory1:
+  - "@Sancti/06-30"
+lectio2:
+  - "@Sancti/01-25"
+responsory3:
+  - "@Sancti/06-30:Responsory2"
+lectio4:
+  - "@Sancti/01-25:Lectio3"
+  - "&teDeum"

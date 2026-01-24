@@ -1,0 +1,12 @@
+officium:
+  - Sabbato in Hebdomadam IV Adventus
+rank:
+  - ""
+  - Feria major
+  - "2.1"
+rubrica-196/rank:
+  - ""
+  - Feria major
+  - "4.9"
+rubrica-cisterciensis/ant-laudes:
+  - "@Tempora/Adv4-0"

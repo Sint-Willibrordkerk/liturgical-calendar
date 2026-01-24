@@ -1,0 +1,156 @@
+officium:
+  - Die III infra octavam Paschæ
+rank:
+  - ""
+  - Duplex I classis
+  - "7"
+  - "@Pasc0-0"
+rule:
+  - ex Pasc0-0;
+  - 1 nocturn;
+  - Omit Hymnus Preces Suffragium;
+  - no commemoratio;
+  - Minores sine Antiphona;
+  - Capitulum Versum 2;
+  - Psalmi Dominica;
+  - Credo
+  - Sequentia
+introitus:
+  - "!Eccli 15:3-4"
+  - "v. Aqua sapiéntiæ potávit eos, allelúja: firmábitur in illis et non
+    flectétur, allelúja: et exaltábit eos in ætérnum, allelúja, allelúja."
+  - "!Ps 104: 1"
+  - "Confitémini Dómino et invocáte nomen ejus: annuntiáte inter gentes ópera
+    ejus."
+  - "&Gloria"
+  - "v. Aqua sapiéntiæ potávit eos, allelúja: firmábitur in illis et non
+    flectétur, allelúja: et exaltábit eos in ætérnum, allelúja, allelúja."
+oratio:
+  - "Deus, qui Ecclésiam tuam novo semper fœtu multíplicas: concéde fámulis
+    tuis; ut sacraméntum vivéndo téneant, quod fide percepérunt."
+  - $Per Dominum
+lectio:
+  - Léctio Actuum Apostolórum
+  - "!Acts 13:16; 13:26-33"
+  - "In diébus illis: Surgens Paulus et manu siléntium índicens, ait: Viri
+    fratres, fílii géneris Abraham, et qui in vobis timent Deum, vobis verbum
+    salútis hujus missum est. Qui enim habitábant Jerúsalem, et príncipes ejus,
+    ignorántes Jesum et voces Prophetárum, quæ per omne sábbatum legúntur,
+    judicántes implevérunt: et nullam causam mortis inveniéntes in eo, petiérunt
+    a Piláto, ut interfícerent eum. Cumque consummássent ómnia, quæ de eo
+    scripta erant, deponéntes eum de ligno, posuérunt eum in monuménto. Deus
+    vero suscitávit eum a mórtuis tértia die: qui visus est per dies multos his,
+    qui simul ascénderant cum eo de Galilǽa in Jerúsalem, qui usque nunc sunt
+    testes ejus ad plebem. Et nos vobis annuntiámus eam, quæ ad patres nostros
+    repromíssio facta est: quóniam hanc Deus adimplévit fíliis nostris,
+    resúscitans Jesum Christum, Dóminum nostrum."
+graduale:
+  - "!Ps 117:24;106:2"
+  - "Hæc dies, quam fecit Dóminus: exsultémus et lætémur in ea."
+  - "!Ps 106:2"
+  - "V. Dicant nunc, qui redémpti sunt a Dómino: quos redémit de manu inimíci,
+    et de regiónibus congregávit eos."
+  - Allelúja, allelúja.
+  - V. Surrexit Dóminus de sepúlcro, qui pro nobis pepéndit in ligno.
+sequentia:
+  - "@Tempora/Pasc0-0:Sequentia"
+evangelium:
+  - Sequéntia ++ sancti Evangélii secúndum Lucam
+  - "!Luc. 24, 36-47"
+  - "In illo témpore: Stetit Jesus in médio discipulórum suórum et dicit eis:
+    Pax vobis: ego sum, nolíte timére. Conturbáti vero et contérriti,
+    existimábant se spíritum vidére. Et dixit eis: Quid turbáti estis, et
+    cogitatiónes ascéndunt in corda vestra? Vidéte manus meas et pedes, quia ego
+    ipse sum: palpáte et vidéte: quia spíritus carnem et ossa non habet, sicut
+    me vidétis habére. Et cum hoc dixísset, osténdit eis manus et pedes. Adhuc
+    autem illis non credéntibus et mirántibus præ gáudio, dixit: Habétis hic
+    aliquid, quod manducétur? At illi obtulérunt ei partem piscis assi et favum
+    mellis. Et cum manducásset coram eis, sumens relíquias, dedit eis. Et dixit
+    ad eos: Hæc sunt verba, quæ locútus sum ad vos, cum adhuc essem vobíscum,
+    quóniam necésse est impléri ómnia, quæ scripta sunt in lege Móysi et
+    Prophétis et Psalmis de me. Tunc apéruit illis sensum, ut intellégerent
+    Scriptúras. Et dixit eis: Quóniam sic scriptum est, et sic oportébat
+    Christum pati, et resúrgere a mórtuis tértia die: et prædicári in nómine
+    ejus pœniténtiam, et remissiónem peccatórum in omnes gentes."
+offertorium:
+  - "!Ps. 17:14; 17:16"
+  - "Intónuit de cœlo Dóminus, et Altíssimus dedit vocem suam: et apparuérunt
+    fontes aquárum, allelúja."
+secreta:
+  - "Súscipe, Dómine, fidélium preces cum oblatiónibus hostiárum: ut, per hæc
+    piæ devotiónis offícia, ad cœléstem glóriam transeámus."
+  - $Per Dominum
+communio:
+  - "!Col 3:1-2"
+  - "Si consurrexístis cum Christo, quæ sursum sunt quǽrite, ubi Christus est in
+    déxtera Dei sedens, allelúja: quæ sursum sunt sápite, allelúja."
+postcommunio:
+  - "Concéde, quǽsumus, omnípotens Deus: ut paschális percéptio sacraménti,
+    contínua in nostris méntibus persevéret."
+  - $Per Dominum
+ant-matutinum:
+  - "@Tempora/Pasc0-0::s/^V\\..*//sm"
+  - V. Surréxit Dóminus vere, allelúja.
+  - R. Et appáruit Simóni, allelúja.
+lectio1:
+  - Léctio sancti Evangélii secúndum Lucam
+  - "!Luc 24:36-47"
+  - "In illo témpore: Stetit Jesus in médio discipulórum, et dicit eis: Pax
+    vobis: ego sum, nolíte timére. Et réliqua."
+  - _
+  - Homilía sancti Ambrósii Epíscopi
+  - "!Liber 10. Comment. in Lucam, cap. 24, ante finem"
+  - "Mirum, quo modo se natúra corpórea per impenetrábile corpus infúderit
+    invisíbili áditu, visíbili conspéctu: tangi fácilis, diffícilis æstimári.
+    Dénique conturbáti discípuli æstimábant se spíritum vidére. Et ídeo Dóminus,
+    ut spéciem nobis resurrectiónis osténderet: Palpáte, inquit, et vidéte, quia
+    spíritus carnem et ossa non habet, sicut me vidétis habére. Non ergo per
+    incorpóream natúram, sed per resurrectiónis qualitátem, impérvia usu clausa
+    penetrávit. Nam quod tángitur, corpus est: quod palpátur, corpus est."
+responsory1:
+  - R. Virtúte magna reddébant Apóstoli,
+  - "* Testimónium resurrectiónis Jesu Christi Dómini nostri, allelúja,
+    allelúja."
+  - V. Repléti quidem Spíritu Sancto loquebántur cum fidúcia verbum Dei.
+  - R. Testimónium resurrectiónis Jesu Christi Dómini nostri, allelúja, allelúja.
+lectio2:
+  - "In córpore autem resurgémus. Seminátur enim corpus animále, surgit corpus
+    spiritále: sed illud subtílius, hoc crássius, útpote adhuc terrénæ labis
+    qualitáte concrétum. Nam quómodo non corpus, in quo manébant insígnia
+    vúlnerum, vestígia cicatrícum, quæ Dóminus palpánda óbtulit? In quo non
+    solum fidem firmat, sed étiam devotiónem ácuit, quod vúlnera suscépta pro
+    nobis cælo inférre máluit, abolére nóluit: ut Deo Patri nostræ prétia
+    libertátis osténderet. Talem sibi Pater ad déxteram locat, trophǽum nostræ
+    salútis ampléctens: tales illic Mártyres nobis cicatrícis suæ coróna
+    monstrávit."
+responsory2:
+  - "R. De ore prudéntis procédit mel, allelúja: dulcédo mellis est sub língua
+    ejus, allelúja:"
+  - "* Favus distíllans lábia ejus, allelúja, allelúja."
+  - V. Sapiéntia requiéscit in corde ejus, et prudéntia in sermóne oris illíus.
+  - R. Favus distíllans lábia ejus, allelúja, allelúja.
+  - "&Gloria"
+  - R. Favus distíllans lábia ejus, allelúja, allelúja.
+lectio3:
+  - "Et quóniam sermo huc noster evásit, considerémus qua grátia secúndum
+    Joánnem credíderint Apóstoli, qui gavísi sunt; secúndum Lucam quasi
+    incréduli redarguántur: ibi Spíritum Sanctum accéperint, hic sedére in
+    civitáte jubeántur, quoadúsque induántur virtúte ex alto. Et vidétur mihi
+    ille quasi Apóstolus majóra et altióra tetigísse, hic sequéntia et humánis
+    próxima: hic histórico usus circúitu, ille compéndio: quia et de illo
+    dubitári non potest, qui testimónium pérhibet de iis, quibus ipse intérfuit,
+    et verum est testimónium ejus: et ab hoc quoque, qui Evangelísta esse
+    méruit, vel negligéntiæ, vel mendácii suspiciónem æquum est propulsári. Et
+    ídeo verum putámus utrúmque, non sententiárum varietáte, nec personárum
+    diversitáte distínctum. Nam etsi primo Lucas eos non credidísse dicat,
+    póstea tamen credidísse demónstrat: et si prima considerémus, contrária
+    sunt: si sequéntia, certum est conveníre."
+  - "&teDeum"
+ant-2:
+  - "Stetit Jesus * in médio discipulórum suórum, et dixit eis: Pax vobis,
+    allelúja, allelúja."
+ant-3:
+  - Vidéte manus meas * et pedes meos, quia ego ipse sum, allelúja, allelúja.
+rubrica-cisterciensis/ant-3:
+  - Obtulérunt * discípuli Dómino partem piscis assi, et favum mellis, allelúia,
+    allelúia.

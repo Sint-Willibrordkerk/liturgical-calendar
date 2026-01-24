@@ -1,0 +1,85 @@
+references: "@Sancti/01-25"
+rule:
+  - ex Sancti/06-30;
+  - 12 lectiones
+  - Sub unica concl
+rubrica-196/rule:
+  - Sub unica concl
+antmatutinumm:
+  - "@SanctiM/06-30"
+ant-matutinum:
+  - "@SanctiM/06-30"
+responsory1:
+  - "@Sancti/06-30"
+responsory2:
+  - "@Sancti/06-30"
+lectio3:
+  - "@Sancti/01-25::1-4 s/16/12/"
+  - null
+rubrica-1963/lectio3:
+  - "@Sancti/01-25::1-4 s/16/12/"
+responsory3:
+  - "@Sancti/06-30"
+lectio4:
+  - "@Sancti/01-25:Lectio3:1 s/10-/13-/"
+  - "@Sancti/01-25:Lectio3:5-8"
+rubrica-196/lectio4:
+  - "@Sancti/01-25:Lectio3"
+responsory4:
+  - "@SanctiM/06-30"
+lectio5:
+  - "@Sancti/01-25:Lectio4:s/ Erat.*//"
+responsory5:
+  - "@Sancti/06-30:Responsory4"
+lectio6:
+  - "@Sancti/01-25:Lectio4:3 s/.* Erat/Erat/ s/$/~/"
+  - "@Sancti/01-25:Lectio5:s/erat.*/erat./"
+responsory6:
+  - "@Sancti/06-30:Responsory5"
+lectio7:
+  - "@Sancti/01-25:Lectio5:s/.*erat.//"
+responsory7:
+  - "@Sancti/06-30:Responsory6"
+lectio8:
+  - "@Sancti/01-25:Lectio6"
+responsory8:
+  - "@SanctiM/06-30"
+lectio9:
+  - "@Commune/C1:Lectio7 in 2 loco:s/ In hac.*//"
+responsory9:
+  - "@Sancti/06-30:Responsory7"
+lectio10:
+  - "@Commune/C1:Lectio7 in 2 loco:s/.*In hac/In hac/s s/$/~/"
+  - "@Commune/C1:Lectio8 in 2 loco:s/ Nemo.*//"
+responsory10:
+  - "@Sancti/06-30:Responsory8"
+lectio11:
+  - "@Commune/C1:Lectio8 in 2 loco:s/.*Nemo/Nemo/ s/$/~/"
+  - "@Commune/C1:Lectio9 in 2 loco:s/Sciéndum.*//g"
+responsory11:
+  - "@SanctiM/06-30"
+lectio12:
+  - "@Commune/C1:Lectio9 in 2 loco:s/.* Sciéndum/Sciéndum/g"
+responsory12:
+  - "@SanctiM/06-30"
+mm-capitulum:
+  - "@Sancti/01-25:Capitulum Sexta"
+  - _
+  - "@Commune/C1:Nocturn 2 Versum"
+capitulum-laudes:
+  - "@Sancti/01-25"
+versum-2:
+  - "@Sancti/06-30:Versum 1"
+ant-2:
+  - "@Sancti/06-30"
+rubrica-cisterciensis/ant-2: []
+responsory-tertiam:
+  - "@Commune/C1:Versum 1"
+rubrica-cisterciensis/responsory-tertiam: []
+ant-vespera-3:
+  - "@Sancti/01-25::s/125/138/"
+rubrica-cisterciensis/ant-vespera-3:
+  - "@Sancti/01-25:Ant Vespera:s/$/_/gm s/_/;;109/ s/_/;;112/ s/_/;;115/
+    s/_/;;125/ s/_//"
+versum-3:
+  - "@Sancti/06-30:Versum 1"

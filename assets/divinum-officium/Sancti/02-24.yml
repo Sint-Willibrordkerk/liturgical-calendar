@@ -1,0 +1,171 @@
+officium:
+  - S. Matthiæ Apostoli
+rank:
+  - ""
+  - Duplex II classis
+  - "5.1"
+  - "@C1"
+rubrica-196/rank:
+  - ""
+  - Duplex II classis
+  - "5"
+  - "@C1"
+rule:
+  - ex C1;
+  - Antiphonas horas
+  - Psalmi Dominica
+  - 9 lectiones
+  - Gloria
+  - Credo
+  - Prefatio=Apostolis
+name:
+  - Matthíam
+introitus:
+  - "!Ps 138:17"
+  - "v. Mihi autem nimis honoráti sunt amíci tui, Deus: nimis confortátus est
+    principátus eórum."
+  - "!Ps 138:1-2."
+  - "Dómine, probásti me et cognovísti me: tu cognovísti sessiónem meam et
+    resurrectiónem meam."
+  - "&Gloria"
+  - "v. Mihi autem nimis honoráti sunt amíci tui, Deus: nimis confortátus est
+    principátus eórum."
+oratio:
+  - "Deus, qui beatum Matthiam Apostolorum tuorum collegio sociasti: tribue,
+    quæsumus; ut, eius interventione, tuæ circa nos pietatis semper viscera
+    sentiamus."
+  - $Per Dominum
+lectio:
+  - Léctio Actuum Apostolórum
+  - "!Act 1, 15-26."
+  - "In diébus illis exsúrgens Petrus in médio fratrum, dixit - erat autem turba
+    hóminum simul, fere centum vigínti -: Viri fratres, opórtet impléri
+    Scriptúram, quam prædíxit Spíritus Sanctus per os David de Juda, qui fuit
+    dux eórum, qui comprehendérunt Jesum: qui connumerátus erat in nobis, et
+    sortítus est sortem ministérii hujus. Et hic quidem possédit agrum de
+    mercéde iniquitátis, et suspénsus crépuit médius: et diffúsa sunt ómnia
+    víscera ejus. Et notum factum est ómnibus habitántibus Jerúsalem, ita ut
+    appellarétur ager ille, lingua eórum, Hacéldama, hoc est ager sánguinis.
+    Scriptum est enim in libro Psalmórum: Fiat commorátio eórum desérta, et non
+    sit, qui inhábitet in ea: et episcopátum ejus accípiat alter. Opórtet ergo
+    ex his viris, qui nobíscum sunt congregáti in omni témpore, quo intrávit et
+    exívit inter nos Dóminus Jesus, incípiens a baptísmate Joánnis usque in
+    diem, qua assúmptus est a nobis, testem resurrectiónis ejus nobíscum fíeri
+    unum ex istis. Et statuérunt duos, Joseph qui vocabátur Bársabas, qui
+    cognominátus est Justus, et Matthíam. Et orántes dixérunt: Tu, Dómine, qui
+    corda nosti ómnium, osténde, quem elégeris ex his duóbus unum, accípere
+    locum ministérii hujus et apostolátus, de quo prævaricátus est Judas, ut
+    abíret in locum suum. Et dedérunt sortes eis, et cécidit sors super
+    Matthíam, et annumerátus est cum úndecim Apóstolis."
+graduale:
+  - "!Ps 138:17-18"
+  - "Nimis honoráti sunt amíci tui, Deus: nimis confortátus est principatus
+    eórum."
+  - V. Dinumerábo eos, et super arénam multiplicabúntur.
+tractus:
+  - "!Ps 138:17-18"
+  - "Nimis honoráti sunt amíci tui, Deus: nimis confortátus est principatus
+    eórum."
+  - V. Dinumerábo eos, et super arénam multiplicabúntur.
+  - _
+  - "!Tractus"
+  - "!Ps 20:3-4"
+  - "Desidérium ánimæ ejus tribuísti ei: et voluntáte labiórum ejus non
+    fraudásti eum."
+  - V. Quóniam prævenísti eum in benedictiónibus dulcédinis.
+  - V. Posuísti in cápite ejus corónam de lápide pretióso.
+evangelium:
+  - "@Sancti/01-15"
+offertorium:
+  - "!Ps 44:17-18"
+  - "Constítues eos príncipes super omnem terram: mémores erunt nóminis tui,
+    Dómine, in omni progénie et generatióne."
+secreta:
+  - "Hóstias tibi, Dómine, quas nómini tuo sacrándas offérimus, sancti Matthíæ
+    Apóstoli tui prosequátur orátio: per quam nos expiári fácias et deféndi."
+  - $Per Dominum
+communio:
+  - "!Matt 19:28"
+  - Vos, qui secúti estis me, sedébitis super sedes, judicántes duódecim tribus
+    Israël.
+postcommunio:
+  - "Præsta, quǽsumus, omnípotens Deus: ut per hæc sancta, quæ súmpsimus,
+    interveniénte beáto Matthía Apóstolo tuo, véniam consequámur et pacem."
+  - $Per Dominum
+rubrica-cisterciensis/rank:
+  - S. Matthiæ Apostoli
+  - MM. maj.
+  - "4.1"
+  - "@C1"
+lectio1:
+  - De Actibus Apostolórum
+  - "!Acts 1:15-18"
+  - "15 In diébus illis, exsúrgens Petrus in médio fratrum, dixit (erat autem
+    turba hóminum simul, fere centum vigínti):"
+  - "16 Viri fratres, opórtet impléri Scriptúram quam prædíxit Spíritus Sanctus
+    per os David de Juda, qui fuit dux eórum qui comprehendérunt Jesum:"
+  - 17 qui connumerátus erat in nobis, et sortítus est sortem ministérii hujus.
+  - "18 Et hic quidem possédit agrum de mercéde iniquitátis, et suspénsus
+    crépuit médius: et diffúsa sunt ómnia víscera ejus."
+lectio2:
+  - "!Acts 1:19-22"
+  - 19 Et notum factum est ómnibus habitántibus Jerúsalem, ita ut appellarétur
+    ager ille, lingua eórum, Hacéldama, hoc est, ager sánguinis.
+  - "20 Scriptum est enim in libro Psalmórum: Fiat commorátio eórum desérta, et
+    non sit qui inhábitet in ea: et episcopátum ejus accípiat alter."
+  - 21 Opórtet ergo ex his viris qui nobíscum sunt congregáti in omni témpore
+    quo intrávit et exívit inter nos Dóminus Jesus,
+  - 22 incípiens a baptísmate Joánnis usque in diem qua assúmptus est a nobis,
+    testem resurrectiónis ejus nobíscum fíeri unum ex istis.
+lectio3:
+  - "!Acts 1:23-26"
+  - 23 Et statuérunt duos, Joseph, qui vocabátur Bársabas, qui cognominátus est
+    Justus, et Matthíam.
+  - "24 Et orántes dixérunt: Tu Dómine, qui corda nosti ómnium, osténde quem
+    elégeris ex his duóbus unum,"
+  - 25 accípere locum ministérii hujus et apostolátus, de quo prævaricátus est
+    Judas ut abíret in locum suum.
+  - "26 Et dedérunt sortes eis, et cécidit sors super Matthíam: et annumerátus
+    est cum úndecim Apóstolis."
+lectio4:
+  - "@Commune/C1:Lectio4 in 2 loco"
+lectio5:
+  - "@Commune/C1:Lectio5 in 2 loco"
+lectio6:
+  - "@Commune/C1:Lectio6 in 2 loco"
+lectio7:
+  - Léctio sancti Evangélii secúndum Matthǽum
+  - "!Matt 11:25-30"
+  - "In illo témpore: Respóndens Jesus dixit: Confíteor tibi, Pater, Dómine cæli
+    et terræ, quia abscondísti hæc a sapiéntibus et prudéntibus, et revelásti ea
+    párvulis. Et réliqua."
+  - _
+  - Homilía sancti Augustíni Epíscopi
+  - "!Sermo 10 de verbis Domini"
+  - Veníte ad me, omnes qui laborátis. Quare enim omnes laborámus, nisi quia
+    sumus hómines mortáles, frágiles, infírmi, lútea vasa portántes, quæ fáciunt
+    ínvicem angústias? Sed, si angustiántur vasa carnis, dilaténtur spátia
+    caritátis. Quid ergo dicit, Veníte ad me, omnes qui laborátis, nisi ut non
+    laborétis? Dénique promíssio ejus in promptu est; quóniam laborántes
+    vocávit, quærent forte, qua mercéde vocáti sunt. Et ego vos, inquit,
+    refíciam. Tóllite jugum meum super vos, et díscite a me, non mundum
+    fabricáre, non cuncta visibília et invisibília creáre, non in ipso mundo
+    mirabília fácere et mórtuos suscitáre; sed, Quóniam mitis sum et húmilis
+    corde.
+lectio8:
+  - Magnus esse vis? a mínimo íncipe. Cógitas magnam fábricam constrúere
+    celsitúdinis? de fundaménto prius cógita humilitátis. Et quantam quisque
+    vult et dispónit superimpónere molem ædifícii, quanto erit majus ædifícium,
+    tanto áltius fodit fundaméntum. Et fábrica quidem cum constrúitur, in
+    supérna consúrgit; qui autem fodit fundaméntum, ad ima deprímitur. Ergo et
+    fábrica ante celsitúdinem humiliátur, et fastígium post humiliatiónem
+    erígitur.
+lectio9:
+  - Quod est fastígium construéndæ fábricæ, quam molímur? quo perventúrum est
+    cacúmen ædifícii? Cito dico, usque ad conspéctum Dei. Vidétis quam excélsum
+    est, quanta res est conspícere Deum. Qui desíderat, et quod dico et quod
+    audit intéllegit. Promíttitur nobis conspéctus Dei, veri Dei, summi Dei. Hoc
+    enim bonum est, vidéntem vidére. Nam, qui colunt falsos deos, fácile illos
+    vident; sed eos vident, qui óculos habent et non vident. Nobis autem
+    promíttitur vísio Dei vivéntis et vidéntis.
+  - "&teDeum"

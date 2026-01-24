@@ -1,0 +1,29 @@
+officium:
+  - Secunda die infra Octavam Ss. Apostolorum Petri et Pauli
+rank:
+  - ""
+  - Semiduplex
+  - "2"
+  - "@Sancti/06-29"
+comment:
+  - In 1570, when this day is taken by the Octave of Corpus Christi, the
+    Commemoration of S. Paul is transferred to July 4th but a commemoration of
+    the Octave must be retained.
+rule:
+  - vide C1;
+  - 9 lectiones
+  - no prima vespera
+versum-1:
+  - "@Commune/C1:Nocturn 2 Versum"
+ant-1:
+  - "@Sancti/07-03oct"
+rubrica-cisterciensis/ant-1:
+  - "@Sancti/07-03oct:Ant 2"
+oratio:
+  - "@Sancti/06-29"
+versum-2:
+  - "@Commune/C1:Versum 1"
+ant-2:
+  - "@Sancti/07-03oct"
+rubrica-cisterciensis/ant-2:
+  - "@Sancti/07-03oct:Ant 1"

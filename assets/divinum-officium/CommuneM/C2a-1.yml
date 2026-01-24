@@ -1,0 +1,77 @@
+references:
+  references: "@CommuneM/C2"
+  oratio:
+    - "@Commune/C2a"
+  lectio1:
+    - "@Commune/C3"
+  lectio2:
+    - "@CommuneM/C3"
+  lectio3:
+    - "@CommuneM/C3"
+  lectio4:
+    - "@CommuneM/C3"
+  lectio9:
+    - "@CommuneM/C2:Lectio9 in 3 loco"
+  lectio10:
+    - "@CommuneM/C2:Lectio10 in 3 loco"
+  lectio11:
+    - "@CommuneM/C2:Lectio11 in 3 loco"
+  lectio12:
+    - "@CommuneM/C2:Lectio12 in 3 loco"
+oratio:
+  - "Præsta, quǽsumus, omnípotens Deus: ut, intercedénte beáto N. Mártyre tuo,
+    et a cunctis adversitátibus liberémur in córpore, et a pravis cogitatiónibus
+    mundémur in mente."
+  - $Per Dominum
+lectio9:
+  - Léctio sancti Evangélii secúndum Matthǽum
+  - "!Matt 10:26-32"
+  - "In illo témpore: Dixit Jesus discípulis suis: Nihil est opértum, quod non
+    revelábitur; et occúltum, quod non sciétur. Et réliqua."
+  - _
+  - Homilía sancti Hilárii Epíscopi
+  - "!Comment. in Matthaeum, can. 10 post medium"
+  - "Dóminus diem judícii osténdit, quæ abstrúsam voluntátis nostræ consciéntiam
+    prodet: et ea quæ nunc occúlta existimántur, luce cognitiónis públicæ
+    déteget. Ígitur non minas, non consília, non potestátes insectántium monet
+    esse metuéndas: quia dies judícii nulla hæc fuísse, atque inánia revelábit.
+    Et quod dico vobis in ténebris, dícite in lúmine: et quod in aure audítis,
+    prædicáte super tecta. Non légimus Dóminum sólitum fuísse nóctibus
+    sermocinári, et doctrínam in ténebris tradidísse: sed quia omnis sermo ejus
+    carnálibus ténebræ sunt, et verbum ejus infidélibus nox est."
+lectio10:
+  - Léctio sancti Evangélii secúndum Matthǽum
+  - "!Matt 10:26-32"
+  - "In illo témpore: Dixit Jesus discípulis suis: Nihil est opértum, quod non
+    revelábitur; et occúltum, quod non sciétur. Et réliqua."
+  - _
+  - Homilía sancti Hilárii Epíscopi
+  - "!Comment. in Matthaeum, can. 10 post medium"
+  - "Dóminus diem judícii osténdit, quæ abstrúsam voluntátis nostræ consciéntiam
+    prodet: et ea quæ nunc occúlta existimántur, luce cognitiónis públicæ
+    déteget. Ígitur non minas, non consília, non potestátes insectántium monet
+    esse metuéndas: quia dies judícii nulla hæc fuísse, atque inánia revelábit.
+    Et quod dico vobis in ténebris, dícite in lúmine: et quod in aure audítis,
+    prædicáte super tecta. Non légimus Dóminum sólitum fuísse nóctibus
+    sermocinári, et doctrínam in ténebris tradidísse: sed quia omnis sermo ejus
+    carnálibus ténebræ sunt, et verbum ejus infidélibus nox est."
+lectio11:
+  - "Ítaque id quod a se dictum est, cum libertáte fídei et confessiónis vult
+    esse loquéndum. Idcírco quæ in ténebris dicta sunt prædicári jussit in
+    lúmine: ut quæ secréto áurium commíssa sunt, super tecta, id est, excélso
+    loquéntium præcónio audiántur. Constánter enim Dei ingerénda cognítio est,
+    et profúndum doctrínæ evangélicæ secrétum in lúmine prædicatiónis apostólicæ
+    revelándum: non timéntes eos, quibus cum sit licéntia in córpora, tamen in
+    ánimam jus nullum est: sed timéntes pótius Deum, cui perdéndæ in gehénna et
+    ánimæ et córporis sit potéstas."
+lectio12:
+  - "Nolíte timére eos qui occídunt corpus. Nullus ígitur córporum nostrórum
+    casus est pertimescéndus, neque ullus interiméndæ carnis admitténdus est
+    dolor: quando pro natúræ suæ atque oríginis conditióne resolúta, in
+    substántiam spirituális ánimæ refundátur. Et quia doctrínis tálibus
+    confirmátos opórtet líberam confiténdi Dei habére constántiam, étiam
+    conditiónem, qua tenerémur, adjécit: negatúrum se eum Patri in cælis, qui se
+    homínibus in terra negásset: eum porro qui conféssus coram homínibus se
+    fuísset, a se in cælis confiténdum: qualésque nos nóminis sui testes
+    homínibus fuissémus, tali nos apud Deum Patrem testimónio ejus usúros."
+  - "&teDeum"

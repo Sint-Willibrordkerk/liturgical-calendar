@@ -1,0 +1,9 @@
+references: "@Sancti/02-02"
+ant-prima:
+  - "@Sancti/02-02:Ant Vespera 3:1"
+ant-tertia:
+  - "@Sancti/02-02:Ant Vespera 3:2"
+ant-sexta:
+  - "@Sancti/02-02:Ant Vespera 3:3"
+ant-nona:
+  - "@Sancti/02-02:Ant Vespera 3:5"

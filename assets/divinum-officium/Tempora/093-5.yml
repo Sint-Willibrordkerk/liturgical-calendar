@@ -1,0 +1,126 @@
+officium:
+  - Feria Sexta Quattuor Temporum Septembris
+rank:
+  - ""
+  - Feria major
+  - "2.1"
+rubrica-196/rank:
+  - ""
+  - Feria major
+  - "4.9"
+rubrica-1930/rank:
+  - ""
+  - Feria major
+  - "4.9"
+introitus:
+  - "!Ps 104:3-4"
+  - "v. Lætétur cor quæréntium Dóminum: quǽrite Dóminum, et confirmámini:
+    quǽrite fáciem ejus semper."
+  - "!Ps 104:1"
+  - "Confitémini Dómino et invocáte nomen ejus: annuntiáte inter gentes ópera
+    ejus."
+  - "&Gloria"
+  - "v. Lætétur cor quæréntium Dóminum: quǽrite Dóminum, et confirmámini:
+    quǽrite fáciem ejus semper."
+oratio:
+  - "Præsta, quǽsumus, omnípotens Deus: ut observatiónes sacras ánnua devotióne
+    recoléntes, et córpore tibi placeámus, et mente."
+  - $Per Dominum
+lectio:
+  - Léctio Osee Prophétæ
+  - "!Osee 14:2-10"
+  - "Hæc dicit Dóminus Deus: Convértere, Israël, ad Dóminum, Deum tuum: quóniam
+    corruísti in iniquitáte tua. Tóllite vobíscum verba, et convertímini ad
+    Dóminum et dícite ei: Omnem aufer iniquitátem, áccipe bonum: et reddémus
+    vítulos labiórum nostrórum. Assur non salvábit nos, super equum non
+    ascendémus, nec dicémus ultra: Dii nostri ópera mánuum nostrárum: quia ejus,
+    qui in te est, miseréberis pupílli. Sanábo contritiónes eórum, díligam eos
+    spontánee: quia avérsus est furor meus ab eis. Ero quasi ros, Israël
+    germinábit sicut lílium, et erúmpet radix ejus ut Líbani. Ibunt rami ejus,
+    et erit quasi olíva glória ejus: et odor ejus ut Líbani. Converténtur
+    sedéntes in umbra ejus: vivent trítico, et germinábunt quasi vínea:
+    memoriále ejus sicut vinum Líbani. Ephraim quid mihi ultra idóla? ego
+    exáudiam, et dírigam eum ego ut abíetem viréntem: ex me fructus tuus
+    invéntus est. Quis sápiens, et intélleget ista? intéllegens, et sciet hæc?
+    Quia rectæ viæ Dómini, et justi ambulábunt in eis: prævaricatóres vero
+    córruent in eis."
+graduale:
+  - "@Tempora/Quad1-6:GradualeL3"
+evangelium:
+  - "@Sancti/07-22"
+offertorium:
+  - "!Ps 102:2; 102:5"
+  - "Bénedic, ánima mea, Dómino, et noli oblivísci omnes retributiónes ejus: et
+    renovábitur, sicut áquilæ, juvéntus tua."
+secreta:
+  - "Accépta tibi sint, Dómine, quǽsumus, nostri dona jejúnii: quæ et expiándo
+    nos tua grátia dignos effíciant, et ad sempitérna promíssa perdúcant."
+  - $Per Dominum
+communio:
+  - "!Ps 118:22; 118:24"
+  - "Aufer a me oppróbrium et contémptum, quia mandáta tua exquisívi, Dómine:
+    nam et testimónia tua meditátio mea est."
+postcommunio:
+  - "Quǽsumus, omnípotens Deus: ut, de percéptis munéribus grátias exhibéntes,
+    benefícia potióra sumámus."
+  - $Per Dominum
+rule:
+  - Preces feriales
+ad-vesperam-aut-rubrica-196/oratio: []
+lectio1:
+  - Léctio sancti Evangélii secúndum Lucam
+  - "!Luc 7:36-50"
+  - "In illo témpore: Rogábat Jesum quidam de pharisǽis, ut manducáret cum illo.
+    Et ingréssus domum pharisǽi discúbuit. Et réliqua."
+  - _
+  - Homilía sancti Gregórii Papæ
+  - "!Homilia 33 in Evangelia, post initium"
+  - "Quem pharisǽus de falsa justítia præsúmens, nisi Judáicum pópulum; quem
+    peccátrix múlier ad vestígia Dómini véniens et plorans, nisi convérsam
+    gentilitátem desígnat? Quæ cum alabástro venit, unguéntum fudit, retro secus
+    pedes Dómini stetit, lácrimis pedes rigávit, capíllis tersit, eosdémque quos
+    infundébat et tergébat pedes osculári non désiit. Nos ergo, nos illa múlier
+    expréssit, si toto corde ad Dóminum post peccáta redeámus, si ejus
+    pœniténtiæ luctus imitémur. Quid namque unguénto, nisi bonæ odor opiniónis
+    exprímitur? Unde et Paulus dicit: Christi bonus odor sumus Deo in omni
+    loco."
+responsory1:
+  - "@Tempora/093-0:Responsory4"
+lectio2:
+  - "Si ergo recta ópera ágimus, quibus opiniónis bonæ odóre Ecclésiam
+    respergámus, quid in Dómini córpore, nisi unguéntum fúndimus? Sed secus
+    pedes Jesu múlier stetit: contra pedes enim dómini stétimus, cum in peccátis
+    pósiti ejus itinéribus renitebámur. Sed si ad veram pœniténtiam post peccáta
+    convértimur, jam retro secus pedes stamus; quia ejus vestígia séquimur, quem
+    impugnabámus. Lácrimis múlier pedes ejus rigat: quod nos quoque veráciter
+    ágimus, si quibúslibet últimis membris Dómini per compassiónis afféctum
+    inclinámur, si sanctis ejus in tribulatióne compátimur, si eórum tristítiam,
+    nostram putámus."
+responsory2:
+  - "@Tempora/093-0:Responsory5"
+lectio3:
+  - "Capíllis ergo pedes Dómini térgimus, quando sanctis ejus, quibus ex
+    caritáte compátimur, étiam ex his quæ nobis supérfluunt, miserémur: quátenus
+    sic mens per compassiónem dóleat, ut étiam larga manus afféctum dolóris
+    osténdat. Rigat namque lácrimis Redemptóris pedes, sed capíllis suis non
+    tergit, qui utcúmque proximórum dolóri compátitur, sed tamen eis ex his, quæ
+    sibi supérfluunt, non miserétur. Plorat, et non tergit, qui verba quidem
+    dolóris tríbuit, sed non ministrándo quæ desunt, vim dolóris mínime
+    abscíndit. Osculátur múlier pedes, quos tergit: quod nos quoque plene
+    ágimus, si studióse dilígimus, quos ex largitáte continémus: ne gravis nobis
+    sit necéssitas próximi; ne ipsa nobis ejus indigéntia, quæ sustentátur, fiat
+    onerósa: et cum manus necessária tríbuit, ánimus a dilectióne torpéscat."
+responsory3:
+  - "@Tempora/093-0:Responsory6"
+ant-2:
+  - Múlier, * quæ erat in civitáte peccátrix, stans retro secus pedes Dómini,
+    lácrimis cœpit rigáre pedes ejus et capíllis cápitis sui tergébat, et
+    deosculabátur pedes ejus et unguénto ungébat.
+rubrica-cisterciensis/ant-2:
+  - "In diébus illis: * Múlier, quæ erat in civitáte peccátrix, ut cognóvit quod
+    Jesus accubuísset in domo Simónis leprósi, attúlit alabástrum unguénti: et
+    stans retro secus pedes Dómini Jesu, lácrimis cœpit rigáre pedes ejus, et
+    capíllis cápitis sui tergébat, et osculabátur pedes ejus, et unguénto
+    ungébat."
+rubrica-196/ant-3:
+  - "@:Ant 2"

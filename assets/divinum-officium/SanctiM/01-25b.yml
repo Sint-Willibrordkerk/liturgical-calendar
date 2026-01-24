@@ -1,0 +1,15 @@
+references: "@SanctiM/01-25"
+rank:
+  - In Conversione S. Pauli Apostoli
+  - Duplex majus
+  - "5"
+  - "@Sancti/06-30"
+rule:
+  - ex Sancti/06-30;
+  - 12 lectiones
+  - Sub unica concl
+lectio3:
+  - "@Sancti/01-25::1-4 s/16/12/"
+lectio4:
+  - "@Sancti/01-25:Lectio3:1 s/10-/13-/"
+  - "@Sancti/01-25:Lectio3:5-8"

@@ -1,0 +1,180 @@
+references:
+  references: "@CommuneM/C2"
+  rule:
+    - Antiphonas horas
+  comment:
+    - "Lectiones in 5 loco:"
+    - Aliæ Lectiones Pro uno Martyre ex Breviario Cisterciensi (pag. 48*)
+  hymnusm-vespera:
+    - "@Commune/C2:Hymnus Vespera:s/blanda fraudum pábula/blandiménta nóxia/
+      s/Imbúta felle députans/Cadúca rite députans/ s/Fundénsque pro te/Pro te
+      effúndens/ s/Patri sit, atque/Deo Patri, et/ s/\\* //"
+  versum-1:
+    - V. Justus germinábit sicut lílium.
+    - R. Et florébit in ætérnum ante Dóminum.
+  ant-1:
+    - "Beátus vir, * qui suffert tentatiónem: quia cum probátus fúerit, accípiet
+      corónam vitæ, quam repromísit Deus his, qui díligunt eum."
+  invit:
+    - "Regem sempitérnum veníte adorémus: * Qui Mártyrem suum coronávit N.."
+  ant-matutinum:
+    - Beátus vir, * qui in lege Dómini meditátur, volúntas ejus pérmanet die ac
+      nocte; et ómnia quæcúmque fáciet, semper prosperabúntur.;;1
+    - Beátus * iste Sanctus, qui confísus est in Dómino, prædicávit præcéptum
+      Dómini, constitútus est in monte sancto ejus.;;2
+    - "Invocántem * exaudívit Dóminus sanctum suum: Dóminus exaudívit eum, et
+      constítuit eum in pace.;;4"
+    - Scuto bonæ voluntátis * tuæ coronásti eum Dómine.;;5
+    - Dómine, * Dóminus noster, quam admirábile est nomen tuum in univérsa
+      terra! quia glória et honóre coronásti Sanctum tuum, et constituísti eum
+      super ópera mánuum tuárum.;;8
+    - "Justus Dóminus, * et justítiam diléxit: æquitátem vidit vultus ejus.;;10"
+    - "Dómine, * iste Sanctus habitábit in tabernáculo tuo: operátus est
+      justítiam tuam, requiéscet in monte sancto tuo.;;14"
+    - "Vitam * pétiit a te, et tribuísti ei, Dómine: glóriam et magnum decérem
+      imposuísti super eum, posuísti in cápite ejus corónam de lápide
+      pretióso.;;20"
+    - "Hic accípiet * benedictiónem a Dómino, et misericórdiam a Deo salutári
+      suo: quia hæc est generátio quæréntium Dóminum.;;23"
+    - Lætábitur justus * in Dómino et sperábit in eo, et laudabúntur omnes recti
+      corde;;63
+    - Beátus * quem elegísti Dómine, habitábit in átriis tuis;;64
+    - "Justus ut palma * florébit: sicut cedrus Líbani multiplicábitur;;91"
+    - Nisi granum fruménti * cadens in terram, mórtuum fúerit; ipsum solum
+      manet.;;256;257;258
+  nocturn-1-versum:
+    - "@Commune/C2:Versum 1"
+  lectio1:
+    - "@Commune/C2:Lectio1:s/-24/-21/ s/22 .*//s"
+  lectio2:
+    - "@Commune/C2:Lectio1:s/.*!/!/s s/17-24/22-24/ s/^17 .*22 /22 /sm"
+  lectio3:
+    - "@Commune/C2:Lectio2:s/25-31/25-28/ s/29 .*//s"
+  lectio4:
+    - "@Commune/C2:Lectio2:s/25-31/29-32/ s/^25 .*29 /29 /sm s/$/~/"
+    - "@Commune/C2:Lectio3:s/!.*// s/33 .*//s"
+  responsory1:
+    - "@Commune/C2::1-2"
+    - "V. Munímine régio septus, nullátenus est ab adversáriis superátus:"
+    - "@Commune/C2::4"
+  responsory4:
+    - "R. Hic est vir, qui non est derelíctus a Deo in die certáminis sui, et
+      ipse conculcávit caput serpéntis antíqui:"
+    - "* Modo coronátus est, quia fidéliter vixit in mandátis Dómini."
+    - V. Quis est hic, et laudábimus eum? fecit enim mirabília in vita sua.
+    - R. Modo coronátus est, quia fidéliter vixit in mandátis Dómini.
+    - "&Gloria"
+    - R. Modo coronátus est, quia fidéliter vixit in mandátis Dómini.
+  lectio5:
+    - "@Commune/C2:Lectio4:s/Audi Psalmístam .*//s"
+  responsory5:
+    - "@Commune/C2:Responsory6"
+  lectio6:
+    - "@Commune/C2:Lectio5:s/Quod enim .*//s"
+  responsory6:
+    - "@CommuneM/C2:Responsory12:s/ a Deo salutári suo//"
+  responsory7:
+    - "@Commune/C2:Responsory8"
+  lectio8:
+    - "@Commune/C2:Lectio6:s/Hujus perféctæ.*//s"
+  responsory8:
+    - "@CommuneM/C2:Responsory4"
+  responsory9:
+    - "@Commune/C2:Responsory5:s/Quóniam .* posuísti/Posuísti/"
+  responsory10:
+    - "@CommuneM/C2:Responsory8"
+  lectio11:
+    - "@Commune/C2:Lectio8:s/Deléctet ergo .*//"
+  responsory11:
+    - "@Commune/C2:Responsory8 non Effusorum"
+  lectio12:
+    - "@Commune/C2:Lectio8:s/.*Deléctet ergo/Deléctet ergo/"
+  responsory12:
+    - "@CommuneM/C2:Responsory11"
+  mm-capitulum:
+    - "@Commune/C2:Capitulum Sexta"
+    - _
+    - "@Commune/C2:Nocturn 2 Versum"
+  ant-laudes:
+    - "@Commune/C2:Ant Vespera"
+  hymnusm-laudes:
+    - "@Commune/C2:Hymnus Laudes:s/Invícte Martyr,/Martyr Dei, qui/
+      s/secútus/sequéndo/ s/repéllens/rémovens/ s/Dono supérni Núminis/Amóre
+      Fílii Dei/ s/Nunc, et per omne sǽculum./Et nunc, et in perpétuum/ s/\\*
+      //"
+  versum-2:
+    - "@:Versum 1"
+  ant-2:
+    - "@Commune/C2:Ant 3:s/me\\./me, dicit Dóminus./"
+  ant-vespera-3:
+    - "@Commune/C2:Ant Vespera"
+  versum-3:
+    - "@:Versum 1"
+  ant-3:
+    - Hic est vere Martyr, * qui pro Christi nómine sánguinem suum fudit, qui
+      minas júdicum non tímuit, nec terrénæ dignitátis glóriam quæsívit, sed ad
+      coeléstia regna felíciter pervénit.
+  lectio10-in-4-loco:
+    - "@Commune/C2:Lectio7 in 4 loco:s/.* Et quod /Et quod /s s/$/~/"
+    - "@Commune/C2:Lectio8 in 4 loco:s/Idcírco.*//"
+  lectio11-in-4-loco:
+    - "@Commune/C2:Lectio8 in 4 loco:s/.*Idcírco/Idcírco/"
+  lectio9-in-5-loco:
+    - Léctio sancti Evangélii secúndum Joánnem.
+    - Jan 12.
+    - "In illo témpore: Dixit Jesus discípulis suis: Amen, amen dico vobis, nisi
+      granum fruménti cadens in terram, mórtuum fúerit; ipsum solum manet. Et
+      réliqua."
+    - _
+    - Homilía sancti Joánnis Chrysóstomi.
+    - Homil. 66. in Joannem.
+    - "Dulcis præsens vita est, et multæ plena voluptátis, non tamen ómnibus,
+      sed iis tantum qui illi sunt affíxi. Quod si quis in cœlum suspéxerit‚ et
+      quæ ibi præclára sunt, contemplátus fúerit, statim hanc contémnet, ac
+      nullíus prétii existimábit. Nam et córporum pulchritúdo quoad púlchrius
+      non deprehénditur‚ in admiratióne habétur: cum vero áliud præstántius
+      apparúerit, illa prior despícitur."
+  lectio10-in-5-loco:
+    - "Quod si illam pulchritúdinem étiam nos intuéri voluérimus, et cœléstis
+      regni spéciem consideráre, conféstim nos hujus sæculi vínculis
+      dissolvémus. Vinculum namque est terrenárum rerum afféctio: ad cujus
+      dissolutiónem ut nos indúceret Christus, quid dicat, atténde. Qui amat
+      ánimam suam, perdet eam: et qui odit ánimam suam in hoc mundo‚ in vitam
+      ætérnam custódit eam."
+  lectio11-in-5-loco:
+    - "Ænígmati símile hoc dictum vidétur: non tamen ita est, imo vero præcípuæ
+      sapiéntiæ plenum. Et quómodo qui amat ánimam suam, perdet eam? Qui
+      absúrdis ejus cupiditátibus obtémperat, qui præter débitum ei indúlget;
+      quemádmodum e contrário, qui odit eam in hoc mundo, custódit eam: hoc est,
+      qui non paret ei, cum nóxia jubet."
+  lectio12-in-5-loco:
+    - "Et non dixit, qui non paret sed, qui odit. Sícuti enim quos ódio habémus,
+      ne vocem quidem audíre, nec vultum eórum vidére æquo ánimo pátimur: ita et
+      ánimæ, si quid præter Dei voluntátem nobis ímperat, veheménter aversári
+      opórtet. Cum enim jam de morte ad eos verba factúrus esset, de morte
+      vidélicet sua, et prævidéret eórum tristítiam et exanimatiónem, per
+      excéssum locútus est, ínquiens: Quid dico, si mortem meam generóse non
+      ferétis? nisi vos ipsi moriámini, nullum vos sequétur emoluméntum."
+  evangelium-in-5-loco:
+    - Sequéntia ++ sancti Evangélii secúndum Joánnem.
+    - "!Jn 12, 24-26"
+    - "In illo témpore: Dixit Jesus discípulis suis: Amen, amen dico vobis, nisi
+      granum fruménti cadens in terram, mórtuum fúerit; ipsum solum manet. Si
+      autem mórtuum fúerit, multum fructum affert. Qui amat ánimam suam, perdet
+      eam: et qui odit ánimam suam in hoc mundo, in vitam ætérnam custódit eam.
+      Si quis mihi minístrat, me sequátur: et ubi sum ego, illic et miníster
+      meus erit. Si quis mihi ministráverit, honorificábit eum Pater meus."
+oratio:
+  - "Deus, qui nos beáti N. Mártyris tui atque Pontíficis ánnua solemnitáte
+    lætíficas: concéde propítius; ut, cujus natalítia cólimus, de ejúsdem étiam
+    protectióne gaudeámus."
+  - $Per Dominum
+lectio9:
+  - "@Commune/C2:Lectio7 in 2 loco:s/Nam .*//s"
+lectio10:
+  - "@Commune/C2:Lectio7 in 2 loco:s/.* Nam /Nam /s s/$/~/"
+  - "@Commune/C2:Lectio8 in 2 loco:s/Quid vero .*//s"
+lectio11:
+  - "@Commune/C2:Lectio8 in 2 loco:s/.* Quid vero /Quid vero /s"
+lectio12:
+  - "@Commune/C2:Lectio9 in 2 loco:s/\\&teDeum .*//s"

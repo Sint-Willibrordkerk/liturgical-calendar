@@ -1,0 +1,19 @@
+references: "@Sancti/12-13"
+lectio1:
+  - "@Commune/C6"
+responsory1:
+  - "@Sancti/12-13:Responsory4"
+lectio2:
+  - "@Commune/C6"
+responsory2:
+  - "@Sancti/12-13:Responsory5"
+lectio3:
+  - "@Commune/C6"
+responsory3:
+  - "@Sancti/12-13:Responsory6"
+responsory4:
+  - "@Commune/C6:Responsory1"
+responsory5:
+  - "@Commune/C6:Responsory2"
+responsory6:
+  - "@Commune/C6:Responsory3"

@@ -1,0 +1,37 @@
+officium:
+  - S. Mauri Abbatis
+rubrica-1930/officium:
+  - S. Mauri Abbatis O. N.
+rank:
+  - ""
+  - Simplex
+  - "1.1"
+  - "@C5b"
+rubrica-monastica/rank:
+  - ""
+  - Duplex II. classis
+  - "5"
+  - "@C5b"
+rule:
+  - vide C5b;
+  - (rubrica monastica)12 lectiones
+name:
+  - Mauri
+  - Secreta=Maurus
+  - Postcommunio=Maurus
+versum-1:
+  - "@Commune/C5:Nocturn 2 Versum"
+rubrica-monastica/versum-1: []
+ant-1:
+  - "@Commune/C4:Ant 2"
+lectio93:
+  - "@SanctiM/01-15t:Lectio5:s/$/~/"
+  - "@SanctiM/01-15t:Lectio6:s/$/~/"
+  - "@SanctiM/01-15t:Lectio8"
+  - "&teDeum"
+rubrica-monastica/lectio93: []
+versum-2:
+  - "@Commune/C5:Versum 1"
+rubrica-monastica/versum-2: []
+ant-2:
+  - "@Commune/C5:Ant 1"

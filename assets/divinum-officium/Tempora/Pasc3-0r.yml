@@ -1,0 +1,129 @@
+officium:
+  - Dominica III Post Pascha
+rank:
+  - ""
+  - Semiduplex
+  - "5"
+  - ""
+rule:
+  - 9 Lectiones
+  - Duplex
+  - Una Antiphona
+  - Gloria
+  - Credo
+  - Suffr=Maria3;Ecclesiæ,Papa;;
+introitus:
+  - "@Tempora/Pasc3-0:Introitus"
+oratio:
+  - "Deus, qui errántibus, ut in viam possint redíre justítiæ, veritátis tuæ
+    lumen osténdis: da cunctis, qui christiána professióne censéntur, et illa
+    respúere, quæ huic inimíca sunt nómini; et ea, quæ sunt apta, sectári."
+  - $Per Dominum
+lectio:
+  - Léctio Epístolæ beáti Petri Apóstoli
+  - "!1 Pet 2:11-19"
+  - "Caríssimi: Obsecro vos tamquam ádvenas et peregrínos abstinére vos a
+    carnálibus desidériis, quæ mílitant advérsus ánimam, conversatiónem vestram
+    inter gentes habéntes bonam: ut in eo, quod detréctant de vobis tamquam de
+    malefactóribus, ex bonis opéribus vos considerántes, gloríficent Deum in die
+    visitatiónis. Subjécti ígitur estóte omni humánæ creatúræ propter Deum: sive
+    regi, quasi præcellénti: sive dúcibus, tamquam ab eo missis ad vindíctam
+    malefactórum, laudem vero bonórum: quia sic est volúntas Dei, ut
+    benefaciéntes obmutéscere faciátis imprudéntium hóminum ignorántiam: quasi
+    líberi, et non quasi velámen habéntes malítiæ libertátem, sed sicut servi
+    Dei. Omnes honoráte: fraternitátem dilígite: Deum timéte: regem
+    honorificáte. Servi, súbditi estóte in omni timóre dóminis, non tantum bonis
+    et modéstis, sed étiam dýscolis. Hæc est enim grátia: in Christo Jesu,
+    Dómino nostro."
+graduale:
+  - Allelúja, allelúja.
+  - "!Ps 110:9"
+  - Redemptiónem misit Dóminus pópulo suo. Allelúja.
+  - "!Luc 24:46"
+  - "Oportébat pati Christum, et resúrgere a mórtuis: et ita intráre in glóriam
+    suam. Allelúja."
+evangelium:
+  - Sequéntia ++ sancti Evangélii secúndum Joánnem
+  - "!Joannes 16:16-22"
+  - "In illo témpore: Dixit Jesus discípulis suis: Módicum, et jam non vidébitis
+    me: et íterum módicum, et vidébitis me: quia vado ad Patrem. Dixérunt ergo
+    ex discípulis ejus ad ínvicem: Quid est hoc, quod dicit nobis: Módicum, et
+    non vidébitis me: et íterum módicum, et vidébitis me, et quia vado ad
+    Patrem? Dicébant ergo: Quid est hoc, quod dicit: Módicum? nescímus, quid
+    lóquitur. Cognóvit autem Jesus, quia volébant eum interrogáre, et dixit eis:
+    De hoc quǽritis inter vos, quia dixi: Módicum, et non vidébitis me: et
+    íterum módicum, et vidébitis me. Amen, amen, dico vobis: quia plorábitis et
+    flébitis vos, mundus autem gaudébit: vos autem contristabímini, sed
+    tristítia vestra vertétur in gáudium. Múlier cum parit, tristítiam habet,
+    quia venit hora ejus: cum autem pepérerit púerum, jam non méminit pressúræ
+    propter gáudium, quia natus est homo in mundum. Et vos ígitur nunc quidem
+    tristítiam habétis, íterum autem vidébo vos, et gaudébit cor vestrum: et
+    gáudium vestrum nemo tollet a vobis."
+offertorium:
+  - "!Ps 145:2"
+  - "Lauda, ánima mea, Dóminum: laudábo Dóminum in vita mea: psallam Deo meo,
+    quámdiu ero, allelúja."
+secreta:
+  - His nobis, Dómine, mystériis conferátur, quo, terréna desidéria mitigántes,
+    discámus amáre cœléstia.
+  - $Per Dominum
+communio:
+  - "!Joannes 16:16"
+  - "Módicum, et non vidébitis me, allelúja: íterum módicum, et vidébitis me,
+    quia vado ad Patrem, allelúja, allelúja."
+postcommunio:
+  - "Sacraménta quæ súmpsimus, quǽsumus, Dómine: et spirituálibus nos instáurent
+    aliméntis, et corporálibus tueántur auxíliis."
+  - $Per Dominum
+ant-1:
+  - "@Tempora/Pasc3-0:Ant 1"
+rubrica-cisterciensis/ant-1:
+  - "@Tempora/Pasc3-0:Ant 1 Cist"
+lectio1:
+  - "@Tempora/Pasc3-0:Lectio1"
+responsory1:
+  - "@Tempora/Pasc3-0:Responsory1"
+lectio2:
+  - "@Tempora/Pasc3-0:Lectio2"
+responsory2:
+  - "@Tempora/Pasc3-0:Responsory2"
+lectio3:
+  - "@Tempora/Pasc3-0:Lectio3"
+responsory3:
+  - "@Tempora/Pasc3-0:Responsory3"
+lectio4:
+  - "@Tempora/Pasc3-0:Lectio4"
+responsory4:
+  - "@Tempora/Pasc3-0:Responsory4"
+lectio5:
+  - "@Tempora/Pasc3-0:Lectio5"
+responsory5:
+  - "@Tempora/Pasc3-0:Responsory5"
+lectio6:
+  - "@Tempora/Pasc3-0:Lectio6"
+responsory6:
+  - "@Tempora/Pasc3-0:Responsory6"
+lectio7:
+  - "@Tempora/Pasc3-0:Lectio7"
+responsory7:
+  - "@Tempora/Pasc3-0:Responsory7"
+lectio8:
+  - "@Tempora/Pasc3-0:Lectio8"
+responsory8:
+  - "@Tempora/Pasc3-0:Responsory8"
+lectio9:
+  - "@Tempora/Pasc3-0:Lectio9"
+capitulum-laudes:
+  - "@Tempora/Pasc3-0"
+ant-2:
+  - "@:Ant 1"
+rubrica-cisterciensis/ant-2:
+  - "@Tempora/Pasc3-0:Ant 1"
+capitulum-sexta:
+  - "@Tempora/Pasc3-0:Capitulum Sexta"
+capitulum-nona:
+  - "@Tempora/Pasc3-0:Capitulum Nona"
+ant-3:
+  - "@Tempora/Pasc3-0:Ant 3"
+rubrica-cisterciensis/ant-3:
+  - "@Tempora/Pasc3-0:Ant 3:s/^Amen/Amen, amen/"

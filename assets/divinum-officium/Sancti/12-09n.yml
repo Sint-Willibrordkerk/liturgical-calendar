@@ -1,0 +1,10 @@
+officium:
+  - S. Juan Diego
+rank:
+  - ""
+  - Duplex optional
+  - "2.5"
+  - "@C5"
+rule:
+  - vide C5;
+  - Gloria

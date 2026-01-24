@@ -1,0 +1,43 @@
+officium:
+  - Ss. Timothei, Hippolyti et Symphoriani Martyres
+rank:
+  - ""
+  - Simplex
+  - "1.1"
+  - "@C3a-1"
+rule:
+  - vide C3a-1;
+oratio:
+  - "Auxílium tuum nobis, Dómine, quǽsumus, placátus impende: et,
+    intercedéntibus beátis Martýribus tuis Timótheo, Hippolýto et Symphoriáno,
+    déxteram super nos tuæ propitiatiónis exténde."
+  - $Per Dominum
+secreta:
+  - "@Commune/C6a"
+postcommunio:
+  - "Divíni múneris largitáte satiáti, quǽsumus, Dómine, Deus noster: ut,
+    intercedéntibus sanctis Martýribus tuis Timótheo, Hippolýto et Symphoriáno,
+    in ejus semper participatióne vivámus."
+  - $Per Dominum
+rubrica-cisterciensis/rank:
+  - ""
+  - Commemoratio
+  - "1"
+  - "@C3a-1"
+lectio93:
+  - "Timotheus Antiochenus, Romam veniens, Melchiade Summo Pontifice, cum per
+    annum ibi Christi fidem prædicasset, a Tarquinio Urbis præfecto conjicitur
+    in vincula: et post diuturnas carceris ærumnas ad idola perducitur, ut eis
+    sacrificet. Quam impietatem summa libertate detestatus, acerbissime cæditur,
+    et excarnificatum corpus viva calce perfunditur. In quibus aliusque
+    suppliciis constans Martyr capite plectitur. Corpus via Ostiensi prope
+    sepulchrum beati Pauli Apostoli sepelitur. Quo die etiam, Alexandro
+    imperatore, apud Ostia iberina Hippolytus episcopus Portuensis ob præclaram
+    fidei confessionem manibus pedibusque ligatis, in altam foveam aquis plenam
+    præcipitatus, martyrio coronatus est, et ibidem a Christianis sepultus. Quo
+    item die, Aureliano imperatore, propter eamdem fidem Augustíni Symphorianus
+    adolescens varie tortus est. Qui dum ad ultimum supplicium duceretur, matrem
+    ita clamantem audiens: Nate, nate, memento æternæ vitæ, cælum suspice, et
+    ibi regnantem intuere: tibi enim vita non eripitur, sed mutatur in melius:
+    fortiter Jesu Christi causa carnifici collum præbuit."
+  - "&teDeum"

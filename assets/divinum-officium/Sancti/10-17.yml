@@ -1,0 +1,183 @@
+officium:
+  - S. Margaritæ Mariæ Alacoque Virginis
+rank:
+  - ""
+  - Duplex
+  - "3"
+  - "@C6a"
+rule:
+  - vide C6a
+  - 9 lectiones
+  - Gloria
+introitus:
+  - "!Cant 2:3."
+  - "v. Sub umbra illíus, quem desideráveram, sedi: et fructus ejus dulcis
+    gútturi meo."
+  - "!Ps 83:2-3"
+  - Quam dilécta tabernácula tua, Dómine virtútum! Concupíscit, et déficit ánima
+    mea in átria Dómini.
+  - "&Gloria"
+  - "v. Sub umbra illíus, quem desideráveram, sedi: et fructus ejus dulcis
+    gútturi meo."
+oratio:
+  - "Dómine Jesu Christe, qui investigábiles divítias Cordis tui beátæ Margarítæ
+    Maríæ Vírgini mirabíliter revelásti: da nobis ejus méritis et imitatióne;
+    ut, te in ómnibus et super ómnia diligéntes, jugem in eódem Corde tuo
+    mansiónem habére mereámur:"
+  - $Qui vivis
+lectio:
+  - Léctio Epístolæ beáti Pauli Apóstoli ad Ephésios.
+  - "!Ephes 3:8-9; 14-19."
+  - "Fratres: Mihi ómnium sanctórum mínimo data est grátia hæc, in géntibus
+    evangelizáre investigábiles divítias Christi, et illumináre omnes, quæ sit
+    dispensátio sacraménti abscónditi a sǽculis in Deo, qui ómnia creávit. Hujus
+    rei grátia flecto génua mea ad Patrem Dómini nostri Jesu Christi, ex quo
+    omnis patérnitas in cælis et in terra nominátur, ut det vobis secúndum
+    divítias glóriæ suæ, virtúte corroborári per Spíritum ejus in interiórem
+    hóminem: Christum habitáre per fidem in córdibus vestris: in caritáte
+    radicáti et fundáti, ut póssitis comprehéndere cum ómnibus sanctis, quæ sit
+    latitúdo et longitúdo et sublímitas et profúndum: scire étiam supereminéntem
+    sciéntiæ caritátem Christi, ut impleámini in omnem plenitúdinem Dei."
+graduale:
+  - "!Cant 8:7."
+  - Aquæ multæ non potuérunt exstínguere caritátem, nec flúmina óbruent illam.
+  - "!Ps 72:26"
+  - "Defécit caro mea et cor meum: Deus cordis mei, et pars mea Deus in ætérnum.
+    Allelúja, allelúja."
+  - "!Cant 7:10."
+  - Ego dilécto meo, et ad me conversio ejus. Allelúja.
+gradualep:
+  - Allelúja, allelúja
+  - "!Prov 9:5"
+  - Veníte, comédite panem meum et bíbite vinum, quod míscui vobis. Allelúja.
+  - "!Ps 30:20."
+  - Quam magna multitúdo dulcédinis tuæ, Dómine, quam abscondísti timéntibus te.
+    Allelúja.
+tractus:
+  - "!Cant 8:7."
+  - Aquæ multæ non potuérunt exstínguere caritátem, nec flúmina óbruent illam.
+  - "!Ps 72:26"
+  - "Defécit caro mea et cor meum: Deus cordis mei, et pars mea Deus in ætérnum."
+  - _
+  - "!Tractus"
+  - "!Ps 83:3-4"
+  - Cor meum et caro mea exsultavérunt in Deum vivum.
+  - "V. Etenim passer invénit sibi domum: et turtur nidum sibi, ubi ponat pullos
+    suos."
+  - "V. Altária tua, Dómine virtútum: Rex meus et Deus meus."
+evangelium:
+  - Sequéntia ++ sancti Evangélii secúndum Matthǽum.
+  - "!Matt 11:25-30"
+  - "In illo témpore: Respóndens Jesus, dixit: Confíteor tibi, Pater, Dómine
+    cæli et terræ, quia abscondísti hæc a sapiéntibus et prudéntibus, et
+    revelásti ea párvulis. Ita, Pater: quóniam sic fuit plácitum ante te. Omnia
+    mihi trádita sunt a Patre meo. Et nemo novit Fílium nisi Pater: neque Patrem
+    quis novit nisi Fílius, et cui volúerit Fílius reveláre. Veníte ad me,
+    omnes, qui laborátis et oneráti estis, et ego refíciam vos. Tóllite jugum
+    meum super vos, et discite a me, quia mitis sum et húmilis corde: et
+    inveniétis réquiem animábus vestris. Jugum enim meum suave est et onus meum
+    leve."
+offertorium:
+  - "!Zach 9:17"
+  - Quid bonum ejus est et quid pulchrum ejus, nisi fruméntum electórum et vinum
+    gérminans vírgines?
+secreta:
+  - "Accépta tibi sint, Dómine, plebis tuæ múnera: et concéde; ut ignis ille
+    divínus nos inflámmet, quo de Corde Fílii tui emisso beáta Margaríta María
+    veheménter æstuávit."
+  - $Per eundem
+communio:
+  - "!Cant 6:2"
+  - Ego dilécto meo, et diléctus meus mihi, qui páscitur inter lília.
+postcommunio:
+  - "Córporis et Sánguinis tui, Dómine Jesu, sumptis mystériis: concéde nobis,
+    quǽsumus, beáta Margaríta María Vírgine intercedénte; ut, supérbis sǽculi
+    vanitátibus exútis, mansuetúdinem et humilitátem Cordis tui indúere
+    mereámur:"
+  - $Qui vivis
+lectio4:
+  - Margarita Maria Alacóque, in pago diœcesis Augustodunénsis, honesto genere
+    nata, jam inde a teneris annis futuræ sanctitátis indícia præbuit. In
+    Deiparam Vírginem et in augustum Eucharistiæ sacraméntum amóre flagrans,
+    adolescentula Deo virginitátem devovit, id exoptans unice ut ad christianas
+    virtútes vitam compóneret. In deliciis habebat prolixas preces rerumque
+    cæléstium contemplatiónem, sui contemptum, patiéntiam in adversis, corporis
+    afflictatiónem, caritátem in próximos, præsertim egénos; summoque studio
+    nitebátur ut sanctíssima divini Redemptoris exempla pro viribus referret.
+lectio5:
+  - Ordinem Visitatiónis ingressa, statim religiosæ vitæ fulgóre nitére cœpit.
+    Altioris dono oratiónis a Deo est decorata, aliisque gratiæ munéribus et
+    crebris visiónibus. Harum celeberrima fuit cum ante Eucharistiam precanti
+    Jesus semetípsum conspiciéndum obtulit, et divinum Cor in aperto péctore
+    flammis incensum ac spinis constrictum osténdit, præcepitque ut, ob talem
+    caritátem et ad ingratórum hóminum injurias expiandas, illa publicum Cordi
+    suo cultum, magnis propositis cæléstis thesáuri præmiis, instituéndum
+    curaret. Cunctanti ex humilitate seque tantæ rei ímparem profiténti
+    amantíssimus Salvátor addit ánimum, simulque exímia sanctitáte virum,
+    Claudium de la Colombière, ducem et adjutórem designat; eamque spe fovet
+    illíus summæ utilitátis, quæ póstea e divini Cordis cultu in Ecclésiam
+    dimanávit.
+lectio6:
+  - Ut jussa Redemptoris impleret Margarita omni diligéntia studebat. Nec tamen
+    illi defuére molestiæ plures atque acres contumeliæ ab iis qui eam vano
+    mentis errori obnoxiam esse dictitábant. Quæ ómnia æquo animo tulit, immo
+    apponebat lucro, existimans se per oppróbria et dolóres hóstiam Deo gratam
+    fore, et majora ad propositum suum auxília consecuturam. Religiosæ
+    perfectiónis laude florens et per æternárum rerum contemplatiónem in dies
+    síngulos cælésti sponso conjúnctior, ad eum evolávit, anno ætátis suæ
+    quadragesimo tertio, reparátæ salútis millesimo sexcentésimo nonagesimo.
+    Miraculis insignem Benedíctus décimus quintus Sanctis adscripsit; ejusque
+    offícium Pius undecimus Pontifex maximus ad universam Ecclésiam extendit.
+lectio94:
+  - "Margaríta María Alacóque, in pago diœcésis Augustodunénsis honésto génere
+    nata, jam a téneris annis futúræ sanctitátis indícia prǽbuit. In Deíparam
+    Vírginem et in augústum Eucharístiæ sacraméntum amóre flagrans,
+    adolescéntula Deo virginitátem devóvit; ac órdinem Visitatiónis ingréssa,
+    statim religiósæ vitæ fulgóre nitére cœpit. Altióris dono oratiónis a Deo
+    est decoráta, aliísque grátiæ munéribus et crebris visiónibus. Harum
+    celebérrima fuit cum ante Eucharístiam precánti Jesus semetípsum
+    conspiciéndum óbtulit, et divínum Cor in apérto péctore flammis incénsum ac
+    spinis constríctum osténdit, præcepítque ut, ob talem caritátem et ad
+    ingratórum hóminum injúrias expiándas, illa públicum Cordi suo cultum,
+    magnis propósitis cæléstis thesáuri prǽmiis, instituéndum curáret. Religiósæ
+    perfectiónis laude florens et per æternárum rerum contemplatiónem in dies
+    síngulos cælésti sponso conjúnctior, ad eum evolávit, anno ætátis suæ
+    quadragésimo tértio, reparátæ salútis millésimo sexcentésimo nonagésimo.
+    Miráculis insígnem Benedíctus décimus quintus Sanctis adscrípsit: ejúsque
+    offícium Pius undécimus ad univérsam Ecclésiam exténdit."
+  - "&teDeum"
+lectio7:
+  - Léctio sancti Evangélii secúndum Matthǽum
+  - "!Matt 11:25-30"
+  - "In illo témpore, respondens Jesus dixit: Confiteor tibi, Pater, Dómine cæli
+    et terræ, quia abscondísti hæc a sapiéntibus et prudéntibus et revelásti ea
+    párvulis. Et réliqua."
+  - _
+  - Homilía sancti Francísci Salésii Epíscopi
+  - "!Sermo 23 in die Pentecostes alter, circa medium"
+  - Nulla alia est vera sciéntia, nisi ea quæ a Spíritu Sancto datur, sed hæc
+    humílibus tantummodo tribúitur. Nonne magnos vídimus theólogos qui mira
+    dixérunt de virtútibus, sed ut eas non exercerent? E contra complures
+    vídimus feminas, quæ de virtútibus dissérere nesciébant, sed virtútum ópera
+    digne nóverant adimplére. Eas enim Spíritus Sanctus sapiéntes effécit, quia
+    et timórem Dómini et pietátem et humilitátem habebant.
+lectio8:
+  - "!Fragmentum sermo 16, in III Dominica post Pentecostem, initio"
+  - "Dóminus noster, magnus et præclaríssimus ómnium nostrárum infirmitátum
+    medicus, antequam in hunc mundum veníret, per prophétas suos palam
+    nuntiáverat: Quod confractum fúerit alligábo, et quod infirmum fúerit
+    consolidábo. Et deínde suo ipse ore clamávit dicens: Veníte ad me omnes qui
+    laborátis et oneráti estis, et ego reficiam vos. Quid ígitur mirum si ipsum
+    ab ægrotis, a peccatóribus et publicanis circúmdatum cernimus? Nonne médici
+    glória est ab ægrotis exquiri?"
+lectio9:
+  - "!Fragmentum serm. 10 pro Feria II post Pascha, in fine"
+  - Fert ille nostras misérias et jas nobilitat, apponit misériam Cordi suo,
+    osténdit latus. Sed eum redamémus oportet, alioquin qui præ amóre osténdit
+    vulnera, semel osténdet præ ira et indignatióne. Fac, o bone Jesu, ut pacem,
+    quam offers, accipiámus, videamúsque vulnera tua, ut quandóquidem manent
+    fides, spes, caritas, fide radicati, spe gaudéntes et caritate fervéntes,
+    exspectémus beátam spem et advéntum tuum, ita ut in illo Te, Agnum ad
+    déxteram non leónem ad sinistram videámus; ac pro fide visiónem, pro spe
+    possessiónem et pro caritate imperfécta perféctam habeámus, in qua
+    gaudébimus in sæcula sæculórum. Amen.

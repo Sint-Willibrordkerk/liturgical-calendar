@@ -1,0 +1,14 @@
+officium:
+  - S. Thomæ Cantuariensis Episcopi et Martyris
+name:
+  - "@Sancti/12-29"
+rank:
+  - ""
+  - Comemoratio
+  - "1.1"
+  - "@C2"
+oratio:
+  - "@Sancti/12-29"
+references: "@Sancti/12-29"
+rule:
+  - vide C2;

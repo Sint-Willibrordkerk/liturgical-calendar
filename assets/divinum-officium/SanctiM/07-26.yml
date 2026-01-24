@@ -1,0 +1,13 @@
+references: "@Sancti/07-26"
+rule:
+  - 12 lectiones
+lectio5:
+  - "@Sancti/07-26:Lectio4:s/ Congáudeat.*//"
+lectio6:
+  - "@Sancti/07-26:Lectio4:s/.* (?=Congáudeat)//s s/$/~/"
+  - "@Sancti/07-26:Lectio5:s/ Cónsonam.*//"
+lectio7:
+  - "@Sancti/07-26:Lectio5:s/.* (?=Cónsonam)// s/$/~/"
+  - "@Sancti/07-26:Lectio6:s/ Nos .*//"
+lectio8:
+  - "@Sancti/07-26:Lectio6:s/.* (?=Nos)//"

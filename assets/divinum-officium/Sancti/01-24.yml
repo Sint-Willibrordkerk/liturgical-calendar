@@ -1,0 +1,79 @@
+officium:
+  - S. Timothei Episcopi et Martyris
+rank:
+  - ""
+  - Duplex
+  - "3"
+  - "@C2"
+rubrica-1570/rank:
+  - ""
+  - Simplex
+  - "1.1"
+  - "@C2"
+rubrica-monastica/rank:
+  - ""
+  - Simplex
+  - "1.1"
+  - "@C2"
+rubrica-1962/rank:
+  - ""
+  - Simplex
+  - "1.1"
+  - "@C2"
+rubrica-1617/rank:
+  - ""
+  - Semiduplex
+  - "2.2"
+  - "@C2"
+rule:
+  - vide C2;
+  - 9 lectiones
+  - Gloria
+name:
+  - Timóthei
+  - Postcommunio=Timotheo
+lectio:
+  - Léctio Epístolæ beáti Pauli Apóstoli ad Timótheum
+  - "!1 Tim 6:11-16"
+  - "Caríssime: Sectáre justítiam, pietátem, fidem, caritátem, patiéntiam,
+    mansuetúdinem. Certa bonum certámen fídei, apprehénde vitam ætérnam, in qua
+    vocátus es, et conféssus bonam confessionem coram multis téstibus. Præcípio
+    tibi coram Deo, qui vivíficat ómnia, et Christo Jesu, qui testimónium
+    réddidit sub Póntio Piláto, bonam confessiónem: ut serves mandátum sine
+    mácula, irreprehensíbile usque in advéntum Dómini nostri Jesu Christi, quem
+    suis tempóribus osténdet beátus et solus potens, Rex regum et Dóminus
+    dominántium: qui solus habet immortalitátem, et lucem inhábitat
+    inaccessíbilem: quem nullus hóminum vidit, sed nec vidére potest: cui honor
+    et impérium sempitérnum. Amen."
+lectio4:
+  - "Timótheus, Lystris in Lycaónia natus ex patre Gentíli et matre Judǽa,
+    christiánam colébat religiónem, cum in ea loca venit Paulus Apóstolus. Qui
+    fama commótus, quæ de Timóthei sanctitáte percrebúerat, ipsum adhíbuit
+    sócium suæ peregrinatiónis: sed propter Judǽos qui se ad Christum
+    convérterant, sciéntes Timóthei patrem esse Gentílem, eum circumcídit. Cum
+    ígitur ambo Ephesum veníssent, ibi ordinátus est epíscopus ab Apóstolo, ut
+    eam ecclésiam gubernáret."
+lectio5:
+  - Ad quem Apóstolus duas epístolas scripsit, álteram Laodicéa, álteram Roma.
+    Quibus in pastorális offícii cura confirmátus, cum sacrifícium, quod uni Deo
+    debétur fíeri dǽmonum simulácris, ferre non posset; pópulum Ephesínum, Diánæ
+    in ejus celebritáte immolántem, ab illa impietáte removére conátus,
+    lapídibus óbrutus est; ac pene mórtuus, a Christiánis eréptus et in montem
+    óppido vicínum delátus, nono Kaléndas Februárii obdormívit in Dómino.
+lectio6:
+  - "@Commune/C2:Lectio4"
+lectio94:
+  - "Timótheus, Lystris in Lycaónia natus ex patre gentíli et matre judǽa,
+    christiánam colébat religiónem, cum in ea loca venit Paulus Apóstolus. Qui
+    fama commótus, quæ de Timóthei sanctitáte percrebúerat, ipsum adhíbuit
+    sócium suæ peregrinatiónis: sed propter Judǽos qui se ad Christum
+    convérterant, sciéntes Timóthei patrem esse gentílem, eum circumcídit. Cum
+    ígitur ambo Ephesum veníssent, ibi ordinátus est epíscopus ab Apóstolo, ut
+    eam ecclésiam gubernáret. Ad quem Apóstolus duas epístolas scripsit, álteram
+    Laodicéa, álteram Roma. Quibus in pastorális offícii cura confirmátus, cum
+    sacrifícium, quod uni Deo debétur fíeri dǽmonum simulácris, ferre non
+    posset; pópulum Ephesínum, Diánæ in ejus celebritáte immolántem, ab illa
+    impietáte removére conátus, lapídibus óbrutus est; ac pene mórtuus, a
+    Christiánis eréptus et in montem óppido vicínum delátus, nono caléndas
+    februárii obdormívit in Dómino."
+  - "&teDeum"

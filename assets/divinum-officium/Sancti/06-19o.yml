@@ -1,0 +1,76 @@
+officium:
+  - Ss. Gervasii et Protasii Martyrum
+rank:
+  - ""
+  - Simplex
+  - "1.1"
+  - "@C3a-1"
+rule:
+  - vide C3a-1;
+  - Gloria
+name:
+  - Gervásii et Protásii
+  - Secreta=Gervásio et Protásio
+  - Postcommunio=Gervásio et Protásio
+introitus:
+  - "!Ps 84:9"
+  - "v. Loquétur Dóminus pacem in plebem suam: et super sanctos suos, et in eos,
+    qui convertúntur ad ipsum."
+  - "!Ps 84:2"
+  - Benedixísti, Dómine, terram tuam, avertísti captivitátem Jacob.
+  - "&Gloria"
+  - "v. Loquétur Dóminus pacem in plebem suam: et super sanctos suos, et in eos,
+    qui convertúntur ad ipsum."
+lectio:
+  - Léctio Epístolæ beáti Petri Apóstoli
+  - "!1 Pet 4:13-19"
+  - "Caríssimi: Communicántes Christi passiónibus gaudéte, ut et in revelatióne
+    glóriæ ejus gaudeátis exsultántes. Si exprobrámini in nómine Christi, beáti
+    éritis: quóniam quod est honóris, glóriæ et virtútis Dei, et qui est ejus
+    Spíritus, super vos requiéscit. Nemo autem vestrum patiátur ut homicída, aut
+    fur, aut malédicus, aut alienórum appetítor. Si autem ut christiánus, non
+    erubéscat: gloríficet autem Deum in isto nomine. Quóniam tempus est, ut
+    incípiat judícium a domo Dei. Si autem primum a nobis: quis finis eórum, qui
+    non credunt Dei Evangélio? Et si justus vix salvábitur, ímpius et peccátor
+    ubi parébunt? Itaque et hi, qui patiúntur secúndum voluntátem Dei, fideli
+    Creatóri comméndent ánimas suas in benefáctis."
+graduale:
+  - "!Exodi 15:11"
+  - "Gloriósus Deus in Sanctis suis: mirábilis in majestáte, fáciens prodígia."
+  - "!Exod 16:6"
+  - "V. Déxtera tua, Dómine, glorificáta est in virtúte: déxtera manus tua
+    confrégit inimícos."
+  - Allelúja, allelúja.
+  - "V. Hæc est vera fratérnitas, quæ vicit mundi crímina: Christum secúta est,
+    ínclita tenens regna cœléstia. Allelúja."
+evangelium:
+  - "@Commune/C3a"
+offertorium:
+  - "!Ps 31:11"
+  - "Lætámini in Dómino et exsultáte, justi: et gloriámini, omnes recti corde."
+communio:
+  - "!Ps 78:2; 78:11"
+  - "Posuérunt mortália servórum tuórum, Dómine, escas volatílibus cœli, carnes
+    Sanctórum tuórum béstiis terræ: secúndum magnitúdinem bráchii tui pósside
+    fílios morte punitórum."
+rubrica-cisterciensis/rank:
+  - ""
+  - Commemoratio et M.
+  - "1"
+  - "@C3a-1"
+lectio93:
+  - "Gervasius et Protasius, Vitalis et Valériæ fílii, quorum pater Ravennæ,
+    mater Mediolani pro Christi Dómini fide martyrium subiérunt, distributo
+    paupéribus patrimonio, domesticos servos libertáte donarunt. Quo facto
+    Gentílium sacerdótes immane in illos conceptum ódium habebant. Quare, cum
+    Astasius comes in bellum proficisci vellet, hanc occasiónem perdéndi pios
+    fratres se nactos esse putavérunt. Itaque Astasio persuadent se a diis
+    admonitos esse, nullo modo eum in bello victórem futurum, nisi Gervasio et
+    Protasio coactis Christum negare, eosdem ad sacra diis facienda compélleret.
+    Quod cum illi detestaréntur, Astasius imperávit Gervasium tamdiu cædi, dum
+    inter verbera exspiraret; Protasium fustibus contusum secúri pércuti jubet.
+    Quorum córpora Philippus Christi servus clam sústulit et in suis ædibus
+    sepelívit: quæ póstea sanctus Ambrosius, Dei mónitu invénta, in loco sacro
+    et insígni collocanda curávit. Passi sunt Mediolani décimo tertio Kalendas
+    Julii."
+  - "&teDeum"

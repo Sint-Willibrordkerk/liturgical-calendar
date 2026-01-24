@@ -1,0 +1,3 @@
+references: "@Sancti/12-29"
+rule:
+  - vide C2-1;

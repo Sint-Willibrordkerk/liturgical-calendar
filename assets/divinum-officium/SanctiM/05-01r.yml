@@ -1,0 +1,81 @@
+references: "@Sancti/05-01r"
+rule:
+  - 12 lectiones
+  - Psalmi Dominica
+responsory-vespera:
+  - "@Tempora/Pasc2-3:Responsory Breve Tertia"
+versum-1:
+  - "@Tempora/Pasc2-3:Versum Tertia"
+ant-matutinum:
+  - "@Tempora/Pasc2-3::1"
+  - ;;2
+  - ;;4
+  - ;;5
+  - ;;8
+  - ;;10
+  - "@Tempora/Pasc2-3::4 s/4/14/"
+  - ;;20
+  - ;;23
+  - ;;95
+  - ;;96
+  - ;;97
+  - "@Tempora/Pasc2-3::7 s/14/256;257;258/"
+nocturn-1-versum:
+  - "@Tempora/Pasc2-3"
+nocturn-2-versum:
+  - "@Tempora/Pasc2-3"
+nocturn-3-versum:
+  - "@Tempora/Pasc2-3"
+lectio3:
+  - "@Tempora/Pasc2-3::s/49/45/ s/ Egréssus.*//s"
+responsory3:
+  - "@Sancti/03-19:Responsory1"
+lectio4:
+  - "@Tempora/Pasc2-3:Lectio3:s/44-49/45-49/ s/44.* (Egréssus)/45 $1/s"
+responsory4:
+  - "@Tempora/Pasc2-3:Responsory3"
+lectio5:
+  - "@Tempora/Pasc2-3:Lectio4"
+responsory5:
+  - "@Tempora/Pasc2-3:Responsory4"
+lectio6:
+  - "@Tempora/Pasc2-3:Lectio5"
+responsory6:
+  - "@Tempora/Pasc2-3:Responsory5"
+lectio7:
+  - "@Tempora/Pasc2-3:Lectio6:s/Mem.nto.*//s"
+responsory7:
+  - "R. Exáudi † vocem meam, qua clamávi ad te:"
+  - "* Miserére mei, et exáudi me, allelúja."
+  - V. Adjútor meus esto, ne derelínquas me.
+  - R. Miserére mei, et exáudi me, allelúja.
+lectio8:
+  - "@Tempora/Pasc2-3:Lectio6:s/.*(Mem.nto)/$1/s"
+responsory8:
+  - "@Tempora/Pasc2-3:Responsory6"
+lectio9:
+  - "@Tempora/Pasc2-3:Lectio7"
+responsory9:
+  - "@Tempora/Pasc2-3:Responsory7"
+lectio10:
+  - "@Tempora/Pasc2-3:Lectio8"
+responsory10:
+  - "@Sancti/03-19:Responsory4"
+lectio11:
+  - "@Tempora/Pasc2-3:Lectio9:s/Neque.*//s"
+responsory11:
+  - "@Sancti/03-19:Responsory5"
+lectio12:
+  - "@Tempora/Pasc2-3:Lectio9:s/.*(Neque)/$1/s"
+responsory12:
+  - "@SanctiM/03-19"
+responsory-laudes:
+  - "@Tempora/Pasc2-3:Responsory Breve Sexta"
+responsory-tertiam:
+  - "@Tempora/Pasc2-3:Versum Tertia"
+responsory-sextam:
+  - "@Tempora/Pasc2-3:Versum Sexta"
+responsory-nonam:
+  - "@Tempora/Pasc2-3:Versum Nona"
+evangelium:
+  - "@Tempora/Pasc2-3"

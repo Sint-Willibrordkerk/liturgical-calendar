@@ -1,0 +1,173 @@
+officium:
+  - Ss. Cyriaci, Largi et Smaragdi Martyrum
+rank:
+  - ""
+  - Semiduplex
+  - "2.2"
+  - "@C3a-1"
+rubrica-1960/rank:
+  - ""
+  - Simplex
+  - "1.1"
+  - "@C3a-1"
+rule:
+  - vide C3a-1;
+  - 9 lectiones
+  - Gloria
+name:
+  - Cyríaci, Largi et Smarágdi
+introitus:
+  - "!Ps 33:10-11"
+  - "v. Timéte Dóminum, omnes sancti ejus, quóniam nihil deest timéntibus eum:
+    dívites eguérunt et esuriérunt: inquiréntes autem Dóminum non defícient omni
+    bono."
+  - "!Ps 33:2"
+  - "Benedícam Dóminum in omni témpore: semper laus ejus in ore meo."
+  - "&Gloria"
+  - "v. Timéte Dóminum, omnes sancti ejus, quóniam nihil deest timéntibus eum:
+    dívites eguérunt et esuriérunt: inquiréntes autem Dóminum non defícient omni
+    bono."
+lectio:
+  - Léctio Epístolæ beáti Pauli Apóstoli ad Thessalonicénses
+  - "!1 Thess 2:13-16"
+  - "Fratres: Grátias ágimus Deo sine intermissióne: quóniam, cum accepissétis a
+    nobis verbum audítus Dei, accepístis illud, non ut verbum hóminum, sed -
+    sicut est vere - verbum Dei, qui operátur in vobis, qui credidístis. Vos
+    enim imitatóres facti estis, fratres, ecclesiárum Dei, quæ sunt in Judæa in
+    Christo Jesu: quia éadem passi estis et vos a contribúlibus vestris, sicut
+    et ipsi a Judæis: qui et Dóminum occidérunt Jesum et Prophétas: et nos
+    persecúti sunt, et Deo non placent, et ómnibus homínibus adversántur,
+    prohibéntes nos géntibus loqui, ut salvæ fiant, ut ímpleant peccáta sua
+    semper: pervénit enim ira Dei super illos usque in finem."
+graduale:
+  - "!Ps 33:10; 33:11"
+  - "Timéte Dóminum, omnes sancti ejus: quóniam nihil deest timéntibus eum. v.
+    Inquiréntes autem Dóminum, non defícient omni bono."
+  - Allelúja, allelúja.
+  - "!Sap 3:7"
+  - Fulgébunt justi, et tamquam scintíllæ in arundinéto current in ætérnum.
+    Allelúja.
+gradualep:
+  - Allelúja, allelúja.
+  - "!Sap 3:7"
+  - Fulgébunt justi, et tamquam scintíllæ in arundinéto discúrrent in ætérnum.
+  - "!Ps 88:6."
+  - "V. Confitebúntur cœli mirabília tua, Dómine: étenim veritátem tuam in
+    ecclésia sanctórum. Allelúja."
+tractus:
+  - "!Ps 125:5-6"
+  - Qui séminant in lácrimis, in gáudio metent.
+  - V. Eúntes ibant et flebant, mitténtes sémina sua.
+  - V. Veniéntes autem vénient cum exsultatióne, portántes manípulos suos.
+evangelium:
+  - Sequéntia ++ sancti Evangélii secúndum Marcum
+  - "!Marc 16:15-18"
+  - "In illo témpore: Dixit Jesus discípulis suis: Eúntes in mundum univérsum,
+    prædicáte Evangélium omni creatúræ. Qui credíderit, et baptizátus fúerit,
+    salvus erit: qui vero non credíderit, condemnábitur. Signa autem eos, qui
+    credíderint, hæc sequéntur: In nómine meo dæmónia ejícient: linguis
+    loquéntur novis: serpéntes tollent: et si mortíferum quid bíberint, non eis
+    nocébit: super ægros manus impónent, et bene habébunt."
+offertorium:
+  - "!Ps 31:11"
+  - "Lætámini in Dómino et exsultáte, justi: et gloriámini, omnes recti corde."
+secreta:
+  - "Accépta sit in conspéctu tuo, Dómine, nostra devótio: et eórum nobis fiat
+    supplicatióne salutáris, pro quorum sollemnitáte defértur."
+  - $Per Dominum
+communio:
+  - "!Marc 16:17; 16:18"
+  - "Signa autem eos, qui in me credunt, hæc sequéntur: dæmónia ejícient: super
+    ægros manus impónent, et bene habébunt."
+postcommunio:
+  - "Refécti participatióne múneris sacri, quǽsumus, Dómine, Deus noster: ut,
+    cujus exséquimur cultum, intercedéntibus sanctis Martýribus tuis Cyríaco,
+    Largo et Smarágdo, sentiámus efféctum."
+  - $Per Dominum
+rubrica-cisterciensis/rank:
+  - ""
+  - Commemoratio
+  - "1"
+  - "@C3a-1"
+lectio4:
+  - Cyríacus diaconus, cum Sisinio, Largo et Smaragdo diutius inclusus in
+    carcere, multa édidit miracula, in quibus Arthémiam Diocletiáni filiam
+    precibus a dæmone liberávit; missusque ad Saporem Persárum regem, Jobíam
+    étiam ejus filiam a nefario spíritu erípuit. Rege vero ejus patre cum
+    quadringentis ac trigínta aliis baptizatis, Romam rediit; ubi, Maximiáni
+    imperatóris jussu comprehénsus, catenis vinctus ante rhedam suam tráhitur;
+    et post dies quatuor e carcere edúctus, pice liquáta perfusus et in catasta
+    exténsus, demum cum Largo et Smaragdo aliisque viginti secúri percússus est
+    via Salaria, ad hortos Sallustiános. Quorum córpora in eádem via décimo
+    septimo Kalendas Aprilis sepúlta a Joánne presbytero, póstea sexto Idus
+    Augusti a Marcello Pontifice et Lucina nobili femina lineis velis involuta
+    et pretiósis unguentis condíta, in ipsíus Lucinæ prædium via Ostiénsi,
+    septimo ab Urbe lápide transláta sunt.
+lectio5:
+  - Sermo sancti Joánnis Chrysóstomi
+  - "!Sermo 1 de Martyribus, tom. 3."
+  - Nemo est, qui nesciat, Mártyrum glorias ad hoc divino consílio a Dei pópulis
+    frequentári, ut et illis débitus honor dicétur, et nobis virtútis exémpla,
+    favénte Christo, monstréntur; ut, dum hæc ita celebrári perspícimus,
+    cognoscámus quanta eos glória máneat in cælis, quorum natalítia táliter
+    celebrántur in terris; quo possímus, étiam ipsi, tálibus provocári exémplis,
+    virtúte pari, devotióne consímili ac fide; ut, Christo præstánte, dimicáre
+    et víncere hostem possímus, ut, parta victória, cum iísdem Sanctis in regnis
+    cæléstibus triumphémus.
+lectio6:
+  - Quis est enim, qui eórum volens mérito copulári, nisi prius constántiam
+    eórum téneat, sectétur fidem, imitétur virtútem passiónis; eórum glóriam
+    páribus vitæ lineaméntis aut invéniat aut exquírat? Qui, etsi martýrio par
+    esse non possit, tamen múneris tanti dignitáte se quisque bonis áctibus
+    dignum præbeat. Adest enim clementíssimus Deus, qui desiderántibus suis aut
+    martýrium præbeat, aut, sine martýrio, cum Sanctis præmia divína retríbuat.
+lectio94:
+  - Cyríacus diáconus, cum Sisínio, Largo et Smarágdo diútius inclúsus in
+    cárcere, multa édidit mirácula, in quibus Arthémiam Diocletiáni fíliam
+    précibus a dæmone liberávit; missúsque ad Sáporem Persárum regem, Jobíam
+    étiam ejus filiam a nefário spíritu erípuit. Rege vero ejus patre cum
+    quadringéntis ac trigínta áliis baptizátis, Romam rédiit; ubi, Maximiáni
+    imperatóris jussu comprehénsus, caténis vinctus ante rhedam suam tráhitur;
+    et post dies quátuor e cárcere edúctus, pice liquáta perfúsus et in catásta
+    exténsus, demum cum Largo et Smarágdo aliísque vigínti secúri percússus est
+    via Salária, ad hortos Sallustiános. Quorum córpora in eádem via décimo
+    séptimo Kaléndas Aprílis sepúlta a Joánne presbytero, póstea sexto Idus
+    Augústi a Marcéllo Pontífice et Lucína nóbili fémina líneis velis involúta
+    et pretiósis unguéntis condíta, in ipsíus Lucínæ prædium via Ostiénsi,
+    séptimo ab Urbe lápide transláta sunt.
+  - "&teDeum"
+lectio7:
+  - Léctio sancti Evangélii secúndum Marcum
+  - "!Marc 16:15-18"
+  - "In illo témpore: Dixit Jesus discípulis suis: Euntes in mundum univérsum
+    prædicate Evangélium omni creaturæ. Et réliqua."
+  - _
+  - Homilía sancti Gregórii Papæ
+  - "!Homilia 29 in Evangelia, post initium"
+  - "Potest omnis creaturæ nómine omnis natio Géntium designari. Ante enim
+    dictum fuerat: In viam Géntium ne abieritis; nunc autem dícitur: Prædicate
+    omni creaturæ: ut scilicet prius a Judǽa Apostolórum repulsa prædicátio tunc
+    nobis in adjutórium fieret, cum hanc illa ad damnatiónis suæ testimónium
+    superba repulísset. Sed cum discipulos ad prædicándum Véritas mittit, quid
+    aliud in mundo facit, nisi grana séminis spargit? Et pauca grana mittit in
+    semine, ut multárum messium fruges recipiat ex nostra fide."
+lectio8:
+  - "Neque étenim in universo mundo tanta fidelium messis exsúrgeret, si de manu
+    Dómini super rationalem terram illa electa grana prædicántium non venissent.
+    Sequitur: Qui crediderit et baptizátus fúerit, salvus erit: qui vero non
+    credíderit, condemnábitur. Fortasse unusquísque apud semetípsum dicat: Ego
+    jam credidi, salvus ero. Verum dicit, si fidem opéribus tenet. Vera étenim
+    fides est, quæ in hoc, quod verbis dicit, móribus non contradicit. Hinc est
+    enim quod de quibusdam falsis fidelibus Paulus dicit: Qui confiténtur se
+    nosse Deum, factis autem negant."
+lectio9:
+  - "Signa autem eos qui credituri sunt, hæc sequéntur: In nómine meo dæmónia
+    ejícient, linguis loquéntur novis, serpéntes tollent: et si mortíferum quid
+    bíberint, non eis nocébit: super ægros manus impónent, et bene habébunt.
+    Numquidnam, fratres mei, quia ista signa non fácitis, minime creditis? Sed
+    hæc necessaria in exordio Ecclésiæ fuérunt. Ut enim ad fidem crésceret
+    multitúdo credéntium, miraculis fuerat nutriénda: quia et nos, cum arbústa
+    plantamus, tamdiu eis aquam infúndimus, quoúsque ea in terra jam coaluisse
+    videámus: et si semel radícem fíxerint, irrigátio cessabit. Hinc est enim
+    quod Paulus dicit: Linguæ in signum sunt non fidelibus, sed infidelibus."
+  - "&teDeum"

@@ -1,0 +1,11 @@
+references: "@SanctiM/02-22"
+rank:
+  - In Cathedra S. Petri Apostoli
+  - Duplex majus
+  - "5"
+  - "@C4"
+rule:
+  - Psalmi Dominica
+  - 12 lectiones
+lectio3:
+  - "@Sancti/01-18"

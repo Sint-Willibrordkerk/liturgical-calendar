@@ -1,0 +1,11 @@
+references: "@Sancti/06-06"
+rubrica-cisterciensis/lectio5:
+  - "@Sancti/06-06:Lectio4:s/Potens ígitur.*//"
+rubrica-cisterciensis/lectio6:
+  - "@Sancti/06-06:Lectio4:s/.*(Potens ígitur)/$1/s s/$/~/"
+  - "@Sancti/06-06:Lectio5:s/Cum vero.*//"
+rubrica-cisterciensis/lectio7:
+  - "@Sancti/06-06:Lectio5:s/.*(Cum vero)/$1/s s/$/~/"
+  - "@Sancti/06-06:Lectio6:s/Archiepíscopus.*//"
+rubrica-cisterciensis/lectio8:
+  - "@Sancti/06-06:Lectio6:s/.*(Archiepíscopus)/$1/"

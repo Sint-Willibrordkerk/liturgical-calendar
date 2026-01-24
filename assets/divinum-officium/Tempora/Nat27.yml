@@ -1,0 +1,31 @@
+officium:
+  - Diei III infra Octavam Nativitatis
+rank:
+  - ""
+  - Semiduplex
+  - "2.1"
+  - "@Sancti/12-25"
+rubrica-196/rank:
+  - ""
+  - Duplex II classis
+  - "5"
+  - "@Sancti/12-25"
+rule:
+  - ex Sancti/12-25;
+  - 9 lectiones
+ant-vespera:
+  - "@Sancti/12-25:Ant Vespera 3"
+versum-1:
+  - "@Sancti/12-25:Versum 3"
+versum-2:
+  - "@Sancti/12-25:Versum 2"
+ant-1:
+  - "@Sancti/12-25:Ant 3"
+rubrica-cisterciensis/ant-1:
+  - "@Tempora/Nat26"
+rubrica-cisterciensis/ant-2:
+  - "@Tempora/Nat26"
+rubrica-tridentina-nisi-rubrica-altovadensis/commemoratio-2:
+  - "@Sancti/12-26:Octava"
+rubrica-tridentina-nisi-rubrica-altovadensis/commemoratio-3:
+  - "@Sancti/12-26:Octava"

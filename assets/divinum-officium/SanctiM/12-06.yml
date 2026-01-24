@@ -1,0 +1,18 @@
+references: "@Sancti/12-06"
+rubrica-tridentina/rule:
+  - vide C4;
+  - 12 lectiones
+  - (rubrica altovadensis) Psalmi Dominica
+rubrica-1951/rubrica-tridentina/rule:
+  - vide C4;
+  - 12 lectiones
+  - 3 lectiones
+lectio5:
+  - "@Sancti/12-06:Lectio4"
+lectio6:
+  - "@Sancti/12-06:Lectio5: s/In episcopatu.*//s"
+lectio7:
+  - "@Sancti/12-06:Lectio5: s/.* In episcopatu/In episcopatu/s s/$/~/"
+  - "@Sancti/12-06:Lectio6: s/Cum vero.*//s"
+lectio8:
+  - "@Sancti/12-06:Lectio5: s/.* Cum vero/Cum vero/s"

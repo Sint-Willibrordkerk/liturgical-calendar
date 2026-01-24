@@ -1,0 +1,127 @@
+officium:
+  - In Vigilia S. Joannis Baptistæ
+rank:
+  - ""
+  - Simplex
+  - "1.5"
+rubrica-196/rank:
+  - ""
+  - Duplex II classis
+  - "5"
+rule:
+  - Responsory Feria
+  - Preces feriales
+  - Versum Feria
+  - no Te Deum
+  - Laudes 2
+  - no Gloria
+  - Suffr=Maria3;Ecclesiæ,Papa;;
+introitus:
+  - "!Luc 1:13; 1:15; 1:14"
+  - "v. Ne tímeas, Zacharía, exaudíta est orátio tua: et Elísabeth uxor tua
+    páriet tibi fílium, et vocábis nomen ejus Joánnem: et erit magnus coram
+    Dómino: et Spíritu Sancto replébitur adhuc ex útero matris suæ: et multi in
+    nativitáte ejus gaudébunt."
+  - "!Ps 20:2"
+  - "Dómine, in virtúte tua lætábitur rex: et super salutáre tuum exsultábit
+    veheménter."
+  - "&Gloria"
+  - "v. Ne tímeas, Zacharía, exaudíta est orátio tua: et Elísabeth uxor tua
+    páriet tibi fílium, et vocábis nomen ejus Joánnem: et erit magnus coram
+    Dómino: et Spíritu Sancto replébitur adhuc ex útero matris suæ: et multi in
+    nativitáte ejus gaudébunt."
+oratio:
+  - "Præsta, quǽsumus, omnípotens Deus: ut família tua per viam salútis incédat;
+    et, beáti Joánnis Præcursóris hortaménta sectándo ad eum, quem prædíxit,
+    secúra pervéniat, Dóminum nostrum Jesum Christum, Fílium tuum:"
+  - $Qui tecum
+lectio:
+  - Léctio Jeremíæ Prophétæ
+  - "!Jer 1:4-10"
+  - "In diébus illis: Factum est verbum Dómini ad me, dicens: Priúsquam te
+    formárem in útero, novi te: et ántequam exíres de vulva, sanctificári te, et
+    prophétam in géntibus dedi te. Et dixi: A a a, Dómine Deus: ecce, néscio
+    loqui, quia puer ego sum. Et dixit Dóminus ad me: Noli dícere: Puer sum;
+    quóniam ad ómnia, quæ mittam te, ibis: et univérsa, quæcúmque mandávero
+    tibi, lóqueris. Ne tímeas a fácie eórum: quia tecum ego sum, ut éruam te,
+    dicit Dóminus. Et misit Dóminus manum suam, et tétigit os meum: et dixit
+    Dóminus ad me: Ecce, dedi verba mea in ore tuo; ecce, constítui te hódie
+    super gentes et super regna, ut evéllas, et déstruas et dispérdas et
+    díssipes et ædífices et plantes: dicit Dóminus omnípotens."
+graduale:
+  - "!Joann 1:6-7"
+  - Fuit homo missus a Deo, cui nomen erat Joánnes.
+  - V. Hic venit, ut testimónium perhibéret de lúmine, paráre Dómino plebem
+    perféctam.
+evangelium:
+  - Initium ++ sancti Evangélii secúndum Lucam
+  - "!Luc 1:5-17"
+  - "Fuit in diébus Heródis, regis Judææ, sacérdos quidam nómine Zacharías, de
+    vice Abía, et uxor illíus de filiábus Aaron, et nomen ejus Elísabeth. Erant
+    autem justi ambo ante Deum, incedéntes in ómnibus mandátis et
+    justificatiónibus Dómini sine queréla, et non erat illis fílius, eo quod
+    esset Elísabeth stérilis, et ambo processíssent in diébus suis. Factum est
+    autem, cum sacerdótio fungerétur in órdine vicis suæ ante Deum, secúndum
+    consuetúdinem sacerdótii, sorte éxiit, ut incénsum póneret, ingréssus in
+    templum Dómini: et omnis multitúdo pópuli erat orans foris hora incénsi.
+    Appáruit autem illi Angelus Dómini, stans a dextris altáris incénsi. Et
+    Zacharias turbátus est, videns, et timor írruit super eum. Ait autem ad
+    illum Angelus: Ne tímeas, Zacharía, quóniam exaudíta est deprecátio tua: et
+    uxor tua Elísabeth páriet tibi fílium, et vocábis nomen ejus Joánnem: et
+    erit gáudium tibi et exsultátio, et multi in nativitáte ejus gaudébunt: erit
+    enim magnus coram Dómino: et vinum, et síceram non bibet, et Spíritu Sancto
+    replébitur adhuc ex útero matris suæ: et multos filiórum Israël convértet ad
+    Dóminum, Deum ipsórum: et ipse præcédet ante illum in spíritu et virtúte
+    Elíæ: ut convértat corda patrum in fílios, et incrédulos ad prudéntiam
+    justórum, paráre Dómino plebem perféctam."
+offertorium:
+  - "@Commune/C1v"
+secreta:
+  - "Múnera, Dómine, obláta sanctífica: et, intercedénte beáto Joánne Baptista,
+    nos per hæc a peccatórum nostrórum máculis emúnda."
+  - $Per Dominum
+communio:
+  - "@Commune/C1v"
+postcommunio:
+  - "Beáti Joánnis Baptístæ nos, Dómine, præclára comitétur orátio: et, quem
+    ventúrum esse prædíxit, poscat nobis fore placátum, Dóminum nostrum Jesum
+    Christum, Fílium tuum:"
+  - $Qui tecum
+lectio1:
+  - Léctio sancti Evangélii secúndum Lucam
+  - "!Luc 1:5-17"
+  - Fuit in diébus Heródis, regis Judǽæ, sacérdos quidam, nómine Zacharías, de
+    vice Abía et uxor illíus de filiábus Aaron, et nomen ejus Elísabeth. Et
+    réliqua.
+  - _
+  - Homilía sancti Ambrósii Epíscopi
+  - "!Liber 1 in Lucam"
+  - Docet nos Scriptúra divína non solum mores in iis qui prædicábiles sunt, sed
+    étiam paréntes oportére laudári; ut véluti transmíssa immaculátæ puritátis
+    heréditas, in iis quos vólumus laudáre, præcéllat. Quæ enim ália inténtio
+    hoc loco sancti Evangelístæ, nisi ut sanctus Joánnes Baptísta nobilitétur
+    paréntibus, miráculis, móribus, múnere, passióne? Sic étiam sancti Sámuel
+    mater Anna laudátur; sic Isaac a paréntibus nobilitátem pietátis accépit,
+    quam pósteris derelíquit. Sacérdos ítaque Zacharías, nec solum sacérdos, sed
+    étiam de vice Abía, id est, nóbilis inter superióres famílias.
+lectio2:
+  - "Et uxor, inquit, illi de filiábus Aaron. Non solum ígitur a paréntibus, sed
+    étiam a majóribus sancti Joánnis nobílitas propagátur, non sæculári
+    potestáte sublímis, sed religiónis successióne venerábilis. Tales enim
+    majóres habére débuit prænúntius Christi; ut non repénte concéptam, sed a
+    majóribus accéptam et ipso infúsam jure natúræ, prædicáre fidem Domínici
+    viderétur advéntus. Erant, inquit, ambo justi ante Deum, incedéntes in
+    ómnibus mandátis et justificatiónibus Dómini sine queréla. Quid ad hoc
+    réferunt qui, peccátis suis solátia præferéntes, sine peccátis frequéntibus
+    hóminem putant esse non posse; et utúntur versículo, quia scriptum est in
+    Job: Nemo mundus a sorde, nec si uníus diéi vita ejus sit in terra?"
+lectio3:
+  - "Quibus respondéndum est, prius ut quid sit hóminem sine peccáto esse
+    defíniant: utrum nunquam omníno peccásse, an desiísse peccáre. Si enim hoc
+    putant sine peccáto esse, nunquam omníno peccásse; et ipse conséntio. Omnes
+    enim peccavérunt, et egent glória Dei. Sin autem eum qui véterem errórem
+    corréxerit, et in eam se vitæ transformáverit qualitátem, ut témperet a
+    peccáto, negant abstinére a delíctis; non possum in eórum conveníre
+    senténtiam, cum legámus, quia Sic Dóminus diléxit Ecclésiam, ut exhíbeat
+    ipsam sibi gloriósam, et non habéntem máculam, aut rugam, aut áliquid
+    ejúsmodi; sed ut sit sancta et immaculáta."

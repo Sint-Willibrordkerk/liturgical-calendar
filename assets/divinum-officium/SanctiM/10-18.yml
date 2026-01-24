@@ -1,0 +1,14 @@
+references: "@Sancti/10-18"
+rule:
+  - 12 lectiones
+oratio:
+  - "@Sancti/10-18"
+lectio5:
+  - "@Sancti/10-18:Lectio4:s/Aliud .*//s"
+lectio6:
+  - "@Sancti/10-18:Lectio4:s/.* Aliud /Aliud /s s/$/~/"
+  - "@Sancti/10-18:Lectio5:s/Sed et .*//s"
+lectio7:
+  - "@Sancti/10-18:Lectio5:s/.* Sed et /Sed et /s"
+lectio8:
+  - "@Sancti/10-18:Lectio6"

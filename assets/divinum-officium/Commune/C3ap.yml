@@ -1,0 +1,97 @@
+references:
+  references: "@Commune/C2p"
+  officium:
+    - Commune Plurimorum Martyrum Tempore Paschali
+  missa:
+    - Sancti tui
+  hymnus-vespera:
+    - "@Commune/C3:Hymnus Laudes"
+  hymnusm-vespera:
+    - "@Commune/C3:HymnusM Laudes"
+  oratio:
+    - "@Commune/C3"
+  hymnus-matutinum:
+    - "@Commune/C3"
+  hymnusm-matutinum:
+    - "@Commune/C3"
+  ant-matutinum:
+    - "@Commune/C1p::1 s/;;18/;;1/"
+    - ;;2
+    - ;;3
+    - "@Commune/C1p::4 s/;;46/;;14/"
+    - ;;15
+    - ;;23
+    - "@Commune/C1p::7 s/;;74/;;32/"
+    - ;;33
+    - ;;45
+  hymnus-laudes:
+    - "@Commune/C3"
+  hymnusm-laudes:
+    - "@Commune/C3"
+  introitus:
+    - "!Ps 144:10-11"
+    - "v. Sancti tui, Dómine, benedícent te: glóriam regni tui dicent,
+      allelúja, allelúja."
+    - "!Ps. 144:1"
+    - "Exaltábo te, Deus meus, Rex: et benedícam nómini tuo in sǽculum, et
+      in sǽculum sǽculi."
+    - "&Gloria"
+    - "v. Sancti tui, Dómine, benedícent te: glóriam regni tui dicent,
+      allelúja, allelúja."
+  lectio:
+    - Léctio Epístolæ beáti Petri Apóstoli
+    - "!1 Petr 1:3-7"
+    - "Benedíctus Deus et Pater Dómini nostri Jesu Christi, qui secúndum
+      misericórdiam suam magnam regenerávit nos in spem vivam, per
+      resurrectiónem Jesu Christi ex mórtuis, in hereditátem incorruptíbilem
+      et incontaminátam et immarcescíbilem, conservátam in cœlis in vobis,
+      qui in virtúte Dei custodímini per fidem in salútem, parátam revelári
+      in témpore novíssimo. In quo exsultábitis, módicum nunc si opórtet
+      contristári in váriis tentatiónibus: ut probátio vestræ fídei multo
+      pretiósior auro [quod per ignem probátur] inveniátur in laudem et
+      glóriam et honórem, in revelatióne Jesu Christi, Dómini nostri."
+  graduale:
+    - Allelúja, allelúja.
+    - "!Sir 39:19"
+    - "Sancti tui, Dómine, florébunt sicut lílium: et sicut odor bálsami
+      erunt ante te. Allelúja."
+    - "!Ps 115:15"
+    - Pretiósa in conspéctu Dómini mors Sanctórum ejus. Allelúja.
+  evangelium:
+    - Sequéntia ++ sancti Evangélii secúndum Joánnem
+    - "!Joannes 15:5-11"
+    - "In illo témpore: Dixit Jesus discípulis suis: Ego sum vitis, vos
+      pálmites: qui manet in me, et ego in eo, hic fert fructum multum: quia
+      sine me nihil potéstis fácere. Si quis in me non mánserit, mittétur foras
+      sicut palmes, et aréscet, et cólligent eum, et in ignem mittent, et ardet.
+      Si manséritis in me, et verba mea in vobis mánserint: quodcúmque
+      voluéritis, petétis, et fiet vobis. In hoc clarificátus est Pater meus,
+      ut fructum plúrimum afferátis, et efficiámini mei discípuli. Sicut
+      diléxit me Pater, et ego diléxi vos. Manéte in dilectióne mea. Si
+      præcépta mea servavéritis, manébitis in dilectióne mea, sicut et ego
+      Patris mei præcépta servávi, et máneo in ejus dilectióne. Hæc locútus
+      sum vobis, ut gáudium meum in vobis sit, et gáudium vestrum impleátur."
+  offertorium:
+    - "!Ps 31:11"
+    - "Lætámini in Dómino et exsultáte, justi: et gloriámini, omnes recti
+      corde, allelúja, allelúja."
+  secreta:
+    - "@Commune/C3"
+  communio:
+    - "!Ps 32:1"
+    - "Gaudéte, justi, in Dómino, allelúja: rectos decet collaudátio,
+      allelúja."
+  postcommunio:
+    - "@Commune/C3"
+oratio:
+  - "Deus, qui nos concédis sanctórum Mártyrum tuórum N. et N. natalítia cólere:
+    da nobis in ætérna beatitúdine de eórum societáte gaudére."
+  - $Per Dominum
+secreta:
+  - "Múnera tibi, Dómine, nostra devotiónis offérimus: quæ et pro tuórum tibi
+    grata sint honóre Justórum, et nobis salutária, te miseránte, reddántur."
+  - $Per Dominum
+postcommunio:
+  - "Præsta nobis, quǽsumus, Dómine: intercedéntibus sanctis Martýribus tuis N.
+    et N.; ut, quod ore contíngimus, pura mente capiámus."
+  - $Per Dominum

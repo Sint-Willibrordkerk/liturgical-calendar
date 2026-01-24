@@ -1,0 +1,518 @@
+officium:
+  - Dominica Sanctissimæ Trinitatis
+rank:
+  - ""
+  - Duplex I classis
+  - "6.5"
+rule:
+  - 9 lectiones
+  - Psalmi Dominica
+  - Antiphonas horas
+  - Symbolum Athanasium
+  - No Commemoration
+  - No suffragium
+  - Psalm5 Vespera=116
+  - Psalm5 Vespera3=113
+  - Prima=53
+  - Gloria
+  - Credo
+  - Prefatio=Trinitate
+introitus:
+  - "@Tempora/Pent01-0:Introitus"
+oratio:
+  - "Omnípotens sempitérne Deus, qui dedísti fámulis tuis in confessióne veræ
+    fídei, ætérnæ Trinitátis glóriam agnóscere, et in poténtia majestátis
+    adoráre Unitátem: quǽsumus; ut, ejúsdem fídei firmitáte, ab ómnibus semper
+    muniámur advérsis."
+  - $Per Dominum
+commemoratio-oratio:
+  - "!Pro Dominicam I post Pentecosten"
+  - "Deus, in te sperántium fortitúdo, adésto propítius invocatiónibus nostris:
+    et, quia sine te nihil potest mortális infírmitas, præsta auxílium grátiæ
+    tuæ; ut, in exsequéndis mandátis tuis, et voluntáte tibi et actióne
+    placeámus."
+  - $Per Dominum.
+lectio:
+  - Léctio Epístolæ beáti Pauli Apóstoli ad Romános
+  - "!Rom 11:33-36."
+  - "O altitúdo divitiárum sapiéntiæ et sciéntiæ Dei: quam incomprehensibília
+    sunt judícia ejus, et investigábiles viæ ejus! Quis enim cognovit sensum
+    Dómini? Aut quis consiliárius ejus fuit? Aut quis prior dedit illi, et
+    retribuétur ei? Quóniam ex ipso et per ipsum et in ipso sunt ómnia: ipsi
+    glória in sǽcula. Amen."
+graduale:
+  - "!Dan 3:55-56"
+  - Benedíctus es, Dómine, qui intuéris abýssos, et sedes super Chérubim,
+  - V. Benedíctus es, Dómine, in firmaménto cæli, et laudábilis in sǽcula.
+    Allelúja, allelúja.
+  - "!Dan 3:52"
+  - V. Benedíctus es, Dómine, Deus patrum nostrórum, et laudábilis in sǽcula.
+    Allelúja.
+evangelium:
+  - Sequéntia ++ sancti Evangélii secúndum Matthǽum
+  - "!Matt 28:18-20"
+  - "In illo témpore: Dixit Jesus discípulis suis: Data est mihi omnis potéstas
+    in cœlo et in terra. Eúntes ergo docéte omnes gentes, baptizántes eos in
+    nómine Patris, et Fílii, et Spíritus Sancti: docéntes eos serváre ómnia,
+    quæcúmque mandávi vobis. Et ecce, ego vobíscum sum ómnibus diébus usque ad
+    consummatiónem sǽculi."
+ultima-evangelium:
+  - "@Tempora/Pent01-0a:Evangelium"
+offertorium:
+  - "!Tob 12:6."
+  - "Benedíctus sit Deus Pater, unigenitúsque Dei Fílius, Sanctus quoque
+    Spíritus: quia fecit nobíscum misericórdiam suam."
+secreta:
+  - "Sanctífica, quǽsumus, Dómine, Deus noster, per tui sancti nóminis
+    invocatiónem, hujus oblatiónis hóstiam: et per eam nosmetípsos tibi pérfice
+    munus ætérnum."
+  - $Per Dominum
+commemoratio-secreta:
+  - "!Pro Dominica"
+  - "Hóstias nostras, quǽsumus, Dómine, tibi dicátas placátus assúme: et ad
+    perpétuum nobis tríbue proveníre subsídium."
+  - $Per Dominum
+communio:
+  - "!Tob 12:6"
+  - "Benedícimus Deum cœli et coram ómnibus vivéntibus confitébimur ei: quia
+    fecit nobíscum misericórdiam suam."
+postcommunio:
+  - "Profíciat nobis ad salútem córporis et ánimæ, Dómine, Deus noster, hujus
+    sacraménti suscéptio: et sempitérnæ sanctæ Trinitátis ejusdémque indivíduæ
+    Unitátis conféssio."
+  - $Per Dominum
+commemoratio-postcommunio:
+  - "!Pro Dominica"
+  - "Tantis, Dómine, repléti munéribus: præsta, quǽsumus; ut et salutária dona
+    capiámus, et a tua numquam laude cessémus."
+  - $Per Dominum
+rubrica-tridentina/officium:
+  - Festum Sanctissimæ Trinitatis
+rubrica-tridentina/rank:
+  - ""
+  - Duplex II classis
+  - "5.9"
+ant-vespera:
+  - Glória tibi, Trínitas * æquális, una Déitas, et ante ómnia sǽcula, et nunc
+    et in perpétuum.;;109
+  - Laus et perénnis glória * Deo Patri, et Fílio, Sancto simul Paráclito, in
+    sæculórum sǽcula.;;110
+  - Glória laudis * résonet in ore ómnium, Patri, genitǽque Proli, Spirítui
+    Sancto páriter resúltet laude perénni.;;111
+  - Laus Deo Patri, * parilíque Proli, et tibi, Sancte, stúdio perénni,
+    Spíritus, nostro résonet ab ore, omne per ævum.;;112
+  - "Ex quo ómnia, * per quem ómnia, in quo ómnia: ipsi glória in sǽcula.;;116"
+rubrica-cisterciensis/responsory-vespera-1:
+  - Responsorium. Honor, * virtus, et potéstas, et impérium sit Trinitáti in
+    Unitáte, Unitáti in Trinitáte. * In perénni sæculórum témpore.
+  - V. Trinitáti lux perénnis, Unitáti sit decus pérpetim.
+  - R. In perénni sæculórum témpore.
+rubrica-cisterciensis/responsory-vespera:
+  - "@:Responsory Breve Sexta:1-6"
+hymnus-vespera:
+  - "{:H-VespFeria:}v. Jam sol recédit ígneus:"
+  - Tu, lux perénnis, Únitas,
+  - Nostris, beáta Trínitas,
+  - Infúnde lumen córdibus.
+  - _
+  - Te mane laudum cármine,
+  - Te deprecámur véspere;
+  - Dignéris ut te súpplices
+  - Laudémus inter cǽlites.
+  - _
+  - Patri, simúlque Fílio,
+  - Tibíque, Sancte Spíritus,
+  - Sicut fuit, sit júgiter
+  - Sæclum per omne glória.
+  - Amen.
+hymnusm-vespera:
+  - "{:H-VespFeria:}v. O lux beáta Trínitas,"
+  - Et principális Únitas,
+  - Jam sol recédit ígneus,
+  - Infúnde lumen córdibus.
+  - _
+  - Te mane laudum cármine,
+  - "Te deprecémur véspere:"
+  - Te nostra supplex glória
+  - Per cuncta laudet sǽcula.
+  - _
+  - Deo Patri sit glória,
+  - Ejúsque soli Fílio,
+  - Cum Spíritu Paráclito,
+  - Et nunc, et in perpétuum.
+  - Amen.
+versum-1:
+  - V. Benedicámus Patrem et Fílium cum Sancto Spíritu.
+  - R. Laudémus et superexaltémus eum in sǽcula.
+ant-1:
+  - Grátias * tibi Deus, grátias tibi, vera et una Trínitas, una et summa
+    Déitas, sancta et una Unítas.
+oratiow:
+  - "Deus, in te sperántium fortitúdo, adésto propítius invocatiónibus nostris:
+    et, quia sine te nihil potest mortális infírmitas, præsta auxílium grátiæ
+    tuæ; ut, in exsequéndis mandátis tuis, et voluntáte tibi et actióne
+    placeámus."
+  - $Per Dominum
+commemoratio-1:
+  - "!Commemoratio Dominica I post Pentecosten"
+  - Ant. Lóquere, Dómine, quia audit servus tuus.
+  - _
+  - V. Vespertína orátio ascéndat ad te, Dómine.
+  - R. Et descéndat super nos misericórdia tua.
+  - _
+  - $Oremus
+  - "Deus, in te sperántium fortitúdo, adésto propítius invocatiónibus nostris:
+    et, quia sine te nihil potest mortális infírmitas, præsta auxílium grátiæ
+    tuæ; ut, in exsequéndis mandátis tuis, et voluntáte tibi et actióne
+    placeámus."
+  - $Per Dominum
+invit:
+  - Deum verum, unum in Trinitáte, et Trinitátem in Unitáte, * Veníte, adorémus.
+hymnus-matutinum:
+  - v. Summæ Parens cleméntiæ,
+  - Mundi regis qui máchinam,
+  - Uníus et substántiæ,
+  - "Trinúsque persónis Deus:"
+  - _
+  - Da déxteram surgéntibus,
+  - Exsúrgat et mens sóbria,
+  - Flagrans et in laudem Dei
+  - Grates repéndet débitas.
+  - _
+  - Deo Patri sit glória,
+  - Natóque Patris único,
+  - Cum Spíritu Paráclito,
+  - In sempitérna sǽcula.
+  - Amen.
+hymnusm-matutinum:
+  - v. Summæ Deus cleméntiæ,
+  - Mundíque Factor máchinæ,
+  - Unus potentiáliter,
+  - Trinúsque personáliter.
+  - _
+  - Da déxteram surgéntibus,
+  - Exsúrgat ut mens sóbria,
+  - Flagrans et in laudem Dei,
+  - Grates repéndet débitas.
+  - _
+  - Glória Patri Dómino,
+  - Glória Unigénito,
+  - Una cum Sancto Spíritu,
+  - In sempitérna sǽcula.
+  - Amen.
+ant-matutinum:
+  - Adésto, unus Deus * omnípotens, Pater, Fílius, et Spíritus Sanctus.;;8
+  - Te unum * in substántia, Trinitátem in persónis confitémur.;;18
+  - Te semper idem * esse, vívere, et intellégere profitémur.;;23
+  - Te invocámus, * te laudámus, te adorámus, o beáta Trínitas.;;46
+  - Spes nostra, * salus nostra, honor noster, o beáta Trínitas.;;47
+  - Líbera nos, * salva nos, vivífica nos, o beáta Trínitas.;;71
+  - Cáritas * Pater est, grátia Fílius, communicátio Spíritus Sanctus, o beáta
+    Trínitas.;;95
+  - Verax est * Pater, véritas Fílius, véritas Spíritus Sanctus, o beáta
+    Trínitas.;;96
+  - Pater, * et Fílius, et Spíritus Sanctus una substántia est, o beáta
+    Trínitas.;;97
+nocturn-1-versum:
+  - "@:Versum 1"
+nocturn-2-versum:
+  - V. Benedíctus es, Dómine, in firmaménto cæli.
+  - R. Et laudábilis et gloriósus in sǽcula.
+nocturn-3-versum:
+  - V. Verbo Dómini cæli firmáti sunt.
+  - R. Et Spíritu oris ejus omnis virtus eórum.
+lectio1:
+  - De Isaía Prophéta
+  - "!Isa 6:1-4"
+  - "1 In anno, quo mórtuus est rex Ozías, vidi Dóminum sedéntem super sólium
+    excélsum et elevátum: et ea, quæ sub ipso erant, replébant templum."
+  - "2 Séraphim stabant super illud: sex alæ uni, et sex alæ álteri, duábus
+    velábant fáciem ejus, et duábus velábant pedes ejus, et duábus volábant."
+  - "3 Et clamábant alter ad álterum, et dicébant: Sanctus, sanctus, sanctus,
+    Dóminus exercítuum, plena est omnis terra glória ejus."
+  - 4 Et commóta sunt superliminária cárdinum a voce clamántis, et domus repléta
+    est fumo.
+responsory1:
+  - "R. Vidi Dóminum sedéntem super sólium excélsum et elevátum, et plena erat
+    omnis terra majestáte ejus:"
+  - "* Et ea, quæ sub ipso erant, replébant templum."
+  - "V. Séraphim stabant super illud: sex alæ uni, et sex alæ álteri."
+  - R. Et ea, quæ sub ipso erant, replébant templum.
+lectio2:
+  - "!Isa 6:5-8"
+  - "5 Et dixi: Væ mihi, quia tácui, quia vir pollútus lábiis ego sum, et in
+    médio pópuli pollúta lábia habéntis ego hábito, et Regem Dóminum exercítuum
+    vidi óculis meis."
+  - 6 Et volávit ad me unus de Séraphim, et in manu ejus cálculus, quem fórcipe
+    túlerat de altári.
+  - "7 Et tétigit os meum, et dixit: Ecce tétigit hoc lábia tua, et auferétur
+    iníquitas tua, et peccátum tuum mundábitur."
+  - "8 Et audívi vocem Dómini dicéntis: Quem mittam? et quis ibit nobis? Et
+    dixi: Ecce ego, mitte me."
+responsory2:
+  - "R. Benedíctus Dóminus Deus Israël, qui facit mirabília magna solus:"
+  - "* Et benedíctum nomen majestátis ejus in ætérnum."
+  - "V. Replébitur majestáte ejus omnis terra: fiat, fiat."
+  - R. Et benedíctum nomen majestátis ejus in ætérnum.
+lectio3:
+  - "!Isa 6:9-12"
+  - "9 Et dixit: Vade, et dices pópulo huic: Audíte audiéntes, et nolíte
+    intellégere: et vidéte visiónem, et nolíte cognóscere."
+  - 10 Excǽca cor pópuli hujus, et aures ejus ággrava, et óculos ejus claude, ne
+    forte vídeat óculis suis, et áuribus suis áudiat, et corde suo intéllegat,
+    et convertátur, et sanem eum.
+  - "11 Et dixi: Usquequo, Dómine? Et dixit: Donec desoléntur civitátes absque
+    habitatóre, et domus sine hómine, et terra relinquétur desérta,"
+  - 12 et longe fáciet Dóminus hómines, et multiplicábitur quæ derelícta fúerat
+    in médio terræ.
+responsory3:
+  - "R. Benedícat nos Deus, Deus noster, benedícat nos Deus:"
+  - "* Et métuant eum omnes fines terræ."
+  - V. Deus misereátur nostri, et benedícat nos Deus.
+  - R. Et métuant eum omnes fines terræ.
+  - "&Gloria"
+  - R. Et métuant eum omnes fines terræ.
+lectio4:
+  - Ex libro sancti Fulgéntii Epíscopi, de fide ad Petrum
+  - "!Inter Opera Augustini, tom. 3"
+  - Fides, quam sancti Patriárchæ atque Prophétæ ante incarnatiónem Fílii Dei
+    divínitus accepérunt, quam étiam sancti Apóstoli ab ipso Dómino in carne
+    pósito audiérunt, et Spíritus Sancti magistério instrúcti non solum sermóne
+    prædicavérunt, verum étiam ad instructiónem salubérrimam posterórum scriptis
+    suis índitam reliquérunt; unum Deum prǽdicat Trinitátem, id est, Patrem, et
+    Fílium, et Spíritum Sanctum. Sed Trínitas vera non esset, si una eadémque
+    persóna dicerétur Pater et Fílius et Spíritus Sanctus.
+responsory4:
+  - R. Quis Deus magnus sicut Deus noster?
+  - "* Tu es Deus, qui facis mirabília."
+  - "V. Notam fecísti in pópulis virtútem tuam: redemísti in brácchio tuo
+    pópulum tuum."
+  - R. Tu es Deus, qui facis mirabília.
+lectio5:
+  - Si enim, sicut est Patris, et Fílii, et Spíritus Sancti una substántia, sic
+    esset una persóna; nihil omníno esset in quo veráciter Trínitas dicerétur.
+    Rursus quidem Trínitas esset vera, sed unus Deus Trínitas ipsa non esset, si
+    quemádmodum Pater, et Fílius, et Spíritus Sanctus personárum sunt ab ínvicem
+    proprietáte distíncti, sic fuíssent naturárum quoque diversitáte discréti.
+    Sed quia in illo uno vero Deo Trinitáte, non solum quod unus Deus est, sed
+    étiam quod Trínitas est, naturáliter verum est; proptérea ipse verus Deus in
+    persónis Trínitas est, et in una natúra unus est.
+responsory5:
+  - R. Tibi laus, tibi glória, tibi gratiárum áctio in sǽcula sempitérna,
+  - "* O beáta Trínitas."
+  - "V. Et benedíctum nomen glóriæ tuæ sanctum: et laudábile et superexaltátum
+    in sǽcula."
+  - R. O beáta Trínitas.
+lectio6:
+  - "Per hanc unitátem naturálem totus Pater in Fílio et Spíritu Sancto est,
+    totus Fílius in Patre et Spíritu Sancto est, totus quoque Spíritus Sanctus
+    in Patre et Fílio. Nullus horum extra quémlibet ipsórum est: quia nemo álium
+    aut præcédit æternitáte, aut excédit magnitúdine, aut súperat potestáte:
+    quia nec Fílio nec Spíritu Sancto, quantum ad natúræ divínæ unitátem
+    pértinet, aut antérior aut major Pater est; nec Fílii ætérnitas atque
+    imménsitas, velut antérior aut major, Spíritus Sancti immensitátem
+    æternitatémque aut præcédere aut excédere naturáliter potest."
+responsory6:
+  - "R. Magnus Dóminus, et laudábilis nimis:"
+  - "* Et sapiéntiæ ejus non est númerus."
+  - "V. Magnus Dóminus, et magna virtus ejus: et sapiéntiæ ejus non est finis."
+  - R. Et sapiéntiæ ejus non est númerus.
+  - "&Gloria"
+  - R. Et sapiéntiæ ejus non est númerus.
+lectio7:
+  - Léctio sancti Evangélii secúndum Matthǽum
+  - "!Matt 28:18-20"
+  - "In illo témpore: Dixit Jesus discípulis suis: Data est mihi omnis potéstas
+    in cælo et in terra. Eúntes ergo docéte omnes gentes, baptizántes eos in
+    nómine Patris, et Fílii, et Spíritus Sancti. Et réliqua."
+  - _
+  - Homilía sancti Gregórii Nazianzéni
+  - "!In Tractatu de fide, post init."
+  - "Quis catholicórum ignórat Patrem vere esse Patrem, Fílium vere esse Fílium,
+    et Spíritum Sanctum vere esse Spíritum Sanctum? sicut ipse Dóminus ad
+    Apóstolos suos dicit: Eúntes baptizáte omnes gentes in nómine Patris, et
+    Fílii, et Spíritus Sancti. Hæc est perfécta Trínitas in unitáte consístens,
+    quam scílicet uníus substántiæ profitémur. Non enim nos secúndum córporum
+    conditiónem, divisiónem in Deo fácimus; sed secúndum divínæ natúræ
+    poténtiam, quæ in matéria non est, et nóminum persónas vere constáre
+    crédimus, et unitátem divinitátis esse testámur."
+responsory7:
+  - "R. Benedicámus Patrem et Fílium cum Sancto Spíritu:"
+  - "* Laudémus et superexaltémus eum in sǽcula."
+  - "V. Benedíctus es, Dómine, in firmaménto cæli: et laudábilis et gloriósus in
+    sǽcula."
+  - R. Laudémus et superexaltémus eum in sǽcula.
+lectio8:
+  - "@:Lectio8a"
+rubrica-1960/lectio8:
+  - "@:Lectio8a:s/ Dénique.*//s"
+lectio8a:
+  - "Nec extensiónem partis alicújus ex parte, ut quidam putavérunt, Dei Fílium
+    dícimus: nec verbum sine re, velut sonum vocis, accípimus: sed tria nómina
+    et tres persónas uníus esse esséntiæ, uníus majestátis atque poténtiæ
+    crédimus. Et ídeo unum Deum confitémur: quia únitas majestátis, plúrium
+    vocábulo deos próhibet appellári. Dénique Patrem et Fílium cathólice
+    nominámus; duos autem Deos dícere, nec póssumus, nec debémus. Non quod
+    Fílius Dei Deus non sit, immo verus Deus de Deo vero; sed quia non aliúnde,
+    quam de ipso uno Patre, Dei Fílium nóvimus, perínde unum Deum dícimus. Hoc
+    enim Prophétæ, hoc Apóstoli tradidérunt: hoc ipse Dóminus dócuit, cum dicit:
+    Ego et Pater unum sumus. Unum ad unitátem divinitátis, ut dixi, refert;
+    Sumus autem, persónis assígnat."
+responsory8:
+  - "R. Duo Séraphim clamábant alter ad álterum:"
+  - "* Sanctus, sanctus, sanctus Dóminus Deus Sábaoth: * Plena est omnis terra
+    glória ejus."
+  - "V. Tres sunt qui testimónium dant in cælo: Pater, Verbum, et Spíritus
+    Sanctus: et hi tres unum sunt."
+  - R. Sanctus, sanctus, sanctus Dóminus Deus Sábaoth.
+  - "&Gloria"
+  - R. Plena est omnis terra glória ejus.
+rubrica-cisterciensis/responsory8:
+  - "@Tempora/Pent03-2Feria:Responsory2"
+lectio9:
+  - "!Commemoratio Dominicæ"
+  - Léctio sancti Evangélii secúndum Lucam
+  - "!Luc 6:36-42"
+  - "In illo témpore: Dixit Jesus discípulis suis: Estóte misericórdes, sicut et
+    Pater vester miséricors est. Et réliqua."
+  - _
+  - Homilía sancti Augustíni Epíscopi
+  - "!Serm. 15. in Evang. Matthǽi de Verbis Dómini, post inítium"
+  - "Duo sunt ópera misericórdiæ, quæ nos líberant, quæ bréviter ipse Dóminus
+    pósuit in Evangélio: Dimíttite, et dimittétur vobis: date, et dábitur vobis.
+    Dimíttite, et dimittétur vobis, ad ignoscéndum pértinet: Date, et dábitur
+    vobis, ad præstándum benefícium pértinet. Quod ait de ignoscéndo, et tu vis
+    tibi ignósci quod peccas, et habes álium, cui tu possis ignóscere. Rursus,
+    quod pértinet ad tribuéndum benefícium, petit te mendícus, et tu es Dei
+    mendícus. Omnes enim quando orámus, mendíci Dei sumus: ante jánuam magni
+    Patrisfamílias stamus, immo et prostérnimur, súpplices ingemíscimus, áliquid
+    voléntes accípere; et ipsum áliquid ipse Deus est. Quid a te petit mendícus?
+    Panem. Et tu quid petis a Deo, nisi Christum, qui dicit: Ego sum panis
+    vivus, qui de cælo descéndi? Ignósci vobis vultis? ignóscite: Remíttite, et
+    remittétur vobis. Accípere vultis? date, et dábitur vobis."
+  - "&teDeum"
+rubrica-1960/lectio9:
+  - "@:Lectio8a:s/.*(Dénique)/$1/s"
+  - "&teDeum"
+versum-0:
+  - "V. Magnus Dóminus, et laudábilis nimis:"
+  - R. Et magnitúdinis ejus non est finis.
+ant-laudes:
+  - "@:Ant Vespera:s/;;.*//g"
+rubrica-cisterciensis/ant-laudes:
+  - "O beáta, * et benedícta, et gloriósa Trínitas, Pater, et Fílius, et
+    Spíritus sanctus: tibi laus, tibi glória, tibi gratiárum áctio."
+  - O beáta, * benedícta, et gloriósa Unitas, Pater, et Fílius , et Spíritus
+    sanctus, miserére, miserére, miserére nobis.
+  - O vera, * summa, sempitérna Trínitas, Pater, et Fílius , et Spíritus
+    sanctus, tibi laus, tibi glória, tibi gratiárum áctio.
+  - O vera, * summa, sempitérna Unitas, Pater, et Fílius , et Spíritus sanctus,
+    miserére, miserére, miserére nobis.
+  - Te jure laudant, * te adórant, te gloríficant omnes creatúræ tuæ, o beáta
+    Trínitas.
+capitulum-laudes:
+  - "!Rom 11:33"
+  - v. O Altitúdo divitiárum sapiéntiæ, et sciéntiæ Dei, quam incomprehensibília
+    sunt judícia ejus, et investigábiles viæ ejus!
+  - $Deo gratias
+rubrica-cisterciensis/responsory-laudes:
+  - R.br. Benedícat nos Deus, Deus noster, * Benedícat nos Deus.
+  - R. Benedícat nos Deus, Deus noster, * Benedícat nos Deus.
+  - V. Et métuant eum omnes fines terræ.
+  - R. Benedícat nos Deus.
+hymnus-laudes:
+  - v. Tu, Trinitátis Unitas,
+  - Orbem poténter quæ regis,
+  - Atténde laudis cánticum,
+  - Quod excubántes psállimus.
+  - _
+  - Ortus refúlget Lúcifer,
+  - "Præítque solem núntius:"
+  - "Cadunt ténebræ nóctium:"
+  - Lux sancta nos illúminet.
+  - _
+  - Deo Patri sit glória,
+  - Ejúsque soli Fílio,
+  - Cum Spíritu Paráclito,
+  - Nunc, et per omne sǽculum.
+  - Amen.
+hymnusm-laudes:
+  - "@:Hymnus Laudes:s/laudis cánticum/laudum cántica/ s/Quod/Quæ/ s/Præítque
+    solem núntius/Sparsámque lucem núntiat/ s/Cadunt ténebræ/Cadit calígo/
+    s/Nunc, et per omne sǽculum/Et nunc et in perpétuum/"
+versum-2:
+  - "@:Versum 1"
+ant-2:
+  - Benedícta sit * sancta creátrix et gubernátrix ómnium, sancta et indivídua
+    Trínitas, nunc, et semper, et per infiníta sǽcula sæculórum.
+commemoratio-2:
+  - "!Commemoratio Dominica I post Pentecostes"
+  - Ant. Estóte ergo misericórdes, sicut et Pater vester miséricors est, dicit
+    Dóminus.
+  - _
+  - V. Dóminus regnávit, decórem índuit.
+  - R. Induit Dóminus fortitúdinem, et præcínxit se virtúte.
+  - _
+  - $Oremus
+  - "Deus, in te sperántium fortitúdo, adésto propítius invocatiónibus nostris:
+    et, quia sine te nihil potest mortális infírmitas, præsta auxílium grátiæ
+    tuæ; ut, in exsequéndis mandátis tuis, et voluntáte tibi et actióne
+    placeámus."
+  - $Per Dominum
+lectio-prima:
+  - "@Psalterium/Special/Minor Special:Dominica NonaOP:1-2"
+responsory-breve-tertia:
+  - R.br. Benedicámus Patrem et Fílium * Cum Sancto Spíritu.
+  - R. Benedicámus Patrem et Fílium * Cum Sancto Spíritu.
+  - V. Laudémus et superexaltémus eum in sǽcula.
+  - R. Cum Sancto Spíritu.
+  - "&Gloria"
+  - R. Benedicámus Patrem et Fílium * Cum Sancto Spíritu.
+versum-tertia:
+  - "@:Nocturn 2 Versum"
+capitulum-sexta:
+  - "@Psalterium/Special/Minor Special:Dominica SextaOP"
+responsory-breve-sexta:
+  - R.br. Benedíctus es, Dómine, * In firmaménto cæli.
+  - R. Benedíctus es, Dómine, * In firmaménto cæli.
+  - V. Et laudábilis et gloriósus in sǽcula.
+  - R. In firmaménto cæli.
+  - "&Gloria"
+  - R. Benedíctus es, Dómine, * In firmaménto cæli.
+versum-sexta:
+  - "@:Nocturn 3 Versum"
+capitulum-nona:
+  - "@Psalterium/Special/Minor Special:Dominica NonaOP"
+responsory-breve-nona:
+  - R.br. Verbo Dómini * Cæli firmáti sunt.
+  - R. Verbo Dómini * Cæli firmáti sunt.
+  - V. Et Spíritu oris ejus omnis virtus eórum.
+  - R. Cæli firmáti sunt.
+  - "&Gloria"
+  - R. Verbo Dómini * Cæli firmáti sunt.
+versum-nona:
+  - V. Sit nomen Dómini benedíctum.
+  - R. Ex hoc nunc, et usque in sǽculum.
+versum-3:
+  - V. Benedíctus es, Dómine, in firmaménto cæli.
+  - R. Et laudábilis et gloriósus in sǽcula.
+rubrica-cisterciensis/versum-3:
+  - "@:Versum 1"
+ant-3:
+  - "Te Deum * Patrem ingénitum, te Fílium unigénitum, te Spíritum Sanctum
+    Paráclitum, sanctam et indivíduam Trinitátem, toto corde et ore confitémur,
+    laudámus, atque benedícimus: tibi glória in sǽcula."
+commemoratio-3:
+  - "!Commemoratio Dominica I post Pentecostem"
+  - "Ant. Nolíte judicáre, ut non judicémini: in quo enim judício judicavéritis,
+    judicabímini, dicit Dóminus."
+  - _
+  - V. Dirigátur, Dómine, orátio mea.
+  - R. Sicut incénsum in conspéctu tuo.
+  - _
+  - $Oremus
+  - "Deus, in te sperántium fortitúdo, adésto propítius invocatiónibus nostris:
+    et, quia sine te nihil potest mortális infírmitas, præsta auxílium grátiæ
+    tuæ; ut, in exsequéndis mandátis tuis, et voluntáte tibi et actióne
+    placeámus."
+  - $Per Dominum

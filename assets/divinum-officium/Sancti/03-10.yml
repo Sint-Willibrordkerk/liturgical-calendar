@@ -1,0 +1,100 @@
+officium:
+  - Ss. Quadraginta Martyrum
+rank:
+  - ""
+  - Semiduplex
+  - "2.2"
+  - "@C3"
+rubrica-196/rank:
+  - ""
+  - Semiduplex
+  - "2.1"
+  - "@C3"
+rule:
+  - vide C3;
+  - 9 lectiones;
+  - Evangelium non appropriatum
+  - Gloria
+introitus:
+  - "!Ps 33:18"
+  - "v. Clamavérunt justi, et Dóminus exaudívit eos: et ex ómnibus
+    tribulatiónibus eórum liberávit eos."
+  - "!Ps 33:2"
+  - "Benedícam Dóminum in omni témpore: semper laus ejus in ore meo."
+  - "&Gloria"
+  - "v. Clamavérunt justi, et Dóminus exaudívit eos: et ex ómnibus
+    tribulatiónibus eórum liberávit eos."
+oratio:
+  - "Præsta, quǽsumus, omnípotens Deus: ut, qui gloriósos Mártyres fortes in sua
+    confessióne cognóvimus, pios apud te in nostra intercessióne sentiámus."
+  - $Per Dominum
+lectio:
+  - "@Sancti/01-20"
+graduale:
+  - "!Ps 132:1-2"
+  - Ecce, quam bonum et quam jucúndum, habitáre fratres in unum!
+  - V. Sicut unguéntum in cápite, quod descéndit in barbam, barbam Aaron.
+  - _
+  - "!Tractus"
+  - "!Ps 125:5-6"
+  - Qui séminant in lácrimis, in gáudio metent.
+  - V. Eúntes ibant et fiébant, mitténtes sémina sua.
+  - V. Veniéntes autem vénient cum exsultatióne, portántes manípulos suos.
+evangelium:
+  - "@Commune/C3a"
+offertorium:
+  - "!Ps 31:11"
+  - "Lætámini in Dómino et exsultáte, justi: et gloriámini, omnes recti corde."
+secreta:
+  - "@Sancti/01-19:Secreta"
+communio:
+  - "!Matt 12:50"
+  - "Quicúmque fécerit voluntátem Patris mei, qui in cœlis est: ipse meus frater
+    et soror et mater est, dicit Dóminus."
+postcommunio:
+  - "@Sancti/01-19:Postcommunio"
+lectio4:
+  - "Licinio imperatore, et Agricolao præside, ad Sebasten Armeniæ urbem,
+    quadraginta militum fides in Jesum Christum, et fortitudo in cruciatibus
+    perferendis enituit. Qui sæpius in horribilem carcerem detrusi, vinculisque
+    constricti, cum ora ipsorum lapidibus contusa fuíssent, hiemis tempore
+    frigidissimo nudi sub aperto aëre supra stagnum rigens pernoctare jussi
+    sunt, ut frigore congelati necarentur. Una autem erat omnium oratio:
+    Quadraginta in stadium ingressi sumus, quadraginta item Domine corona
+    donemur, ne una quidem huic numero desit. Est in honore hic numerus, quem tu
+    quadraginta dierum jejunio decorasti, per quem divina lex ingressa est in
+    orbem terrarum. Elias quadraginta dierum jejunio Deum quærens, ejus visionem
+    consecutus est. Et hæc quidem illorum erat oratio."
+lectio5:
+  - "Ceteris autem custodibus somno deditis, solus vigilabat janitor, qui et
+    illos orantes, et luce circumfusos, et quosdam e cælo descendentes Angelos
+    tamquam a Rege missos, qui coronas triginta novem militibus distribuerent
+    intuens ita secum loquebatur: Quadraginta hi sunt: quadragesimi corona ubi
+    est? Quæ dum cogitaret, unus ex illo numero, cui animus ad frigus ferendum
+    defecerat in proximum tepefactum balneum desiliens, sanctos illos summo
+    dolore affecit. Verum Deus illorum preces irritas esse non est passus: nam
+    rei eventum admiratus janitor, mox custodibus e somno excitatis,
+    detractisque sibi vestibus, ac se Christianum esse clara voce professus,
+    Martyribus se adjunxit. Cum vero præsidis satellites janitorem quoque
+    Christianum esse cognovissent bacillis comminuta omnium eorum crura
+    fregerunt."
+lectio6:
+  - "In eo supplicio mortui sunt omnes, præter Melithonem natu minimum. Quem cum
+    præsens mater ejus, fractis cruribus, adhuc viventem vidisset, sic cohortata
+    est: Fili, paulisper sustine; ecce Christus ad januam stat adjuvans te. Cum
+    vero reliquorum corpora plaustris imponi cerneret, ut in rogum inférrentur,
+    ac filium suum relinqui, quod speraret impia turba puerum, si vixisset, ad
+    idolorum cultum revocari posse; ipso in humeros sublato, sancta mater
+    vehicula Mártyrum corporibus onusta strenue prosequebatur: in cujus amplexu
+    Melithon spiritum Deo reddidit, ejusque corpus in eumdem illum ceterorum
+    Mártyrum rogum pia mater injecit: ut qui fide et virtute conjunctissimi
+    fuerant, funeris étiam societate copulati, una in cælum pervenirent.
+    Combustis illis, eorum reliquiæ projectæ in profluentem, cum mirabiliter in
+    unum confluxissent locum, salvæ et integræ repertæ, honorifico sepulchro
+    conditæ sunt."
+lectio7:
+  - "@Commune/C3:Lectio7 in 2 loco"
+lectio8:
+  - "@Commune/C3:Lectio8 in 2 loco"
+lectio9:
+  - "@Commune/C3:Lectio9 in 2 loco"

@@ -1,0 +1,103 @@
+officium:
+  - S. Lucæ Evangelistæ
+rank:
+  - ""
+  - Duplex 2 classis
+  - "5.1"
+  - "@C1a"
+rubrica-196/rank:
+  - ""
+  - Duplex 2 classis
+  - "5"
+  - "@C1a"
+rule:
+  - ex C1a;
+  - 9 lectiones
+  - Psalmi Dominica
+  - Antiphonas horas
+  - Gloria
+  - Credo
+  - Prefatio=Apostolis
+introitus:
+  - "@Sancti/02-24"
+oratio:
+  - "Intervéniat pro nobis, quǽsumus, Dómine, sanctus tuus Lucas Evangélista:
+    qui crucis mortificatiónem júgiter in suo córpore, pro tui nóminis honóre,
+    portávit."
+  - $Per Dominum
+lectio:
+  - Léctio Epístolæ beáti Pauli Apóstoli ad Corínthios
+  - "!2 Cor 8:16-24."
+  - "Fratres: Grátias ago Deo, qui dedit eandem sollicitúdinem pro vobis in
+    corde Titi, quóniam exhortatiónem quidem suscépit: sed cum sollicítior
+    esset, sua voluntáte proféctus est ad vos. Mísimus étiam cum illo fratrem,
+    cujus laus est in Evangélio per omnes ecclésias: non solum autem, sed et
+    ordinátus est ab ecclésiis comes peregrinatiónis nostræ in hanc grátiam, quæ
+    ministrátur a nobis ad Dómini glóriam et destinátam voluntátem nostram:
+    devitántes hoc, ne quis nos vitúperet in hac plenitúdine, quæ ministrátur a
+    nobis. Providémus enim bona non solum coram Deo, sed étiam coram homínibus.
+    Mísimus autem cum illis et fratrem nostrum, quem probávimus in multis sæpe
+    sollícitum esse: nunc autem multo sollicitiórem, confidéntia multa in vos,
+    sive pro Tito, qui est sócius meus, et in vos adjútor, sive fratres nostri,
+    Apóstoli ecclesiárum, glória Christi. Ostensiónem ergo, quæ est caritátis
+    vestræ, et nostræ glóriæ pro vobis, in illos osténdite in fáciem
+    ecclesiárum."
+graduale:
+  - "!Ps 18:5; 18:2"
+  - "In omnem terram exívit sonus eórum: et in fines orbis terræ verba eórum."
+  - "V. Cœli enárrant glóriam Dei: et ópera mánuum ejus annúntiat firmaméntum.
+    Allelúja, allelúja."
+  - "!Joann 15:16"
+  - "Ego vos elégi de mundo, ut eátis et fructum afferátis: et fructus vester
+    máneat. Allelúja."
+evangelium:
+  - "@Sancti/02-06"
+offertorium:
+  - "@Sancti/01-25"
+secreta:
+  - "Donis cœléstibus da nobis, quǽsumus, Dómine, líbera tibi mente servíre: ut
+    múnera quæ deférimus, interveniénte beáto Evangelísta tuo Luca, et medélam
+    nobis operéntur et glóriam."
+  - $Per Dominum
+communio:
+  - "@Sancti/02-24"
+postcommunio:
+  - "Præsta, quǽsumus, omnípotens Deus: ut, quod de sancto altári tuo accépimus,
+    précibus beáti Evangelístæ tui Lucæ, sanctíficet ánimas nostras, per quod
+    tuti esse possímus."
+  - $Per Dominum
+rubrica-cisterciensis/rank:
+  - ""
+  - Duplex 2 classis
+  - "4"
+  - "@C1a"
+lectio4:
+  - Ex libro sancti Hierónymi Presbýteri de Scriptóribus Ecclesiásticis
+  - "!Cap. 7"
+  - "Lucas médicus Antiochénsis ut ejus scripta índicant, Græci sermónis non
+    ignárus, fuit sectátor Apóstoli Pauli, et omnis peregrinatiónis ejus comes.
+    Scripsit Evangélium, de quo idem Paulus: Mísimus, inquit, cum illo fratrem,
+    cujus laus est in Evangélio per omnes ecclésias. Et ad Colossénses: Salútat
+    vos Lucas, médicus caríssimus. Et ad Timótheum: Lucas est mecum solus. Aliud
+    quoque édidit volúmen egrégium, quod título, Acta Apostolórum, prænotátur:
+    cujus história usque ad biénnium Romæ commorántis Pauli pervénit, id est,
+    usque ad quartum Nerónis annum. Ex quo intellégimus in eádem urbe librum
+    esse compósitum."
+lectio5:
+  - Igitur períodos Pauli et Theclæ, et totam baptizáti Leónis fábulam, inter
+    apócryphas scriptúras computámus. Quale enim est, ut indivíduus comes
+    Apóstoli, inter céteras ejus res, hoc solum ignoráverit? Sed et
+    Tertulliánus, vicínus eórum témporum, refert presbýterum quemdam in Asia,
+    amatórem Apóstoli Pauli, convíctum a Joánne quod auctor esset libri, et
+    conféssum se hoc Pauli amóre fecísse, et ob id loco excidísse. Quidam
+    suspicántur, quotiescúmque in epístolis suis Paulus dicit, Juxta Evangélium
+    meum, de Lucæ significáre volúmine.
+lectio6:
+  - "Lucam autem, non solum ab Apóstolo Paulo didicísse Evangélium, qui cum
+    Dómino in carne non fúerat, sed et a céteris Apóstolis; quod ipse quoque in
+    princípio sui volúminis declárat, dicens: Sicut tradidérunt nobis, qui a
+    princípio ipsi vidérunt et minístri fuérunt sermónis. Igitur Evangélium,
+    sicut audíerat, scripsit; Acta vero Apostolórum, sicut víderat ipse,
+    compósuit. Vixit octogínta et quátuor annos, uxórem non habens. Sepultus est
+    Constantinópoli, ad quam urbem, vigésimo Constantíni anno, ossa ejus cum
+    relíquiis Andréæ Apóstoli transláta sunt de Achája."

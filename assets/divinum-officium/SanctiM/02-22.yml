@@ -1,0 +1,63 @@
+references: "@SanctiM/01-18"
+officium:
+  - In Cathedra S. Petri Apostoli Antiochiæ
+rubrica-196/officium:
+  - In Cathedra S. Petri Apostoli
+rubrica-1930/officium:
+  - In Cathedra S. Petri Apostoli
+rubrica-cisterciensis/officium:
+  - In Cathedra S. Petri Apostoli
+rank:
+  - ""
+  - Duplex majus
+  - "4"
+  - "@C4"
+rubrica-1963/rank:
+  - ""
+  - Duplex
+  - "3"
+  - "@C4"
+rubrica-cisterciensis/rank:
+  - ""
+  - Semiduplex
+  - "2.2"
+  - "@C4"
+rule:
+  - Psalmi Dominica
+  - 12 lectiones
+  - Sub unica concl
+rubrica-196/rule:
+  - Psalmi Dominica
+  - 12 lectiones
+hymnus-matutinum:
+  - "@Sancti/02-22:HymnusM Vespera"
+rubrica-1617/lectio5:
+  - "@Sancti/02-22:Lectio4:s/ergo/ígitur/"
+rubrica-1617/lectio6:
+  - "@Sancti/02-22:Lectio5:s/Benedíctus.*//"
+lectio94:
+  - "@Sancti/01-18:Lectio4:s/Cujus autem.*//s"
+  - "@Sancti/01-18:Lectio5:s/.*(Ad hanc.*), et,.*/$1. /s"
+  - "@Sancti/01-18:Lectio6"
+rubrica-1617/lectio7:
+  - "@Sancti/02-22:Lectio5:s/.*Benedíctus/Benedíctus/ s/qui beatum Petrum
+    Apóstolum in Ecclésia exaltári/qui exaltári in Ecclésia hoc/
+    s/conscénditur/ascénditur/ s/$/~/"
+  - "@Sancti/02-22:Lectio6:s/ Cum.*//"
+rubrica-1617/lectio8:
+  - "@Sancti/02-22:Lectio6:s/.*Cum/Cum/"
+rubrica-1617/lectio9:
+  - "@Sancti/02-22:Lectio7"
+rubrica-1617/lectio10:
+  - "@Sancti/02-22:Lectio8:s/ Et.*//"
+rubrica-1617/lectio11:
+  - "@Sancti/02-22:Lectio8:s/.* Et/Et/ s/$/~/"
+  - "@Sancti/02-22:Lectio9:s/ Transívit.*//"
+responsory11:
+  - "@SanctiM/06-29"
+rubrica-1617/lectio12:
+  - "@Sancti/02-22:Lectio9:s/.*Transívit/Transívit/"
+responsory12:
+  - "@SanctiM/06-29"
+versum-3:
+  - "@:Versum 1"

@@ -1,0 +1,140 @@
+officium:
+  - Die VI infra octavam Paschæ
+rank:
+  - ""
+  - Semiduplex I class
+  - "6.9"
+  - "@Pasc0-0"
+rule:
+  - ex Pasc0-0;
+  - 1 nocturn;
+  - Omit Hymnus Preces Suffragium;
+  - Minores sine Antiphona;
+  - Capitulum Versum 2;
+  - Psalmi Dominica;
+  - Credo
+  - Sequentia
+  - Suffr=Ecclesiæ,Papa;;
+introitus:
+  - "!Ps 77:53"
+  - "v. Edúxit eos Dóminus in spe, allelúja: et inimícos eórum opéruit mare,
+    allelúja, allelúja, allelúja."
+  - "!Ps 77:1"
+  - "Atténdite, pópule meus, legem meam: inclináte aurem vestram in verba oris
+    mei."
+  - "&Gloria"
+  - "v. Edúxit eos Dóminus in spe, allelúja: et inimícos eórum opéruit mare,
+    allelúja, allelúja, allelúja."
+oratio:
+  - "Omnípotens sempitérne Deus, qui paschále sacraméntum in reconciliatiónis
+    humánæ fœ́dere contulísti: da méntibus nostris; ut, quod professióne
+    celebrámus, imitémur efféctu."
+  - $Per Dominum
+lectio:
+  - Léctio Epístolæ beáti Petri Apóstoli
+  - "!1 Petri 3:18-22"
+  - "Caríssimi: Christus semel pro peccátis nostris mórtuus est, justus pro
+    injústis, ut nos offérret Deo, mortificátus quidem carne, vivificátus autem
+    spíritu. In quo et his, qui in cárcere erant, spirítibus véniens prædicávit:
+    qui incréduli fúerant aliquándo, quando exspectábant Dei patiéntiam in
+    diébus Noë, cum fabricarétur arca, in qua pauci, id est octo ánimæ salvæ
+    factæ sunt per aquam. Quod et vos nunc símilis formæ salvos facit baptísma:
+    non carnis deposítio sórdium, sed consciéntiæ bonæ interrogátio in Deum per
+    resurrectiónem Jesu Christi, Dómini nostri, qui est in dextera Dei."
+graduale:
+  - "!Ps 117:24; 117:26-27"
+  - "Hæc dies, quam fecit Dóminus: exsultémus et lætémur in ea."
+  - "V. Benedíctus, qui venit in nómine Dómini: Deus Dóminus, et illúxit nobis."
+  - Allelúja, allelúja.
+  - "!Ps 95:10"
+  - "Dícite in géntibus: quia Dóminus regnávit a ligno."
+sequentia:
+  - "@Tempora/Pasc0-0:Sequentia"
+evangelium:
+  - Sequéntia ++ sancti Evangélii secúndum Matthǽum
+  - "!Matt 28:16-20"
+  - "In illo témpore: Undecim discípuli abiérunt in Galilǽam, in montem, ubi
+    constitúerat illis Jesus. Et vidéntes eum adoravérunt: quidam autem
+    dubitavérunt. Et accédens Jesus locútus est eis, dicens: Data est mihi omnis
+    potéstas in cœlo, et in terra. Eúntes ergo, docéte omnes gentes, baptizántes
+    eos in nómine Patris, et Fílii, et Spíritus Sancti: docéntes eos serváre
+    ómnia, quæcúmque mandávi vobis. Et ecce, ego vobíscum sum ómnibus diébus
+    usque ad consummatiónem sǽculi."
+offertorium:
+  - "!Exod 12:14"
+  - "Erit vobis hæc dies memoriális, allelúja: et diem festum celebrábitis
+    solémnem Dómino in progénies vestras: legítimum sempitérnum diem, allelúja,
+    allelúja, allelúja."
+secreta:
+  - "Hóstias, quǽsumus, Dómine, placátus assúme: quas et pro renatórum
+    expiatióne peccáti deférimus, et pro acceleratióne cœléstis auxílii."
+  - $Per Dominum
+communio:
+  - "!Matt 28:18-19"
+  - "Data est mihi omnis potéstas in cœlo et in terra, allelúja: eúntes, docéte
+    omnes gentes, baptizántes eos in nómine Patris, et Fílii, et Spíritus
+    Sancti, allelúja, allelúja."
+postcommunio:
+  - "Réspice, quǽsumus, Dómine, pópulum tuum: et, quem ætérnis dignátus es
+    renováre mystériis, a temporálibus culpis dignánter absólve."
+  - $Per Dominum
+rubrica-cisterciensis/rank:
+  - ""
+  - Semiduplex I classis
+  - "5.9"
+  - "@Pasc0-0"
+ant-matutinum:
+  - "@Tempora/Pasc0-2"
+lectio1:
+  - Léctio sancti Evangélii secúndum Matthǽum
+  - "!Matt 28:16-20"
+  - "In illo témpore: Undecim discípuli abiérunt in Galilǽam in montem, ubi
+    constitúerat illis Jesus. Et réliqua."
+  - _
+  - Homilía sancti Hierónymi Presbýteri
+  - "!Lib. 4 Comment. in Matth., in fine"
+  - "Post resurrectiónem Jesus in monte Galilǽæ conspícitur, ibíque adorátur;
+    licet quidam dúbitent, et dubitátio eórum nostram áugeat fidem. Tunc
+    maniféstius osténditur Thomæ, et latus láncea vulnerátum, et manus fixas
+    demónstrat clavis. Accédens Jesus locútus est eis, dicens: Data est mihi
+    omnis potéstas in cælo et in terra. Illi potéstas data est, qui paulo ante
+    crucifíxus, qui sepúltus in túmulo, qui mórtuus jacúerat, qui póstea
+    resurréxit. In cælo autem et in terra potéstas data est: ut qui ante
+    regnábat in cælo, per fidem credéntium regnet et in terris."
+responsory1:
+  - "R. Surgens Jesus Dóminus noster, stans in médio discipulórum suórum, dixit:"
+  - "* Pax vobis, allelúja: gavísi sunt discípuli viso Dómino, allelúja."
+  - V. Una ergo sabbatórum, cum fores essent clausæ, ubi erant discípuli
+    congregáti, venit Jesus, et stetit in medio eórum, et dixit eis.
+  - "R. Pax vobis, allelúja: gavísi sunt discípuli viso Dómino, allelúja."
+lectio2:
+  - "Eúntes autem docéte omnes gentes, baptizántes eos in nómine Patris, et
+    Fílii, et Spíritus Sancti. Primum docent omnes gentes, deínde doctas
+    intíngunt aqua. Non enim potest fíeri, ut corpus baptísmi recípiat
+    sacraméntum, nisi ante ánima fídei suscéperit veritátem. Baptizántur autem
+    in nómine Patris, et Fílii, et Spíritus Sancti: ut quorum una est divínitas,
+    una sit largítio: noménque Trinitátis, unus Deus est."
+responsory2:
+  - "R. Expurgáte vetus ferméntum, ut sitis nova conspérsio: étenim Pascha
+    nostrum immolátus est Christus:"
+  - "* Itaque epulémur in Dómino, allelúja."
+  - V. Mórtuus est propter delícta nostra, et resurréxit propter justificatiónem
+    nostram.
+  - R. Itaque epulémur in Dómino, allelúja.
+  - "&Gloria"
+  - R. Itaque epulémur in Dómino, allelúja.
+lectio3:
+  - "Docéntes eos serváre ómnia, quæcúmque mandávi vobis. Ordo præcípuus: jussit
+    Apóstolis, ut primum docérent univérsas gentes, deínde fídei intíngerent
+    sacraménto, et post fidem ac baptísma, quæ essent observánda præcíperent. Ac
+    ne putémus lévia esse, quæ jussa sunt, et pauca, áddidit: Omnia quæcúmque
+    mandávi vobis: ut quicúmque credíderint, qui in Trinitáte fúerint baptizáti,
+    ómnia fáciant, quæ præcépta sunt. Et ecce ego vobíscum sum usque ad
+    consummatiónem sǽculi. Qui usque ad consummatiónem sǽculi cum discípulis se
+    futúrum esse promíttit, et illos osténdit semper esse victúros, et se
+    nunquam a credéntibus recessúrum."
+  - "&teDeum"
+ant-2:
+  - Undecim discípuli * in Galilǽa vidéntes Dóminum adoravérunt, allelúja.
+ant-3:
+  - Data est mihi * omnis potéstas in cælo et in terra, allelúja.

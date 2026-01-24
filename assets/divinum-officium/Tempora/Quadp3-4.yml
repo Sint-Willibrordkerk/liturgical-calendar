@@ -1,0 +1,161 @@
+officium:
+  - Feria V post Cineres
+rank:
+  - ""
+  - Feria major
+  - "2.1"
+rubrica-1930/rank:
+  - ""
+  - Feria major
+  - "4.9"
+rubrica-196/rank:
+  - ""
+  - Feria major
+  - "3.9"
+rule:
+  - Preces Feriales
+  - no Gloria
+  - Prefatio=Quad
+  - Suffragium=Sanctorum;Vivis;;
+  - Super populum
+introitus:
+  - "!Ps 54:17-20; 54:23"
+  - "v. Dum clamárem ad Dóminum, exaudívit vocem meam ab his, qui appropínquant
+    mihi, et humiliávit eos, qui est ante sǽcula et manet in ætérnum: jacta
+    cogitátum tuum in Dómino, et ipse te enútriet."
+  - "!Ps 54:2-3"
+  - "Exáudi, Deus, oratiónem meam, et ne despéxeris deprecatiónem meam: inténde
+    mihi et exáudi me."
+  - "&Gloria"
+  - "v. Dum clamárem ad Dóminum, exaudívit vocem meam ab his, qui appropínquant
+    mihi, et humiliávit eos, qui est ante sǽcula et manet in ætérnum: jacta
+    cogitátum tuum in Dómino, et ipse te enútriet."
+oratio:
+  - "Deus, qui culpa offénderis, pæniténtia placáris: preces pópuli tui
+    supplicántis propítius réspice; et flagélla tuæ iracúndiæ, quæ pro peccátis
+    nostris merémur, avérte."
+  - $Per Dominum
+lectio:
+  - Léctio Isaíæ Prophétæ.
+  - "!Is 38:1-6"
+  - "In diébus illis: Ægrotávit Ezechías usque ad mortem: et introívit ad eum
+    Isaías fílius Amos Prophéta, et dixit ei: Hæc dicit Dóminus: Dispóne dómui
+    tuæ, quia moriéris tu, et non vives. Et convértit Ezechías fáciem suam ad
+    paríetem, et orávit ad Dóminum, et dixit: Obsecro, Dómine, meménto, quæso,
+    quómodo ambuláverim coram te in veritáte et in corde perfécto, et, quod
+    bonum est in óculis tuis, fécerim. Et flevit Ezechías fletu magno. Et factum
+    est verbum Dómini ad Isaíam, dicens: Vade, et dic Ezechíæ: Hæc dicit
+    Dóminus, Deus David patris tui: Audívi oratiónem tuam, et vidi lácrimas
+    tuas: ecce, ego adjíciam super dies tuos quíndecim annos: et de manu regis
+    Assyriórum éruam te et civitátem istam, et prótegam eam, ait Dóminus
+    omnípotens."
+graduale:
+  - "!Ps 54:23, 17, 18 et 19."
+  - Jacta cogitátum tuum in Dómino, et ipse te enútriet.
+  - V. Dum clamárem ad Dóminum, exaudívit vocem meam ab his, qui appropínquant
+    mihi.
+evangelium:
+  - Sequéntia ++ sancti Evangélii secúndum Matthǽum.
+  - "!Matt 8:5-13"
+  - "In illo témpore: Cum introísset Jesus Caphárnaum, accéssit ad eum centúrio,
+    rogans eum, et dicens: Dómine, puer meus jacet in domo paralýticus, et male
+    torquétur. Et ait illi Jesus: Ego véniam et curábo eum. Et respóndens
+    centúrio, ait: Dómine, non sum dignus, ut intres sub tectum meum: sed tantum
+    dic verbo, et sanábitur puer meus. Nam et ego homo sum sub potestáte
+    constitútus, habens sub me mílites, et dico huic: Vade, et vadit; et alii:
+    Veni, et venit; et servo meo: Fac hoc, et facit. Audiens autem Jesus,
+    mirátus est, et sequéntibus se dixit: Amen, dico vobis, non invéni tantam
+    fidem in Israël. Dico autem vobis, quod multi ab Oriénte et Occidénte
+    vénient, et recúmbent cum Abraham et Isaac et Jacob in regno cœlórum: fílii
+    autem regni ejiciéntur in ténebras exterióres: ibi erit fletus et stridor
+    déntium. Et dixit Jesus centurióni: Vade, et, sicut credidísti, fiat tibi.
+    Et sanátus est puer in illa hora."
+offertorium:
+  - "!Ps 24:1-3"
+  - "Ad te, Dómine, levávi ánimam meam: Deus meus, in te confído, non erubéscam:
+    neque irrídeant me inimíci mei: étenim univérsi, qui te exspéctant, non
+    confundéntur."
+secreta:
+  - "Sacrifíciis præséntibus, Dómine, quǽsumus, inténde placátus: ut et
+    devotióni nostræ profíciant et salúti."
+  - $Per Dominum
+communio:
+  - "!Ps 50:21"
+  - Acceptábis sacrifícium justítiæ, oblatiónes et holocáusta, super altáre
+    tuum, Dómine.
+postcommunio:
+  - "Cœléstis doni benedictióne percépta: súpplices te, Deus omnípotens,
+    deprecámur; ut hoc idem nobis et sacraménti causa sit et salútis."
+  - $Per Dominum
+super-populum:
+  - "!Oratio super populum"
+  - v. Orémus.
+  - v. Humiliáte cápita vestra Deo.
+  - "v. Parce, Dómine, parce populo tuo: ut, dignis flagellatiónibus castigátus,
+    in tua miseratióne respíret."
+  - $Per Dominum
+lectio1:
+  - Léctio sancti Evangélii secúndum Matthǽum
+  - "!Matt 8:5-13"
+  - "In illo témpore: Cum introísset Jesus Caphárnaum, accéssit ad eum centúrio,
+    rogans eum, et dicens: Dómine, puer meus jacet in domo paralýticus, et male
+    torquétur. Et réliqua."
+  - _
+  - Homilía sancti Augustíni Epíscopi
+  - "!Lib. 2 de Consensu Evangelist. cap. 20, tom. 4"
+  - "Videámus, utrum sibi de hoc servo centuriónis Matthǽus Lucásque
+    conséntiant. Matthǽus enim dicit: Accéssit ad eum centúrio, rogans eum, et
+    dicens: Puer meus jacet in domo paralýticus. Cui vidétur repugnáre quod ait
+    Lucas: Et cum audísset de Jesu, misit ad eum senióres Judæórum, rogans eum
+    ut veníret, et sanáret servum ejus. At illi cum veníssent ad Jesum, rogábant
+    eum sollícite, dicéntes ei: Quia dignus est ut hoc illi præstes: díligit
+    enim gentem nostram, et synagógam ipse ædificávit nobis. Jesus autem ibat
+    cum illis: et cum jam non longe esset a domo, misit ad eum centúrio amícos,
+    dicens: Dómine, noli vexári: non enim dignus sum ut sub tectum meum intres."
+responsory1:
+  - "R. Dómine, puer meus jacet paralýticus in domo, et male torquétur:"
+  - "* Amen dico tibi, ego véniam, et curábo eum."
+  - "V. Dómine, non sum dignus ut intres sub tectum meum: sed tantum dic verbo,
+    et sanábitur puer meus."
+  - R. Amen dico tibi, ego véniam, et curábo eum.
+lectio2:
+  - "Si enim hoc ita gestum est, quómodo erit verum, quod Matthǽus narrat:
+    Accéssit ad eum quidam centúrio, cum ipse non accésserit, sed amícos
+    míserit: nisi diligénter adverténtes intellegámus Matthǽum non omnímodo
+    deseruísse usitátum morem loquéndi? Non solum enim dícere solémus,
+    accessísse áliquem étiam antequam pervéniat illuc, quo dícitur accessísse:
+    unde étiam dícimus: Parum accéssit, vel multum accéssit eo, quo áppetit
+    perveníre: verum étiam ipsam perventiónem cujus adipiscéndi causa accéditur,
+    dícimus plerúmque factam, etsi eum, ad quem pérvenit, non vídeat ille qui
+    pérvenit, cum per amícum pérvenit ad áliquem, cujus ei favor est
+    necessárius. Quod ita ténuit consuetúdo, ut jam étiam vulgo perventóres
+    appelléntur, qui poténtium quorúmlibet tamquam inaccessíbiles ánimos, per
+    conveniéntium personárum interpositiónem, ambitiónis arte pertíngunt."
+responsory2:
+  - "@Tempora/Quadp3-0:Responsory2"
+lectio3:
+  - "Non ergo absúrde Matthǽus, étiam quod vulgo possit intéllegi, per álios
+    facto accéssu centuriónis ad Dóminum, compéndio dícere vóluit: Accéssit ad
+    eum centúrio. Verúmtamen non negligénter intuénda est étiam sancti
+    Evangelístæ altitúdo mýsticæ locutiónis, secúndum quam scriptum est in
+    Psalmo: Accédite ad eum, et illuminámini. Proínde quia fidem centuriónis,
+    qua vere accéditur ad Jesum, ipse ita laudávit, ut díceret: Non invéni
+    tantam fidem in Israël: ipsum pótius accessísse ad Christum dícere vóluit
+    prudens Evangelísta, quam illos, per quos verba sua míserat."
+responsory3:
+  - "@Tempora/Quadp3-0:Responsory3"
+ant-2:
+  - "Dómine, * puer meus jacet paralýticus in domo, et male torquétur: Amen dico
+    tibi, ego véniam, et curábo eum."
+oratio-2:
+  - "Deus, qui culpa offénderis, pæniténtia placáris: preces pópuli tui
+    supplicántis propítius réspice; et flagélla tuæ iracúndiæ, quæ pro peccátis
+    nostris merémur, avérte."
+  - $Per Dominum
+ant-3:
+  - "Dómine, * non sum dignus ut intres sub tectum meum: sed tantum dic verbo,
+    et sanábitur puer meus."
+oratio-3:
+  - "Parce, Dómine, parce populo tuo: ut, dignis flagellatiónibus castigátus, in
+    tua miseratióne respíret."
+  - $Per Dominum

@@ -1,0 +1,41 @@
+references: "@Sancti/12-29"
+rule:
+  - ex C2b;
+  - 12 lectiones
+lectio1:
+  - "@CommuneM/C2"
+responsory1:
+  - "@CommuneM/C2a"
+lectio2:
+  - "@CommuneM/C2"
+responsory2:
+  - "@CommuneM/C2a"
+lectio3:
+  - "@CommuneM/C2"
+responsory3:
+  - "@CommuneM/C2a"
+lectio4:
+  - "@CommuneM/C2"
+responsory4:
+  - "@CommuneM/C2a"
+lectio5:
+  - "@Sancti/12-29:Lectio4"
+lectio6:
+  - "@Sancti/12-29:Lectio5: s/Quid dum .*//s"
+lectio7:
+  - "@Sancti/12-29:Lectio5: s/.* Quid dum/Quid dum/s s/$/~/"
+  - "@Sancti/12-29:Lectio6: s/Qui cléricis .*//s"
+lectio8:
+  - "@Sancti/12-29:Lectio6: s/.* Qui cléricis/Qui cléricis/s"
+lectio9:
+  - "@Sancti/12-29:Lectio7: s/Pastóris .*//s"
+lectio10:
+  - "@Sancti/12-29:Lectio7: s/.* Pastóris/Pastóris/s s/$/~/"
+  - "@Sancti/12-29:Lectio8: s/Idcírco .*//s"
+lectio11:
+  - "@Sancti/12-29:Lectio8: s/.* Idcírco/Idcírco/s s/$/~/"
+  - "@Sancti/12-29:Lectio9: s/Nam cum .*//s"
+lectio12:
+  - "@Sancti/12-29:Lectio9: s/.* Nam cum/Nam cum/s"
+evangelium:
+  - "@TemporaM/Pasc2-0"

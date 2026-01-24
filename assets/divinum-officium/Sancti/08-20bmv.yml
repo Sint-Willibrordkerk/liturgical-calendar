@@ -1,0 +1,28 @@
+rank:
+  - Sexta die infra Octavam Assumptionis Beatæ Mariæ Virginis
+  - Semiduplex
+  - "2"
+  - "@sancti/08-15"
+rule:
+  - vide sancti/08-15;
+  - 9 lectiones
+  - ex Sancti/08-15;
+  - Gloria
+  - CredoDA
+  - Prefatio=Maria=Assumptionis
+oratio:
+  - "@Sancti/08-18bmv"
+secreta:
+  - "@Sancti/08-18bmv"
+postcommunio:
+  - "@Sancti/08-18bmv"
+rubrica-cisterciensis/ant-vespera:
+  - "@Sancti/08-15t::s/;;.*//g"
+rubrica-cisterciensis/versum-1:
+  - "@SanctiM/08-15"
+rubrica-cisterciensis/ant-1:
+  - "@Sancti/08-16bmv"
+rubrica-cisterciensis/versum-2:
+  - "@:Versum 1"
+rubrica-cisterciensis/ant-2:
+  - "@Sancti/08-16bmv"

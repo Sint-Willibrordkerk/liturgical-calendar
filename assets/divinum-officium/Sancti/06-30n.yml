@@ -1,0 +1,10 @@
+officium:
+  - First Martyrs of the Church of Rome
+rank:
+  - ""
+  - Duplex optional
+  - "2"
+  - "@C3"
+rule:
+  - vide C3;
+  - Gloria

@@ -1,0 +1,10 @@
+officium:
+  - Feria tertia infra Hebdomadam III post Octavam Pentecostes
+rank:
+  - ""
+  - Feria
+  - "1"
+rule:
+  - Oratio Dominica
+  - Suffr=Sanctorum;Maria3,Ecclesiæ,Papa;;
+references: "@Tempora/Pent03-2Feria"

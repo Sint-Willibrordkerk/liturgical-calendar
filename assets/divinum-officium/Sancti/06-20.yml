@@ -1,0 +1,50 @@
+officium:
+  - S. Silverii Papæ et Martyris
+rank:
+  - ""
+  - Simplex
+  - "1.1"
+  - "@C2b"
+rule:
+  - vide C2b;
+  - Gloria
+name:
+  - Silvérium
+  - Postcommunio=Silvério
+communi-summorum-pontificum/name:
+  - Silvérium
+lectio:
+  - Léctio Epístolæ beáti Judæ Apóstoli.
+  - "!Jud 1:17-21"
+  - "Caríssimi: Mémores estóte verborum, quæ prædícta sunt ab Apóstolis Dómini
+    nostri Jesu Christi, qui dicébant vobis, quóniam in novíssimo témpore
+    vénient illusóres, secúndum desidéria sua ambulántes in impietátibus. Hi
+    sunt, qui ségregant semetípsos, animáles, Spíritum non habéntes. Vos autem,
+    caríssimi, superædificántes vosmetípsos sanctíssimæ vestræ fídei, in Spíritu
+    Sancto orántes, vosmetípsos in dilectióne Dei servate, exspectántes
+    misericórdiam Dómini nostri Jesu Christi in vitam ætérnam."
+rubrica-cisterciensis/rank:
+  - ""
+  - Commemoratio
+  - "1"
+  - "@C2b"
+lectio93:
+  - "Silverius Campanus post Agapitum proxime Pontifex creatus est: cujus
+    doctrina et sanctitas illuxit in insectandis hæreticis, et constantis animi
+    magnitudo perspecta est in tuendo judicio Agapiti. Nam Anthimum, quem, quia
+    Eutychianam hæresim defendebat, Agapitus ab episcopatu Constantinopolitano
+    deposuerat, cum a Theodora Augusta sæpissime rogatus esset, restituere
+    noluit. Quam ob rem irata mulier mandat Belisario ut Silverium mittat in
+    exsilium. Qui exsulavit in insula Pontia, unde his verbis scripsisse fertur
+    ad Amatorem episcopum: Sustentor pane tribulationis et aqua angustiæ; nec
+    tamen dimisi, aut dimitto officium meum. Et sane, brevi incommodis
+    ærumnisque confectus, obdormivit in Domino, duodecimo Kalendas Julii; Cujus
+    corpus Romam delatum, et in basilica Vaticana depositum, multis miraculis
+    illustratum fuit. Præfuit Ecclesiæ annos tres et amplius, creatis mense
+    Decembri presbyteris tredecim diaconis quinque, episcopis per diversa loca
+    decem et novem."
+  - "&teDeum"
+versum-3:
+  - "@Commune/C2a:Versum 1"
+ant-3:
+  - "@Commune/C2a:Ant 1"

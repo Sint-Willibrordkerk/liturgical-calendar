@@ -1,0 +1,44 @@
+references: "@Sancti/01-03"
+rubrica-tridentina/rule:
+  - ex SanctiM/12-26;
+  - 12 lectiones
+  - Antiphonas horas
+  - Psalmi dominica
+rubrica-tridentina/lectio1:
+  - "@Sancti/01-03::1-5 s/4/3/"
+rubrica-tridentina/lectio2:
+  - "@Sancti/01-03:Lectio1:2 s/1\\-4/4-6/"
+  - "@Sancti/01-03:Lectio1:6"
+  - "@Sancti/01-03::2-3"
+rubrica-tridentina/lectio3:
+  - "@Sancti/01-03:Lectio2:1 s/5/7/"
+  - "@Sancti/01-03:Lectio2:4-5 s/$/~/s"
+  - "@Sancti/01-03:Lectio3:2 s/8//"
+rubrica-divino/responsory3:
+  - "@Sancti/12-27:Responsory1"
+rubrica-tridentina/lectio4:
+  - "@Sancti/01-03:Lectio3:1 s/8/9/"
+  - "@Sancti/01-03:Lectio3:3-5"
+rubrica-tridentina/lectio5:
+  - "@Sancti/01-03:Lectio4: s/Nam .*//s"
+rubrica-tridentina/lectio6:
+  - "@Sancti/01-03:Lectio4: s/.*(Nam )/$1/s"
+rubrica-tridentina/lectio7:
+  - "@Sancti/01-03:Lectio5"
+rubrica-tridentina/lectio8:
+  - "@Sancti/01-03:Lectio6"
+rubrica-tridentina/lectio9:
+  - "@Sancti/01-03:Lectio7"
+rubrica-tridentina/lectio10:
+  - "@Sancti/01-03:Lectio8: s/Nam cum Petrus.*//s"
+rubrica-tridentina/lectio11:
+  - "@Sancti/01-03:Lectio8: s/.* (Nam)/$1/s s/$/~/s"
+  - "@Sancti/01-03:Lectio9: s/ Cum.*//s"
+rubrica-tridentina/lectio12:
+  - "@Sancti/01-03:Lectio9: s/.* (Cum)/$1/s"
+rubrica-divino/mm-capitulum:
+  - "@Sancti/12-27:Capitulum Sexta"
+  - _
+  - "@CommuneM/C1:Versum 2"
+evangelium:
+  - "@SanctiM/12-27"

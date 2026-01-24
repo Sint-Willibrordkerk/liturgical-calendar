@@ -1,0 +1,156 @@
+officium:
+  - Feria Quarta in Rogationibus in Vigilia Ascensionis
+rubrica-196/officium:
+  - In Vigilia Ascensionis
+rank:
+  - ""
+  - Vigilia
+  - "1.5"
+rubrica-196/rank:
+  - ""
+  - Feria
+  - "5"
+rule:
+  - Oratio Dominica
+  - Una Antiphona
+  - Feria Te Deum
+  - Laudes Litania
+  - No prima vespera
+  - Gloria
+  - no Credo
+  - Suffr=Maria3
+introitus:
+  - "!Is 48:20"
+  - "v. Vocem jucunditátis annuntiáte, et audiátur, allelúja: annuntiáte usque
+    ad extrémum terræ: liberávit Dóminus pópulum suum, allelúja, allelúja"
+  - "!Ps 65:1-2"
+  - "Jubiláte Deo, omnis terra, psalmum dícite nómini ejus: date glóriam laudi
+    ejus."
+  - "&Gloria"
+  - "v. Vocem jucunditátis annuntiáte, et audiátur, allelúja: annuntiáte usque
+    ad extrémum terræ: liberávit Dóminus pópulum suum, allelúja, allelúja"
+oratio:
+  - "Deus, a quo bona cuncta procédunt, largíre supplícibus tuis: ut cogitémus,
+    te inspiránte, quæ recta sunt; et, te gubernánte, eadem faciámus."
+  - $Per Dominum
+sed-non-rubrica-1960/commemoratio-oratio:
+  - "!de Rogationibus"
+  - "Præsta, quǽsumus, omnípotens Deus: ut, qui in afflictióne nostra de tua
+    pietáte confídimus; contra advérsa ómnia, tua semper protectióne muniámur."
+  - $Per Dominum
+lectio:
+  - Léctio Epístolæ beáti Pauli Apóstoli ad Ephésios
+  - "!Eph 4:7-13"
+  - "Fratres: Unicuíque nostrum data est grátia secúndum mensúram donatiónis
+    Christi. Propter quod dicit: Ascéndens in altum, captívam duxit
+    captivitátem: dedit dona homínibus. Quod autem ascéndit, quid est, nisi quia
+    et descéndit primum in inferióres partes terræ? Qui descéndit, ipse est et
+    qui ascéndit super omnes cœlos, ut impléret ómnia. Et ipse dedit quosdam
+    quidem apóstolos, quosdam autem prophétas, álios vero evangelístas, álios
+    autem pastóres et doctóres, ad consummatiónem sanctórum in opus ministérii,
+    in ædificatiónem córporis Christi: donec occurrámus omnes in unitátem fídei,
+    et agnitiónis Fílii Dei, in virum perféctum, in mensúram ætátis plenitúdinis
+    Christi."
+graduale:
+  - Allelúja, allelúja.
+  - V. Surréxit Christus, et illúxit nobis, quos rédemit sánguine suo. Allelúja.
+  - "!Joannes 16:28"
+  - "V. Exívi a Patre, et veni in mundum: íterum relínquo mundum, et vado ad
+    Patrem. Allelúja."
+evangelium:
+  - Sequéntia ++ sancti Evangélii secúndum Joánnem.
+  - "!Joannes 17:1-11"
+  - "In illo témpore: Sublevátis Jesus óculis in cœlum, dixit: Pater, venit
+    hora, clarífica Fílium tuum, ut Fílius tuus claríficet te: sicut dedísti ei
+    potestátem omnis carnis, ut omne, quod dedísti ei, det eis vitam ætérnam.
+    Hæc est autem vita ætérna: ut cognóscant te, solum Deum verum, et quem
+    misísti Jesum Christum. Ego te clarificávi super terram: opus consummávi,
+    quod dedísti mihi, ut fáciam: et nunc clarífica me tu, Pater, apud
+    temetípsum, claritáte, quam hábui, priúsquam mundus esset, apud te.
+    Manifestávi nomen tuum homínibus, quos dedísti mihi de mundo. Tui erant, et
+    mihi eos dedísti; et sermónem tuum servavérunt. Nunc cognovérunt, quia
+    ómnia, quæ dedísti mihi, abs te sunt: quia verba, quæ dedísti mihi, dedi
+    eis: et ipsi accepérunt, et cognovérunt vere, quia a te exivi, et
+    credidérunt, quia tu me misísti. Ego pro eis rogo, non pro mundo rogo, sed
+    pro his, quos dedísti mihi: quia tui sunt: et mea ómnia tua sunt, et tua mea
+    sunt: et clarificátus sum in eis. Et jam non sum in mundo, et hi in mundo
+    sunt, et ego ad te vénio."
+offertorium:
+  - "!Ps 65:8-9; 65:20"
+  - "Benedícite, gentes, Dóminum, Deum nostrum, et obaudíte vocem laudis ejus:
+    qui pósuit ánimam meam ad vitam, et non dedit commovéri pedes meos:
+    benedíctus Dóminus, qui non amóvit deprecatiónem meam et misericórdiam suam
+    a me, allelúja."
+sed-non-rubrica-1960/secreta-mariæ:
+  - "!de S. Maria."
+  - "@Commune/C10:Secreta"
+secreta:
+  - "@Tempora/Pasc0-2:Secreta"
+sed-non-rubrica-1960/commemoratio-secreta:
+  - "!de Rogationibus"
+  - Hæc múnera, quǽsumus, Dómine, et víncula nostræ pravitátis absólvant, et tuæ
+    nobis misericórdiæ dona concílient.
+  - $Per Dominum
+communio:
+  - "!Ps 95:2."
+  - "Cantáte Dómino, allelúja: cantáte Dómino et benedícite nomen ejus: bene
+    nuntiáte de die in diem salutáre ejus, allelúja, allelúja."
+sed-non-rubrica-1960/postcommunio-mariæ:
+  - "@Commune/C10:Postcommunio"
+postcommunio:
+  - "Tríbue nobis, Dómine, cœléstis mensæ virtúte satiátis: et desideráre, quæ
+    recta sunt, et desideráta percípere."
+  - $Per Dominum
+sed-non-rubrica-1960/commemoratio-postcommunio:
+  - "!de Rogationibus"
+  - "Vota nostra, quǽsumus, Dómine, pio favóre proséquere: ut, dum dona tua in
+    tribulatióne percípimus, de consolatióne nostra in tuo amóre crescámus."
+  - $Per Dominum
+lectio1:
+  - Léctio sancti Evangélii secúndum Joánnem
+  - "!Joannes 17:1-11"
+  - "In illo témpore: Sublevátis Jesus óculis in cælum, dixit: Pater, venit
+    hora, clarífica Fílium tuum. Et réliqua."
+  - _
+  - Homilía sancti Augustíni Epíscopi
+  - "!Tractatus 104 in Joannem, sub med."
+  - "Póterat Dóminus noster, unigénitus et coætérnus Patri, in forma servi, et
+    ex forma servi, si hoc opus esset, oráre siléntio: sed ita se Patri exhibére
+    vóluit precatórem, ut meminísset nostrum se esse doctórem. Proínde eam, quam
+    fecit oratiónem pro nobis, notam fecit et nobis: quóniam tanti magístri non
+    solum ad ipsos sermocinátio, sed étiam pro ipsis ad Patrem orátio,
+    discipulórum est ædificátio: et si illórum, qui hæc dicta áderant auditúri,
+    profécto et nostra, qui fuerámus conscrípta lectúri."
+responsory1:
+  - "@Tempora/Pasc4-0:Responsory7"
+lectio2:
+  - "Quaprópter hoc quod ait: Pater, venit hora, clarífica Fílium tuum:
+    osténdit, omne tempus, et quid, quando fáceret vel fíeri síneret, ab illo
+    esse dispósitum, qui témpori súbditus non est: quóniam quæ futúra erant per
+    síngula témpora, in Dei sapiéntia causas efficiéntes habent, in qua nulla
+    sunt témpora. Non ergo credátur hæc hora fato urgénte venísse, sed Deo
+    pótius ordinánte. Nec sidérea necéssitas Christi connéxuit passiónem: absit
+    enim ut sídera mori cógerent síderum Conditórem."
+responsory2:
+  - "@Tempora/Pasc4-0:Responsory8"
+lectio3:
+  - "Clarificátum a Patre Fílium nonnúlli accípiunt in hoc, quod ei non
+    pepércit, sed pro nobis ómnibus trádidit eum. Sed si passióne clarificátus
+    dícitur, quanto magis resurrectióne? Nam in passióne magis ejus humílitas
+    quam cláritas commendátur, Apóstolo teste, qui dicit: Humiliávit semetípsum,
+    factus obédiens usque ad mortem, mortem autem crucis. Deínde séquitur, et de
+    ejus clarificatióne jam dicit: Propter quod et Deus illum exaltávit, et
+    donávit ei nomen, quod est super omne nomen: ut in nómine Jesu omne genu
+    flectátur, cæléstium, terréstrium, et infernórum. Et omnis lingua
+    confiteátur, quia Dóminus Jesus Christus in glória est Dei Patris. Hæc est
+    clarificátio Dómini nostri Jesu Christi, quæ ab ejus resurrectióne sumpsit
+    exórdium."
+responsory3:
+  - "@Tempora/Pasc4-1:Responsory1"
+  - "&Gloria"
+  - R. A Dómino, allelúja, allelúja.
+ant-2:
+  - Pater, venit hora, * clarífica Fílium tuum claritáte quam hábui, priúsquam
+    mundus esset, apud te, allelúja.
+oratio-2:
+  - "@Tempora/Pasc5-0:Oratio"

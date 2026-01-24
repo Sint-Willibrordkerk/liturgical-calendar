@@ -1,0 +1,40 @@
+references: "@SanctiM/11-02"
+rank:
+  - In Commemoratione Omnium Defunctorum Ordinis nostri
+  - Duplex
+  - "5"
+  - "@C9"
+rubrica-1930/rank:
+  - In Commemoratione Omnium Defunctorum Ordinis nostri
+  - Duplex
+  - "3"
+  - "@C9"
+oratio-matutinum:
+  - "&Dominus_vobiscum"
+  - "@Commune/C9:Oratio_Fid:s/tuárum/tuárum Ordinis nostri/"
+oratio-mortuorum:
+  - "@:Oratio 2"
+oratio-mortuorum1:
+  - "@Sancti/11-02::s/tuárum/tuárum Ordinis nostri/"
+oratio-2:
+  - "@Commune/C9:Oratio_a_porta:s/&psalm.*\\)//s"
+  - "@Commune/C9:Oratio_Fid:s/tuárum/tuárum Ordinis nostri/"
+special-prima:
+  - "#Psalmi"
+  - "@SanctiM/11-02:Psalmi Prima_"
+  - _
+  - "@Sancti/11-02:Oratio mortuorum2:s/tuárum/tuárum Ordinis nostri/"
+  - _
+  - "&special('#Martyrologium', 'Latin')"
+  - _
+  - V. In memória ætérna erunt justi.
+  - R. Ab auditióne mala non timébunt.
+  - _
+  - $Oremus
+  - "v. Deus, véniæ largítor et humánæ salútis amátor: quǽsumus cleméntiam tuam:
+    ut nostræ congregatiónis fratres, qui ex hoc sǽculo transiérunt, beáta María
+    semper vírgine intercedénte cum ómnibus sanctis tuis ad perpétuæ
+    beatitúdinis consórtium perveníre concédas. Per Christum Dóminum nostrum."
+  - R. Amen.
+  - _
+  - "&special('Conclusio', 'Latin')"

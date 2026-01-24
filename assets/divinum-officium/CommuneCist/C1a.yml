@@ -1,0 +1,444 @@
+references:
+  references:
+    references: "@Commune/C1"
+    antmatutinumm:
+      - Annuntiavérunt * inter gentes glóriam Dómini, in ómnibus pópulis
+        mirabília ejus;;95
+      - Déxtera Dómini * salvávit eos, et bráchium sanctum ejus, allelúja;;97
+      - Perambulábant * in innocéntia cordis sui, in medio domus tuæ;;100
+      - Gaudéte * et exsultáte, quia nómina vestra scripta sunt in cælis, dicit
+        Dóminus;;253;254;255
+    ant-matutinum:
+      - "@Commune/C1::1-6"
+      - "@Commune/C1::7"
+      - "@:AntMatutinumM:1"
+      - "@Commune/C1::8"
+      - "@:AntMatutinumM:2"
+      - "@Commune/C1::9"
+      - "@:AntMatutinumM:3"
+      - "@:AntMatutinumM:4"
+    lectio1:
+      - "@Commune/C1:Lectio1:s/-5/-4/ s/5 .*//s"
+    lectio2:
+      - "@Commune/C1:Lectio1:s/.*!/!/s s/-5/-7/ s/1-/5-/ s/^1 .*5 /5 /sm"
+      - "@Commune/C1:Lectio2:s/!.*// s/8 .*//s"
+    lectio3:
+      - "@Commune/C1:Lectio2:s/-9/-10/ s/6-/8-/ s/6 .*8 /8 /s"
+      - "@Commune/C1:Lectio3:s/!.*// s/11 .*//s"
+    lectio4:
+      - "@Commune/C1:Lectio3:s/10-/11-/ s/10 .*11 /11 /s"
+    responsory4:
+      - R. Fuérunt sine queréla ante Dóminum, et ab ínvicem non sunt separáti;
+      - "* Cálicem Dómini bibérunt et amíci Dei facti sunt."
+      - "V. Tradidérunt córpora sua ad supplícia: † ídeo coronántur et accípiunt
+        palmam."
+      - R. Cálicem Dómini bibérunt et amíci Dei facti sunt.
+    lectio5:
+      - "@Commune/C1:Lectio4"
+    responsory5:
+      - "@Commune/C1:Responsory4"
+    lectio6:
+      - "@Commune/C1:Lectio5:s/Quales .*//s"
+    responsory6:
+      - "@Commune/C1:Responsory5"
+    lectio7:
+      - "@Commune/C1:Lectio5:s/.* Quales /Quales /s s/$/~/"
+      - "@Commune/C1:Lectio6:s/Et .*//s"
+    responsory7:
+      - "@Commune/C1:Responsory6"
+    lectio8:
+      - "@Commune/C1:Lectio6:s/.* Et /Et /s"
+    responsory8:
+      - "R. Constítues eos príncipes super omnem terram: † mémores erunt nóminis
+        tui, Dómine,"
+      - "* In omni progénie et generatióne."
+      - V. Nimis honoráti sunt amíci tui, Deus; nimis confortátus est
+        principátus eorum.
+      - R. In omni progénie et generatióne.
+    lectio-9:
+      - "!ex Proprium Sanctorum"
+    responsory9:
+      - "@Commune/C1:Responsory7"
+    responsory10:
+      - "@Commune/C1:Responsory8"
+    responsory11:
+      - R. Qui sunt isti, qui ut nubes volant,
+      - "* Et quasi colúmbæ ad fenéstras suas?"
+      - V. In omnem terram exívit sonus eórum, † et in fines orbis terræ verba
+        eórum.
+      - R. Et quasi colúmbæ ad fenéstras suas?
+    responsory12:
+      - R. Non sunt loquélæ neque sermónes, quorum non audiántur voces eórum
+      - "* In omnem terram exívit sonus eórum, † et in fines orbis terræ verba
+        eórum."
+      - V. Nimis honoráti sunt amíci tui Deus, nimis confortátus est principátus
+        eárum.
+      - R. In omnem terram exívit sonus eórum, † et in fines orbis terræ verba
+        eórum.
+    mm-capitulum:
+      - "@Commune/C1:Capitulum Sexta"
+      - _
+      - "@Commune/C1:Nocturn 2 Versum"
+    ant-vespera-3:
+      - "@Commune/C1::s/125/138/"
+  ant-vespera:
+    - Hoc est præcéptum meum, * ut diligátis ínvicem, sicut diléxi vos.
+    - Majórem charitátem * nemo habet, ut ánimam suam ponat quis pro amícis suis.
+    - Vos amíci mei estis, * si fecéritis quæ præcípio vobis, dicit Dóminus.
+    - "Beáti mundo corde: * quóniam ipsi Deum vidébunt."
+    - Beáti, * qui persecutiónem patiúntur propter justítiam.
+  hymnusm-vespera:
+    - Exsúltet cælum láudibus,
+    - "Resúltet terra gáudiis:"
+    - Apostolórum glóriam
+    - Sacra canunt solémnia.
+    - _
+    - Vos sæcli justi júdices,
+    - Et vera mundi lúmina,
+    - Votis precámur córdium,
+    - Audíte preces súpplicum.
+    - _
+    - Qui cælum verbo cláuditis,
+    - "Serásque ejus sólvitis:"
+    - Nos a peccátis ómnibus
+    - Sólvite jussu, quǽsumus.
+    - _
+    - Quorum præcépto súbditur,
+    - "Salus, et languor ómnium:"
+    - Sanáte ægros móribus,
+    - Nos reddéntes virtútibus.
+    - _
+    - Ut, cum Judex advénerit
+    - Christus in fine sǽculi,
+    - Nos sempitérni gáudii
+    - Fáciat esse cómpotes.
+    - _
+    - "* Deo Patri sit glória,"
+    - Ejúsque soli Fílio,
+    - Cum Spíritu Paráclito,
+    - Et nunc, et in perpétuum.
+    - Amen.
+  versum-1:
+    - V. Nimis honoráti sunt amíci tui, Deus.
+    - R. Nimis confortátus est principátus eórum.
+  ant-1:
+    - Ecce ego mitto vos * sicut oves in médio lupórum, dicit Dóminus. Estóte
+      prudéntes sicut serpéntes, et símplices sicut colúmbæ.
+  invit:
+    - "Gaudéte, et exultáte: * Quia nómina vestra scripta sunt in cœlis."
+  ant-matutinum:
+    - In omnem terram * exívit sonus eórum, et in fines orbis terræ verba
+      eórum.;;18
+    - Hæc est generátio * quæréntium Dóminum, quæréntium fáciem Dei Jacob.;;23
+    - "Verbo * Dómini cœli firmáti sunt: et spíritu oris ejus omnis virtus
+      eórum.;;32"
+    - Clamavérunt justi, * et Dóminus exaudívit eos.;;33
+    - "Constítues eos * príncipes super omnem terram: mémores erunt nóminis tui,
+      Dómine.;;44"
+    - Príncipes populórum * congregáti sunt cum Deo Ábraham.;;46
+    - Dedísti hereditátem * timéntibus nomen tuum, Dómine.;;60
+    - Annuntiavérunt * ópera Dei, et facta ejus intellexérunt.;;63
+    - Beáti, * quos elegísti, Dómine, habitábunt in átriis tuis.;;64
+    - Peccatórum * confríngam córnua, et exaltabúntur córnua justi.;;74
+    - Lux orta est * justo, rectis corde lætítia, allelúja.;;96
+    - Custodiébant * testimónia ejus, et præcépta ejus, allelúja.;;98
+    - In patiéntia vestra * possidébitis ánimas vestras.;;253;254;255
+  nocturn-1-versum:
+    - V. In omnem terram exívit sonus eórum.
+    - R. Et in fines orbis terræ verba eórum.
+  nocturn-3-versum:
+    - V. Annuntiavérunt ópera Dei.
+    - R. Et facta ejus intellexérunt.
+  lectio1:
+    - De Epístola prima beáti Pauli Apóstoli ad Corínthios
+    - "!1 Cor 4:1-5"
+    - 1 Sic nos exístimet homo ut minístros Christi, et dispensatóres
+      mysteriórum Dei.
+    - 2 Hic jam quǽritur inter dispensatóres ut fidélis quis inveniátur.
+    - "3 Mihi autem pro mínimo est ut a vobis júdicer, aut ab humáno die: sed
+      neque meípsum júdico."
+    - "4 Nihil enim mihi cónscius sum, sed non in hoc justificátus sum: qui
+      autem júdicat me, Dóminus est."
+    - "5 Ítaque nolíte ante tempus judicáre, quoadúsque véniat Dóminus: qui et
+      illuminábit abscóndita tenebrárum, et manifestábit consília córdium: et
+      tunc laus erit unicuíque a Deo."
+  lectio4:
+    - "!1 Cor 4:10-15"
+    - "10 Nos stulti propter Christum, vos autem prudéntes in Christo: nos
+      infírmi, vos autem fortes: vos nóbiles, nos autem ignóbiles."
+    - 11 Usque in hanc horam et esurímus, et sitímus, et nudi sumus, et cólaphis
+      cǽdimur, et instábiles sumus,
+    - "12 et laborámus operántes mánibus nostris: maledícimur, et benedícimus:
+      persecutiónem pátimur, et sustinémus:"
+    - "13 blasphemámur, et obsecrámus: tamquam purgaménta hujus mundi facti
+      sumus, ómnium peripséma usque adhuc."
+    - 14 Non ut confúndam vos, hæc scribo, sed ut fílios meos caríssimos móneo.
+    - 15 Nam si decem míllia pædagogórum habeátis in Christo, sed non multos
+      patres, nam in Christo Jesu per Evangélium ego vos génui.
+  responsory4:
+    - "R. O quam pulchri super montes pedes:"
+    - "* Annuntiántium pacem, annuntiántium bona!"
+    - "V. In omnem terram exívit sonus eórum: et in fines orbis terræ verba
+      eórum."
+    - R. Annuntiántium pacem, annuntiántium bona!
+    - "&Gloria"
+    - R. Annuntiántium pacem, annuntiántium bona!
+  lectio5:
+    - De Expositióne sancti Augustíni Epíscopi super psalmum octogésimum sextum
+    - "!Ante medium"
+    - "Fundaménta ejus in móntibus sanctis: díligit Dóminus portas Sion. Quare
+      sunt fundaménta Apóstoli et Prophétæ? Quia eórum auctóritas portat
+      infirmitátem nostram. Quare sunt portæ? Quia per ipsos intrámus ad regnum
+      Dei. Prǽdicant enim nobis: et, cum per ipsos intrámus, per Christum
+      intrámus; ipse est enim jánua. Et cum dicúntur duódecim portæ Jerúsalem,
+      et una porta Christus et duódecim portæ Christus, quia in duódecim portis
+      Christus; et ídeo duodenárius númerus Apostolórum. Sacraméntum magnum
+      hujus duodenárii significátio est númeri. Sedébitis, inquit, super
+      duódecim sedes, judicántes duódecim tribus Israël."
+  respvers5:
+    - V. Cæli enárrant glóriam Dei, et ópera mánuum ejus annúntiat firmaméntum.
+  responsory5:
+    - "R. Constítues eos príncipes super omnem terram: † mémores erunt nóminis
+      tui, Dómine,"
+    - "* In omni progénie et generatióne."
+    - V. Nimis honoráti sunt amíci tui, Deus; nimis confortátus est principátus
+      eorum.
+    - R. In omni progénie et generatióne.
+    - V. Cæli enárrant glóriam Dei, et ópera mánuum ejus annúntiat firmaméntum.
+    - "R. Constítues eos príncipes super omnem terram: † mémores erunt nóminis
+      tui, Dómine,"
+    - "* In omni progénie et generatióne."
+    - V. Nimis honoráti sunt amíci tui, Deus; nimis confortátus est principátus
+      eorum.
+    - R. In omni progénie et generatióne.
+  lectio6:
+    - De Expositióne sancti Augustíni Epíscopi super psalmum octogésimum sextum
+    - "!Ante medium"
+    - "Fundaménta ejus in móntibus sanctis: díligit Dóminus portas Sion. Quare
+      sunt fundaménta Apóstoli et Prophétæ? Quia eórum auctóritas portat
+      infirmitátem nostram. Quare sunt portæ? Quia per ipsos intrámus ad regnum
+      Dei. Prǽdicant enim nobis: et, cum per ipsos intrámus, per Christum
+      intrámus; ipse est enim jánua. Et cum dicúntur duódecim portæ Jerúsalem,
+      et una porta Christus et duódecim portæ Christus, quia in duódecim portis
+      Christus; et ídeo duodenárius númerus Apostolórum. Sacraméntum magnum
+      hujus duodenárii significátio est númeri. Sedébitis, inquit, super
+      duódecim sedes, judicántes duódecim tribus Israël."
+    - "Si duódecim sellæ ibi sunt, non est ubi sédeat tértius décimus Paulus
+      Apóstolus, et non erit quómodo júdicet; et ipse se judicatúrum dixit, non
+      hómines tantum, sed et ángelos. Quos ángelos, nisi apóstatas ángelos?
+      Nescítis, inquit, quia ángelos judicábimus? Respondéret ergo turba: Quid
+      te jactas judicatúrum? Ubi sedébis? Duódecim sedes dixit Dóminus duódecim
+      Apóstolis, unus cécidit Judas, in locum ipsíus sanctus Matthías ordinátus
+      est; implétus est duodenárius númerus sédium. Primo locum invéni, ubi
+      sédeas; et sic te mináre judicatúrum. Duódecim ergo sedes quid sibi
+      velint, videámus. Sacraméntum est cujúsdam universitátis; quia per totum
+      orbem terrárum futúra erat Ecclésia, unde vocátur hoc ædifícium ad Christi
+      compágem."
+  responsory6:
+    - "R. Isti sunt triumphatóres et amíci Dei, qui contemnéntes jussa
+      príncipum, meruérunt prǽmia ætérna:"
+    - "* Modo coronántur, et accípiunt palmam."
+    - V. Isti sunt qui venérunt ex magna tribulatióne, et lavérunt stolas suas
+      in sánguine Agni.
+    - R. Modo coronántur, et accípiunt palmam.
+    - "&Gloria"
+    - R. Modo coronántur, et accípiunt palmam.
+  lectio7:
+    - "Si duódecim sellæ ibi sunt, non est ubi sédeat tértius décimus Paulus
+      Apóstolus, et non erit quómodo júdicet; et ipse se judicatúrum dixit, non
+      hómines tantum, sed et ángelos. Quos ángelos, nisi apóstatas ángelos?
+      Nescítis, inquit, quia ángelos judicábimus? Respondéret ergo turba: Quid
+      te jactas judicatúrum? Ubi sedébis? Duódecim sedes dixit Dóminus duódecim
+      Apóstolis, unus cécidit Judas, in locum ipsíus sanctus Matthías ordinátus
+      est; implétus est duodenárius númerus sédium. Primo locum invéni, ubi
+      sédeas; et sic te mináre judicatúrum. Duódecim ergo sedes quid sibi
+      velint, videámus. Sacraméntum est cujúsdam universitátis; quia per totum
+      orbem terrárum futúra erat Ecclésia, unde vocátur hoc ædifícium ad Christi
+      compágem."
+    - Et ídeo, quia úndique venítur ad judicándum, duódecim sedes sunt; sicut,
+      quia úndique intrátur in illam civitátem, duódecim portæ sunt. Non solum
+      ergo illi duódecim et Apóstolus Paulus, sed quotquot judicatúri sunt,
+      propter significatiónem universitátis, ad sedes duódecim pértinent;
+      quemádmodum quotquot intrábunt, ad duódecim portas pértinent. Partes enim
+      mundi quátuor sunt, Oriens, Occidens, Aquilo et Merídies. Istæ quátuor
+      partes assídue nominántur in Scriptúris. Ab istis quátuor ventis, sicut
+      dicit Dóminus in Evangélio, a quátuor ventis se collectúrum eléctos suos;
+      ab ómnibus ergo istis quátuor ventis vocátur Ecclésia. Quómodo vocátur?
+      Undique in Trinitáte vocátur. Non vocátur nisi per baptísmum in nómine
+      Patris, et Fílii, et Spíritus Sancti. Quátuor ergo ter ducta duódecim
+      inveniúntur.
+  responsory7:
+    - R. Non sunt loquélæ neque sermónes, quorum non audiántur voces eórum
+    - "* In omnem terram exívit sonus eórum, † et in fines orbis terræ verba
+      eórum."
+    - V. Nimis honoráti sunt amíci tui Deus, nimis confortátus est principátus
+      eárum.
+    - R. In omnem terram exívit sonus eórum, † et in fines orbis terræ verba
+      eórum.
+  lectio8:
+    - Et ídeo, quia úndique venítur ad judicándum, duódecim sedes sunt; sicut,
+      quia úndique intrátur in illam civitátem, duódecim portæ sunt. Non solum
+      ergo illi duódecim et Apóstolus Paulus, sed quotquot judicatúri sunt,
+      propter significatiónem universitátis, ad sedes duódecim pértinent;
+      quemádmodum quotquot intrábunt, ad duódecim portas pértinent. Partes enim
+      mundi quátuor sunt, Oriens, Occidens, Aquilo et Merídies. Istæ quátuor
+      partes assídue nominántur in Scriptúris. Ab istis quátuor ventis, sicut
+      dicit Dóminus in Evangélio, a quátuor ventis se collectúrum eléctos suos;
+      ab ómnibus ergo istis quátuor ventis vocátur Ecclésia. Quómodo vocátur?
+      Undique in Trinitáte vocátur. Non vocátur nisi per baptísmum in nómine
+      Patris, et Fílii, et Spíritus Sancti. Quátuor ergo ter ducta duódecim
+      inveniúntur.
+  responsory8:
+    - R. Qui sunt isti, qui ut nubes volant,
+    - "* Et quasi colúmbæ ad fenéstras suas?"
+    - V. In omnem terram exívit sonus eórum, † et in fines orbis terræ verba
+      eórum.
+    - R. Et quasi colúmbæ ad fenéstras suas?
+  responsory9:
+    - "R. In omnem terram exívit sonus eórum:"
+    - "* Et in fines orbis terræ verba eórum."
+    - V. Non sunt loquélæ neque sermónes, quorum non audiántur voces eórum.
+    - R. Et in fines orbis terræ verba eórum.
+  responsory11:
+    - "R. Vos estis, qui permansístis mecum in tentatiónibus meis, dicit
+      Dóminus, et ego dispóno vobis regnum:"
+    - "* Ut edátis, et bibátis super mensam meam in regno meo, et sedeátis super
+      thronos judicántes duódecim tribus Israël."
+    - "V. Non vos me elegístis, sed ego elégi vos, et pósui vos:"
+    - R. Ut edátis, et bibátis super mensam meam in regno meo, et sedeátis super
+      thronos judicántes duódecim tribus Israël.
+  responsory12:
+    - "R. Vos estis lux mundi, dicit Dóminus:"
+    - "* Qui in patiéntia vestra possidébitis ánimas vestras."
+    - "V. Et ego dispóno vobis, sicut dispósuit mihi Pater meus regnum:"
+    - R. Qui in patiéntia vestra possidébitis ánimas vestras.
+    - "&Gloria"
+    - R. Qui in patiéntia vestra possidébitis ánimas vestras.
+  responsory12-duo:
+    - R. Isti sunt duæ olívæ, et duo candelábra lucéntia ante Dóminum.
+    - "* Habent potestátem cláudere cœlum núbibus, et aperíre portas ejus, quia
+      linguæ eórum claves cœli factæ sunt."
+    - "V. Isti sunt duo fílii splendóris, qui assístunt Dominatóri terræ:"
+    - R. Habent potestátem cláudere cœlum núbibus, et aperíre portas ejus, quia
+      linguæ eórum claves cœli factæ sunt.
+  ant-laudes:
+    - Hoc est præcéptum meum, * ut diligátis ínvicem, sicut diléxi vos.
+    - Majórem charitátem * nemo habet, ut ánimam suam ponat quis pro amícis suis.
+    - Vos amíci mei estis, * si fecéritis quæ præcípio vobis, dicit Dóminus.
+    - "Beáti mundo corde: * quóniam ipsi Deum vidébunt."
+    - Beáti, * qui persecutiónem patiúntur propter justítiam.
+  hymnusm-laudes:
+    - Exsúltet cælum láudibus,
+    - "Resúltet terra gáudiis:"
+    - Apostolórum glóriam
+    - Sacra canunt solémnia.
+    - _
+    - Vos sæcli justi júdices,
+    - Et vera mundi lúmina,
+    - Votis precámur córdium,
+    - Audíte preces súpplicum.
+    - _
+    - Qui cælum verbo cláuditis,
+    - "Serásque ejus sólvitis:"
+    - Nos a peccátis ómnibus
+    - Sólvite jussu, quǽsumus.
+    - _
+    - Quorum præcépto súbditur,
+    - "Salus, et languor ómnium:"
+    - Sanáte ægros móribus,
+    - Nos reddéntes virtútibus.
+    - _
+    - Ut, cum Judex advénerit
+    - Christus in fine sǽculi,
+    - Nos sempitérni gáudii
+    - Fáciat esse cómpotes.
+    - _
+    - "* Deo Patri sit glória,"
+    - Ejúsque soli Fílio,
+    - Cum Spíritu Paráclito,
+    - Et nunc, et in perpétuum.
+    - Amen.
+  versum-2:
+    - "@Commune/C1:Nocturn 3 Versum"
+  ant-2-duo:
+    - Isti sunt * duæ olívæ, et duo candelábra lucéntia ante Dóminum, habent
+      potestátem cláudere cœlum núbibus, et aperíre portas ejus, quia linguæ
+      eórum claves cœli factæ sunt, allelúia.
+  ant-2:
+    - Dum stetéritis * ante reges et prǽsides, nolíte præmeditári quáliter
+      respondeátis; dábitur enim vobis in illa hora, quid loquámini.
+  ant-vespera-3:
+    - "Jam non dicam * vos servos, sed amícos meos: quia ómnia quæcúmque audívi
+      a Patre meo, nota feci vobis.;;109"
+    - Tóllite * jugum meum super vos, quia mitis sum et húmilis corde.;;112
+    - Jugum enim meum * suáve est, et onus meum leve, dicit Dóminus.;;115
+    - "Tradent enim vos * in concíliis, et in synagógis suis flagellábunt vos:
+      et ante reges et præsides ducémini proper me in testimónium illis, et
+      Géntibus.;;125"
+  ant-3:
+    - "Beáti éritis, * cum vos óderint hómines, et cum separáverint vos, et
+      exprobráverint, et ejécerint nomen vestrum tamquam malum propter Fílium
+      hóminis: gaudéte et exsultáte, ecce enim merces vestra multa est in cœlo."
+lectio1:
+  - "@Commune/C1a:Lectio1:s/-4/-3/ s/4 .*//s"
+lectio2:
+  - "@Commune/C1a:Lectio1:s/.*!/!/s s/1-4/4-7/ s/1 .*4 /4 /s"
+  - "@Commune/C1a:Lectio2:s/!.*// s/8 .*//s"
+lectio3:
+  - "@Commune/C1a:Lectio2:s/5-9/8-10/ s/5 .*8 /8 /s"
+  - "@Commune/C1a:Lectio3:s/!.*// s/11 .*//s"
+lectio4:
+  - "@Commune/C1a:Lectio3:s/10-12/11-13/ s/10 .*11 /11 /s"
+  - 13 Et similitúdo animálium, aspéctus eórum quasi carbónum ignis ardéntium,
+    et quasi aspéctus lampadárum.
+lectio5:
+  - De Expositióne sancti Gregórii Papæ super Ezechiélem Prophétam
+  - "!Homilia 3, Lib. 1"
+  - "Sancta quátuor animália, quæ prophetíæ spíritu futúra prævidéntur, subtíli
+    narratióne describúntur, cum dícitur: Quátuor fácies uni, et quátuor pennæ
+    uni. Quid per fáciem, nisi notítia; et quid per pennas, nisi volátus
+    exprímitur? Per fáciem quippe unusquísque cognóscitur: per pennas vero in
+    altum ávium córpora sublevántur. Fácies ítaque ad fidem pértinet, penna ad
+    contemplatiónem. Per fidem namque ab omnipoténti Deo cognóscimur, sicut ipse
+    de suis óvibus dicit: Ego sum pastor bonus, et cognósco oves meas, et
+    cognóscunt me meæ. Qui rursus ait: Ego scio quos elégerim. Per
+    contemplatiónem vero, qua super nosmetípsos tóllimur, quasi in áëra
+    levámur."
+lectio6:
+  - De Expositióne sancti Gregórii Papæ super Ezechiélem Prophétam
+  - "!Homilia 3, Lib. 1"
+  - "Sancta quátuor animália, quæ prophetíæ spíritu futúra prævidéntur, subtíli
+    narratióne describúntur, cum dícitur: Quátuor fácies uni, et quátuor pennæ
+    uni. Quid per fáciem, nisi notítia; et quid per pennas, nisi volátus
+    exprímitur? Per fáciem quippe unusquísque cognóscitur: per pennas vero in
+    altum ávium córpora sublevántur. Fácies ítaque ad fidem pértinet, penna ad
+    contemplatiónem. Per fidem namque ab omnipoténti Deo cognóscimur, sicut ipse
+    de suis óvibus dicit: Ego sum pastor bonus, et cognósco oves meas, et
+    cognóscunt me meæ. Qui rursus ait: Ego scio quos elégerim. Per
+    contemplatiónem vero, qua super nosmetípsos tóllimur, quasi in áëra
+    levámur."
+lectio7:
+  - "@Commune/C1a:Lectio5:s/.*Quátuor ergo fácies uni sunt: quia notítia/Quátuor
+    ergo fácies uni sunt: quia notítia/s s/$/~/"
+  - "@Commune/C1a:Lectio6:s/Evangelistárum.*//"
+lectio8:
+  - "@Commune/C1a:Lectio6:s/.* Evangelistárum/Evangelistárum/s"
+lectio9:
+  - "@Commune/C1a:Lectio7:s/Nemo .*//s"
+lectio10:
+  - "@Commune/C1a:Lectio7:s/.* Nemo /Nemo /s s/$/~/"
+  - "@Commune/C1a:Lectio8:s/Bene .*//s"
+lectio11:
+  - "@Commune/C1a:Lectio8:s/.* Bene /Bene /s"
+lectio12:
+  - "Hinc namque eísdem prædicatóribus Isaías dicit: Paráte viam Dómini, rectas
+    fácite sémitas Dei nostri. Hinc fíliis Psalmísta ait: Iter fácite ei, qui
+    ascéndit super occásum. Super occásum namque Dóminus ascéndit: quia unde in
+    passióne occúbuit, inde majórem suam glóriam resurgéndo manifestávit. Super
+    occásum vidélicet ascéndit; quia mortem quam pértulit, resurgéndo calcávit.
+    Ei ergo qui ascéndit super occásum, iter fácimus, cum nos ejus glóriam
+    vestris méntibus prædicámus, ut eas et ipse post véniens, per amóris sui
+    præséntiam illústret."
+  - "&teDeum"
+evangelium:
+  - "@Sancti/02-06"

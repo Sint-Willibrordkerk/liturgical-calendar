@@ -1,0 +1,9 @@
+officium:
+  - S. Martin de Porres, religious
+rank:
+  - ""
+  - Duplex optional
+  - "2"
+  - "@C5"
+rule:
+  - vide C5;

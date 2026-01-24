@@ -1,0 +1,10 @@
+officium:
+  - Quarta die infra Octavam Omnium Sanctorum
+rank:
+  - ""
+  - Semiduplex
+  - "2"
+  - "@Sancti/11-01"
+rule:
+  - ex Sancti/11-01;
+  - 9 lectiones

@@ -1,0 +1,128 @@
+officium:
+  - S. Antonii de Padua Confessoris
+rubrica-195/officium:
+  - S. Antonii de Padua Confessoris et Ecclesiæ Doctoris
+rubrica-196/officium:
+  - S. Antonii de Padua Confessoris et Ecclesiæ Doctoris
+rank:
+  - ""
+  - Duplex
+  - "3"
+  - "@C5"
+rubrica-1617/rank:
+  - ""
+  - Semiduplex
+  - "2.2"
+  - "@C5"
+rubrica-1930/rank:
+  - ""
+  - Simplex
+  - "1.1"
+  - "@C5"
+rubrica-195/rank:
+  - ""
+  - Duplex
+  - "3"
+  - "@C5a"
+rubrica-196/rank:
+  - ""
+  - Duplex
+  - "3"
+  - "@C5a"
+rubrica-1963/rank:
+  - ""
+  - Simplex
+  - "1.1"
+  - "@C5a"
+rule:
+  - vide C5a;
+  - 9 lectiones
+  - vide C5;
+  - Gloria
+  - CredoDA
+rubrica-195/rule:
+  - vide C5a;
+  - 9 lectiones
+rubrica-196/rule:
+  - vide C5a;
+  - 9 lectiones
+comment:
+  - Pio PP. XII, anno 1946, Doctor Ecclesiæ declaratus est
+oratio_:
+  - "Ecclésiam tuam, Deus, beáti Antónii Confessóris tui atque Doctóris
+    sollémnitas votiva lætíficet: ut spirituálibus semper muniátur auxíliis et
+    gáudiis pérfrui mereátur ætérnis."
+  - $Per Dominum
+oratio:
+  - "@:Oratio_:s/atque\\ Doctóris//"
+rubrica-195/oratio:
+  - "@:Oratio_"
+rubrica-196/oratio:
+  - "@:Oratio_"
+secreta:
+  - "Præsens oblátio fiat, Dómine, pópulo tuo salutáris: pro quo dignátus es
+    Patri tuo te vivéntem hóstiam immoláre:"
+  - v. Qui cum eódem Deo Patre et Spíritu Sancto vivis et regnas Deus, per ómnia
+    sǽcula sæculórum.
+postcommunio_:
+  - "Divínis, Dómine, munéribus satiáti: quǽsumus; ut, beáti Antónii Confessóris
+    tui atque Doctóris méritis et intercessióne, salutáris sacrifícii sentiámus
+    efféctum."
+  - $Per Dominum
+postcommunio:
+  - "@:Postcommunio_:s/atque\\ Doctóris//"
+rubrica-195/postcommunio:
+  - "@:Postcommunio_"
+rubrica-196/postcommunio:
+  - "@:Postcommunio_"
+rubrica-altovadensis/officium:
+  - S. Antonii de Padua Confessoris et Ecclesiæ Doctoris
+name:
+  - Antóni
+oratiotext:
+  - "Ecclésiam tuam, Deus, beáti Antónii Confessóris tui atque Doctóris
+    solémnitas votíva lætíficet: ut spirituálibus semper muniátur auxíliis et
+    gáudiis pérfrui mereátur ætérnis."
+  - $Per Dominum
+lectio4:
+  - Antónius, Ulyssipóne in Lusitánia honéstis ortus paréntibus, et ab iis pie
+    educátus, adoléscens, institútum canonicórum regulárium suscépit. Sed, cum
+    córpora beatórum quinque Mártyrum fratrum Minórum Conímbriam transferéntur,
+    qui paulo ante apud Marróchium pro Christi fide passi erant, martýrii
+    desidério incénsus ad Franciscánum órdinam transívit. Mox eódem ardóre
+    impúlsus, ad Saracénos ire perréxit; sed, advérsa valetúdine afflíctus et
+    redíre coáctus, cum navi ad Hispániæ líttora ténderet, ventórum vi in
+    Sicíliam delátus est.
+lectio5:
+  - "Assísium e Sicília ad capítulum generále venit: inde in erémum montis Pauli
+    in Æmília secéssit, ubi divínis contemplatiónibus, jejúniis et vigíliis diu
+    vacávit. Póstea, sacris ordínibus initiátus et ad prædicándum Evangélium
+    missus, dicéndi sapiéntia et cópia tantum profécit, tantámque sui
+    admiratiónem commóvit, ut eum summus Póntifex aliquándo concionántem
+    áudiens, arcam Testaménti appellárit. In primis vero hǽreses summa vi
+    profligávit, ideóque perpétuus hæreticórum málleus est vocátus."
+lectio6:
+  - Primus ex suo ordine, ob doctrínæ præstántiam, Bonóniæ et álibi sacras
+    lítteras est interpretátus, fratrúmque suórum stúdiis præfuit.  Multis vero
+    peragrátis provínciis, anno ante óbitum Patávium venit, ubi illústria
+    sanctitátis suæ monuménta relíquit.  Dénique magnis labóribus pro glória Dei
+    perfúnctus, méritis et miráculis clarus obdormívit in Dómino Idibus Júnii,
+    anno salútis millésimo ducentésimo trigésimo primo.  Quem Gregórius nonus,
+    Póntifex máximus, sanctórum Confessórum número adscrípsit, et Pius
+    duodécimus, ex Sacrórum Rítuum Congregatiónis consúlto, universális Ecclésiæ
+    Doctórem declarávit.
+lectio94:
+  - Antónius, Ulyssipóne in Lusitánia honéstis piísque ortus paréntibus,
+    adoléscens institútum canonicórum regulárium suscépit; sed, martýrii
+    desidério incénsus, ad Franciscánum órdinem transívit. Ad Saracénos missus,
+    et advérsa valetúdine redíre coáctus, vi ventórum in Sicíliam delátus est.
+    Mox sacris ordínibus initiátus et prædicatóris múnere fungens, tantam sui
+    admiratiónem commóvit, ut ad sacras lítteras interpretándas Bonóniæ et álibi
+    vocátus sit, fratrum suórum stúdiis fúerit præféctus, et arca Testaménti
+    atque hǽresum málleus merúerit appellári. Multis autem peragrátis
+    provínciis, anno ante óbitum Patávium venit, ubi illústria sanctitátis suæ
+    monuménta relíquit. Méritis et miráculis clarus obdormívit in Dómino idibus
+    júnii, anno salútis millésimo ducentésimo trigésimo primo, ætátis suæ
+    trigésimo sexto, et a summo Pontífice Pio duodécimo universális Ecclésiæ
+    Doctor fuit declarátus.
+  - "&teDeum"

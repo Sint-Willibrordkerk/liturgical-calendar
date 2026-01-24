@@ -1,0 +1,216 @@
+officium:
+  - De Inventione S. Stephani Protomartyris
+rank:
+  - ""
+  - Semiduplex
+  - "2.2"
+  - "@Sancti/12-26"
+rule:
+  - vide Sancti/12-26;
+  - 9 lectiones
+  - Gloria
+introitus:
+  - "!Ps 118:23; 118:86; 118:23"
+  - "v. Sedérunt príncipes, et advérsum me loquebántur: et iníqui persecúti sunt
+    me: ádjuva me, Dómine, Deus meus, quia servus tuus exercebátur in tuis
+    justificatiónibus."
+  - "!Ps 118:1"
+  - Beati immaculáti in via, qui ámbulant in lege Dómini,
+  - "&Gloria"
+  - "v. Sedérunt príncipes, et advérsum me loquebántur: et iníqui persecúti sunt
+    me: ádjuva me, Dómine, Deus meus, quia servus tuus exercebátur in tuis
+    justificatiónibus."
+oratio:
+  - "Da nobis, quǽsumus, Dómine, imitári quod cólimus: ut discámus et inimícos
+    dilígere; quia ejus inventiónem celebrámus, qui novit étiam pro
+    persecutóribus exoráre Dóminum nostrum Jesum Christum, Fílium tuum:"
+  - $Qui tecum
+lectio:
+  - Léctio Actuum Apostolórum
+  - "!Act 6:8-10; 7:54-59"
+  - "In diebus illis: Stéphanus plenus grátia et fortitúdine, faciébat prodígia
+    et signa magna in pópulo. Surrexérunt autem quidam de synagóga, quæ
+    appellátur Libertinórum, et Cyrenénsium, et Alexandrinórum, et eórum, qui
+    erant a Cilícia et Asia, disputántes cum Stéphano: et non póterant resístere
+    sapiéntiæ et Spirítui, qui loquebátur. Audiéntes autem hæc, dissecabántur
+    córdibus suis, et stridébant déntibus in eum. Cum autem esset Stéphanus
+    plenus Spíritu Sancto, inténdens in cœlum, vidit glóriam Dei, et Jesum
+    stantem a dextris Dei. Et ait: Ecce, vídeo cœlos apértos, et Fílium hóminis
+    stantem a dextris Dei. Exclamántes autem voce magna continuérunt aures suas,
+    et ímpetum fecerunt unanímiter in eum. Et ejiciéntes eum extra civitatem,
+    lapidábant: et testes deposuérunt vestiménta sua secus pedes adolescéntis,
+    qui vocabátur Saulus. Et lapidábant Stéphanum invocántem et dicéntem: Dómine
+    Jesu, súscipe spíritum meum. Pósitis autem génibus, clamávit voce magna,
+    dicens: Dómine, ne státuas illis hoc peccátum. Et cum hoc dixísset,
+    obdormívit in Dómino."
+graduale:
+  - "!Ps 118:23; 118:86"
+  - "Sedérunt príncipes, et advérsum me loquebántur: et iníqui persecúti sunt
+    me."
+  - "!Ps 6:5"
+  - "Adjúva me, Dómine, Deus meus: salvum me fac propter misericórdiam tuam."
+  - Allelúja, allelúja.
+  - "!Act 7:55."
+  - V. Vídeo cœlos apértos, et Jesum stantem a dextris virtútis Dei. Allelúja.
+evangelium:
+  - Sequéntia ++ sancti Evangélii secundum Matthǽum
+  - "!Matt 23:34-39"
+  - "In illo témpore: Dicébat Jesus scribis et pharisǽis: Ecce, ego mitto ad vos
+    prophétas, et sapiéntes, et scribas, et ex illis occidétis et crucifigétis,
+    et ex eis flagellábitis in synagógis vestris, et persequémini de civitáte in
+    civitátem: ut véniat super vos omnis sanguis justus, qui effúsus est super
+    terram, a sánguine Abel justi usque ad sánguinem Zacharíæ, filii Barachíæ,
+    quem occidístis inter templum et altáre. Amen, dico vobis, vénient hæc ómnia
+    super generatiónem istam. Jerúsalem, Jerúsalem, quæ occídis prophétas, et
+    lápidas eos, qui ad te missi sunt, quóies vólui congregáre fílios tuos,
+    quemádmodum gallína cóngregat pullos suos sub alas, et noluísti? Ecce,
+    relinquétur vobis domus vestra desérta. Dico enim vobis, non me vidébitis
+    ámodo, donec dicátis: Benedíctus, qui venit in nómine Dómini."
+offertorium:
+  - "!Act 6:5; 7:59"
+  - "Elegérunt Apóstoli Stéphanum Levítam, plenum fide et Spíritu Sancto: quem
+    lapidavérunt Judæi orántem, et dicéntem: Dómine Jesu, áccipe spíritum meum,
+    allelúja."
+secreta:
+  - "Súscipe, Dómine, múnera pro tuórum commemoratióne Sanctórum: ut, sicut
+    illos pássio gloriósos effécit; ita nos devótio reddat innócuos."
+  - $Per Dominum
+communio:
+  - "!Act 7:55; 7:58-59"
+  - "Vídeo cœlos apértos, et Jesum stantem a dextris virtútis Dei: Dómine Jesu,
+    accipe spíritum meum, et ne státuas illis hoc peccátum."
+postcommunio:
+  - "Auxiliéntur nobis, Dómine, sumpta mystéria: et, intercedénte beáto Stéphano
+    Mártyre tuo, sempitérna protectióne confírment."
+  - $Per Dominum
+rubrica-cisterciensis/rank:
+  - ""
+  - Commemoratio
+  - "1"
+  - "@Sancti/12-26"
+ant-vespera:
+  - "@Sancti/12-26:Ant Laudes"
+versum-1:
+  - "@Commune/C2a"
+rubrica-cisterciensis/versum-1:
+  - "@CommuneCist/C2a"
+ant-1:
+  - "@Sancti/12-26"
+invit:
+  - "@Commune/C2"
+lectio1:
+  - De Actibus Apostolorum
+  - "!Acts 7:51-54"
+  - "51 Dura cervice et incircumcisis córdibus et áuribus, vos semper Spiritui
+    Sancto resístitis: sicut patres vestri, ita et vos."
+  - 52 Quem prophetárum non sunt persecúti patres vestri? Et occidérunt eos, qui
+    prænuntiábunt de adventu Justi, cujus vos nunc proditores et homicidæ
+    fuistis,
+  - 53 qui accepístis legem in dispositióne Angelórum et non custodistis.
+  - 54 Audiéntes autem hæc, disseccabántur córdibus suis, et stridébant déntibus
+    in eum.
+responsory1:
+  - "@Sancti/12-26"
+lectio2:
+  - "!Acts 7:55-58"
+  - "55 Cum autem esset plenus Spíritu Sancto, inténdens in cælum, vidit glóriam
+    Dei, et Jesum stantem a dextris Dei. Et ait: Ecce video cælos apertos, et
+    Fílium hóminis stantem a dextris Dei."
+  - 56 Exclamántes autem voce magna, continuérunt aures suas, et ímpetum
+    fecérunt unanímiter in eum.
+  - "57 Et ejiciéntes eum extra civitátem lapidábant: et testes deposuérunt
+    vestiménta sua secus pedes adolescentis, qui vocabátur Saulus."
+  - "58 Et lapidábant Stephanum, invocántem et dicéntem: Dómine Jesu, suscipe
+    spíritum meum."
+responsory2:
+  - "@Sancti/12-26"
+lectio3:
+  - "!Acts 7:59; 8:1-2"
+  - "59 Positis autem genibus, clamávit voce magna: Dómine, ne statuas illis hoc
+    peccátum. Et cum hoc dixísset, obdormívit in Dómino. Saulus autem erat
+    consentiens neci ejus."
+  - 1 Facta est autem in illa die persecútio magna in ecclésia quæ erat
+    Jerosolymis; et omnes dispersi sunt per regiónes Judææ et Samaríæ, præter
+    Apóstolos.
+  - 2 Curavérunt autem Stephanum viri timorati, et fecérunt planctum magnum
+    super eum.
+responsory3:
+  - "@Sancti/12-26"
+lectio4:
+  - Sanctórum córpora Stephani Protomártyris, Gamaliélis, Nicodémi et Abibónis,
+    quæ diu in obscúro ac sórdido loco jacúerant, Honorio imperatóre, Luciáno
+    presbytero divínitus admónito, invénta sunt prope Jerosolymam. Cui Gamaliel
+    cum in somnis apparuísset, gravi quadam et præclára senis spécie, locum
+    jacéntium córporum commonstrávit, imperans ut Joánnem Jerosolymitanum
+    antístitem adíret, agerétque cum eo ut honestius illa córpora sepelirentur.
+responsory4:
+  - "@Sancti/12-26"
+lectio5:
+  - Quibus auditis Jerosolymórum antístes, finitimárum urbium epíscopis
+    presbyterisque convocatis, ad locum pergit; defossos lóculos ínvenit, unde
+    suavíssimus odor efflabátur. Cujus rei fama commóta, magna hóminum multitúdo
+    eo convénit, multique ex variis morbis ægroti ac débiles sani et íntegri
+    domum rediérunt. Sacrum autem sancti Stephani corpus, quod summa tunc
+    celebritate in sanctam ecclésiam Sion illátum est, sub Theodosio junióre
+    Constantinópolim, inde Romam, Pelagio primo summo Pontifice, translátum, in
+    agro Verano in sepúlcro sancti Lauréntii Mártyris collocátum est.
+responsory5:
+  - "@Sancti/12-26"
+lectio6:
+  - Ex libro sancti Augustíni Epíscopi de Civitáte Dei
+  - "!Liber 22, cap. 8, circa medium"
+  - "Ad aquas Tibilitanas, episcopo afferénte Projecto relíquias Mártyris
+    gloriosíssimi Stephani, ad ejus memóriam veniebat magnæ multitúdinis
+    concursus et occúrsus. Ibi cæca mulier, ut ad episcopum portántem pígnora
+    sacra ducerétur, orávit: flores, quos ferebat, dedit; recepit, óculis
+    admóvit, prótinus vidit. Stupéntibus qui áderant, præibat exsultans, viam
+    carpens et viæ ducem ulterius non requírens. Memoráti memóriam Mártyris, quæ
+    pósita est in castello Synicénsi, quod Hipponénsi coloniæ vicinum est,
+    ejusdem loci Lucillus epíscopus, pópulo præcedénte atque sequente, portábat;
+    fístula, cujus molestia jamdiu laboraverat, et familiaríssimi sui médici,
+    qui eam secaret, opperiebátur manus, illíus piæ sarcinæ vectatióne repénte
+    sanáta est."
+responsory6:
+  - "@Sancti/12-26"
+lectio94:
+  - Sanctórum córpora Stéphani Protomártyris, Gamaliélis, Nicodémi et Abibónis,
+    suavíssimum odórem manántia, a Joánne Jerosolymitárum antístite, invénta
+    sunt prope Jerosólymam. Cujus rei fama commóta, magna hóminum multitúdo eo
+    convénit, multíque ex váriis morbis ægróti ac débiles, sani et íntegri domum
+    rediérunt. Sacrum autem sancti Stéphani corpus, quod summa tunc celebritáte
+    in sanctam ecclésiam Sion illátum est, sub Theodósio junióre
+    Constantinópolim, inde Romam, Pelágio primo summo Pontífice, translátum, in
+    agro Veráno in sepúlcro sancti Lauréntii Mártyris collocátum est.
+  - "&teDeum"
+lectio7:
+  - "@Sancti/12-26"
+responsory7:
+  - "@Sancti/12-26"
+lectio8:
+  - "@Sancti/12-26"
+responsory8:
+  - "@Sancti/12-26"
+lectio9:
+  - "@Sancti/12-26"
+ant-laudes:
+  - "@Sancti/12-26"
+capitulum-laudes:
+  - "@Sancti/12-26"
+versum-2:
+  - "@Sancti/12-26"
+rubrica-cisterciensis/versum-2:
+  - "@:Versum 1"
+ant-2:
+  - "@:Ant 1"
+rubrica-cisterciensis/ant-2:
+  - "@Sancti/12-26"
+lectio-prima:
+  - "@Sancti/12-26"
+capitulum-sexta:
+  - "@Sancti/12-26"
+capitulum-nona:
+  - "@:Lectio Prima"
+versum-3:
+  - "@Sancti/12-26"
+ant-3:
+  - "@Sancti/12-26"

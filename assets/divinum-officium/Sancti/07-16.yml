@@ -1,0 +1,138 @@
+rank:
+  - In Commemoratione Beatæ Mariæ Virgine de Monte Carmelo
+  - Duplex majus
+  - "4"
+  - "@C11"
+rubrica-196/rank:
+  - Beatæ Mariæ Virginis de Monte Carmelo
+  - Simplex
+  - "1.1"
+  - "@C11"
+rule:
+  - ex C11;
+  - 9 lectiones;
+  - Doxology=Nat
+  - Gloria
+  - CredoDA
+  - Prefatio=Maria=Commemoratione;
+introitus:
+  - "!Sedulius"
+  - "v. Gaudeamus omnes in Domino diem festum celebrantes sub honore beatae
+    Mariæ Virginis: de cujus assumptione gaudent, angeli, et collaudant Filium
+    Dei."
+  - "!Ps 44:2"
+  - "Eructávit cor meum verbum bonum: dico ego ópera mea Regi."
+  - "&Gloria"
+  - "v. Gaudeamus omnes in Domino diem festum celebrantes sub honore beatae
+    Mariæ Virginis: de cujus assumptione gaudent, angeli, et collaudant Filium
+    Dei."
+oratio:
+  - "Deus, qui beatíssimæ semper Vírginis et Genetrícis tuæ Maríæ singulári
+    título Carméli órdinem decorásti: concéde propítius; ut, cujus hódie
+    Commemoratiónem sollémni celebrámus offício, ejus muníti præsídiis, ad
+    gáudia sempitérna perveníre mereámur:"
+  - $Qui vivis
+lectio:
+  - Léctio libri Sapiéntiæ
+  - "!Eccli 24:23-31"
+  - "Ego quasi vitis fructificávi suavitátem odóris: et flores mei fructus
+    honóris et honestátis. Ego mater pulchræ dilectiónis, et timóris, et
+    agnitiónis, et sanctæ spei. In me grátia omnis viæ et veritátis: in me omnis
+    spes vitæ et virtútis. Transíte ad me, omnes, qui concupíscitis me, et a
+    generatiónibus meis implémini. Spíritus enim meus super mel dulcis, et
+    heréditas mea super mel et favum. Memória mea in generatiónes sæculórum. Qui
+    edunt me, adhuc esúrient: et qui bibunt me, adhuc sítient. Qui audit me, non
+    confundétur: et qui operántur in me, non peccábunt. Qui elúcidant me, vitam
+    ætérnam habébunt."
+graduale:
+  - "Benedícta et venerábilis es, Virgo María: quæ sine tactu pudóris invénta es
+    Mater Salvatóris."
+  - V. Virgo, Dei Génetrix, quem totus non capit orbis, in tua se clausit
+    víscera factus homo.
+  - "V. Felix es, sacra Virgo María, et omni laude digníssima: quia ex te ortus
+    est sol justítiæ, Christus, Deus noster."
+  - _
+  - Allelúja, allelúja.
+  - "Per te, Dei Génetrix, nobis est vita pérdita data: quæ de cœlo suscepísti
+    prolem, et mundo genuísti Salvatórem. Allelúja."
+evangelium:
+  - "@Commune/C10"
+offertorium:
+  - "!Jer 18:20"
+  - Recordáre, Virgo Mater, in conspéctu Dei, ut loquáris pro nobis bona, et ut
+    avértat indignatiónem suam a nobis.
+secreta:
+  - "Sanctífica, Dómine, quǽsumus, obláta libámina: et, beátæ Dei Genetrícis
+    Maríæ salubérrima intercessióne, nobis salutária fore concéde."
+  - $Per eundem
+communio:
+  - Regína mundi digníssima, María Virgo perpétua, intercéde pro nostra pace et
+    salúte, quæ genuísti Christum Dóminum, Salvatórem ómnium.
+postcommunio:
+  - "Adjuvet nos, quǽsumus, Dómine, gloriósæ tuæ Genetrícis sempérque Vírginis
+    Maríæ intercéssio veneránda: ut, quos perpétuis cumulávit benefíciis, a
+    cunctis perículis absolútos, sua fáciat pietáte concórdes:"
+  - $Qui vivis
+ant-1:
+  - "Sancta María, succurre míseris, juva pusillánimes, réfove flébiles, ora pro
+    pópulo, intérveni pro clero, intercéde pro devóto femíneo sexu: séntiant
+    omnes tuum juvámen, quicúmque célebrant tuam  solémnem Commemoratiónem."
+rubrica-cisterciensis/ant-1:
+  - "@CommuneCist/C11"
+lectio4:
+  - Cum sacra Pentecostes die Apóstoli, cælitus afflati, variis linguis
+    loqueréntur, et, invocato augustíssimo Jesu nómine, mira multa patrarent;
+    viri plurimi (ut fertur), qui vestigiis sanctórum prophetárum Elíæ ac Eliséi
+    instíterant, et Joánnis Baptistæ præconio ad Christi advéntum comparáti
+    fuerant, rerum veritáte perspecta atque probata, evangelicam fidem conféstim
+    amplexáti sunt, ac peculiari quodam afféctu beatíssimam Vírginem (cujus
+    colloquiis ac familiaritate feliciter frui potuére) adeo venerari cœpérunt,
+    ut primi ómnium in eo montis Carmeli loco, ubi Elías olim ascendentem
+    nébulam, Vírginis typo insignem, conspexerat, eidem puríssimæ Virgini
+    sacellum construxerint.
+lectio5:
+  - Ad novum ergo sacellum sæpe quotídie conveniéntes, rítibus piis,
+    precatiónibus ac laudibus beatíssimam Vírginem, velut singularem ordinis
+    tutelam, colebant. Quam ob rem fratres beátæ Maríæ de Monte Carmelo passim
+    ab ómnibus appellari cœpérunt; eumque titulum summi Pontifices non modo
+    confírmarunt, sed et indulgéntias peculiares iis, qui eo titulo vel ordinem
+    vel fratres síngulos nuncuparent, concessére. Nec vero nomenclatúram tantum
+    magnificentíssima Virgo tríbuit et tutelam, verum et insigne sacri
+    scapularis; quod beato Simoni Anglico præbuit, ut cælésti hac veste ordo
+    ille sacer dignoscerétur, et a malis ingruéntibus protegerétur. Ac demum,
+    cum olim in Europa ordo esset ignotus, et ob id apud Honórium tertium non
+    pauci pro illíus exstinctióne instarent, ástitit Honorio noctu piíssima
+    Virgo Maria, planeque jussit ut institutum et hómines benígne
+    complecterétur.
+lectio6:
+  - Non in hac tantum sæculo ordinem sibi tam acceptum multis prærogativis
+    beatíssima Virgo insignívit; verum et in alio (cum ubíque et poténtia et
+    misericórdia plurimum valeat) fílios in scapularis societátem relatos, qui
+    abstinéntiam modicam precesque paucas eis præscriptas frequentarunt, ac pro
+    sui status ratióne castitátem coluérunt, materno plane afféctu, dum igne
+    purgatorii expiántur, solari ac in cælestem pátriam obtentu suo quantócius
+    pie creditur efferre. Tot ergo tantisque beneficiis ordo cumulátus, solemnem
+    beatíssimæ Vírginis Commemoratiónem, ritu perpetuo ad ejusdem Vírginis
+    glóriam quotannis celebrandam, instituit.
+lectio94:
+  - Cum sacra Pentecóstes die viri plúrimi, ut fertur, qui vestígiis sanctórum
+    prophetárum Elíæ ac Eliséi instíterant, evangélicam fidem fuíssent
+    amplexáti, in eo montis Carméli loco, ubi Elías olim ascendéntem nébulam,
+    beátæ Maríæ Vírginis typo insígnem, conspéxerat eídem puríssimæ Vírgini
+    sacéllum constrúere cœpérunt; eamdémque, velut singulárem órdinis tutélam,
+    veneráti sunt, fratrum beátæ Maríæ de Monte Carmélo exínde nómine accépto.
+    Eis numquam défuit speciális protéctio beatíssimæ Vírginis, quæ Honórium
+    tértium ab órdine exstinguéndo per sómnium detérruit, et insígne sacri
+    scapuláris órdini tríbuit, quod qui gestáverint et abstinéntiam módicam
+    precésque paucas frequentáverint, igne purgatórii deténti, obténtu suo
+    quantócius in cæléstem pátriam pie credúntur efférri. Tot ergo tantísque
+    benefíciis ordo cumulátus, solémnem beatíssimæ Vírginis Commemoratiónem
+    quotánnis celebrándam instítuit.
+  - "&teDeum"
+responsory7:
+  - "@Commune/C11::s/sanctam festivitátem/Solémnem Commemoratiónem/"
+ant-2:
+  - Caput tuum * ut Carmélus, et comæ cápitis tui sicut púrpura Regis vincta
+    canálibus, allelúja.
+ant-3:
+  - Glória Líbani * data est ei, decor Carméli et Saron, allelúja.

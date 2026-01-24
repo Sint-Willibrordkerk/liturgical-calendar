@@ -1,0 +1,21 @@
+references: "@Sancti/09-21"
+rule:
+  - 12 lectiones
+lectio4:
+  - "@CommuneM/C1a"
+lectio5:
+  - "@Sancti/09-21:Lectio4"
+lectio6:
+  - "@Sancti/09-21:Lectio5"
+lectio7:
+  - "@CommuneM/C1a"
+lectio8:
+  - "@CommuneM/C1a"
+lectio9:
+  - "@Sancti/09-21:Lectio7"
+lectio10:
+  - "@Sancti/09-21:Lectio8:s/ Certe.*//s"
+lectio11:
+  - "@Sancti/09-21:Lectio8:s/.* Certe/Certe/s"
+lectio12:
+  - "@Sancti/09-21:Lectio9"

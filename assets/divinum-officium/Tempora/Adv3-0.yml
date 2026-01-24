@@ -1,0 +1,275 @@
+officium:
+  - Dominica III Adventus
+rank:
+  - ""
+  - Semiduplex II. classis
+  - "5.6"
+rubrica-1570-aut-rubrica-1888/rank:
+  - ""
+  - Semiduplex II. classis
+  - "6.1"
+rubrica-196/rank:
+  - ""
+  - Semiduplex
+  - "6.01"
+rule:
+  - 9 lectiones
+  - Antiphonas horas
+  - no Gloria
+  - Credo
+  - Suffr=Maria1;Ecclesiæ,Papa;;
+introitus:
+  - "!Phil 4:4-6"
+  - "v. Gaudéte in Dómino semper: íterum dico, gaudéte. Modéstia vestra nota sit
+    ómnibus homínibus: Dóminus enim prope est. Nihil sollíciti sitis: sed in
+    omni oratióne petitiónes vestræ innotéscant apud Deum."
+  - "!Ps 84:2"
+  - "Benedixísti, Dómine, terram tuam: avertísti captivitátem Jacob."
+  - "&Gloria"
+  - "v. Gaudéte in Dómino semper: íterum dico, gaudéte. Modéstia vestra nota sit
+    ómnibus homínibus: Dóminus enim prope est. Nihil sollíciti sitis: sed in
+    omni oratióne petitiónes vestræ innotéscant apud Deum."
+oratio:
+  - "Aurem tuam, quǽsumus, Dómine, précibus nostris accómmoda: et mentis nostræ
+    ténebras, grátia tuæ visitatiónis illústra:"
+  - $Qui vivis
+lectio:
+  - Lectio Epístolæ beáti Pauli Apóstoli ad Philippénses
+  - "!Philipp 4:4-7"
+  - "Fratres: Gaudéte in Dómino semper: íterum dico, gaudéte. Modéstia vestra
+    nota sit ómnibus homínibus: Dóminus prope est. Nihil sollíciti sitis: sed in
+    omni oratióne et obsecratióne, cum gratiárum actióne, petitiónes vestræ
+    innotéscant apud Deum. Et pax Dei, quæ exsúperat omnem sensum, custódiat
+    corda vestra et intellegéntias vestras, in Christo Jesu, Dómino nostro."
+graduale:
+  - "!Ps 79:2; 79:3; 79:2"
+  - Qui sedes, Dómine, super Chérubim, éxcita poténtiam tuam, et veni.
+  - "V. Qui regis Israël, inténde: qui dedúcis, velut ovem, Joseph. Allelúja,
+    allelúja,"
+  - V. Excita, Dómine, potentiam tuam, et veni, ut salvos fácias nos. Allelúja.
+gradualef:
+  - "!Ps 79:2; 79:3; 79:2"
+  - Qui sedes, Dómine, super Chérubim, éxcita poténtiam tuam, et veni.
+  - "V. Qui regis Israël, inténde: qui dedúcis, velut ovem, Joseph."
+evangelium:
+  - Sequéntia ++ sancti Evangélii secúndum Joánnem
+  - "!Joann 1:19-28"
+  - "In illo tempore: Misérunt Judǽi ab Jerosólymis sacerdótes et levítas ad
+    Joánnem, ut interrogárent eum: Tu quis es? Et conféssus est, et non negávit:
+    et conféssus est: Quia non sum ego Christus. Et interrogavérunt eum: Quid
+    ergo? Elías es tu? Et dixit: Non sum. Prophéta es tu? Et respondit: Non.
+    Dixérunt ergo ei: Quis es, ut respónsum demus his, qui misérunt nos? Quid
+    dicis de te ipso? Ait: Ego vox clamántis in desérto: Dirígite viam Dómini,
+    sicut dixit Isaías Prophéta. Et qui missi fúerant, erant ex pharisǽis. Et
+    interrogavérunt eum, et dixérunt ei: Quid ergo baptízas, si tu non es
+    Christus, neque Elías, neque Prophéta? Respóndit eis Joánnes, dicens: Ego
+    baptízo in aqua: médius autem vestrum stetit, quem vos nescítis. Ipse est,
+    qui post me ventúrus est, qui ante me factus est: cujus ego non sum dignus
+    ut solvam ejus corrígiam calceaménti. Hæc in Bethánia facta sunt trans
+    Jordánem, ubi erat Joánnes baptízans."
+offertorium:
+  - "!Ps 84:2"
+  - "Benedixísti, Dómine, terram tuam: avertísti captivitátem Jacob: remisísti
+    iniquitatem plebis tuæ."
+secreta:
+  - "Devotiónis nostræ tibi, quǽsumus, Dómine, hóstia júgiter immolétur: quæ et
+    sacri péragat institúta mystérii, et salutáre tuum in nobis mirabíliter
+    operétur."
+  - $Per Dominum
+communio:
+  - "!Is 35:4."
+  - "Dícite: pusillánimes, confortámini et nolíte timére: ecce, Deus noster
+    véniet et salvábit nos."
+postcommunio:
+  - "Implorámus, Dómine, cleméntiam tuam: ut hæc divína subsídia, a vítiis
+    expiátos, ad festa ventúra nos prǽparent."
+  - $Per Dominum
+ant-vespera:
+  - "@:Ant Laudes"
+rubrica-tridentina/ant-vespera: []
+ant-1:
+  - "Ante me * non est formátus Deus, et post me non erit: quia mihi curvábitur
+    omne genu, et confitébitur omnis lingua."
+lectio1:
+  - De Isaía Prophéta
+  - "!Isa 26:1-6"
+  - "1 In die illa cantábitur cánticum istud in terra Juda: Urbs fortitúdinis
+    nostræ Sion Salvátor, ponétur in ea murus et antemurále."
+  - 2 Aperíte portas et ingrediátur gens justa, custódiens veritátem.
+  - "3 Vetus error ábiit: servábis pacem: pacem, quia in te sperávimus."
+  - 4 Sperástis in Dómino in sǽculis ætérnis, in Dómino Deo forti, in perpétuum.
+  - 5 Quia incurvábit habitántes in excélso, civitátem sublímem humiliábit.
+    Humiliábit eam usque ad terram, détrahet eam usque ad púlverem.
+  - 6 Conculcábit eam pes, pedes páuperis, gressus egenórum.
+responsory1:
+  - R. Ecce apparébit Dóminus super nubem cándidam,
+  - "* Et cum eo Sanctórum míllia: et habébit in vestiménto, et in fémore suo
+    scriptum: Rex regum, et Dóminus dominántium."
+  - V. Apparébit in finem, et non mentiétur; si moram fécerit, exspécta eum,
+    quia véniens véniet.
+  - "R. Et cum eo Sanctórum míllia: et habébit in vestiménto, et in fémore suo
+    scriptum: Rex regum, et Dóminus dominántium."
+lectio2:
+  - "!Isa 26:7-10"
+  - 7 Sémita justi recta est, rectus callis justi ad ambulándum.
+  - "8 Et in sémita judiciórum tuórum, Dómine, sustinúimus te: nomen tuum, et
+    memoriále tuum in desidério ánimæ."
+  - 9 Anima mea desiderávit te in nocte, sed et spíritu meo in præcórdiis meis
+    de mane vigilábo ad te. Cum féceris judícia tua in terra, justítiam discent
+    habitatóres orbis.
+  - "10 Misereámur ímpio, et non discet justítiam: in terra sanctórum iníqua
+    gessit, et non vidébit glóriam Dómini."
+responsory2:
+  - "R. Béthlehem cívitas Dei summi, ex te éxiet Dominátor Israël, et egréssus
+    ejus sicut a princípio diérum æternitátis, et magnificábitur in médio
+    univérsæ terræ:"
+  - "* Et pax erit in terra nostra, dum vénerit."
+  - V. Loquétur pacem in géntibus, et potéstas ejus a mari usque ad mare.
+  - R. Et pax erit in terra nostra, dum vénerit.
+lectio3:
+  - "!Isa 26:11-14"
+  - "11 Dómine, exaltétur manus tua, et non vídeant: vídeant, et confundántur
+    zelántes pópuli: et ignis hostes tuos dévoret."
+  - "12 Dómine, dabis pacem nobis: ómnia enim ópera nostra operátus es nobis."
+  - 13 Dómine Deus noster, possedérunt nos dómini absque te, tantum in te
+    recordémur nóminis tui.
+  - "14 Moriéntes non vivant, gigántes non resúrgant: proptérea visitásti et
+    contrivísti eos, et perdidísti omnem memóriam eórum."
+responsory3:
+  - "R. Qui ventúrus est, véniet, et non tardábit: et jam non erit timor in
+    fínibus nostris:"
+  - "* Quóniam ipse est Salvátor noster."
+  - V. Depónet omnes iniquitátes nostras, et proíciet in profúndum maris ómnia
+    peccáta nostra.
+  - R. Quóniam ipse est Salvátor noster.
+  - "&Gloria"
+  - R. Quóniam ipse est Salvátor noster.
+lectio4:
+  - Sermo sancti Leónis Papæ
+  - "!Sermo 2 de jejúnio décimi mensis et collectis"
+  - Quod témporis rátio, et devotiónis nostræ ádmonet consuetúdo, pastoráli
+    vobis, dilectíssimi, sollicitúdine prædicámus, décimi mensis celebrándum
+    esse jejúnium, quo pro consummáta perceptióne ómnium frúctuum, digníssime
+    largitóri eórum Deo continéntiæ libámen offértur. Quid enim potest
+    efficácius esse jejúnio? cujus observántia appropinquámus Deo, et
+    resisténtes diábolo, vítia blanda superámus.
+responsory4:
+  - R. Ægýpte, noli flere, quia Dominátor tuus véniet tibi, ante cujus
+    conspéctum movebúntur abýssi,
+  - "* Liberáre pópulum suum de manu poténtiæ."
+  - V. Ecce véniet Dóminus exercítuum, Deus tuus cum potestáte magna.
+  - R. Liberáre pópulum suum de manu poténtiæ.
+lectio5:
+  - "Semper enim virtúti cibus jejúnium fuit. De abstinéntia dénique pródeunt
+    castæ cogitatiónes, rationábiles voluntátes, salubrióra consília: et per
+    voluntárias afflictiónes caro concupiscéntiis móritur, virtútibus spíritus
+    innovátur. Sed quia non solo jejúnio animárum nostrárum salus acquíritur,
+    jejúnium nostrum misericórdiis páuperum suppleámus. Impendámus virtúti, quod
+    subtráhimus voluptáti. Fiat reféctio páuperis abstinéntia jejunántis."
+responsory5:
+  - "R. Prope est ut véniat tempus ejus, et dies ejus non elongabúntur:"
+  - "* Miserébitur Dóminus Jacob, et Israël salvábitur."
+  - V. Revértere, virgo Israël, revértere ad civitátes tuas.
+  - R. Miserébitur Dóminus Jacob, et Israël salvábitur.
+lectio6:
+  - "Studeámus viduárum defensióni, pupillórum utilitáti, lugéntium
+    consolatióni, dissidéntium paci. Suscipiátur peregrínus, adjuvétur
+    oppréssus, vestiátur nudus, foveátur ægrótus: ut quicúmque nostrum de justis
+    labóribus auctóri bonórum ómnium Deo sacrifícium hujus pietátis obtúlerit,
+    ab eodem regni cæléstis prǽmium percípere mereátur. Quarta ígitur et sexta
+    Feria jejunémus; Sábbato autem apud beátum Petrum Apóstolum páriter
+    vigilémus: cujus suffragántibus méritis, quæ póscimus, impetráre possímus
+    per Dóminum nostrum Jesum Christum, qui cum Patre et Sancto Spíritu vivit et
+    regnat in sǽcula sæculórum. Amen."
+responsory6:
+  - "R. Descéndet Dóminus sicut plúvia in vellus:"
+  - "* Oriétur in diébus ejus justítia, et abundántia pacis."
+  - V. Et adorábunt eum omnes reges, omnes gentes sérvient ei.
+  - R. Oriétur in diébus ejus justítia, et abundántia pacis.
+  - "&Gloria"
+  - R. Oriétur in diébus ejus justítia, et abundántia pacis.
+lectio7:
+  - Léctio sancti Evangélii secúndum Joánnem
+  - "!Joannes 1:19-28"
+  - "In illo témpore: Misérunt Judǽi ab Jerosólymis sacerdótes et levítas ad
+    Joánnem, ut interrogárent eum: Tu quis es? Et réliqua."
+  - _
+  - Homilía sancti Gregórii Papæ
+  - "!Homilia 7 in Evangelia"
+  - "Ex hujus nobis lectiónis verbis, fratres caríssimi, Joánnis humílitas
+    commendátur: qui cum tantæ virtútis esset, ut Christus credi potuísset,
+    elégit sólide subsístere in se, ne humána opinióne raperétur inániter super
+    se. Nam conféssus est, et non negávit: et conféssus est, Quia non sum ego
+    Christus. Sed qui dixit, Non sum; negávit plane quod non erat, sed non
+    negávit quod erat: ut veritátem loquens, ejus membrum fíeret, cujus sibi
+    nomen falláciter non usurpáret. Cum ergo non vult appétere nomen Christi,
+    factus est membrum Christi: quia dum infirmitátem suam stúduit humíliter
+    agnóscere, illíus celsitúdinem méruit veráciter obtinére."
+responsory7:
+  - "R. Veni, Dómine, et noli tardáre: reláxa facínora plebi tuæ,"
+  - "* Et révoca dispérsos in terram suam."
+  - V. Excita, Dómine, poténtiam tuam, et veni, ut salvos fácias nos.
+  - R. Et révoca dispérsos in terram suam.
+lectio8:
+  - "Sed cum ex lectióne alia, Redemptóris nostri senténtia ad mentem redúcitur,
+    ex hujus lectiónis verbis nobis quǽstio valde impléxa generátur. Alio quippe
+    in loco inquisítus a discípulis Dóminus de Elíæ advéntu, respóndit: Elías
+    jam venit, et non cognovérunt eum, sed fecérunt in eum quæcúmque voluérunt:
+    et, si vultis scire, Joánnes ipse est Elías. Requisítus autem Joánnes dicit:
+    Non sum Elías. Quid est hoc, fratres caríssimi, quia quod Véritas affírmat,
+    hoc prophéta Veritátis negat? Valde namque inter se divérsa sunt: Ipse est:
+    et, Non sum. Quómodo ergo prophéta veritátis est, si ejusdem Veritátis
+    sermónibus concors non est?"
+responsory8:
+  - "R. Ecce radix Jesse descéndet in salútem populórum, ipsum gentes
+    deprecabúntur:"
+  - "* Et erit nomen ejus gloriósum."
+  - V. Dabit ei Dóminus Deus sedem David, patris ejus, et regnábit in domo Jacob
+    in ætérnum..
+  - R. Et erit nomen ejus gloriósum.
+lectio9:
+  - "Sed si subtíliter véritas ipsa requirátur, hoc quod inter se contrárium
+    sonat, quómodo contrárium non sit, invenítur. Ad Zacharíam namque de Joánne
+    Angelus dicit: Ipse præcédet ante illum in spíritu et virtúte Elíæ. Qui
+    idcírco ventúrus in spíritu et virtúte Elíæ dícitur, quia sicut Elías
+    secúndum Dómini advéntum prævéniet, ita Joánnes prævénit primum. Sicut ille
+    præcúrsor ventúrus est Júdicis, ita iste præcúrsor est factus Redemptóris.
+    Joánnes ígitur in spíritu Elías erat, in persóna Elías non erat. Quod ergo
+    Dóminus fatétur de spíritu, hoc Joánnes dénegat de persóna."
+responsory9:
+  - "R. Docébit nos Dóminus vias suas, et ambulábimus in sémitis ejus:"
+  - "* Quia de Sion exíbit lex, et verbum Dómini de Jerúsalem."
+  - V. Veníte, ascendámus ad montem Dómini, et ad domum Dei Jacob.
+  - R. Quia de Sion exíbit lex, et verbum Dómini de Jerúsalem.
+  - "&Gloria"
+  - R. Quia de Sion exíbit lex, et verbum Dómini de Jerúsalem.
+ant-laudes:
+  - Véniet Dóminus, * et non tardábit, et illuminábit abscóndita tenebrárum, et
+    manifestábit se ad omnes gentes, allelúja.
+  - Jerúsalem, gaude * gáudio magno, quia véniet tibi Salvátor, allelúja.
+  - Dabo in Sion * salútem, et in Jerúsalem glóriam meam, allelúja.
+  - "Montes et omnes colles * humiliabúntur: et erunt prava in dirécta, et
+    áspera in vias planas: veni, Dómine, et noli tardáre, allelúja."
+  - Juste et pie * vivámus, exspectántes beátam spem, et advéntum Dómini.
+capitulum-laudes:
+  - "!Phil 4:4-5"
+  - "v. Fratres: Gaudéte in Dómino semper: íterum dico, gaudéte. Modéstia vestra
+    nota sit ómnibus homínibus: Dóminus enim prope est."
+  - $Deo gratias
+ant-2:
+  - Super sólium * David, et super regnum ejus sedébit in ætérnum, allelúja.
+capitulum-sexta:
+  - "!Phil 4:6"
+  - "v. Nihil sollíciti sitis: sed in omni oratióne, et obsecratióne cum
+    gratiárum actióne, petitiónes vestræ innotéscant apud Deum."
+  - $Deo gratias
+capitulum-nona:
+  - "!Phil 4:7"
+  - v. Et pax Dei, quæ exsúperat omnem sensum, custódiat corda vestra, et
+    intellegéntias vestras in Christo Jesu Dómino nostro.
+  - $Deo gratias
+ant-vespera-3:
+  - "@:Ant Laudes"
+ant-3:
+  - "Beáta es, María, * quæ credidísti Dómino: perficiéntur in te, quæ dicta
+    sunt tibi a Dómino, allelúja."

@@ -1,0 +1,82 @@
+officium:
+  - S. Alexii Confessoris
+rank:
+  - ""
+  - Semiduplex
+  - "2.2"
+  - "@C5"
+rubrica-1570/rank:
+  - ""
+  - Simplex
+  - "1.1"
+  - "@C5"
+rubrica-1617/rank:
+  - ""
+  - Simplex
+  - "1.1"
+  - "@C5"
+rubrica-1960/rank:
+  - ""
+  - Simplex
+  - "1.1"
+  - "@C5"
+rule:
+  - vide C5;
+  - 9 lectiones;
+  - Gloria
+name:
+  - Aléxii
+lectio:
+  - Léctio Epístolæ beáti Pauli Apóstoli ad Timótheum
+  - "!1 Tim 6:6-12"
+  - "Caríssime: Est quæstus magnus píetas cum sufficiéntia. Nihil enim intúlimus
+    in hunc mundum: haud dúbium, quod nec auférre quid póssumus. Habéntes autem
+    aliménta, et quibus tegámur, his conténti simus. Nam qui volunt dívites
+    fíeri, incídunt in tentatiónem et in láqueum diáboli, et desidéria multa
+    inutília et nocíva: quæ mergunt hómines in intéritum et perditiónem. Radix
+    enim ómnium malórum est cupíditas: quam quidam appeténtes, erravérunt a
+    fide, et inseruérunt se dolóribus multis. Tu autem, o homo Dei, hæc fuge:
+    sectáre vero justítiam, pietátem, fidem, caritátem, patiéntiam,
+    mansuetúdinem. Certa bonum certámen fídei, apprehénde vitam ætérnam."
+evangelium:
+  - "@Commune/C5b"
+rubrica-cisterciensis/rank:
+  - ""
+  - Simplex
+  - "1.1"
+  - "@C5"
+rubrica-1951/ant-1:
+  - "@CommuneCist/C5:Ant 2"
+lectio4:
+  - Aléxius, Romanórum nobilíssimus, propter exímium Jesu Christi amórem prima
+    nocte nuptiárum peculiari Dei mónitu relínquens intactam sponsam, illustrium
+    orbis terræ ecclesiárum peregrinatiónem suscépit. Quibus in itinéribus cum
+    ignotus septémdecim annos fuísset, aliquándo apud Edessam, Syriæ urbem, per
+    imáginem sanctíssimæ Maríæ Vírginis, ejus nómine divulgato, inde navi
+    discessit. Ad portum Romanum appulsus, a patre suo tamquam alienus pauper
+    hospítio accipitur; apud quem, ómnibus incógnitus, cum decem et septem annos
+    vixísset, relícto scripto sui nóminis, sánguinis, ac totius vitæ cursus,
+    migrávit in cælum, Innocentio primo summo Pontifice.
+lectio5:
+  - "@Commune/C5:Lectio4 in 2 loco"
+lectio6:
+  - "@Commune/C5:Lectio5 in 2 loco"
+lectio94:
+  - Aléxius, Romanórum nobilíssimus, propter exímium Jesu Christi amórem prima
+    nocte nuptiárum peculiári Dei mónitu relínquens intáctam sponsam, illústrium
+    orbis terræ ecclesiárum peregrinatiónem suscépit. Quibus in itinéribus cum
+    ignótus septémdecim annos fuísset, aliquándo apud Edéssam, Syriæ urbem, per
+    imáginem sanctíssimæ Maríæ Vírginis, ejus nómine divulgáto, inde navi
+    discéssit. Ad portum Románum appúlsus, a patre suo tamquam aliénus pauper
+    hospítio accípitur; apud quem, ómnibus incógnitus, cum decem et septem annos
+    vixísset, relícto scripto sui nóminis, sánguinis, ac totíus vitæ cursus,
+    migrávit in cælum, Innocéntio primo summo Pontífice.
+  - "&teDeum"
+lectio7:
+  - "@Commune/C1:Lectio7"
+lectio8:
+  - "@Commune/C1:Lectio8"
+lectio9:
+  - "@Commune/C1:Lectio9"
+rubrica-1951/ant-2:
+  - "@CommuneCist/C5:Ant 1"

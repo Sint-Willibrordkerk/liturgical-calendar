@@ -1,0 +1,126 @@
+rank:
+  - Secunda die infra Octavam Epiphaniæ
+  - Semiduplex
+  - "5.6"
+  - In Epiphania Domini
+  - Duplex I classis
+  - "6.5"
+rubrica-196-aut-rubrica-1955/rank:
+  - Die Septima Januarii
+  - Feria
+  - "1.2"
+  - In Epiphania Domini
+  - Duplex I classis
+  - "6.5"
+rule:
+  - ex Sancti/01-06
+  - Lectio1 tempora
+  - Doxology=Epi
+  - 9 lectiones
+  - Feria Te Deum
+  - No prima Vespera
+  - Infra octavam Epiphaniæ Domini
+  - Gloria
+  - CredoDA
+  - Prefatio=Epi
+  - Suffragium=Maria2;Papa;Ecclesia;;
+responsory1:
+  - "R. Tria sunt múnera pretiósa, quæ obtulérunt Magi Dómino in die ista, et
+    habent in se divína mystéria:"
+  - "* In auro, ut ostendátur Regis poténtia: in thure, Sacerdótem magnum
+    consídera: et in myrrha, Domínicam sepultúram."
+  - V. Salútis nostræ auctórem Magi veneráti sunt in cunábulis, et de thesáuris
+    suis mýsticas ei múnerum spécies obtulérunt.
+  - "R. In auro, ut ostendátur Regis poténtia: in thure, Sacerdótem magnum
+    consídera: et in myrrha, Domínicam sepultúram."
+rubrica-praedicatorum/responsory1:
+  - "R. Hódie in Jordáne baptizáto Dómino apérti sunt cæli, et sicut colúmba
+    super eum Spíritus mansit, et vox Patris intónuit:"
+  - "* Hic est Fílius meus diléctus, in quo mihi bene complácui."
+  - V. Descéndit Spíritus Sanctus corporáli spécie sicut colúmba in ipsum, et
+    vox de cælo facta est.
+  - R. Hic est Fílius meus diléctus, in quo mihi bene complácui.
+responsory2:
+  - "R. In colúmbæ spécie Spíritus Sanctus visus est, Patérna vox audíta est:"
+  - "* Hic est Fílius meus diléctus, in quo mihi bene complácui."
+  - V. Cæli apérti sunt super eum, et vox Patris intónuit.
+  - R. Hic est Fílius meus diléctus, in quo mihi bene complácui.
+responsory3:
+  - "R. Reges Tharsis et ínsulæ múnera ófferent:"
+  - "* Reges Arabum et Saba dona Dómino Deo addúcent."
+  - V. Omnes de Saba vénient, aurum et thus deferéntes.
+  - R. Reges Arabum et Saba dona Dómino Deo addúcent.
+  - "&Gloria"
+  - R. Reges Arabum et Saba dona Dómino Deo addúcent.
+lectio4:
+  - Sermo sancti Augustíni Epíscopi
+  - "!Sermo 2 de Epiphania, qui est 30 de Tempore"
+  - "Ad partum Vírginis adorándum Magi ab Oriénte venérunt. Hunc diem hódie
+    celebrámus: huic debitum solemnitáti sermónem persolvimus. Illis dies iste
+    primus illuxit, anniversaria nobis festivitate rediit. Illi erant primítiæ
+    Géntium, nos pópulus Géntium. Nobis hoc lingua nuntiávit Apostolórum, stella
+    illis tamquam lingua cælórum; et nobis iídem Apóstoli, tamquam alii cæli,
+    enarravérunt glóriam Dei."
+lectio5:
+  - "Magnum sacraméntum: in præsepi jacebat, et Magos ab Oriénte ducebat.
+    Abscondebátur in stábulo, et agnoscebátur in cælo: ut ágnitus in cælo
+    manifestarétur in stábulo, et appellarétur Epiphanía dies iste, quod Latine
+    manifestátio dici potest: simul ejus celsitúdinem humilitatémque commendans,
+    ut qui in aperto cælo signis sidéreis monstrabátur magnus, in angusto
+    diversorio quæsítus invenirétur inválidus, infantílibus in membris natus,
+    infantilibúsque pannis involutus, adorarétur a Magis, timerétur a malis."
+lectio6:
+  - Tímuit enim eum rex Herodes, eisdem sibi Magis nuntiántibus, cum adhuc
+    quærerent párvulum, quem cognóverant cælo teste jam natum. Quid erit
+    tribúnal judicántis, quando supérbos reges cunábula terrébant infantis?
+    Quanto consultius reges, non sicut Heródes interfícere quærant, sed sicut
+    Magi potius adorare delecténtur; jam præsertim eum, qui et ipsam mortem,
+    quam cupiebat inimícus inférre, étiam pro ipsis inimícis ab inimícis
+    sustinuit, eamque in suo corpore occisus occídit. Pie timeant reges ad
+    Patris déxteram jam sedéntem, quem rex ímpius tímuit adhuc matris úbera
+    lambéntem.
+lectio7:
+  - Léctio sancti Evangélii secúndum Matthǽum
+  - "!Matt 2:1-12"
+  - "Cum natus esset Jesus in Bethlehem Juda in diébus Herodis regis, ecce Magi
+    ab Oriénte venérunt Jerosolymam, dicéntes: Ubi est qui natus est Rex
+    Judæórum? Et réliqua."
+  - _
+  - De Homilía sancti Gregórii Papæ
+  - "!Homilia 10 in Evangelia"
+  - "Nativitáte Regis nostri cógnita, Heródes ad callida arguménta convértitur;
+    et ne terreno regno privarétur, renuntiari sibi ubi puer inveniátur,
+    postulat. Adorare eum velle se símulat, ut hunc, si inveníri possit,
+    exstinguat. Sed quanta est humana malítia contra consílium divinitátis?
+    Scriptum quippe est: Non est sapiéntia, non est prudéntia, non est consílium
+    contra Dóminum. Nam ea, quæ appáruit stella, Magos perducit: natum Regem
+    reperiunt, múnera déferunt: et ne redire ad Heródem debeant, in somnis
+    admonéntur. Sicque fit, ut Jesum, quem quærit Heródes, inveníre non possit.
+    Cujus persona qui alii, quam hypócritæ designántur, qui dum ficte quærunt,
+    inveníre Dóminum numquam merentur?"
+lectio8:
+  - "Sed inter hæc sciéndum, quod Priscilliánistæ hæretici nasci unumquemque
+    hóminem sub constitutiónibus stellárum putant: et hoc in adjutórium sui
+    erroris assumunt, quod nova stella éxiit cum Dóminus in carne appáruit;
+    cujus fuísse fatum eamdem, quæ appáruit, stellam putant. Sed si Evangélii
+    verba pensamus, quibus de eádem stella dícitur: Usque dum veniens staret
+    supra, ubi erat puer: dum non puer ad stellam, sed stella ad púerum
+    cucúrrit, si dici liceat, non stella fatum púeri, sed fatum stellæ is, qui
+    appáruit puer fuit."
+lectio9:
+  - "Sed a fidelium córdibus absit, ut aliquid esse fatum dicant. Vitam quippe
+    hóminum solus hic Cónditor, qui creávit, adminístrat. Neque enim propter
+    stellas homo, sed stellæ propter hóminem factæ sunt: et si stella fatum
+    hóminis dícitur, ipsis suis ministériis subesse homo perhibétur. Certe cum
+    Jacob de útero egrédiens, prioris fratris plantam tenéret manu, prior
+    perfecte nequáquam égredi pótuit, nisi súbsequens inchoasset: et tamen cum
+    uno témpore, eodémque momento utrumque mater fúderit, non una utriusque vitæ
+    qualitas fuit."
+  - "&teDeum"
+ant-2:
+  - "Ab Oriénte * venérunt Magi in Béthlehem adoráre Dóminum: et apértis
+    thesáuris suis, pretiósa múnera obtulérunt: aurum, sicut Regi magno; thus,
+    sicut Deo vero; myrrham, sepultúræ ejus, allelúja."
+ant-3:
+  - "Vidéntes stellam Magi, * gavísi sunt gáudio magno: et intrántes domum,
+    obtulérunt Dómino aurum, thus, et myrrham, allelúja."

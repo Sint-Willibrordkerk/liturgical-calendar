@@ -1,0 +1,21 @@
+officium:
+  - Feria quarta infra Hebdomadam III post Octavam Pentecostes
+rank:
+  - ""
+  - Feria
+  - "1"
+rule:
+  - Oratio Dominica
+  - Suffr=Sanctorum;Maria3,Ecclesiæ,Papa;;
+lectio1:
+  - "@Tempora/Pent03-3"
+responsory1:
+  - "@Tempora/Pent01-3:Responsory1"
+lectio2:
+  - "@Tempora/Pent03-3"
+responsory2:
+  - "@Tempora/Pent01-3:Responsory2"
+lectio3:
+  - "@Tempora/Pent03-3"
+responsory3:
+  - "@Tempora/Pent01-3:Responsory3"

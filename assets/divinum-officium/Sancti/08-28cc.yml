@@ -1,0 +1,24 @@
+officium:
+  - S. Hermetis Martyris
+rank:
+  - ""
+  - Simplex
+  - "1.1"
+  - "@C2a-1"
+rule:
+  - vide C2a-1;
+oratio:
+  - "Deus, qui beátum Hermétem Mártyrem tuum virtúte constántiæ in passióne
+    roborásti: ex ejus nobis imitatióne tríbue; pro amóre tuo próspera mundi
+    despícere, et nulla ejus advérsa formidáre."
+  - $Per Dominum
+secreta:
+  - "Sacrifícium tibi, Dómine, laudis offérimus in tuórum commemoratióne
+    Sanctórum: da, quǽsumus; ut, quod illis cóntulit glóriam, nobis prosit ad
+    salútem."
+  - $Per Dominum
+postcommunio:
+  - "Repleti, Dómine, benedictióne cœlésti, quǽsumus cleméntiam tuam: ut,
+    intercedénte beáto Herméte Mártyre tuo, quæ humíliter gérimus, salúbriter
+    sentiámus."
+  - $Per Dominum

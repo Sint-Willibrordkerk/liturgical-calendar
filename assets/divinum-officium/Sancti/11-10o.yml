@@ -1,0 +1,58 @@
+officium:
+  - Ss. Tryphonis, Respicii, et Nymphæ Virg., Martyrum
+rank:
+  - ""
+  - Simplex
+  - "1.1"
+  - "@C3a"
+rule:
+  - vide C3a;
+name:
+  - Tryphónis, Respícii et Nymphæ
+  - Postcommunio=Tryphóne, Respício et Nympha
+introitus:
+  - "!Ps 33:18."
+  - "v. Clamavérunt justi, et Dóminus exaudívit eos: et ex ómnibus
+    tribulatiónibus eórum liberávit eos."
+  - "!Ps 33:2"
+  - "Benedícam Dóminum in omni témpore: semper laus ejus in ore meo."
+  - "&Gloria"
+  - "v. Clamavérunt justi, et Dóminus exaudívit eos: et ex ómnibus
+    tribulatiónibus eórum liberávit eos."
+oratio:
+  - "Fac nos, quǽsumus, Dómine, sanctórum Mártyrum tuórum Tryphónis, Respícii et
+    Nymphæ semper festa sectári: quorum suffrágiis, protectiónis tuæ dona
+    sentiámus."
+  - $Per Dominum
+lectio:
+  - "@Tempora/Pent04-0"
+graduale:
+  - "!Ps 78:10; 78:2"
+  - Víndica, Dómine, sánguinem Sanctórum tuórum, qui effúsus est.
+  - "V. Posuérunt mortália servórum tuórum escas volatílibus cœli: carnes
+    Sanctórum tuórum béstiis"
+  - terræ.
+  - Allelúja, allelúja.
+  - "!Ps 115:15"
+  - Pretiósa in conspéctu Dómini mors Sanctórum ejus. Allelúja.
+evangelium:
+  - "@Commune/C3a-1"
+offertorium:
+  - "!Ps 31:11"
+  - "Lætámini in Dómino et exsultáte, justi: et gloriámini, omnes recti corde."
+communio:
+  - "@Sancti/03-10"
+lectio93:
+  - Tryphon, Decio imperatóre, cum Jesu Christi fidem prædicans, omnes ad ejus
+    cultum perducere conarétur, a Decii satellítibus comprehénsus, primum
+    equuleo torquétur et ungulis férreis excarnificátur; deínde, sublimibus
+    pédibus candéntibus clavis confíxus, fustibus cæditur, et, admotis facibus
+    ardéntibus, aduritur. Quæ cum ómnia fortiter ferentem vidísset Respicius
+    tribunus, ad Christi Dómini fidem convérsus, statim se christianum esse
+    palam proféssus est. Qui, varie cruciatus, una cum Tryphone rapitur ad Jovis
+    simulacrum; quæ statua, Tryphone orante, cóncidit. Quare plumbátis
+    crudelíssime contúsi, nobilíssimum martyrium consecúti sunt quarto Idus
+    Novembris. Eodem die virgo quædam, cui nomen Nympha, cum Jesum Christum
+    verum esse Deum clara voce testarétur, martyrii palmam ad virginitátis
+    corónam adjunxit.
+  - "&teDeum"

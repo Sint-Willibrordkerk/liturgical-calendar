@@ -1,0 +1,105 @@
+officium:
+  - In Vigilia S. Andreæ Apostoli
+rank:
+  - ""
+  - Vigilia
+  - "1.5"
+  - "@C1v"
+name:
+  - Andreas
+introitus:
+  - "!Matt 4:18; 4:19"
+  - "v. Dóminus secus mare Galilǽæ vidit duos fratres, Petrum et Andréam, et
+    vocávit eos: Veníte post me: fáciam vos fíeri piscatóres hóminum."
+  - "!Ps 18:2."
+  - "Cœli enárrant glóriam Dei: et ópera mánuum ejus annúntiat firmaméntum."
+  - "&Gloria"
+  - "v. Dóminus secus mare Galilǽæ vidit duos fratres, Petrum et Andréam, et
+    vocávit eos: Veníte post me: fáciam vos fíeri piscatóres hóminum."
+oratio:
+  - "@Commune/C1v:Oratio 2 loco"
+graduale:
+  - "!Ps 138:17-18"
+  - "Nimis honoráti sunt amíci tui, Deus: nimis confortátus est principátus
+    eórum."
+  - "V. Dinumerábo eos: et super arénam multiplicabúntur."
+evangelium:
+  - Sequéntia ++ ++ sancti Evangélii secúndum Joánnem
+  - "!Joann 1:35-51"
+  - "In illo témpore: Stabat Joánnes, et ex discípulis ejus duo. Et respíciens
+    Jesum ambulántem, dicit: Ecce Agnus Dei. Et audiérunt eum duo discípuli
+    loquéntem, et secúti sunt Jesum. Convérsus autem Jesus, et videns eos
+    sequéntes se, dicit eis: Quid quæritis? Qui dixérunt ei: Rabbi - quod
+    dícitur interpretátum Magíster -, ubi hábitas? Dicit eis: Veníte et vidéte.
+    Venérunt et vidérunt, ubi manéret, et apud eum mansérunt die illo: hora
+    autem erat quasi décima. Erat autem Andréas, frater Simónis Petri, unus ex
+    duóbus, qui audíerant a Joánne et secúti fúerant eum. Invénit hic primum
+    fratrem suum Simónem, et dicit ei: Invénimus Messíam - quod est
+    interpretátum Christus -. Et addúxit eum ad Jesum. Intúitus autem eum Jesus,
+    dixit: Tu es Simon, fílius Jona: tu vocáberis Cephas, quod interpretátur
+    Petrus. In crastínum vóluit exíre in Galilæam, et invénit Philíppum. Et
+    dicit ei Jesus: Séquere me. Erat autem Philíppus a Bethsáida, civitáte
+    Andréæ et Petri. Invénit Philíppus Nathánaël, et dicit ei: Quem scripsit
+    Moyses in lege, et Prophétæ, invénimus Jesum, fílium Joseph, a Názareth. Et
+    dixit ei Nathánaël: A Názareth potest áliquid boni esse? Dicit ei Philíppus:
+    Veni et vide. Vidit Jesus Nathánaël veniéntem ad se, et dicit de eo: Ecce
+    vere Israëlíta, in quo dolus non est. Dicit ei Nathánaël: Unde me nosti?
+    Respóndit Jesus et dixit ei: Priúsquam te Philíppus vocáret, cum esses sub
+    ficu, vidi te. Respóndit ei Nathánaël et ait: Rabbi, tu es Fílius Dei, tu es
+    Rex Israël. Respóndit Jesus et dixit ei: Quia dixi tibi: Vidi te sub ficu,
+    credis: majus his vidébis. Et dicit ei: Amen, amen, dico vobis, vidébitis
+    cœlum apértum, et Angelos Dei ascendéntes et descendéntes supra Fílium
+    hóminis."
+secreta:
+  - "Sacrándum tibi, Dómine, munus offérimus: quo beáti Andréæ Apóstoli
+    sollémnia recoléntes, purificatiónem quoque nostris méntibus implorámus."
+  - $Per Dominum
+communio:
+  - "!Joann 1:41; 1:42"
+  - "Dicit Andréas Simóni fratri suo: Invénimus Messíam, qui dícitur Christus:
+    et addúxit eum ad Jesum."
+postcommunio:
+  - "Percéptis, Dómine, sacraméntis supplíciter exorámus: ut, intercedénte beáto
+    Andréa Apostolo tuo, quæ pro illíus veneránda gérimus passióne, nobis
+    profíciant ad medélam."
+  - $Per Dominum
+rule:
+  - ex C1v;
+  - Responsory Feria
+  - Preces feriales
+  - Versum Feria
+  - no Te Deum
+  - Laudes 2
+  - no Gloria
+lectio1:
+  - Léctio sancti Evangélii secúndum Joánnem
+  - "!Joannes 1:35-51"
+  - "In illo témpore: Stabat Joannes, et ex discipulis ejus duo. Et respiciens
+    Jesum ambulantem, dicit: Ecce Agnus Dei. Et réliqua."
+  - _
+  - Homilia sancti Augustíni Epíscopi
+  - "!Tract. 7 in Joann., post init."
+  - "Quia talis erat Joannes amicus sponsi, non quærebat gloriam suam, sed
+    testimonium perhibebat veritati: numquid voluit apud se remanere discipulos
+    suos, ut non sequerentur Dominum? Magis ipse ostendit discipulis suis quem
+    sequerentur: habebant enim illum tamquam agnum. Et ille: Quid me attenditis:
+    Ego non sum agnus. Ecce Agnus Dei. De quo et superius dixerat: Ecce Agnus
+    Dei. Et quid nobis prodest Agnus Dei? Ecce, ait, qui tollit peccatum mundi.
+    Secuti sunt illum, hoc audito, duo qui erant cum Joanne."
+lectio2:
+  - "Videamus sequentia. Ecce Agnus Dei. Hoc Joannes. Et audierunt eum duo
+    discipuli loquentem, et secuti sunt Jesum. Non sic illum sequebantur, quasi
+    jam ut inhærerent illi: nam manifestum est, quando illi inhæserunt, quia de
+    navi eos vocavit. In his enim duobus erat Andreas, sicut modo audistis.
+    Andreas autem frater Petri erat. Et novimus in Evangelio quod Petrum et
+    Andream Dominus de navi vocavit, dicens: Venite post me, et faciam vos
+    piscatores hominum. Et ex illo jam inhæserunt illi, ut non recederent."
+lectio3:
+  - "Modo ergo quod illum sequuntur isti duo, non quasi non recessuri sequuntur,
+    sed videre voluerunt ubi habitaret, et facere quod scriptum est: Limen
+    ostiorum ejus exterat pes tuus: surge ad illum venire assidue, et erudire
+    præceptis ejus. Ostendit eis ille ubi maneret: venerunt, et fuerunt cum
+    illo. Quam beatum diem duxerunt, quam beatam noctem! Quis est, qui nobis
+    dicat quæ audierint illi a Domino? Aedificemus et nosmetipsi in corde
+    nostro, et faciamus domum, quo veniat ille, et doceat nos, et colloquatur
+    nobis."

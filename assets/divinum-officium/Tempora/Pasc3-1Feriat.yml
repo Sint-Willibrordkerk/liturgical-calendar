@@ -1,0 +1,24 @@
+officium:
+  - Feria Secunda infra Hebdomadam III post Octavam Paschæ
+rank:
+  - ""
+  - Feria
+  - "1"
+rule:
+  - Oratio Dominica
+  - Gloria
+  - no Credo
+  - Suffr=Maria3;Ecclesiæ,Papa;;
+references: "@Tempora/Pasc3-1Feria"
+lectio1:
+  - "@Tempora/Pasc3-0"
+responsory1:
+  - "@Tempora/Pasc3-0"
+lectio2:
+  - "@Tempora/Pasc3-0"
+responsory2:
+  - "@Tempora/Pasc3-0"
+lectio3:
+  - "@Tempora/Pasc3-0"
+responsory3:
+  - "@Tempora/Pasc3-0"

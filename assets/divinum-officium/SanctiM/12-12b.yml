@@ -1,0 +1,32 @@
+references: "@Sancti/12-12n"
+hymnus-matutinum:
+  - "@Sancti/12-08::s/Jesu, tibi sit glória/Glória tibi Dómine/ s/almo/Sancto/"
+ant-laudes:
+  - "@Sancti/12-12n:Ant Vespera:1 s/;.*//"
+  - "@Sancti/12-12n:Ant Vespera:2 s/;.*//"
+  - "@Sancti/02-11::2 s/;.*//"
+  - Laudemus * laudaverunt in terra nostra, et laudamus super Dei Genitrix.
+  - "@Sancti/02-11::1 s/;.*//"
+capitulum-laudes:
+  - "@Sancti/02-11:Lectio Prima"
+responsory-laudes:
+  - R.br. Quasi arcus refúlgens inter nébulas glóriæ.
+  - R. Quasi arcus refúlgens inter nébulas glóriæ.
+  - V. Et quasi flos rosárum in diébus vernis.
+  - R. Inter nébulas glóriæ.
+  - "&Gloria"
+  - R. Quasi arcus refúlgens inter nébulas glóriæ.
+hymnus-laudes:
+  - "@Sancti/08-15"
+versum-2:
+  - "@Commune/C10"
+ant-2:
+  - "@:Ant 1"
+responsory-tertiam:
+  - "@:Responsory Laudes: 2 s/R\\./V./"
+  - "@:Responsory Laudes: 3 s/V\\./R./"
+capitulum-sexta:
+  - "@Sancti/10-07"
+capitulum-nona:
+  - "@Sancti/12-08:Lectio Prima"
+  - $Deo gratias

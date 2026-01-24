@@ -1,0 +1,18 @@
+officium:
+  - S. Romani Martyris
+rank:
+  - ""
+  - Simplex
+  - "1.1"
+  - "@C2a-1"
+rule:
+  - vide C2a-1;
+name:
+  - Románo
+secreta:
+  - "@Commune/C2"
+postcommunio:
+  - "Quǽsumus, omnípotens Deus: ut, qui cœlestia aliménta percépimus,
+    intercedénte beáto Románo Mártyre tuo, per hæc contra ómnia advérsa
+    muniámur."
+  - $Per Dominum

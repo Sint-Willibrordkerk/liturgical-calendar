@@ -1,0 +1,23 @@
+references: "@Sancti/12-15"
+rule:
+  - vide SanctiM/12-08;
+  - 12 lectiones;
+  - Doxology=Nat
+  - no93
+lectio5:
+  - "@Sancti/12-15:Lectio4:s/Nos.*//s"
+lectio6:
+  - "@Sancti/12-15:Lectio4:s/.*(Nos)/$1/s"
+lectio7:
+  - "@Sancti/12-15:Lectio5"
+lectio8:
+  - "@Sancti/12-15:Lectio6"
+lectio9:
+  - "@Sancti/12-15:Lectio7:s/Ave.*//s"
+lectio10:
+  - "@Sancti/12-15:Lectio7:s/.*(Ave)/$1/s s/$/~/"
+  - "@Sancti/12-15:Lectio8:s/Stupéndum.*//s"
+lectio11:
+  - "@Sancti/12-15:Lectio8:s/.*(Stupéndum)/$1/s"
+lectio12:
+  - "@Sancti/12-15:Lectio9"

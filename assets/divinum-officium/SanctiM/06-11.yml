@@ -1,0 +1,101 @@
+references: "@Sancti/06-11"
+officium:
+  - S. Barnabæ Apostoli
+rank:
+  - ""
+  - Duplex majus
+  - "4"
+  - "@C1"
+rubrica-196/rank:
+  - ""
+  - Duplex
+  - "3"
+  - "@C1"
+rubrica-cisterciensis/rank:
+  - ""
+  - Duplex majus
+  - "4.1"
+  - "@C1"
+rubrica-divino-aut-rubrica-tridentina/rule:
+  - 12 lectiones
+lectio1:
+  - "@Sancti/06-11::1-5 s/-47/-42/"
+responsory1:
+  - "@Commune/C1"
+lectio2:
+  - "@Sancti/06-11:Lectio1:2 s/43-/46-/"
+  - "@Sancti/06-11:Lectio1:6-7"
+responsory2:
+  - "@Commune/C1"
+lectio3:
+  - "@Sancti/06-11:Lectio2"
+responsory3:
+  - "@Commune/C1"
+lectio4:
+  - "@Sancti/06-11:Lectio3"
+responsory4:
+  - "@CommuneM/C1"
+rubrica-cisterciensis/responsory4:
+  - "@CommuneCist/C1"
+lectio5:
+  - "@Sancti/06-11:Lectio4"
+rubrica-cisterciensis/lectio5:
+  - "@Sancti/06-11:Lectio4:s/Qua cohortatióne.*//"
+responsory5:
+  - "@Commune/C1:Responsory4"
+rubrica-cisterciensis/responsory5:
+  - "@CommuneCist/C1"
+lectio6:
+  - "@Sancti/06-11:Lectio5"
+rubrica-cisterciensis/lectio6:
+  - "@Sancti/06-11:Lectio5:s/Qui perfúncti.*//"
+responsory6:
+  - "@Commune/C1:Responsory5"
+rubrica-cisterciensis/responsory6:
+  - "@CommuneCist/C1:Responsory6"
+lectio7:
+  - "@Sancti/06-11:Lectio6:s/Postrémo.*//"
+rubrica-cisterciensis/lectio7:
+  - "@Sancti/06-11:Lectio5:s/.*(Qui perfúncti)/$1/s s/$/~/"
+  - "@Sancti/06-11:Lectio6:s/Itaque Seleucíam.*//"
+responsory7:
+  - "@Commune/C1:Responsory6"
+rubrica-cisterciensis/responsory7:
+  - "@CommuneCist/C1"
+lectio8:
+  - "@Sancti/06-11:Lectio6:s/.* (?=Postrémo)//"
+rubrica-cisterciensis/lectio8:
+  - "@Sancti/06-11:Lectio6:s/.*(Itaque Seleucíam)/$1/ s/Ejus corpus.*//"
+responsory8:
+  - "@Tempora/Pasc3-1:Responsory1"
+rubrica-cisterciensis/responsory8:
+  - "@CommuneCist/C1"
+lectio9:
+  - "@Sancti/06-11:Lectio7:s/Multa .*//s"
+responsory9:
+  - "@Commune/C1:Responsory7"
+rubrica-cisterciensis/responsory9:
+  - "@CommuneCist/C1"
+lectio10:
+  - "@Sancti/06-11:Lectio7:s/.* (?=Multa)//s"
+responsory10:
+  - "@Commune/C1:Responsory8"
+rubrica-cisterciensis/responsory10:
+  - "@CommuneCist/C1"
+lectio11:
+  - "@Sancti/06-11:Lectio8"
+rubrica-cisterciensis/lectio11:
+  - "@Sancti/06-11:Lectio8:s/: \\(neque.*/./"
+responsory11:
+  - "@Tempora/Pasc0-2:Responsory2"
+rubrica-cisterciensis/responsory11:
+  - "@CommuneCist/C1"
+lectio12:
+  - "@Sancti/06-11:Lectio8"
+rubrica-cisterciensis/lectio12:
+  - "@Sancti/06-11:Lectio8:s/.*: \\(neque/Neque/ s/$/~/"
+  - "@Sancti/06-11:Lectio9:s/.*(Erubescámus)/$1/"
+responsory12:
+  - "@Tempora/Pasc7-5:Responsory1"
+rubrica-cisterciensis/responsory12:
+  - "@CommuneCist/C1"

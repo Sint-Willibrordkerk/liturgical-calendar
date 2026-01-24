@@ -1,0 +1,79 @@
+officium:
+  - Ss. Primi et Feliciani Martyrum
+rank:
+  - ""
+  - Simplex
+  - "1.1"
+  - "@C3a"
+rule:
+  - vide C3a;
+  - Evangelium non appropriatum
+introitus:
+  - "@Commune/C3a"
+oratio:
+  - "Fac nos, quǽsumus. Dómine, sanctórum Martyrum tuórum Primi et Feliciáni
+    semper festa sectári: quorum suffrágiis protectiónis tuæ dona sentiámus."
+  - $Per Dominum
+lectio:
+  - "@Commune/C3a"
+graduale:
+  - "!Ps 88:6; 88:2"
+  - "Confitebúntur cœli mirabília tua, Dómine: etenim veritátem tuam in ecclésia
+    sanctórum."
+  - "V. Misericórdias tuas, Dómine, in ætérnum cantábo: in generatióne et
+    progénie. Allelúja, allelúja."
+  - "V. Hæc est vera fratérnitas, quæ vicit mundi crímina: Christum secúta est,
+    ínclita tenens regna cœléstia. Allelúja."
+gradualep:
+  - Allelúja, allelúja.
+  - "V. Hæc est vera fratérnitas, quæ vicit mundi crímina: Christum secúta est,
+    ínclita tenens regna cœléstia. Allelúja."
+  - V. Te Mártyrum candidátus laudat exércitus, Dómine. Allelúja.
+evangelium:
+  - "@Sancti/01-15"
+offertorium:
+  - "@Commune/C3"
+secreta:
+  - "Fiat tibi, quǽsumus, Dómine, hóstia sacránda placábilis, pretiósi
+    celebritáte martýrii: quæ et peccáta nostra puríficet, et tuórum tibi vota
+    concíliet famulórum."
+  - $Per Dominum.
+communio:
+  - "!Joannes 15:16"
+  - "Ego vos elégi de mundo, ut eátis et fructum afferátis: et fructus vester
+    máneat."
+postcommunio:
+  - "Quǽsumus, omnípotens Deus: ut sanctórum Mártyrum tuórum Primi et Feliciáni
+    cœléstibus mystériis celebráta sollémnitas, indulgéntiam nobis tuæ
+    propitiatiónis acquírat."
+  - $Per Dominum
+rubrica-cisterciensis/rank:
+  - ""
+  - Commemoratio et M.
+  - "1"
+  - "@C3a"
+lectio93:
+  - "Primus et Felicianus fratres, in persecutióne Diocletiáni et Maximiáni
+    accusáti christianæ religiónis, in víncula conjiciúntur; quibus soluti, inde
+    eripiúntur ab Angelo. Mox ad prætorem adducti, cum christianam fidem
+    acerrime tueréntur, alter ab altero distracti sunt; ac primum varie tentáta
+    est constántia Feliciáni. Sed, cum suasores impietátis se posse quidquam
+    verbis proficere desperárent, affixis stipiti mánibus ejus et pédibus, ipsum
+    sine cibo et potu inde triduum pendentem reliquérunt. Postridie ejus diéi,
+    prætor vocátum ad se Primum sic affátur: Vides quanto sit prudentior, quam
+    tu, frater tuus, qui obsecutus imperatóribus, apud ipsos est honoratus? Quem
+    si tu quoque imitari volueris, particeps eris ejus honoris et gratiæ. Cui
+    Primus: Qui factum sit fratri meo, cognóvi ex Angelo. Utinam, quemádmodum
+    sum cum eo voluntáte conjunctíssimus, sic ab eodem ne martyrio disjungar.
+    Quo dicto excanduit prætor, et ad ceteros cruciatus, quibus Primum affecit,
+    præsénte jam Feliciáno, liquátum igne plumbum in os ejus jussit infundi. Mox
+    utrumque perduci imperat in theatrum, in eosque immitti duos leónis; qui,
+    prostráti ad eórum genua, cápite et cauda ipsis blandiebántur. Ad id
+    spectaculum cum ámplius duódecim míllia hóminum convenissent, quingénti cum
+    suis familiis christianam religiónem suscepérunt. Quibus rebus permotus
+    prætor, eos secúri pércuti jussit."
+  - "&teDeum"
+versum-2:
+  - "@Commune/C3"
+ant-2:
+  - "@Commune/C3"

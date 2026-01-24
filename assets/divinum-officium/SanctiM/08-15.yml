@@ -1,0 +1,79 @@
+references: "@SanctiM/08-15t"
+rubrica-cisterciensis/rank:
+  - In Assumptione Beatæ Mariæ Virginis
+  - Duplex I classis cum Octava Communi
+  - "6"
+  - "@C11"
+rule:
+  - 12 lectiones
+  - Doxology=Nat
+rubrica-barroux/responsory-vespera-1:
+  - "@Sancti/08-15t:Responsory1"
+rubrica-cisterciensis/responsory-vespera:
+  - "@Sancti/08-15t:Responsory Breve Tertia"
+hymnus-vespera:
+  - "@Sancti/08-15:Hymnus Vespera:s/Jesu, tibi sit glória/Glória tibi, Dómine/"
+rubrica-cisterciensis/versum-1:
+  - "@CommuneCist/C10:Versum 1a"
+rubrica-cisterciensis/ant-1:
+  - Ascéndit Christus * super cœlos, et præparávit suæ castíssimæ Matri
+    immortalitátis locum; et hæc est illa præclára festívitas ómnium Sanctórum
+    festivitátibus incomparábilis, in qua gloriósa et felix, mirántibus cœléstis
+    cúriæ ordínibus, ad æthéreum pervénit thálamum, quo pia sui mémorum ímmemor
+    nequáquam exístat.
+oratio:
+  - "@Sancti/08-15"
+hymnus-matutinum:
+  - "@Sancti/08-15"
+lectio1:
+  - "@Sancti/08-15:Lectio1:s/-15/-12/ s/.13 .*//s"
+lectio2:
+  - "@Sancti/08-15:Lectio1:2 s/9-/13-/"
+  - "@Sancti/08-15:Lectio1:7-9"
+lectio3:
+  - "@Sancti/08-15:Lectio2"
+lectio4:
+  - "@Sancti/08-15:Lectio3"
+lectio5:
+  - "@Sancti/08-15:Lectio4"
+lectio6:
+  - "@Sancti/08-15:Lectio5"
+lectio7:
+  - "@Sancti/08-15:Lectio6:s/ Itaque.*//s"
+lectio8:
+  - "@Sancti/08-15:Lectio6:s/.* Itaque/Itaque/s"
+lectio9:
+  - "@Sancti/08-15:Lectio7:s/ Nec .*//s"
+lectio10:
+  - "@Sancti/08-15:Lectio7:s/.* Nec /Nec /s"
+lectio11:
+  - "@Sancti/08-15:Lectio8"
+lectio12:
+  - "@Sancti/08-15:Lectio9"
+capitulum-laudes:
+  - "@Sancti/08-15"
+rubrica-cisterciensis/capitulum-laudes:
+  - "@Sancti/08-15t"
+rubrica-cisterciensis/responsory-laudes:
+  - "@CommuneCist/C11"
+hymnus-laudes:
+  - "@Sancti/08-15"
+rubrica-cisterciensis/hymnus-laudes:
+  - "@Commune/C11"
+rubrica-cisterciensis/versum-2:
+  - "@:Versum 1"
+rubrica-cisterciensis/responsory-tertiam:
+  - "@Sancti/08-15t:Versum 1"
+capitulum-sexta:
+  - "@Sancti/08-15"
+rubrica-cisterciensis/capitulum-sexta:
+  - "@SanctiCist/01-23AV"
+capitulum-nona:
+  - "@Sancti/08-15"
+rubrica-cisterciensis/capitulum-nona:
+  - "@SanctiCist/01-23AV"
+hymnus-vespera-3:
+  - "@Commune/C11:Hymnus Vespera"
+rubrica-cisterciensis/hymnus-vespera-3: []
+rubrica-cisterciensis/versum-3:
+  - "@:Versum 1"

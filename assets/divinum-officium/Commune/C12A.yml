@@ -1,0 +1,601 @@
+officium:
+  - Officium parvum Beatae Mariae Virginis
+rank:
+  - Officium Parvum Beatae Mariae Virginis tempore Adventus et in Annuntiationis
+  - Simplex
+  - "1"
+rule:
+  - Ave only
+  - Doxology=Nat
+  - Omit Suffragium
+  - Special Benedictio
+  - Votive nocturn
+  - no Te Deum
+ant-vespera:
+  - Missus est * Gábriel Angelus ad Maríam Vírginem desponsátam Joseph.
+    (Allelúja.);;109
+  - "Ave, María, * grátia plena; Dóminus tecum: benedícta tu in muliéribus.
+    (Allelúja.);;112"
+  - "Ne tímeas, María, * invenísti grátiam apud Dóminum: ecce concípies et
+    páries fílium. (Allelúja.);;121"
+  - Dabit ei Dóminus * sedem David, patris ejus, et regnábit in ætérnum.
+    (Allelúja.);;126
+  - "Ecce ancílla Dómini: * fiat mihi secúndum verbum tuum. (Allelúja.);;147"
+capitulum-vespera:
+  - "@Sancti/03-25:Lectio Prima"
+  - $Deo gratias
+versum-1:
+  - V. Diffúsa est grátia in lábiis tuis.
+  - R. Proptérea benedíxit te Deus in ætérnum.
+ant-1:
+  - "Spíritus Sanctus * in te descéndet, María: ne tímeas, habébis in útero
+    Fílium Dei, allelúja."
+oratio:
+  - "Deus, qui de beátæ Maríæ Vírginis útero Verbum tuum, Angelo nuntiánte,
+    carnem suscípere voluísti: præsta supplícibus tuis; ut, qui vere eam
+    Genetrícem Dei crédimus, ejus apud te intercessiónibus adjuvémur."
+  - $Per eundem
+commemoratio:
+  - "!Commemoratio de Sanctis"
+  - "Ant. Ecce Dóminus véniet, et omnes Sancti ejus cum eo: et erit in die illa
+    lux magna, allelúja."
+  - V. Ecce apparébit Dóminus super nubem cándidam.
+  - R. Et cum eo Sanctórum míllia.
+  - $Oremus
+  - "v. Consciéntias nostras, quǽsumus, Dómine, visitándo purífica: ut, véniens
+    Jesus Christus, Fílius tuus, Dóminus noster, cum ómnibus Sanctis, parátam
+    sibi in nobis invéniat mansiónem:"
+  - $Qui tecum
+invit:
+  - Ave María, grátia plena, * Dóminus tecum.
+ant-matutinum-9:
+  - Ángelus Dómini * nuntiávit Maríæ, et concépit de Spíritu Sancto.;;97
+ant-matutinum:
+  - Benedícta tu * in muliéribus, et benedíctus fructus ventris tui.;;8
+  - Sicut myrrha * elécta, odórem dedísti suavitátis, sancta Dei Génetrix.;;18
+  - Ante torum * hujus Vírginis frequentáte nobis dúlcia cántica drámatis.;;23
+  - Sicut lætántium * ómnium nostrum habitátio est in te, sancta Dei
+    Génetrix.;;86
+  - "Gaude, María Virgo: * cunctas hǽreses sola interemísti in univérso
+    mundo.;;95"
+  - "Dignáre me * laudáre te, Virgo sacráta: da mihi virtútem contra hostes
+    tuos.;;96"
+  - "Post partum, * Virgo, invioláta permansísti: Dei Génetrix, intercéde pro
+    nobis.;;97"
+  - O quam pulchra * est casta generátio cum claritáte!;;8
+  - Ante torum * hujus Vírginis frequentáte nobis dúlcia cántica drámatis.;;18
+  - Revértere, * revértere, Sunamítis; revértere, ut intueámur te.;;23
+  - Spécie tua * et pulchritúdine tua inténde, próspere procéde, et regna.;;44
+  - "Adjuvábit eam * Deus vultu suo: Deus in médio ejus, non commovébitur.;;45"
+  - Aquæ multæ * non potuérunt exstínguere caritátem.;;47
+  - Nigra sum, * sed formósa, fíliæ Jerúsalem; ídeo diléxit me Rex, et
+    introdúxit me in cubículum suum.;;95
+  - "Trahe me post te, * in odórem currémus unguentórum tuórum: óleum effúsum
+    nomen tuum.;;96"
+  - Veni, Sponsa Christi, * áccipe corónam, quam tibi Dóminus præparávit in
+    ætérnum.;;97
+  - Benedícta tu * in muliéribus, et benedíctus fructus ventris tui.;;8
+  - Sicut myrrha * elécta, odórem dedísti suavitátis, sancta Dei Génetrix.;;18
+  - Ante torum * hujus Vírginis frequentáte nobis dúlcia cántica drámatis.;;23
+  - Sicut lætántium * ómnium nostrum habitátio est in te, sancta Dei
+    Génetrix.;;86
+  - "Gaude, María Virgo: * cunctas hǽreses sola interemísti in univérso
+    mundo.;;95"
+  - "Dignáre me * laudáre te, Virgo sacráta: da mihi virtútem contra hostes
+    tuos.;;96"
+  - "Post partum, * Virgo, invioláta permansísti: Dei Génetrix, intercéde pro
+    nobis.;;97"
+  - Ángelus Dómini * nuntiávit Maríæ, et concépit de Spíritu Sancto.;;97
+nocturn-1-versum:
+  - V. Diffúsa est grátia in lábiis tuis.
+  - R. Proptérea benedíxit te Deus in ætérnum.
+nocturn-2-versum:
+  - V. Diffúsa est grátia in lábiis tuis.
+  - R. Proptérea benedíxit te Deus in ætérnum.
+nocturn-3-versum:
+  - V. Diffúsa est grátia in lábiis tuis.
+  - R. Proptérea benedíxit te Deus in ætérnum.
+lectio1:
+  - "!Luc 1:26-28"
+  - 26 Missus est Angelus Gabriel a Deo in civitatem Galilaeae, cui nomen
+    Nazareth,
+  - "27 Ad virginem desponsatam viro, cui nomen erat Joseph, de domo David: et
+    nomen virginis Maria."
+  - "28 Et ingressus Angelus ad eam dixit: Ave gratia plena: Dominus tecum:
+    benedicta tu in mulieribus."
+responsory1:
+  - "R. Missus est Gábriel Angelus ad Maríam Vírginem desponsátam Joseph,
+    núntians ei verbum; et expavéscit Virgo de lúmine: ne tímeas, María,
+    invenísti grátiam apud Dóminum:"
+  - "* Ecce concípies et páries, et vocábitur Altíssimi Fílius. (Allelúja.)"
+  - V. Dabit ei Dóminus Deus sedem David, patris ejus, et regnábit in domo Jacob
+    in ætérnum.
+  - R. Ecce concípies et páries, et vocábitur Altíssimi Fílius. (Allelúja.)
+lectio2:
+  - "!Luc 1:29-33"
+  - 29 Quae cum audisset, turbata est in sermone ejus, et cogitabat qualis esset
+    ista salutatio.
+  - "30 Et ait Angelus ei: Ne timeas, Maria: invenisti enim gratiam apud Deum:"
+  - "31 Ecce concipies in utero, et paries filium, et vocabis nomen ejus Jesum:"
+  - "32 Hic erit magnus, et Filius Altissimi vocabitur, et dabit illi Dominus
+    Deus sedem David patris ejus: et regnabit in domo Jacob in aeternum,"
+  - 33 Et regni ejus non erit finis.
+responsory2:
+  - "R. Ave, María, grátia plena; Dóminus tecum:"
+  - "* Spíritus Sanctus supervéniet in te, et virtus Altíssimi obumbrábit tibi:
+    quod enim ex te nascétur Sanctum, vocábitur Fílius Dei. (Allelúja.)"
+  - V. Quómodo fiet istud, quóniam virum non cognósco? Et respóndens Angelus,
+    dixit ei.
+  - "R. Spíritus Sanctus supervéniet in te, et virtus Altíssimi obumbrábit tibi:
+    quod enim ex te nascétur Sanctum, vocábitur Fílius Dei. (Allelúja.)"
+lectio3:
+  - "!Luc 1:34-38"
+  - "34 Dixit autem Maria ad Angelum: Quomodo fiet istud, quoniam virum non
+    cognosco?"
+  - "35 Et respondens Angelus dixit ei: Spiritus Sanctus superveniet in te, et
+    virtus Altissimi obumbrabit tibi. Ideoque et quod nascetur ex te Sanctum,
+    vocabitur Filius Dei."
+  - "36 Et ecce Elisabeth cognata tua, et ipsa concepit filium in senectute sua:
+    et hic mensis sextus est illi, quae vocatur sterilis:"
+  - 37 Quia non erit impossibile apud Deum omne verbum.
+  - "38 Dixit autem Maria: Ecce ancilla Domini: fiat mihi secundum verbum tuum."
+responsory3:
+  - "R. Súscipe verbum, Virgo María, quod tibi a Dómino per Angelum transmíssum
+    est: concípies et páries Deum páriter et hóminem,"
+  - "* Ut benedícta dicáris inter omnes mulíeres."
+  - "V. Páries quidem fílium, et virginitátis non patiéris detriméntum:
+    efficiéris grávida, et eris mater semper intácta."
+  - R. Ut benedícta dicáris inter omnes mulíeres.
+minor-final:
+  - "#Oratio"
+  - $Kyrie
+  - "&Dominus_vobiscum"
+  - $Oremus
+  - "@Commune/C12:Oratio 2"
+  - _
+  - "#Conclusio"
+  - "&Dominus_vobiscum"
+  - "&Benedicamus_Domino"
+  - $Fidelium animae
+  - _
+  - $rubrica Pater post
+  - $Pater noster
+ant-laudes:
+  - Missus est * Gábriel Angelus ad Maríam Vírginem desponsátam Joseph.
+    (Allelúja.);;109
+  - "Ave, María, * grátia plena; Dóminus tecum: benedícta tu in muliéribus.
+    (Allelúja.);;112"
+  - "Ne tímeas, María, * invenísti grátiam apud Dóminum: ecce concípies et
+    páries fílium. (Allelúja.);;121"
+  - Dabit ei Dóminus * sedem David, patris ejus, et regnábit in ætérnum.
+    (Allelúja.);;126
+  - "Ecce ancílla Dómini: * fiat mihi secúndum verbum tuum. (Allelúja.);;147"
+capitulum-laudes:
+  - "!Isa 11:1-2"
+  - v. Egrediétur virga de radíce Jesse, et flos de radíce ejus ascéndet. Et
+    requiéscet super eum Spíritus Dómini.
+  - $Deo gratias
+versum-2:
+  - V. Benedícta tu in muliéribus.
+  - R. Et benedíctus fructus ventris tui.
+ant-2:
+  - "Spíritus Sanctus * in te descéndet, María: ne tímeas, habébis in útero
+    Fílium Dei, allelúja."
+special-prima:
+  - "#Incipit"
+  - $Ave Maria
+  - $Deus in adjutorium
+  - "&Alleluia"
+  - _
+  - "#Hymnus"
+  - v. Meménto, rerum Cónditor,
+  - Nostri quod olim córporis,
+  - Sacráta ab alvo Vírginis
+  - Nascéndo formam súmpseris.
+  - _
+  - r. María Mater grátiæ,
+  - Dulcis Parens cleméntiæ,
+  - Tu nos ab hoste prótege,
+  - Et mortis hora súscipe.
+  - _
+  - "@Psalterium/Doxologies:Nat: s/^/r. /"
+  - _
+  - "#Psalmi"
+  - Missus est * Gábriel Angelus ad Maríam Vírginem desponsátam Joseph.
+    (Allelúja.);;109
+  - "Ave, María, * grátia plena; Dóminus tecum: benedícta tu in muliéribus.
+    (Allelúja.);;112"
+  - "Ne tímeas, María, * invenísti grátiam apud Dóminum: ecce concípies et
+    páries fílium. (Allelúja.);;121"
+  - Dabit ei Dóminus * sedem David, patris ejus, et regnábit in ætérnum.
+    (Allelúja.);;126
+  - "Ecce ancílla Dómini: * fiat mihi secúndum verbum tuum. (Allelúja.);;147"
+  - "&psalm(53)"
+  - _
+  - "&psalm(84)"
+  - _
+  - "&psalm(116)"
+  - _
+  - Missus est * Gábriel Angelus ad Maríam Vírginem desponsátam Joseph.
+    (Allelúja.);;109
+  - "Ave, María, * grátia plena; Dóminus tecum: benedícta tu in muliéribus.
+    (Allelúja.);;112"
+  - "Ne tímeas, María, * invenísti grátiam apud Dóminum: ecce concípies et
+    páries fílium. (Allelúja.);;121"
+  - Dabit ei Dóminus * sedem David, patris ejus, et regnábit in ætérnum.
+    (Allelúja.);;126
+  - "Ecce ancílla Dómini: * fiat mihi secúndum verbum tuum. (Allelúja.);;147"
+  - _
+  - "#Capitulum"
+  - "!Isa 7:14-15"
+  - v. Ecce virgo concípiet, et páriet fílium, et vocábitur nomen ejus Emmánuel.
+    Butýrum et mel cómedet, ut sciat reprobáre malum, et elígere bonum.
+  - $Deo gratias
+  - _
+  - V. Dignáre me laudáre te, Virgo sacráta.
+  - R. Da mihi virtútem contra hostes tuos.
+  - "#Oratio"
+  - "@Commune/C12:Pre oratio"
+  - "@:Oratio"
+  - "@Commune/C12:Minor final"
+special-tertia:
+  - "#Incipit"
+  - $Ave Maria
+  - $Deus in adjutorium
+  - "&Alleluia"
+  - _
+  - "#Hymnus"
+  - v. Meménto, rerum Cónditor,
+  - Nostri quod olim córporis,
+  - Sacráta ab alvo Vírginis
+  - Nascéndo formam súmpseris.
+  - _
+  - r. María Mater grátiæ,
+  - Dulcis Parens cleméntiæ,
+  - Tu nos ab hoste prótege,
+  - Et mortis hora súscipe.
+  - _
+  - "@Psalterium/Doxologies:Nat: s/^/r. /"
+  - _
+  - "#Psalmi"
+  - Missus est * Gábriel Angelus ad Maríam Vírginem desponsátam Joseph.
+    (Allelúja.);;109
+  - "Ave, María, * grátia plena; Dóminus tecum: benedícta tu in muliéribus.
+    (Allelúja.);;112"
+  - "Ne tímeas, María, * invenísti grátiam apud Dóminum: ecce concípies et
+    páries fílium. (Allelúja.);;121"
+  - Dabit ei Dóminus * sedem David, patris ejus, et regnábit in ætérnum.
+    (Allelúja.);;126
+  - "Ecce ancílla Dómini: * fiat mihi secúndum verbum tuum. (Allelúja.);;147"
+  - "&psalm(119)"
+  - _
+  - "&psalm(120)"
+  - _
+  - "&psalm(121)"
+  - _
+  - Missus est * Gábriel Angelus ad Maríam Vírginem desponsátam Joseph.
+    (Allelúja.);;109
+  - "Ave, María, * grátia plena; Dóminus tecum: benedícta tu in muliéribus.
+    (Allelúja.);;112"
+  - "Ne tímeas, María, * invenísti grátiam apud Dóminum: ecce concípies et
+    páries fílium. (Allelúja.);;121"
+  - Dabit ei Dóminus * sedem David, patris ejus, et regnábit in ætérnum.
+    (Allelúja.);;126
+  - "Ecce ancílla Dómini: * fiat mihi secúndum verbum tuum. (Allelúja.);;147"
+  - _
+  - "#Capitulum"
+  - "!Isa 11:1-2"
+  - v. Egrediétur virga de radíce Jesse, et flos de radíce ejus ascéndet. Et
+    requiéscet super eum Spíritus Dómini.
+  - $Deo gratias
+  - _
+  - V. Diffúsa est grátia in lábiis tuis.
+  - R. Proptérea benedíxit te Deus in ætérnum.
+  - "#Oratio"
+  - "@Commune/C12:Pre oratio"
+  - "@:Oratio"
+  - "@Commune/C12:Minor final"
+special-sexta:
+  - "#Incipit"
+  - $Ave Maria
+  - $Deus in adjutorium
+  - "&Alleluia"
+  - _
+  - "#Hymnus"
+  - v. Meménto, rerum Cónditor,
+  - Nostri quod olim córporis,
+  - Sacráta ab alvo Vírginis
+  - Nascéndo formam súmpseris.
+  - _
+  - r. María Mater grátiæ,
+  - Dulcis Parens cleméntiæ,
+  - Tu nos ab hoste prótege,
+  - Et mortis hora súscipe.
+  - _
+  - "@Psalterium/Doxologies:Nat: s/^/r. /"
+  - _
+  - "#Psalmi"
+  - Missus est * Gábriel Angelus ad Maríam Vírginem desponsátam Joseph.
+    (Allelúja.);;109
+  - "Ave, María, * grátia plena; Dóminus tecum: benedícta tu in muliéribus.
+    (Allelúja.);;112"
+  - "Ne tímeas, María, * invenísti grátiam apud Dóminum: ecce concípies et
+    páries fílium. (Allelúja.);;121"
+  - Dabit ei Dóminus * sedem David, patris ejus, et regnábit in ætérnum.
+    (Allelúja.);;126
+  - "Ecce ancílla Dómini: * fiat mihi secúndum verbum tuum. (Allelúja.);;147"
+  - "&psalm(122)"
+  - _
+  - "&psalm(123)"
+  - _
+  - "&psalm(124)"
+  - _
+  - Missus est * Gábriel Angelus ad Maríam Vírginem desponsátam Joseph.
+    (Allelúja.);;109
+  - "Ave, María, * grátia plena; Dóminus tecum: benedícta tu in muliéribus.
+    (Allelúja.);;112"
+  - "Ne tímeas, María, * invenísti grátiam apud Dóminum: ecce concípies et
+    páries fílium. (Allelúja.);;121"
+  - Dabit ei Dóminus * sedem David, patris ejus, et regnábit in ætérnum.
+    (Allelúja.);;126
+  - "Ecce ancílla Dómini: * fiat mihi secúndum verbum tuum. (Allelúja.);;147"
+  - _
+  - "#Capitulum"
+  - "!Luc 1:32-33"
+  - v. Dabit illi Dóminus Deus sedem David, patris ejus, et regnábit in domo
+    Jacob in ætérnum, et regni ejus non erit finis.
+  - $Deo gratias
+  - _
+  - V. Benedícta tu in muliéribus.
+  - R. Et benedíctus fructus ventris tui.
+  - "#Oratio"
+  - "@Commune/C12:Pre oratio"
+  - "@:Oratio"
+  - "@Commune/C12:Minor final"
+special-nona:
+  - "#Incipit"
+  - $Ave Maria
+  - $Deus in adjutorium
+  - "&Alleluia"
+  - _
+  - "#Hymnus"
+  - v. Meménto, rerum Cónditor,
+  - Nostri quod olim córporis,
+  - Sacráta ab alvo Vírginis
+  - Nascéndo formam súmpseris.
+  - _
+  - r. María Mater grátiæ,
+  - Dulcis Parens cleméntiæ,
+  - Tu nos ab hoste prótege,
+  - Et mortis hora súscipe.
+  - _
+  - "@Psalterium/Doxologies:Nat: s/^/r. /"
+  - _
+  - "#Psalmi"
+  - Missus est * Gábriel Angelus ad Maríam Vírginem desponsátam Joseph.
+    (Allelúja.);;109
+  - "Ave, María, * grátia plena; Dóminus tecum: benedícta tu in muliéribus.
+    (Allelúja.);;112"
+  - "Ne tímeas, María, * invenísti grátiam apud Dóminum: ecce concípies et
+    páries fílium. (Allelúja.);;121"
+  - Dabit ei Dóminus * sedem David, patris ejus, et regnábit in ætérnum.
+    (Allelúja.);;126
+  - "Ecce ancílla Dómini: * fiat mihi secúndum verbum tuum. (Allelúja.);;147"
+  - "&psalm(125)"
+  - _
+  - "&psalm(126)"
+  - _
+  - "&psalm(127)"
+  - _
+  - Missus est * Gábriel Angelus ad Maríam Vírginem desponsátam Joseph.
+    (Allelúja.);;109
+  - "Ave, María, * grátia plena; Dóminus tecum: benedícta tu in muliéribus.
+    (Allelúja.);;112"
+  - "Ne tímeas, María, * invenísti grátiam apud Dóminum: ecce concípies et
+    páries fílium. (Allelúja.);;121"
+  - Dabit ei Dóminus * sedem David, patris ejus, et regnábit in ætérnum.
+    (Allelúja.);;126
+  - "Ecce ancílla Dómini: * fiat mihi secúndum verbum tuum. (Allelúja.);;147"
+  - _
+  - "#Capitulum"
+  - "!Isa 7:14-15"
+  - v. Ecce virgo concípiet, et páriet fílium, et vocábitur nomen ejus Emmánuel.
+    Butýrum et mel cómedet, ut sciat reprobáre malum, et elígere bonum.
+  - $Deo gratias
+  - _
+  - "{:S-AlmaRedemptoris:}v. Alma Redemptóris Mater, quæ pérvia cæli porta
+    manes,"
+  - et stella maris, succúrre cadénti,
+  - "Súrgere qui curat, pópulo: tu quæ genuísti,"
+  - Natúra miránte, tuum sanctum Genitórem,
+  - Virgo prius ac postérius, Gabriélis ab ore
+  - Sumens illud Ave, peccatórum miserére.
+  - _
+  - V. {::}Ángelus Dómini nuntiávit Maríæ.
+  - R. Et concépit de Spíritu Sancto.
+  - _
+  - $Oremus
+  - "v. Grátiam tuam, quǽsumus, Dómine, méntibus nostris infúnde: ut, qui,
+    Ángelo nuntiánte, Christi Fílii tui incarnatiónem cognóvimus; per passiónem
+    ejus et crucem, ad resurrectiónis glóriam perducámur. Per eúmdem Christum
+    Dóminum nostrum. Amen."
+  - "#Oratio"
+  - "@Commune/C12:Pre oratio"
+  - "@:Oratio"
+  - "@Commune/C12:Minor final"
+versum-3:
+  - "@Commune/C6:Versum 2"
+ant-3:
+  - "@Tempora/Adv1-0:Ant 2"
+special-completorium:
+  - "#Incipit"
+  - $Ave Maria
+  - $Converte nos
+  - $Deus in adjutorium
+  - "&Alleluia"
+  - _
+  - "#Psalmi"
+  - (rubrica cisterciensis) @Sancti/12-25:Ant Vespera:3 s/^/Ant. / s/;;.*//
+  - "&psalm(128)"
+  - _
+  - "&psalm(129)"
+  - _
+  - "&psalm(130)"
+  - (rubrica cisterciensis) @Sancti/12-25:Ant Vespera:3 s/^/Ant. / s/;;.*//
+  - _
+  - "@:Hymnus minor_"
+  - _
+  - "#Capitulum Versus"
+  - "@:Capitulum Completorium_"
+  - "@:Lectio3:5 s/^20/v./"
+  - $Deo gratias
+  - _
+  - _
+  - Ant. Spíritus sanctus in te descéndet, María, ne tímeas, habébis in útero
+    Fílium Dei.
+  - _
+  - V. Ecce ancílla Dómini.
+  - R. Fiat mihi secúndum verbum tuum.
+  - _
+  - $Oremus
+  - v. Lætífica, et ádjuva nos, omnípotens et miséricors Deus, Domínicæ
+    Conceptiónis gáudia recoléntes, et pia Dei Génitrix Virgo semper María (in
+    cujus veneratióne hæc commemorámus) in cunctis necessitátibus nostris
+    grátiam sancti Spíritus nobis ímpetret, et levámen. Per eúmdem Christum
+    Dóminum nostrum.
+  - $Amen
+  - _
+  - "#Canticum: Nunc dimittis"
+  - "Ant. Sub tuum præsídium * confúgimus, sancta Dei Génetrix: nostras
+    deprecatiónes ne despícias in necessitátibus, sed a perículis cunctis libera
+    nos semper, Virgo gloriósa et benedícta."
+  - "&psalm(233)"
+  - "Ant. Sub tuum præsídium * confúgimus, sancta Dei Génetrix: nostras
+    deprecatiónes ne despícias in necessitátibus, sed a perículis cunctis libera
+    nos semper, Virgo gloriósa et benedícta."
+  - _
+  - "#Oratio"
+  - $Kyrie
+  - "&Dominus_vobiscum"
+  - $Oremus
+  - v. Beátæ et gloriósæ semper Vírginis Maríæ, quǽsumus, Dómine, intercéssio
+    gloriósa nos prótegat, et ad vitam perdúcat ætérnam.
+  - $Per Dominum
+  - _
+  - "#Conclusio"
+  - "&Dominus_vobiscum"
+  - "&Benedicamus_Domino"
+  - $Benedictio Completorium2
+  - R. Amen.
+  - _
+  - "#Antiphona finalis B.M.V."
+  - $ant Salve Regina
+  - "&Divinum_auxilium"
+  - (rubrica cisterciensis)$Fidelium animae
+  - _
+  - $Pater noster
+  - $Ave Maria
+  - $Credo
+  - "!Isa 7:14-15"
+  - v. Ecce virgo concípiet, et páriet fílium, et vocábitur nomen ejus Emmánuel.
+    Butýrum et mel cómedet, ut sciat reprobáre malum, et elígere bonum.
+  - $Deo gratias
+  - _
+  - "{:S-AlmaRedemptoris:}v. Alma Redemptóris Mater, quæ pérvia cæli porta
+    manes,"
+  - et stella maris, succúrre cadénti,
+  - "Súrgere qui curat, pópulo: tu quæ genuísti,"
+  - Natúra miránte, tuum sanctum Genitórem,
+  - Virgo prius ac postérius, Gabriélis ab ore
+  - Sumens illud Ave, peccatórum miserére.
+  - _
+  - V. {::}Ángelus Dómini nuntiávit Maríæ.
+  - R. Et concépit de Spíritu Sancto.
+  - _
+  - $Oremus
+  - "v. Grátiam tuam, quǽsumus, Dómine, méntibus nostris infúnde: ut, qui,
+    Ángelo nuntiánte, Christi Fílii tui incarnatiónem cognóvimus; per passiónem
+    ejus et crucem, ad resurrectiónis glóriam perducámur. Per eúmdem Christum
+    Dóminum nostrum. Amen."
+  - _
+  - "#Canticum: Nunc dimittis"
+  - "Spíritus Sanctus * in te descéndet, María: ne tímeas, habébis in útero
+    Fílium Dei, allelúja."
+  - "&psalm(233)"
+  - "Spíritus Sanctus * in te descéndet, María: ne tímeas, habébis in útero
+    Fílium Dei, allelúja."
+  - _
+  - "#Oratio"
+  - $Kyrie
+  - "&Dominus_vobiscum"
+  - $Oremus
+  - "@Commune/C12:Oratio 2"
+  - _
+  - "#Incipit"
+  - $Ave Maria
+  - $Converte nos
+  - $Deus in adjutorium
+  - "&Alleluia"
+  - _
+  - "#Psalmi"
+  - (rubrica cisterciensis) @Sancti/12-25:Ant Vespera:3 s/^/Ant. / s/;;.*//
+  - "&psalm(128)"
+  - _
+  - "&psalm(129)"
+  - _
+  - "&psalm(130)"
+  - (rubrica cisterciensis) @Sancti/12-25:Ant Vespera:3 s/^/Ant. / s/;;.*//
+  - _
+  - "@:Hymnus minor_"
+  - _
+  - "#Capitulum Versus"
+  - "@:Capitulum Completorium_"
+  - "@:Lectio3:5 s/^20/v./"
+  - $Deo gratias
+  - _
+  - _
+  - Ant. Spíritus sanctus in te descéndet, María, ne tímeas, habébis in útero
+    Fílium Dei.
+  - _
+  - V. Ecce ancílla Dómini.
+  - R. Fiat mihi secúndum verbum tuum.
+  - _
+  - $Oremus
+  - v. Lætífica, et ádjuva nos, omnípotens et miséricors Deus, Domínicæ
+    Conceptiónis gáudia recoléntes, et pia Dei Génitrix Virgo semper María (in
+    cujus veneratióne hæc commemorámus) in cunctis necessitátibus nostris
+    grátiam sancti Spíritus nobis ímpetret, et levámen. Per eúmdem Christum
+    Dóminum nostrum.
+  - $Amen
+  - _
+  - "#Canticum: Nunc dimittis"
+  - "Ant. Sub tuum præsídium * confúgimus, sancta Dei Génetrix: nostras
+    deprecatiónes ne despícias in necessitátibus, sed a perículis cunctis libera
+    nos semper, Virgo gloriósa et benedícta."
+  - "&psalm(233)"
+  - "Ant. Sub tuum præsídium * confúgimus, sancta Dei Génetrix: nostras
+    deprecatiónes ne despícias in necessitátibus, sed a perículis cunctis libera
+    nos semper, Virgo gloriósa et benedícta."
+  - _
+  - "#Oratio"
+  - $Kyrie
+  - "&Dominus_vobiscum"
+  - $Oremus
+  - v. Beátæ et gloriósæ semper Vírginis Maríæ, quǽsumus, Dómine, intercéssio
+    gloriósa nos prótegat, et ad vitam perdúcat ætérnam.
+  - $Per Dominum
+  - _
+  - "#Conclusio"
+  - "&Dominus_vobiscum"
+  - "&Benedicamus_Domino"
+  - $Benedictio Completorium2
+  - R. Amen.
+  - _
+  - "#Antiphona finalis B.M.V."
+  - $ant Salve Regina
+  - "&Divinum_auxilium"
+  - (rubrica cisterciensis)$Fidelium animae
+  - _
+  - $Pater noster
+  - $Ave Maria
+  - $Credo

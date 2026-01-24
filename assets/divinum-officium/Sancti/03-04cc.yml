@@ -1,0 +1,21 @@
+officium:
+  - S. Lucii I Papæ et Martyris
+rank:
+  - ""
+  - Simplex
+  - "1.1"
+  - "@C2b-1"
+rule:
+  - vide C2b-1;
+  - vide C2b-1
+name:
+  - Lúcium
+  - Secreta=Lúcio
+  - Postcommunio=Lúcio
+communi-summorum-pontificum/name:
+  - Lúcium
+rubrica-cisterciensis/rank:
+  - ""
+  - Simplex
+  - "1"
+  - "@C2b-1"

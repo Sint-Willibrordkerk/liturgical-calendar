@@ -1,0 +1,241 @@
+officium:
+  - S. Irenæi Episcopi et Martyris
+rank:
+  - ""
+  - Duplex
+  - "3"
+  - "@C2"
+rule:
+  - vide C2;
+  - 9 lectiones
+  - Gloria
+  - nocomm1960
+introitus:
+  - "!Malach 2:6"
+  - "v. Lex veritátis fuit in ore ejus, et iníquitas non est invénta in lábiis
+    ejus: in pace et in æquitáte ambulávit mecum, et multos avértit ab
+    iniquitáte."
+  - "!Ps 77:1"
+  - "Atténdite, pópule meus, legem meam: inclináte aurem vestram in verba oris
+    mei."
+  - "&Gloria"
+  - "v. Lex veritátis fuit in ore ejus, et iníquitas non est invénta in lábiis
+    ejus: in pace et in æquitáte ambulávit mecum, et multos avértit ab
+    iniquitáte."
+oratio:
+  - "Deus, qui beáto Irenǽo Mártyri tuo atque Pontífici tribuísti, ut et
+    veritáte doctrínæ expugnáret hǽreses, et pacem Ecclésiæ felíciter
+    confirmáret: da, quǽsumus, plebi tuæ in sancta religióne constántiam; et
+    pacem tuam nostris concéde tempóribus."
+  - $Per Dominum
+lectio:
+  - Léctio Epístolæ beáti Pauli Apóstoli ad Timótheum
+  - "!2 Tim 3:14-17; 4:1-5"
+  - "Caríssime: Pérmane in iis, quæ didicísti et crédita sunt tibi: sciens, a
+    quo didíceris; et quia ab infántia sacras; lítteras nosti, quæ te possunt
+    instrúere ad salútem, per fidem, quæ est in Christo Jesu. Omnis Scriptúra
+    divínitus inspiráta útilis est ad docéndum, ad arguéndum, ad corripiéndum,
+    ad erudiéndum in justítia: ut perféctus sit homo Dei, ad omne opus bonum
+    instrúctus. Testíficor coram Deo, et Jesu Christo, qui judicatúrus est vivos
+    et mórtuos, per advéntum ipsíus et regnum ejus: prǽdica verbum, insta
+    opportúne, importúne: árgue, óbsecra, íncrepa in omni patiéntia et doctrína.
+    Erit enim tempus, cum sanam doctrínam non sustinébunt, sed ad sua desidéria
+    coacervábunt sibi magístros, pruriéntes áuribus, et a veritáte quidem
+    audítum avértent, ad fábulas autem converténtur. Tu vero vígila, in ómnibus
+    labóra, opus fac Evangelístæ, ministérium tuum imple."
+graduale:
+  - "!Ps 121:8"
+  - Propter fratres meos et próximos meos loquébar pacem de te.
+  - "!Ps 36:37"
+  - "Custódi innocéntiam et vide æquitátem: quóniam sunt relíquiæ hómini
+    pacífico."
+  - Allelúja, allelúja.
+  - "!Eccli. 6:35"
+  - In multitúdine presbyterórum prudéntium sta, et sapiéntiæ illórum ex corde
+    conjúngere, ut omnem narratiónem Dei possis audíre. Allelúja.
+gradualep:
+  - Allelúja, allelúja.
+  - "!Ps 36:37"
+  - "Custódi innocéntiam et vide æquitátem: quóniam sunt relíquiæ hómini
+    pacífico. Allelúja."
+  - "!Eccli 6:35"
+  - In multitúdine presbyterórum prudéntium sta, et sapiéntiæ illórum ex corde
+    conjúngere, ut omnem narratiónem Dei possis audire. Allelúja.
+tractus:
+  - "!Ps 36:23; 36:30-31"
+  - "Apud Dóminum gressus hóminis dirigéntur: et viam ejus volet."
+  - V. Os justi meditábitur sapiéntiam, et lingua ejus loquétur judícium.
+  - "V. Lex Dei ejus in corde ipsíus: et non supplantabúntur gressus ejus."
+evangelium:
+  - Sequéntia ++ sancti Evangélii secúndum Matthǽum
+  - "!Matt 10:28-33"
+  - "In illo témpore: Dixit Jesus discípulis suis: Nolíte timére eos, qui
+    occídunt corpus, ánimam autem non possunt occídere; sed pótius timéte eum,
+    qui potest et ánimam et corpus pérdere in gehénnam. Nonne duo pásseres asse
+    véneunt: et unus ex illis non cadet super terram sine Patre vestro? Vestri
+    autem capílli cápitis omnes numeráti sunt. Nolíte ergo timére: multis
+    passéribus melióres estis vos. Omnis ergo, qui confitébitur me coram
+    homínibus, confitébor et ego eum coram Patre meo, qui in cœlis est. Qui
+    autem negáverit me coram homínibus, negábo et ego eum coram Patre meo, qui
+    in cœlis est."
+ultima-evangelium:
+  - Sequéntia ++ sancti Evangélii secúndum Joánnem
+  - "!Joannes 21:15-19"
+  - "In illo témpore: Dixit Jesus Simóni Petro: Simon Joánnis, díligis me plus
+    his? Dicit ei: Etiam, Dómine, tu scis, quia amo te. Dicit ei: Pasce agnos
+    meos. Dicit ei íterum: Simon Joánnis, díligis me? Ait illi: Etiam, Dómine,
+    tu scis, quia amo te. Dicit ei: Pasce agnos meos. Dicit ei tértio: Simon
+    Joánnis, amas me? Contristátus est Petrus, quia dixit ei tértio, Amas me? et
+    dixit ei: Dómine, tu ómnia nosti: tu scis, quia amo te. Dixit ei: Pasce oves
+    meas. Amen, amen, dico tibi: cum esses júnior, cingébas te et ambulábas, ubi
+    volébas: cum autem senúeris, exténdes manus tuas, et álius te cinget et
+    ducet, quo tu non vis. Hoc autem dixit, signíficans, qua morte
+    clarificatúrus esset Deum."
+offertorium:
+  - "!Eccli 24:44"
+  - Doctrínam quasi ante lucánum illúmino ómnibus, et enarrábo illam usque ad
+    longínquum.
+secreta:
+  - "Deus, qui credéntes in te pópulos nullis sinis cóncuti terróribus: dignáre
+    preces et hóstias dicátæ tibi plebis suscípere; ut pax, a tua pietáte
+    concéssa, christianórum fines ab omni hoste fáciat esse secúros."
+  - $Per Dominum
+communio:
+  - "!Eccli 24:47"
+  - Vidéte, quóniam non soli mihi laborávi, sed ómnibus exquiréntibus veritátem.
+postcommunio:
+  - "Deus, auctor pacis et amátor, quem nosse vívere, cui servíre regnáre est:
+    prótege ab ómnibus impugnatiónibus súpplices tuos; ut, qui in defensióne tua
+    confídimus, beáti Irenæi Mártyris tui atque Pontíficis intercessióne,
+    nullius hostilitátis arma timeámus."
+  - $Per Dominum
+rubrica-altovadensis/officium:
+  - S. Irenæi, Episcopi, Martyris et Ecclesiæ Doctoris (1965)
+rubrica-altovadensis/rank:
+  - ""
+  - Commemoratio et M.
+  - "1"
+  - "@C2"
+rubrica-cisterciensis/ant-1:
+  - "@Commune/C4a::s/N\\./Irenæe/"
+lectio4:
+  - Irenæus, non longe ab urbe Smyrna in Asia proconsulari natus, jam inde a
+    púero sese Polycarpo, Joánnis Evangelistæ discipulo eidemque episcopo
+    Smyrnæórum, tradiderat in disciplínam. Hoc tam excellénti magistro,
+    progréssus in doctrina præceptisque christianæ religiónis insignes fecit.
+    Polycarpo in cælum martyrii glória sublato, etsi erat Irenæus in sacris
+    litteris egregie versatus, quod tamen incredibili studio flagraret discéndi
+    quæ dógmata depósiti loco custodienda ceteri accepissent, quos Apóstoli
+    institúerant; horum quam pótuit plures convénit, quæque ab iisdem audívit,
+    mémori mente ténuit, ea deinceps opportune advérsus hæreses allatúrus, quas
+    cum vidéret ingénti pópuli christiáni damno latius in dies manare,
+    diligenter copioséque reféllere cogitarat. In Gállias inde profectus, a
+    Pothino episcopo presbyter est constitútus Ecclésiæ Lugdunénsis. Quod munus
+    sic laborando in verbo et doctrina gessit, ut (testibus sanctis Martyribus,
+    qui, Marco Aurelio imperatóre, strenue pro vera pietáte certarant)
+    æmulatórem sese præstíterit testaménti Christi.
+lectio5:
+  - "Cum Mártyres ipsi clerusque Lugdunénsis de pace Ecclesiárum Asiæ, quam
+    Montanistárum factio turbarat, solliciti cum primis essent, Irenæum, cujus
+    esse potíssimum habéndam ratiónem prædicábant, unum ómnium maxime
+    delegérunt, quem Romam ad Eleuthérium Pontificem mitterent rogátum, ut novis
+    sectariis auctoritate Sedis Apostolicæ reprobátis, discordiárum causa
+    tollerétur. Jam Pothinus epíscopus, martyr decesserat: huic Irenæus cum
+    successísset, tam feliciter munus obiit episcopatus, ut sapiéntia, oratióne,
+    exemploque suo non modo brevi cives Lugdunenses omnes, sed multos étiam
+    aliárum Galliæ urbium íncolas superstitiónem atque errórem abjecisse,
+    dedísseque christianæ milítiæ nómina víderit. Interea, cum de die celebrándi
+    Paschátis orta esset contentio, ac Victor, Romanus Pontifex, Asiános
+    episcopos ab collégis réliquis fere ómnibus dissidéntes aut prohibuísset
+    communióne sacrórum, aut prohibére minátus esset, eum Irenæus, sequester
+    pacis, decenter monuit, exemplisque usus Pontificum superiórum indúxit, ut
+    ne tot Ecclésias ob ritum quem a majóribus accepisse se dicerent, avelli ab
+    unitate catholica paterétur."
+lectio6:
+  - Multa scripsit, quæ Eusebius Cæsariénsis et sanctus Hieronymus mémorant,
+    quorúmque pars magna intércidit injuria témporum. Exstant ejus advérsus
+    hæreses libri quinque, anno circiter centésimo octogesimo perscripti, dum
+    adhuc Eleutherius rem christianam publicam géreret. In tertio libro vir Dei,
+    ab iis edoctus quos auditores constat fuísse Apostolórum, grave in primis
+    atque præclárum de Romana Ecclésia, deque illíus episcopórum successióne,
+    divinæ traditiónis fideli, perpetua, certíssima custode, testimónium dixit.
+    Atque ad hanc, dixit, Ecclésiam propter potiórem principalitátem necesse est
+    omnem conveníre Ecclésiam, hoc est eos qui sunt undique fidéles. Postremo
+    una cum aliis prope innumerabílibus, quos ipse ad veram fidem frugemque
+    perduxerat, martyrio coronátus migrávit in cælum, anno salútis ducentésimo
+    secundo, quo témpore Septimius Sevérus Augustus eos omnes, qui constanter in
+    colenda christiana religióne perstare voluíssent, in summum cruciátum dari
+    atque intérfici imperaverat. Sancti Irenæi festum Benedíctus décimus quintus
+    Pontifex maximus ad universam Ecclésiam extendit.
+lectio94:
+  - Irenǽus, non longe ab urbe Smyrna natus, jam inde a púero sese Polycárpo,
+    Joánnis Evangelístæ discípulo eidémque epíscopo Smyrnæórum, tradíderat in
+    disciplínam. Polycárpo in cælum martýrii glória subláto, cum incredíbili
+    stúdio flagráret discéndi quæ dógmata depósiti loco custodiénda céteri
+    accepíssent, quos Apóstoli institúerant; horum quam pótuit plures convénit,
+    quæque ab iísdem audívit, mémori mente ténuit, ea deínceps opportúne
+    advérsus hǽreses allatúrus. In Gálliam proféctus, Ecclésiæ Lugdunénsis
+    présbyter a Photíno epíscopo est constitútus; cui cum successísset, tam
+    felíciter munus óbiit episcopátus, ut sapiéntia, oratióne exemplóque suo non
+    modo brevi cives lugdunénses omnes, sed multos étiam aliárum Galliárum
+    úrbium íncolas superstitiónem atque errórem abiecísse, dedisséque christiánæ
+    milítiæ nómina víderit. Multa scripsit, quorum magna pars intércidit injúria
+    témporum. Exstant ejus advérsus hǽreses libri quinque, in quorum tértio
+    libro grave imprímis atque præclárum de Romána Ecclésia, deque illíus
+    episcopórum successióne, divínæ traditióni fidéli, perpétua, certíssima
+    custóde, testimónium dixit. Atque ad hanc, dixit, Ecclésiam propter potiórem
+    principalitátem necésse est omnem conveníre Ecclésiam, hoc est eos qui sunt
+    úndique fidéles. Martýrio coronátus, migrávit in cælum anno salútis
+    ducentésimo secúndo.
+  - "&teDeum"
+lectio7:
+  - Léctio sancti Evangélii secúndum Matthǽum
+  - "!Matt 10:28-33"
+  - "In illo témpore: Dixit Jesus discípulis suis: Nolíte timere eos qui
+    occídunt corpus, ánimam autem non possunt occídere; sed potius timéte eum
+    qui potest et ánimam et corpus perdere in gehennam. Et réliqua."
+  - _
+  - Homilía sancti Irenæi Epíscopi et Martyris
+  - "!Lib. 3 advérsus Hæreses cap. 18, alias 20, num. 5-6"
+  - "Sciebat Dóminus eos qui persecutiónem passuri essent; sciebat et eos qui
+    flagéllari et occídi haberent propter eum. Erat ergo sermo ejus, adhortántis
+    étiam illos: Nolíte timere eos qui occídunt corpus, ánimam autem non possunt
+    occídere. Timéte autem magis eum qui habet potestátem et corpus et ánimam
+    mittere in gehennam, et servare eas quæ essent ad eum confessiónes. Etenim
+    ipse confessurum se promittebat coram Patre suo eos, qui confiteréntur nomen
+    suum coram homínibus; negatúrum autem eos qui negarent eum, et confusurum
+    qui confunderéntur contra confessiónem ejus. Et, cum hæc ita se habeant, ad
+    tantam temeritátem progressi sunt quidam, ut étiam Mártyres spernant, et
+    vitúperent eos qui propter Dómini confessiónem occidúntur, et sústinent
+    ómnia a Dómino prædicta, et secúndum hoc conántur vestígia ássequi passiónis
+    Dómini, passibilis Mártyres facti; quos et concédimus ipsis Martyribus. Cum
+    enim inquirétur sanguis eórum, et glóriam consequéntur, tunc a Christo
+    confundéntur omnes qui inhonoravérunt eórum martyrium."
+lectio8:
+  - Hoc autem idem et illis occurrit, qui dicunt eum putative passum. Si enim
+    non vere passus est, nulla grátia ei, cum nulla fúerit passio; et nos, cum
+    incipiémus vere pati, seducens vidébitur, adhortans nos vapulare, et álteram
+    præbére maxíllam, si ipse illud non prior in veritáte passus est. Et,
+    quemádmodum illos sedúxit, ut viderétur eis ipse hoc quod non erat; et nos
+    sedúcit, adhortans perferre ea quæ ipse non pértulit. Erimus autem et super
+    Magistrum, dum pátimur et sustinémus quæ neque passus est, neque sustinuit
+    Magister. Sed, quóniam solus vere magister Dóminus noster, et bonus vere
+    Fílius Dei; et pátiens Verbum Dei Patris, fílius hóminis factus. Luctátus
+    est enim et vicit; erat enim homo pro pátribus certans, et per obediéntiam
+    inobediéntiam persolvens. Alligávit enim fortem, et solvit infirmos, et
+    salútem donávit plasmáti suo, destruens peccátum. Igitur qui dicunt eum
+    putative manifestátum, neque in carne natum, neque vere hóminem factum,
+    adhuc sub veteri sunt damnatióne.
+lectio91:
+  - "!Si lectio commemorandi non sit dicenda"
+  - "!Cap. 25, alias 46, num. 7"
+  - Nos autem precámur non perseverare eos in fóvea quam ipsi fodérunt, sed
+    legitime eos generari conversos ad Ecclésiam Dei, et formari Christum in
+    eis, et cognóscere eos fabricatórem et factórem hujus universitátis solum
+    verum Deum et Dóminum ómnium. Hæc precámur de illis, utílius eos diligéntes
+    quam ipsi semetípsos putant dilígere. Quæ enim est a nobis diléctio, cum sit
+    vera, salutáris est eis, si quidem eam recípiant. Est enim austero
+    medicámini símilis, absumens improbiórem ac supérfluam vulneris carnem;
+    elatiónem enim illórum et inflatiónem evacuat. Quapropter testántes omni
+    virtúte manum porrigere eis, non tædébit nos.
+  - "&teDeum"

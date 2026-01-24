@@ -1,0 +1,50 @@
+references: "@Sancti/09-08"
+rank:
+  - Sanctæ Mariæ Sabbato
+  - Simplex
+  - "1.4"
+  - "@C10"
+rule:
+  - Special Benedictio
+  - Doxology=Nat
+  - no secunda vesperas
+  - No commemoratio
+  - Gloria
+  - Suffr=Spiritu;Ecclesiæ,Papa;;
+  - Prefatio=Maria=Nativitate
+ant-vespera:
+  - "@Sancti/09-08"
+versum-1:
+  - "@Sancti/09-08"
+ant-1:
+  - "@Sancti/09-08"
+oratio:
+  - "@Sancti/09-08"
+invit:
+  - "@Sancti/09-08"
+responsory1:
+  - "@Sancti/09-08"
+responsory2:
+  - "@Sancti/09-08"
+responsory3:
+  - "@Sancti/09-08"
+responsory4:
+  - "@Sancti/09-08"
+responsory5:
+  - "@Sancti/09-08"
+responsory6:
+  - "@Sancti/09-08"
+responsory7:
+  - "@Sancti/09-08"
+responsory8:
+  - "@Sancti/09-08"
+ant-laudes:
+  - "@Sancti/09-08:Ant Vespera:s/;;.*//g"
+versum-2:
+  - "@Sancti/09-08"
+ant-2:
+  - "@Sancti/09-08"
+versum-3:
+  - "@Sancti/09-08"
+ant-3:
+  - "@Sancti/09-08"

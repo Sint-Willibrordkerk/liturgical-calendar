@@ -1,0 +1,32 @@
+officium:
+  - S. Theodori Martyris
+rank:
+  - ""
+  - Simplex
+  - "1.1"
+  - "@C2a-1"
+rule:
+  - vide C2a-1;
+oratio:
+  - "Deus, qui nos beáti Theodóri Mártyris tui confessióne gloriósa circúmdas et
+    prótegis: præsta nobis ex ejus imitatióne profícere, et oratióne fulcíri."
+  - $Per Dominum
+secreta:
+  - "Súscipe, Dómine, fidélium preces cum oblatiónibus hostiárum: et,
+    intercedénte beáto Theodóro Mártyre tuo, per hæc piæ devotiónis offícia ad
+    cœléstem glóriam transeámus."
+  - $Per Dominum
+postcommunio:
+  - "Præsta nobis, quǽsumus, Dómine: intercedénte beáto Theodóro Mártyre tuo;
+    ut, quod ore contíngimus, pura mente capiámus."
+  - $Per Dominum
+lectio93:
+  - "Theodórus, miles christiánus, Maximiáno imperatóre, quod idolórum fanum
+    incendísset, comprehénsus, cum a præfécto legiónis pœna ei remitterétur, si
+    pœ́nitens facti christiánam fidem exsecrarétur, constánter in fídei
+    confessióne persevérans, missus est in cárcerem. Ubi, úngulis
+    excarnificátus, dum costæ nudaréntur, lætus canébat: Benedícam Dóminum in
+    omni témpore. Quare, in ardéntem rogum injéctus, in oratióne et divínis
+    láudibus ánimam Christo réddidit, quinto Idus Novémbris. Cujus corpus
+    Eusébia matróna, síndone involútum, sepelívit in suo prǽdio."
+  - "&teDeum"

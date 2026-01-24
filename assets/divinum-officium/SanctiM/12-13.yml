@@ -1,0 +1,59 @@
+references: "@Sancti/12-13"
+rubrica-cisterciensis/references: []
+rubrica-cisterciensis/rank:
+  - S. Luciæ Virginis et Martyris
+  - Semiduplex
+  - "2.2"
+  - "@C6"
+rubrica-divino/rank:
+  - S. Luciæ Virginis et Martyris
+  - Duplex majus
+  - "4"
+  - "@C6"
+rubrica-divino/rule:
+  - ex C6;
+  - 12 lectiones;
+  - Lectio1 tempora
+  - (rubrica 1951) Doxology=NatT
+name:
+  - "@Sancti/12-13"
+rubrica-cisterciensis/oratio:
+  - "@Sancti/12-13"
+rubrica-1963/responsory1:
+  - "@Sancti/12-13:Responsory4"
+rubrica-1963/responsory2:
+  - "@Sancti/12-13:Responsory5"
+rubrica-1963/responsory3:
+  - "@Sancti/12-13:Responsory6"
+lectio5:
+  - "@Sancti/12-13:Lectio4"
+responsory5:
+  - "@Sancti/12-13:Responsory4"
+lectio6:
+  - "@Sancti/12-13:Lectio5"
+responsory6:
+  - "@Sancti/12-13:Responsory5"
+lectio7:
+  - "@Sancti/12-13:Lectio6:s/ Quam ob.*//"
+responsory7:
+  - "@Sancti/12-13:Responsory6"
+lectio8:
+  - "@Sancti/12-13:Lectio6:s/.*Quam ob/Quam ob/"
+responsory8:
+  - "@Commune/C6:Responsory7"
+lectio9:
+  - "@CommuneM/C6:Lectio9 in 2 loco"
+responsory9:
+  - "@Sancti/12-13:Responsory7"
+lectio10:
+  - "@CommuneM/C6:Lectio10 in 2 loco"
+responsory10:
+  - "@Sancti/12-13:Responsory8"
+lectio11:
+  - "@CommuneM/C6:Lectio11 in 2 loco"
+responsory11:
+  - "@CommuneM/C6:Responsory7"
+lectio12:
+  - "@CommuneM/C6:Lectio12 in 2 loco"
+responsory12:
+  - "@Commune/C6:Responsory6"

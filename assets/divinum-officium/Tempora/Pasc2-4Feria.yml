@@ -1,0 +1,36 @@
+officium:
+  - Feria Quinta infra Hebdomadam II post Octavam Paschæ
+rank:
+  - ""
+  - Feria
+  - "1"
+rule:
+  - Oratio Dominica
+  - Una Antiphona
+  - Feria Te Deum
+  - Gloria
+  - no Credo
+  - Suffr=Maria3;Ecclesiæ,Papa;;
+lectio1:
+  - "@Tempora/Pasc2-4:Lectio1"
+responsory1:
+  - "@Tempora/Pasc0-2:Responsory1"
+lectio2:
+  - "@Tempora/Pasc2-4:Lectio2"
+responsory2:
+  - "@Tempora/Pasc0-2:Responsory2"
+lectio3:
+  - "@Tempora/Pasc2-4:Lectio3"
+responsory3:
+  - "@Tempora/Pasc0-3:Responsory1"
+ant-2:
+  - Tu solus peregrínus es, * et non audísti de Jesu, quómodo tradidérunt eum in
+    damnatiónem mortis? allelúja.
+rubrica-cisterciensis/ant-2:
+  - "@Tempora/Pasc1-4"
+ant-3:
+  - "Alias oves hábeo, * quæ non sunt ex hoc ovíli: et illas opórtet me
+    addúcere, et vocem meam áudient: et fiet unum ovíle, et unus pastor,
+    allelúja."
+rubrica-cisterciensis/ant-3:
+  - "@Tempora/Pasc1-4"

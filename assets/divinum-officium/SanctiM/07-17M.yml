@@ -1,0 +1,14 @@
+officium:
+  - S. Leonis IV Papæ et Confessoris O. N.
+rank:
+  - ""
+  - Simplex
+  - "1.1"
+  - "@C4"
+rule:
+  - vide C4;
+oratio:
+  - "Preces pópuli tui, quǽsumus, Dómine, propítius réspice: et intermissióne
+    beáti Leónis Confessóris tui atque Pontíficis, cujus hódie solémnia cólimus;
+    flagélla tue iracúndiæ, quæ pro peccátis nostris mereámur, averte."
+  - $Per Dominum

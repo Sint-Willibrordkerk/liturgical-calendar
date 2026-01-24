@@ -1,0 +1,30 @@
+officium:
+  - S. Valentini Presbyteri et Martyris
+rank:
+  - ""
+  - Simplex
+  - "1.1"
+  - "@C2a"
+rule:
+  - vide C2a;
+  - Gloria
+name:
+  - Valentini
+oratio:
+  - "Præsta, quǽsumus, omnípotens Deus: ut, qui beáti Valentíni Mártyris tui
+    natalítia cólimus, a cunctis malis imminéntibus, ejus intercessióne,
+    liberémur."
+  - $Per Dominum
+secreta:
+  - "Súscipe, quǽsumus, Dómine, múnera dignánter obláta: et, beáti Valentini
+    Mártyris tui suffragántibus méritis, ad nostræ salútis auxílium proveníre
+    concéde."
+  - $Per Dominum
+postcommunio:
+  - "Sit nobis, Dómine, reparátio mentis et córporis cœléste mystérium: ut,
+    cujus exséquimur actiónem, intercedénte beáto Valentíno Mártyre tuo,
+    sentiámus efféctum."
+  - $Per Dominum
+lectio93:
+  - "@Commune/C2:Lectio4"
+  - "&teDeum"

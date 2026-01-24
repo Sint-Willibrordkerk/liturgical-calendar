@@ -1,0 +1,17 @@
+references: "@Sancti/08-28"
+rubrica-tridentina-aut-rubrica-divino/rule:
+  - 12 lectiones
+rubrica-1963/responsory1:
+  - "@Commune/C4a:Responsory8"
+lectio5:
+  - "@Sancti/08-28:Lectio4:s/Sed.*//s"
+lectio6:
+  - "@Sancti/08-28:Lectio4:s/.*(Sed)/$1/s s/$/~/"
+  - "@Sancti/08-28:Lectio5:s/Nullum.*//s"
+lectio7:
+  - "@Sancti/08-28:Lectio5:s/.*(Nullum)/$1/s s/$/~/"
+  - "@Sancti/08-28:Lectio6:s/Itaque.*//s"
+lectio8:
+  - "@Sancti/08-28:Lectio6:s/.*(Itaque)/$1/s"
+ant-3:
+  - "@Commune/C4a:Ant 1"

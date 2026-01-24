@@ -1,0 +1,19 @@
+officium:
+  - S. Hygini Papæ et Martyris
+rank:
+  - ""
+  - Simplex
+  - "1.1"
+  - ""
+  - Simplex
+  - "1.1"
+  - "@C2b"
+rule:
+  - vide C2b;
+  - Prefatio=Epi
+name:
+  - Hygínum
+  - Secreta=Hygíno
+  - Postcommunio=Hygíno
+communi-summorum-pontificum/name:
+  - Hygínum

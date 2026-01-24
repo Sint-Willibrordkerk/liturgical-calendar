@@ -1,0 +1,147 @@
+officium:
+  - S. Thomæ Apostoli
+rank:
+  - ""
+  - Duplex II classis
+  - "5.1"
+  - "@C1"
+rubrica-196/rank:
+  - ""
+  - Duplex II classis
+  - "5"
+  - "@C1"
+rubrica-cisterciensis/rank:
+  - ""
+  - Duplex majus
+  - "4"
+  - "@C1"
+rule:
+  - ex C1;
+  - 9 lectiones;
+  - Psalmi Dominica
+  - Antiphonas horas
+  - Gloria
+  - Credo
+  - Prefatio=Apostolis
+introitus:
+  - "@Sancti/02-24"
+oratio:
+  - "Da nobis, quǽsumus, Dómine, beáti Apóstoli tui Thomæ sollemnitátibus
+    gloriári: ut ejus semper et patrocíniis sublevémur; et fidem cóngrua
+    devotióne sectémur."
+  - $Per Dominum
+lectio:
+  - Léctio Epístolæ beáti Pauli Apóstoli ad Ephésios.
+  - "!Ephes 2:19-22"
+  - "Fratres: Jam non estis hóspites et ádvenæ: sed estis cives sanctórum et
+    doméstici Dei: superædificáti super fundaméntum Apostolórum et Prophetárum,
+    ipso summo angulári lápide Christo Jesu: in quo omnis ædificátio constrúcta
+    crescit in templum sanctum in Dómino, in quo et vos coædificámini in
+    habitáculum Dei in Spíritu."
+graduale:
+  - "!Ps 138:17-18."
+  - "Nimis honorati sunt amíci tui, Deus: nimis confortátus est principátus
+    eórum."
+  - V. Dinumerábo eos, et super arénam multiplicabúntur. Allelúja, allelúja.
+  - "!Ps 32:1"
+  - "Gaudéte, justi, in Dómino: rectos decet collaudátio. Allelúja."
+gradualep:
+  - V. Allelúja, allelúja
+  - "!Ps 32:1."
+  - "Gaudéte, justi, in Dómino: rectos decet collaudátio. Allelúja."
+  - "!Ps 88:6."
+  - "V. Confitebúntur cœli mirabília tua, Dómine: étenim veritátem tuam in
+    ecclésia sanctórum. Allelúja."
+tractus:
+  - "!Ps 20:3-4"
+  - "Desidérium ánimæ ejus tribuísti ei: et voluntáte labiórum ejus non
+    fraudásti eum."
+  - V. Quóniam prævenísti eum in benedictiónibus dulcédinis.
+  - V. Posuísti in cápite ejus corónam de lápide pretióso.
+evangelium:
+  - Sequéntia ++ sancti Evangélii secúndum Joánnem.
+  - "!Joann 20:24-29"
+  - "In illo témpore: Thomas, unus ex duódecim, qui dícitur Dídymus, non erat
+    cum eis, quando venit Jesus. Dixérunt ergo ei alii discípuli: Vídimus
+    Dóminum. Ille autem dixit eis: Nisi videro in mánibus ejus fixúram clavórum,
+    et mittam dígitum meum in locum clavórum, et mittam manum meam in latus
+    ejus, non credam. Et post dies octo, íterum erant discípuli ejus intus, et
+    Thomas cum eis. Venit Jesus jánuis clausis, et stetit in médio, et dixit:
+    Pax vobis. Deinde dicit Thomæ: Inter dígitum tuum huc, et vide manus meas,
+    et affer manum tuam, et mitte in latus meum: et noli esse incrédulus, sed
+    fidélis. Respóndit Thomas et dixit ei: Dóminus meus et Deus meus. Dixit ei
+    Jesus: Quia vidisti me, Thoma, credidísti: beáti, qui non vidérunt, et
+    credidérunt."
+offertorium:
+  - "@Sancti/07-04oct"
+secreta:
+  - "Débitum tibi, Dómine, nostræ réddimus servitútis, supplíciter exorántes:
+    ut, suffrágiis beáti Thomæ Apóstoli, in nobis tua múnera tueáris, cujus
+    honoránda confessióne laudis tibi hóstias immolámus."
+  - $Per Dominum
+communio:
+  - "@Tempora/Pasc1-0"
+postcommunio:
+  - "Adésto nobis, miséricors Deus: et, intercedénte pro nobis beáto Thoma
+    Apóstolo, tua circa nos propitiátus dona custódi."
+  - $Per Dominum
+ant-1:
+  - "Quia vidísti me * Thoma, credidísti: beáti qui non vidérunt, et
+    credidérunt, allelúja."
+lectio4:
+  - "Thomas Apóstolus, qui et Dídymus, Galilǽus, post accéptum Spíritum Sanctum
+    in multas províncias proféctus est ad prædicándum Christi Evangélium:
+    Parthis, Medis, Persis, Hyrcánis et Bactris christiánæ fídei et vitæ
+    præcépta trádidit. Postrémo ad Indos se cónferens, eos in christiána
+    religióne erudívit. Qui ad extrémum, vitæ doctrinǽque sanctitáte et
+    miraculórum magnitúdine, cum céteris ómnibus sui admiratiónem et Jesu
+    Christi amórem commovísset; illíus gentis regem, idolórum cultórem, magis ad
+    iram accéndit: cujus senténtia condemnátus, telísque confóssus, Calamínæ
+    apostolátus honórem martýrii coróna decorávit."
+lectio5:
+  - "@Commune/C1:Lectio4"
+lectio6:
+  - "@Commune/C1:Lectio5"
+lectio7:
+  - Léctio sancti Evangélii secúndum Joánnem
+  - "!Joannes 20:24-29"
+  - "In illo témpore: Thomas, unus ex duódecim, qui dícitur Dídymus, non erat
+    cum eis, quando venit Jesus. Et réliqua."
+  - _
+  - Homilía sancti Gregórii Papæ
+  - "!Homilia 26 in Evang., post med."
+  - Quid, fratres caríssimi, quid inter hæc animadvértitis? Numquid casu gestum
+    créditis, ut eléctus ille discípulus tunc deésset, post autem véniens
+    audíret, áudiens dubitáret, dúbitans palpáret, palpans créderet? Non hoc
+    casu, sed divína dispensatióne gestum est. Egit namque miro modo supérna
+    cleméntia, ut discípulus ille dúbitans, dum in magístro suo vúlnera palpáret
+    carnis, in nobis vúlnera sanáret infidelitátis. Plus enim nobis Thomæ
+    infidélitas ad fidem, quam fides credéntium discipulórum prófuit; quia dum
+    ille ad fidem palpándo redúcitur, nostra mens, omni dubitatióne postpósita,
+    in fide solidátur.
+lectio8:
+  - "Sic quippe discípulum Dóminus post resurrectiónem suam dubitáre permísit,
+    nec tamen in dubitatióne deséruit; sicut ante nativitátem suam habére Maríam
+    sponsum vóluit, qui tamen ad ejus núptias non pervénit. Nam ita factus est
+    discípulus dúbitans et palpans, testis veræ resurrectiónis, sicut sponsus
+    matris fúerat custos integérrimæ virginitátis. Palpávit autem, et
+    exclamávit: Dóminus meus, et Deus meus. Dicit ei Jesus: Quia vidísti me,
+    credidísti. Cum Paulus Apóstolus dicat, Est autem fides sperandárum
+    substántia rerum, arguméntum non apparéntium; profécto liquet quia fides
+    illárum rerum arguméntum est, quæ apparére non possunt. Quæ étenim appárent,
+    jam fidem non habent, sed agnitiónem."
+lectio9:
+  - "Dum ergo vidit Thomas, dum palpávit, cur ei dícitur: Quia vidísti me,
+    credidísti? Sed áliud vidit, áliud crédidit. A mortáli quippe hómine
+    divínitas vidéri non pótuit. Hóminem ergo vidit, et Deum conféssus est,
+    dicens: Dóminus meus, et Deus meus. Vidéndo ergo crédidit, qui considerándo
+    verum hóminem, hunc Deum, quem vidére non póterat, exclamávit. Lætíficat
+    valde quod séquitur: Beáti qui non vidérunt, et credidérunt. In qua nimírum
+    senténtia nos speciáliter signáti sumus, qui eum, quem carne non vídimus,
+    mente retinémus. Nos signáti sumus; sed si fidem nostram opéribus séquimur.
+    Ille étenim vere credit, qui exércet operándo quod credit."
+  - "&teDeum"
+ant-2:
+  - "@:Ant 1"
+ant-3:
+  - "@:Ant 1"

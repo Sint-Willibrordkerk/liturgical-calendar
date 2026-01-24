@@ -1,0 +1,605 @@
+references:
+  references:
+    references: "@Commune/C4"
+    rule:
+      - Psalmi Dominica
+      - Antiphonas horas
+    antmatutinumm:
+      - "Justus Dóminus * et justítiam diléxit: æquitátem vidit vultus ejus;;10"
+      - Cognóvit eum Dóminus * in benedictiónibus suis, et invénit grátiam coram
+        óculis Dómini;;95
+      - In fide * et lenitáte ípsius Sanctum fecit illum Dóminus, et osténdit
+        illi glóriam suam;;96
+      - "Justus * germinábit sicut lílium: et florébit in ætérnum ante
+        Dóminum;;97"
+      - Sint lumbi vestri * præcíncti et lucérnæ ardéntes in mánibus
+        vestris;;256;257;258
+    ant-matutinum:
+      - "@Commune/C4::1-2"
+      - "@Commune/C4::4-6"
+      - "@:AntMatutinumM:1"
+      - "@Commune/C4::7-9"
+      - "@:AntMatutinumM:2-5"
+    lectio1:
+      - "@Commune/C4:Lectio1:s/-7/-4/ s/5 .*//s"
+    lectio2:
+      - "@Commune/C4:Lectio1:s/.*5 /!1 Tim 3:5-9\\n5 /s"
+      - "8 Diáconos simíliter pudícos, non bilíngues, non multo vino déditos,
+        non turpe lucrum sectántes:"
+      - 9 habéntes mystérium fídei in consciéntia pura.
+    lectio3:
+      - "@Commune/C4:Lectio2"
+    lectio4:
+      - "@Commune/C4:Lectio3"
+    responsory4:
+      - "R. Ecce vere Isrælíta, in quo dolus non est invéntus: † qui probátus
+        repértus est sacérdos magnus"
+      - "* Juxta órdinem Melchísedech."
+      - V. Státuit ei Dóminus testaméntum sempitérnum, † et dedit illi
+        sacerdótium magnum.
+      - R. Juxta órdinem Melchísedech.
+    lectio5:
+      - "@Commune/C4:Lectio4"
+    responsory5:
+      - "@Commune/C4:Responsory4"
+    lectio6:
+      - "@Commune/C4:Lectio5"
+    responsory6:
+      - "@Commune/C4:Responsory5"
+    lectio7:
+      - "@Commune/C4:Lectio6:s/ Dúplici .*//s"
+    responsory7:
+      - "@Commune/C4:Responsory6"
+    lectio8:
+      - "@Commune/C4:Lectio6:s/.* Dúplici /Dúplici /s s/$/~/"
+      - Lauda ergo post perículum, prǽdica secúrum. Lauda navigántis
+        felicitátem, sed cum pervénit ad portum; lauda ducis virtútem, sed cum
+        perdúctus est ad triúmphum.
+    responsory8:
+      - R. Justum dedúxit Dóminus per vias rectas, † et osténdit illi regnum
+        Dei, et dedit illi sciéntiam sanctórum;
+      - "* Honestávit illum in labóribus suis."
+      - V. Custodívit eum ab inimícis et a seductóribus tutávit illum.
+      - R. Honestávit illum in labóribus suis.
+    lectio9:
+      - "@Commune/C4:Lectio7:s/ Ecce .*//s"
+    responsory9:
+      - "@Commune/C4:Responsory7"
+    lectio10:
+      - "@Commune/C4:Lectio7:s/.* Ecce /Ecce /s s/$/~/"
+      - "@Commune/C4:Lectio8:s/ Sed homo .*//s"
+    responsory10:
+      - "@Commune/C4:Responsory8"
+    lectio11:
+      - "@Commune/C4:Lectio8:s/.* Sed homo /Sed homo /s"
+    responsory11:
+      - R. Iste sanctus digne in memóriam vértitur hóminum, qui ad gáudium
+        tránsiit angelórum; † quóniam in hac peregrinatióne solo córpore
+        constitútus, cogitatióne et aviditáte
+      - "* In illa ætérna pátria conversátus est."
+      - V. Vínculis carnis absolútus taléntum, sibi créditum Dómino suo
+        duplicátum reportávit.
+      - R. In illa ætérna pátria conversátus est.
+    lectio12:
+      - "@Commune/C4:Lectio9"
+    responsory12:
+      - R. Elégit te Dóminus sacerdótem sibi
+      - "* Ad sacrificándum ei hóstiam laudis."
+      - V. Ímmola Deo sacrifícium laudis, et redde Altíssimo vota tua.
+      - R. Ad sacrificándum ei hóstiam laudis.
+    mm-capitulum:
+      - "@Commune/C4:Capitulum Sexta"
+      - _
+      - V. Justus germinábit sicut lílium.
+      - R. Et florébit in ætérnum ante Dóminum.
+    ant-vespera-3:
+      - "@Commune/C4:Ant Vespera:1 s/$/;;109/"
+      - "@Commune/C4:Ant Vespera:2 s/$/;;111/"
+      - "@Commune/C4:Ant Vespera:3 s/$/;;112/"
+      - "@Commune/C4:Ant Vespera:5 s/$/;;131/"
+    lectio1-in-2-loco:
+      - "@Commune/C4:Lectio1 in 2 loco:s/-5/-4/ s/5 .*//s"
+    lectio2-in-2-loco:
+      - "@Commune/C4:Lectio1 in 2 loco:s/.*!/!/s s/1-5/5-7/ s/^1 .*5 /5 /sm"
+      - "@Commune/C4:Lectio2 in 2 loco:s/!.*// s/8 .*//s"
+    lectio3-in-2-loco:
+      - "@Commune/C4:Lectio2 in 2 loco:s/.*!/!/s s/6-9/8-11/ s/^6 .*8 /8 /sm"
+      - "@Commune/C4:Lectio3 in 2 loco:s/!.*// s/12 .*//s"
+    lectio4-in-2-loco:
+      - "@Commune/C4:Lectio3 in 2 loco:s/.*!/!/s s/10-/12-/ s/^10 .*12 /12 /sm"
+    lectio5-in-2-loco:
+      - "@Commune/C4:Lectio4 in 2 loco: s/Quid enim .*//"
+    lectio6-in-2-loco:
+      - "@Commune/C4:Lectio4 in 2 loco: s/.*Quid enim/Quid enim/"
+      - "@Commune/C4:Lectio5 in 2 loco: s/Quantórum .*//"
+    lectio7-in-2-loco:
+      - "@Commune/C4:Lectio5 in 2 loco: s/.*Quantórum/Quantórum/"
+    lectio8-in-2-loco:
+      - "@Commune/C4:Lectio6 in 2 loco"
+    lectio9-in-2-loco:
+      - Léctio sancti Evangélii secúndum Matthǽum
+      - "!Matt 24:42-47"
+      - "In illo témpore: Dixit Jesus discípulis suis: Vigiláte, quia nescítis
+        qua hora Dóminus vester ventúrus sit. Et réliqua."
+      - _
+      - Homilía sancti Hilárii Epíscopi
+      - "!Comment. in Matth., cap. 26 in fine‚"
+      - "Ut ignorántiam illam diéi ómnibus táciti, non sine útilis siléntii
+        ratióne esse scirémus, vigiláre nos Dóminus propter advéntum furis
+        admónuit, et oratíonum assiduitáte deténtos ómnibus præceptórum suórum
+        opéribus inhærére. Furem enim esse osténdit zábulum, ad detrahénda ex
+        nobis spólia pervígilem, et córporum nostrórum dómibus insidiántem: ut
+        ea incuriósis nobis, et somno déditis, consiliórum suórum atque
+        illecebrárum jáculis perfódiat. Parátos ígitur esse nos cónvenit: quia
+        diéi ignorátio inténtam sollicitúdinem suspénsæ exspectatiónis
+        exágitet."
+    lectio10-in-2-loco:
+      - "!Cap. 27"
+      - "Quisnam est fidélis servus et prudens, quem constítuit Dóminus super
+        famíliam suam? Quamquam in commúne nos ad indeféssam vigilántiæ curam
+        adhortétur: speciálem tamen pópuli princípibus, id est, epíscopis, in
+        exspectatióne adventúque suo sollicitúdinem mandat. Hunc enim servum
+        fidélem atque prudéntem, præpósitum famíliæ signíficat, cómmoda atque
+        utilitátes commíssi sibi pópuli curántem."
+    lectio11-in-2-loco:
+      - "Qui si dicto áudiens, et præcéptis obédiens erit, id est, si doctrínæ
+        opportunitáte et veritáte infírma confírmet, disrúpta consólidet,
+        depraváta convértat, et verbum vitæ in æternitátis cibum aléndæ famíliæ
+        dispéndat, atque hæc agens, hisque ímmorans deprehendátur: glóriam a
+        Dómino tamquam dispensátor fidélis et víllicus útilis consequétur, et
+        super ómnia bona constituétur; id est, in Dei glória collocábitur, quia
+        nihil sit ultra, quod mélius sit."
+    lectio12-in-2-loco:
+      - "Quod, si cóntuens longam Dei patiéntiam, quæ in proféctum humánæ
+        salútis exténditur, advérsum consérvos insoléscet, et sæculi malus
+        vitiísque se tradet, præséntium tantum curam in cultu ventris exércens;
+        desperáta die Dóminus advéniet, eúmque a bonis, quæ spopónderat,
+        dívidet, portionémque ejus cum hypócritis in pœnæ æternitáte constítuet:
+        quia advéntum desperávit, quia mandátis non obtemperáverit, quia
+        præséntibus studúerit, quia vita Géntium víxerit, quia desperatióne
+        judícii commíssam sibi famíliam fame, siti, cæde vexáverit."
+    evangelium-in-2-loco:
+      - "@Commune/C4-1:Evangelium"
+  rule:
+    - Antiphonas horas
+  comment:
+    - "Lectiones 1..4 in 3 loco:"
+    - Aliæ Lectiones ex Communi Confessoris Pontificis ex Breviario Cisterciensi
+      (pag. 87*)
+  ant-vespera:
+    - Ecce sacérdos magnus, * qui in diébus suis plácuit Deo, et invéntus est
+      justus.
+    - Euge serve bone, * in módico fidélis, intra in gáudium Dómini tui.
+    - Fidélis servus, et prudens, * quem constítuit Dóminus super famíliam suam.
+    - Beátus ille servus, * cum vénerit Dóminus ejus, et pulsáverit jánuam, et
+      invénerit eum vigilántem.
+    - Ecce vere * Israëlita, in quo dolus non est.
+  tempore-paschali/ant-vespera:
+    - Allelúia, * allelúia, allelúia.
+  versum-1:
+    - V. Justum dedúxit Dóminus per vias rectas.
+    - R. Et osténdit illi regnum Dei.
+  tempore-paschali/invit:
+    - Allelúia, allelúia, * Allelúia.
+  ant-matutinum:
+    - Beátus vir, * qui in lege Dómini meditátur, volúntas ejus pérmanet die ac
+      nocte; et ómnia quæcúmque fáciet, semper prosperabúntur.;;1
+    - Beátus * iste Sanctus, qui confísus est in Dómino, prædicávit præcéptum
+      Dómini, constitútus est in monte sancto ejus.;;2
+    - "Invocántem * exaudívit Dóminus sanctum suum: Dóminus exaudívit eum, et
+      constítuit eum in pace.;;4"
+    - Scuto bonæ voluntátis * tuæ coronásti eum Dómine.;;5
+    - Dómine, * Dóminus noster, quam admirábile est nomen tuum in univérsa
+      terra! quia glória et honóre coronásti Sanctum tuum, et constituísti eum
+      super ópera mánuum tuárum.;;8
+    - "Justus Dóminus, * et justítiam diléxit: æquitátem vidit vultus ejus.;;10"
+    - "Dómine, * iste Sanctus habitábit in tabernáculo tuo: operátus est
+      justítiam tuam, requiéscet in monte sancto tuo.;;14"
+    - "Vitam * pétiit a te, et tribuísti ei, Dómine: glóriam et magnum decérem
+      imposuísti super eum, posuísti in cápite ejus corónam de lápide
+      pretióso.;;20"
+    - "Hic accípiet * benedictiónem a Dómino, et misericórdiam a Deo salutári
+      suo: quia hæc est generátio quæréntium Dóminum.;;23"
+    - Lætábitur justus * in Dómino et sperábit in eo, et laudabúntur omnes recti
+      corde;;63
+    - Beátus * quem elegísti Dómine, habitábit in átriis tuis;;64
+    - "Justus ut palma * florébit: sicut cedrus Líbani multiplicábitur;;91"
+    - Nisi granum fruménti * cadens in terram, mórtuum fúerit; ipsum solum
+      manet.;;256;257;258
+    - "Amávit eum Dóminus, * et ornávit eum: stolam glóriæ índuit eum, et ad
+      portas paradísi coronávit eum.;;256;257;258"
+  tempore-paschali/ant-matutinum:
+    - Beátus vir, * qui in lege Dómini meditátur, volúntas ejus pérmanet die ac
+      nocte; et ómnia quæcúmque fáciet, semper prosperabúntur.;;1
+    - Beátus * iste Sanctus, qui confísus est in Dómino, prædicávit præcéptum
+      Dómini, constitútus est in monte sancto ejus.;;2
+    - "Invocántem * exaudívit Dóminus sanctum suum: Dóminus exaudívit eum, et
+      constítuit eum in pace.;;4"
+    - Scuto bonæ voluntátis * tuæ coronásti eum Dómine.;;5
+    - Dómine, * Dóminus noster, quam admirábile est nomen tuum in univérsa
+      terra! quia glória et honóre coronásti Sanctum tuum, et constituísti eum
+      super ópera mánuum tuárum.;;8
+    - "Justus Dóminus, * et justítiam diléxit: æquitátem vidit vultus ejus.;;10"
+    - "Dómine, * iste Sanctus habitábit in tabernáculo tuo: operátus est
+      justítiam tuam, requiéscet in monte sancto tuo.;;14"
+    - "Vitam * pétiit a te, et tribuísti ei, Dómine: glóriam et magnum decérem
+      imposuísti super eum, posuísti in cápite ejus corónam de lápide
+      pretióso.;;20"
+    - "Hic accípiet * benedictiónem a Dómino, et misericórdiam a Deo salutári
+      suo: quia hæc est generátio quæréntium Dóminum.;;23"
+    - Lætábitur justus * in Dómino et sperábit in eo, et laudabúntur omnes recti
+      corde;;63
+    - Beátus * quem elegísti Dómine, habitábit in átriis tuis;;64
+    - "Justus ut palma * florébit: sicut cedrus Líbani multiplicábitur;;91"
+    - Nisi granum fruménti * cadens in terram, mórtuum fúerit; ipsum solum
+      manet.;;256;257;258
+    - Allelúia, * allelúia, allelúia.;;256;257;258
+  nocturn-1-versum:
+    - V. Ecce sacérdos magnus.
+    - R. Qui in diébus suis plácuit Deo, et invéntus est justus.
+  lectio2:
+    - De Epístola prima beáti Pauli Apóstoli ad Timótheum
+    - "!1 Tim 3:1-7"
+    - "1 Fidélis sermo: si quis episcopátum desíderat, bonum opus desíderat."
+    - 2 Opórtet ergo epíscopum irreprehensíbilem esse, uníus uxóris virum,
+      sóbrium, prudéntem, ornátum, pudícum, hospitálem, doctórem,
+    - 3 non vinoléntum, non percussórem, sed modéstum; non litigiósum, non
+      cúpidum, sed
+    - 4 suæ dómui bene præpósitum, fílios habéntem súbditos cum omni castitáte.
+    - 5 Si quis autem dómui suæ præésse nescit, quómodo Ecclésiæ Dei diligéntiam
+      habébit?
+    - 6 Non neóphytum, ne in supérbiam elátus, in judícium íncidat diáboli.
+    - 7 Opórtet autem illum et testimónium habére bonum ab iis qui foris sunt,
+      ut non in oppróbrium íncidat, et in láqueum diáboli.
+  lectio3:
+    - "!1 Tim 4:12-16"
+    - 12 Exémplum esto fidélium in verbo, in conversatióne, in charitáte, in
+      fide, in castitáte.
+    - 13 Dum vénio, atténde lectióni, exhortatióni, et doctrínæ.
+    - 14 Noli neglígere grátiam, quæ in te est, quæ data est tibi per
+      prophetíam, cum impositióne mánuum presbytérii.
+    - "15 Hæc meditáre, in his esto: ut proféctus tuus maniféstus sit ómnibus."
+    - "16 Atténde tibi, et doctrínæ: insta in illis. Hoc enim fáciens, et
+      teípsum salvum fácies, et eos qui te áudiunt."
+  responsory3:
+    - "R. Jurávit Dóminus, et non pœnitébit eum: Tu es sacérdos in ætérnum,"
+    - "* Secúndum órdinem Melchísedech."
+    - V. Dixit Dóminus Dómino meo, Sede a dextris meis.
+    - R. Secúndum órdinem Melchísedech.
+  lectio4:
+    - "!1 Tim 6:13-16"
+    - 13 Præcípio tibi coram Deo, qui vivíficat ómnia, et Christo Jesu, qui
+      testimónium réddidit sub Póntio Piláto, bonam confessiónem,
+    - 14 ut serves mandátum sine mácula, irreprehensíbile usque in advéntum
+      Dómini nostri Jesu Christi,
+    - "15 quem suis tempóribus osténdet beátus et solus potens, Rex regum, et
+      Dóminus dominántium:"
+    - "16 qui solus habet immortalitátem, et lucem inhábitat inaccessíbilem:
+      quem nullus hóminum vidit, sed nec vidére potest: cui honor, et impérium
+      sempitérnum. Amen."
+  responsory4:
+    - R. Iste Sanctus digne in memóriam vértitur hóminum, qui ad gáudium
+      tránsiit Angelórum;
+    - "* Quia in hac peregrinatióne solo córpore constitútus, cogitatióne et
+      aviditáte in illa ætérna pátria conversátus est."
+    - V. Vínculis carnis absolútus taléntum sibi créditum Dómino suo cum lucro
+      reportávit.
+    - R. Quia in hac peregrinatióne solo córpore constitútus, cogitatióne et
+      aviditáte in illa ætérna pátria conversátus est.
+  tempore-paschali/responsory4:
+    - "R. Beátus vir qui métuit Dóminum, allelúia: In mandátis ejus cupit nimis,
+      allelúia."
+    - "* Allelúia, allelúia."
+    - "V. Potens in terra erit semen ejus: generátio rectórum benedicétur."
+    - R. Allelúia, allelúia.
+  lectio5:
+    - "@Commune/C4:Lectio4 in 2 loco: s/Quid enim .*//"
+  responsory5:
+    - "R. Pósui adjutórium super poténtem, et exaltávi eléctum de plebe mea:"
+    - "* Manus enim mea auxiliábitur ei."
+    - V. Invéni David servum meum, óleo sancto meo unxi eum.
+    - R. Manus enim mea auxiliábitur ei.
+  lectio6:
+    - "@Commune/C4:Lectio4 in 2 loco: s/.*Quid enim/Quid enim/"
+    - "@Commune/C4:Lectio5 in 2 loco: s/Quantórum .*//"
+  responsory6:
+    - "R. Invéni David servum meum, óleo sancto meo unxi eum:"
+    - "* Manus enim mea auxiliábitur ei."
+    - V. Nihil profíciet inimícus in eo, et fílius iniquitátis non nocébit ei.
+    - R. Manus enim mea auxiliábitur ei.
+  lectio7:
+    - "@Commune/C4:Lectio5 in 2 loco: s/.*Quantórum/Quantórum/"
+  responsory7:
+    - "R. Amávit eum Dóminus, et ornávit eum: stolam glóriæ índuit eum,"
+    - "* Et ad portas paradísi coronávit eum."
+    - V. Induit eum Dóminus lorícam fídei, et ornávit eum.
+    - R. Et ad portas paradísi coronávit eum.
+  lectio8:
+    - Quantos, per longam incúriam peccáto labe resolútos et quadam lepræ
+      contgióne perfúsos, castigatiónibus et exhortatiónibus expiándo, Deo in se
+      operánte, mundávit? Quantórum ánimas, vivéntes in córpore jam defúnctas et
+      delictórum mole óbrutas ac sepúltas, ad emendatiónem tamquam ad lucem
+      vocándo, Deo esuscitávit; ut, Dómini sui admirándus imitátor, jam mórtuas
+      Deo, e contrário mortíficet, vitáli morte, peccáto?
+  responsory8:
+    - R. Fidélis namque, ac prudens dispensátor in magni patrisfamílias domo
+      constitútus erat,
+    - "* Ut consérvis suis in témpore mensúram trítici erogáret."
+    - "V. Pro salúte, et augménto gregis sibi commíssi cura pervígili sollícitus
+      erat:"
+    - R. Ut consérvis suis in témpore mensúram trítici erogáret.
+  tempore-paschali/responsory8:
+    - "R. De ore prudéntis procédit mel, allelúja: dulcédo mellis est sub língua
+      ejus, allelúja:"
+    - "* Favus distíllans lábia ejus, allelúja, allelúja."
+    - V. Sapiéntia requiéscit in corde ejus, et prudéntia in sermóne oris illíus.
+    - R. Favus distíllans lábia ejus, allelúja, allelúja.
+    - "&Gloria"
+    - R. Favus distíllans lábia ejus, allelúja, allelúja.
+  responsory9:
+    - R. Magnificávit eum in conspéctu regum,
+    - "* Et dedit illi corónam glóriæ."
+    - V. Státuit illi testaméntum sempitérnum, et beatificávit illum.
+    - R. Et dedit illi corónam glóriæ.
+  responsory10:
+    - R. Justum dedúxit Dóminus per vias rectas, † et osténdit illi regnum Dei,
+      et dedit illi sciéntiam sanctórum;
+    - "* Honestávit illum in labóribus suis."
+    - V. Magnificávit eum in conspéctu regum, et dedit illi corónam glóriæ.
+    - R. Honestávit illum in labóribus suis.
+  responsory11:
+    - "R. Beátus vir, qui invéntus est sine mácula, et qui post aurum non ábiit,
+      nec sperávit in thesáuris pecúniæ:"
+    - "* Ideo stabilíta sunt bona ipsíus in Dómino."
+    - V. Pótuit enim tránsgredi, et non est transgréssus; fácere mala, et non
+      fecit.
+    - R. Ideo stabilíta sunt bona ipsíus in Dómino.
+  lectio12:
+    - "Sed is, qui quinque talénta accéperat, ália quinque lucrátus est: quia
+      sunt nonnúlli, qui, etsi intérna ac mýstica penetráre nésciunt, pro
+      intentióne tamen supérnæ pátriæ docent recta quos possunt; de ipsis
+      exterióribus, quæ accepérunt, duplum taléntum portant; dumque se a carnis
+      petulántia et a terrenárum rerum ámbitu atque a visibílium voluptáte
+      custódiunt, ab his étiam álios admonéndo compéscunt. Et sunt nonnúlli,
+      qui, quasi duóbus taléntis ditáti, intelléctum atque operatiónem
+      percípiunt, subtília de intérnis intélligunt, mira in exterióribus
+      operántur; cumque et intelligéndo et operándo áliis prǽdicant, quasi
+      duplicátum de negótio lucrum repórtant."
+    - "&teDeum"
+  responsory12:
+    - "R. Sint lumbi vestri præcíncti, et lucérnæ ardéntes in mánibus vestris:"
+    - "* Et vos símiles homínibus exspectántibus dóminum suum, quando revertátur
+      a núptiis."
+    - V. Vigiláte ergo, quia nescítis qua hora Dóminus vester ventúrus sit.
+    - R. Et vos símiles homínibus exspectántibus dóminum suum, quando revertátur
+      a núptiis.
+    - "&Gloria"
+    - R. Et vos símiles homínibus exspectántibus dóminum suum, quando revertátur
+      a núptiis.
+  tempore-paschali/responsory12:
+    - R. In diadémate cápitis Aaron lápides pretiósi fulgébant,
+    - "* Dum perficerétur opus Dei, * Allelúia, allelúia, allelúia."
+    - V. Coróna áurea super caput ejus, expréssa signo sanctitátis.
+    - R. Dum perficerétur opus Dei.
+    - "&Gloria"
+    - R. Allelúia, allelúia, allelúia.
+  mm-capitulum:
+    - "!Sir 44:20; 44:22"
+    - "v. Non est invéntus símilis illi, qui conserváret legem Excélsi: ídeo
+      jurejurándo fecit illum Dóminus créscere in plebem suam."
+    - $Deo gratias
+    - _
+    - V. Elégit eum Dóminus sacerdótem sibi.
+    - R. Ad sacrificándum ei hóstiam laudis.
+  ant-laudes:
+    - Ecce sacérdos magnus, * qui in diébus suis plácuit Deo, et invéntus est
+      justus.
+    - Euge serve bone, * in módico fidélis, intra in gáudium Dómini tui.
+    - Fidélis servus, et prudens, * quem constítuit Dóminus super famíliam suam.
+    - Beátus ille servus, * cum vénerit Dóminus ejus, et pulsáverit jánuam, et
+      invénerit eum vigilántem.
+    - Ecce vere * Israëlita, in quo dolus non est.
+  capitulum-laudes:
+    - "!Sir 44:25"
+    - v. Benedictiónem ómnium Géntium dedit illi Dóminus, * et testaméntum suum
+      confirmávit super caput ejus.
+    - $Deo gratias
+  hymnusm-laudes:
+    - "{:H-Jesuredemptoromnium:}v. Jesu Redémptor ómnium,"
+    - Perpes coróna Prǽsulum,
+    - In hac die cleméntius
+    - Indúlgeas precántibus.
+    - _
+    - Tui sacri qua nóminis
+    - "Conféssor almus cláruit:"
+    - Hujus celébrat ánnua
+    - Devóta plebs solémnia.
+    - _
+    - Qui rite mundi gáudia
+    - Hujus cadúca réspuens,
+    - Æternitátis prǽmio
+    - Potítur inter Ángelos.
+    - _
+    - Hujus benígnus ánnue
+    - "Nobis sequi vestígia:"
+    - Hujus precátu, sérvulis
+    - Dimítte noxam críminis.
+    - _
+    - "* Sit Christe, Rex piíssime,"
+    - Tibi, Patríque glória,
+    - Cum Spíritu Paráclito,
+    - Nunc, et per omne sǽculum.
+    - Amen.
+  versum-2:
+    - "@Commune/C4:Versum 2"
+  responsory-breve-tertia:
+    - R.br. Elégit eum Dóminus * Sacerdótem sibi.
+    - R. Elégit eum Dóminus * Sacerdótem sibi.
+    - V. Ad sacrificándum ei hóstiam laudis.
+    - R. Sacerdótem sibi.
+    - "&Gloria"
+    - R. Elégit eum Dóminus * Sacerdótem sibi.
+  responsory-breve-sexta:
+    - R.br. Amávit eum Dóminus, * Et ornávit eum.
+    - R. Amávit eum Dóminus, * Et ornávit eum.
+    - V. Stolam glóriæ índuit eum.
+    - R. Et ornávit eum.
+    - "&Gloria"
+    - R. Amávit eum Dóminus, * Et ornávit eum.
+  ant-vespera-3:
+    - Ecce sacérdos magnus, * qui in diébus suis plácuit Deo, et invéntus est
+      justus.
+    - Euge serve bone, * in módico fidélis, intra in gáudium Dómini tui.
+    - Fidélis servus, et prudens, * quem constítuit Dóminus super famíliam suam.
+    - Beátus ille servus, * cum vénerit Dóminus ejus, et pulsáverit jánuam, et
+      invénerit eum vigilántem.
+    - Ecce vere * Israëlita, in quo dolus non est.
+  versum-3:
+    - "@Commune/C4:Versum 2"
+  lectio1-in-3-loco:
+    - De Epístola beáti Pauli Apóstoli ad Titum.
+    - "!Cap. 1: 7-9"
+    - "7 Opórtet Epíscopum sine crímine esse, sicut Dei dispensatórem: non
+      supérbum, non iracúndum, non vinoléntum, non percussórem, non turpis lucri
+      cúpidum:"
+    - 8 sed hospitálem, benígnum, sóbrium, justum, sanctum, continéntem,
+    - "9 amplecténtem eum, qui secúndum doctrínam est, fidélem sermónem: ut
+      potens sit exhortári in doctrína sana, et eos, qui contradícunt‚ argúere."
+  lectio2-in-3-loco:
+    - "!Cap. 1: 10-11,13-14"
+    - "10 Sunt enim multi étiam inobediéntes vaníloqui, et seductóres: máxime
+      qui de circumcisióne sunt:"
+    - "11 quos opórtet redárgui: qui univérsas domos subvértunt, docéntes quæ
+      non opórtet‚ turpis lucri grátia."
+    - 13 Quam ob causam íncrepa illos dure, ut sani sint in fide,
+    - 14 non intendéntes Judáicis fábulis, et mandátis hóminum, aversántium se a
+      veritáte.
+  lectio3-in-3-loco:
+    - "!Cap. 2, 1-6"
+    - "1 Tu autem lóquere quæ decent sanam doctrínam:"
+    - "2 Senes ut sóbrii sint, pudíci, prudéntes, sani in fide, in dilectióne,
+      in patiéntia:"
+    - "3 Anus simíliter in hábitu sancto, non criminatríces, non multo vino
+      serviéntes, bene docéntes:"
+    - 4 ut prudéntiam dóceant adolescéntulas, ut viros suos ament, fílios suos
+      díligant,
+    - "5 prudéntes, castas, sóbrias, domus curam habéntes, benígnas, súbditas
+      viris suis, ut non blasphemétur verbum Dei:"
+    - 6 Júvenes simíliter hortáre ut sóbrii sint.
+  lectio4-in-3-loco:
+    - "!Cap. 2,7-8;3,8"
+    - 7 In ómnibus teípsum præbe exémplum bonórum óperum, in doctrína, in
+      integritáte, in gravitáte,
+    - "8 verbum sanum, irreprehensíbile: ut is, qui ex advérso est, vereátur,
+      nihil habens malum dícere de nobis."
+    - "8 Fidélis sermo est: et de his volo te confirmáre: ut curent bonis
+      opéribus præésse qui credunt Deo. Hæc sunt bona, et utília homínibus."
+officium:
+  - Commune Doctoris Pontificis
+comment:
+  - "Lectiones in 4 loco:"
+  - Aliæ Lectiones Pro Doctoribus ex Breviario Cisterciensi (pag. 96*)
+ant-1:
+  - O Doctor óptime, * Ecclésiæ sanctæ lumen, beáte N., divínæ legis amátor,
+    deprecáre pro nobis Fílium Dei.
+oratio:
+  - "Deus, qui pópulo tuo ætérnæ salútis beátum N. minístrum tribuísti: præsta,
+    quǽsumus; ut, quem Doctórem vitæ habúimus in terris, intercessórem habére
+    mereámur in cœlis."
+  - $Per Dominum.
+lectio1:
+  - "@Commune/C4a:Lectio1:s/-5/-4/ s/5 .*//s"
+lectio2:
+  - "@Commune/C4a:Lectio1:s/.*5 /!Sir 39:5-7\\n5 /s"
+  - "@Commune/C4a:Lectio2:s/.*6 /6 /s s/8 .*//s"
+lectio3:
+  - "@Commune/C4a:Lectio2:s/.*8 /!Sir 39:8-10\\n8 /s"
+lectio4:
+  - "@Commune/C4a:Lectio3"
+lectio5:
+  - "@Commune/C4a:Lectio4"
+lectio6:
+  - "@Commune/C4a:Lectio5:s/Si enim .*//s"
+lectio7:
+  - "@Commune/C4a:Lectio5:s/.* Si enim /Si enim /s"
+lectio8:
+  - "@Commune/C4a:Lectio6"
+lectio9:
+  - "@Commune/C4a:Lectio7"
+lectio10:
+  - "@Commune/C4a:Lectio8"
+lectio11:
+  - "@Commune/C4a:Lectio9:s/Et hic mundum .*//s"
+lectio12:
+  - "@Commune/C4a:Lectio9:s/.* Et hic mundum /Et hic mundum /s"
+responsory12:
+  - R. In médio Ecclésiæ apéruit os ejus,
+  - "* Et implévit eum Dóminus spíritu sapiéntiæ et intelléctus."
+  - V. Jucunditátem et exsultatiónem thesaurizávit super eum.
+  - R. Et implévit eum Dóminus spíritu sapiéntiæ et intelléctus.
+  - "&Gloria"
+  - R. Et implévit eum Dóminus spíritu sapiéntiæ et intelléctus.
+  - "V. Misit Dóminus manum suam, et tétigit os ejus:"
+  - R. In médio Ecclésiæ apéruit os ejus,
+  - "* Et implévit eum Dóminus spíritu sapiéntiæ et intelléctus."
+  - V. Jucunditátem et exsultatiónem thesaurizávit super eum.
+  - R. Et implévit eum Dóminus spíritu sapiéntiæ et intelléctus.
+  - "&Gloria"
+  - R. Et implévit eum Dóminus spíritu sapiéntiæ et intelléctus.
+  - R. In médio Ecclésiæ apéruit os ejus,
+  - "* Et implévit eum Dóminus spíritu sapiéntiæ et intelléctus."
+  - V. Jucunditátem et exsultatiónem thesaurizávit super eum.
+  - R. Et implévit eum Dóminus spíritu sapiéntiæ et intelléctus.
+  - "&Gloria"
+  - R. Et implévit eum Dóminus spíritu sapiéntiæ et intelléctus.
+tempore-paschali/responsory12:
+  - R. In médio Ecclésiæ apéruit os ejus,
+  - "* Et implévit eum Dóminus spíritu sapiéntiæ et intelléctus."
+  - V. Jucunditátem et exsultatiónem thesaurizávit super eum.
+  - R. Et implévit eum Dóminus spíritu sapiéntiæ et intelléctus.
+  - "&Gloria"
+  - R. Et implévit eum Dóminus spíritu sapiéntiæ et intelléctus.
+  - "V. Misit Dóminus manum suam, et tétigit os ejus:"
+  - R. In médio Ecclésiæ apéruit os ejus,
+  - "* Et implévit eum Dóminus spíritu sapiéntiæ et intelléctus."
+  - V. Jucunditátem et exsultatiónem thesaurizávit super eum.
+  - R. Et implévit eum Dóminus spíritu sapiéntiæ et intelléctus.
+  - "&Gloria"
+  - R. Et implévit eum Dóminus spíritu sapiéntiæ et intelléctus.
+  - R. Allelúia, allelúia, allelúia.
+ant-3:
+  - O Doctor óptime, * Ecclésiæ sanctæ lumen, beáte N., divínæ legis amátor,
+    deprecáre pro nobis Fílium Dei.
+lectio9-in-2-loco:
+  - "@Commune/C4a:Lectio7 in 2 loco:s/ Sal est .*//s"
+lectio10-in-2-loco:
+  - "@Commune/C4a:Lectio7 in 2 loco:s/.* Sal est /Sal est /s s/$/~/s"
+  - "@Commune/C4a:Lectio8 in 2 loco:s/ Apóstoli .*//s"
+lectio11-in-2-loco:
+  - "@Commune/C4a:Lectio8 in 2 loco:s/.* Apóstoli /Apóstoli /s"
+lectio12-in-2-loco:
+  - "@Commune/C4a:Lectio9 in 2 loco"
+lectio9-in-3-loco:
+  - "@Commune/C4a:Lectio7 in 3 loco"
+lectio10-in-3-loco:
+  - "@Commune/C4a:Lectio8 in 3 loco:s/ Igitur .*//s"
+lectio11-in-3-loco:
+  - "@Commune/C4a:Lectio8 in 3 loco:s/.* Igitur /Igitur /s s/$/~/s"
+  - "@Commune/C4a:Lectio9 in 3 loco:s/ Non ergo .*//s"
+lectio12-in-3-loco:
+  - "@Commune/C4a:Lectio9 in 3 loco:s/.* Non ergo /Non ergo /s"
+evangelium:
+  - Sequéntia ++ sancti Evangélii secúndum Matthǽum
+  - "!Matt 5:13-19"
+  - "In illo témpore: Dixit Jesus discípulis suis: Vos estis sal terræ. Quod si
+    sal evanúerit, in quo saliétur? Ad níhilum valet ultra, nisi ut mittátur
+    foras, et conculcétur ab homínibus. Vos estis lux mundi. Non potest cívitas
+    abscóndi supra montem pósita. Neque accéndunt lucérnam, et ponunt eam sub
+    módio, sed super candelábrum, ut lúceat ómnibus, qui in domo sunt. Sic
+    luceat lux vestra coram homínibus, ut vídeant ópera vestra bona, et
+    gloríficent Patrem vestrum, qui in cœlis est. Nolíte putáre, quóniam veni
+    sólvere legem aut prophétas: non veni sólvere, sed adimplére. Amen, quippe
+    dico vobis, donec tránseat cœlum et terra, jota unum aut unus apex non
+    præteríbit a lege, donec ómnia fiant. Qui ergo sólverit unum de mandátis
+    istis mínimis, et docúerit sic hómines, mínimus vocábitur in regno cœlórum:
+    qui autem fécerit et docúerit, hic magnus vocábitur in regno cœlórum."

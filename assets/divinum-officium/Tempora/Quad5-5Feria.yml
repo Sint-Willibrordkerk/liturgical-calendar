@@ -1,0 +1,188 @@
+officium:
+  - Feria Sexta infra Hebdomadam Passionis
+rank:
+  - ""
+  - Feria major
+  - "2.1"
+rubrica-1930/rank:
+  - ""
+  - Feria major
+  - "4.9"
+rubrica-196/rank:
+  - ""
+  - Feria major
+  - "3.9"
+rule:
+  - no Gloria
+  - Suffragium=Ecclesiæ,Papa;;
+  - Prefatio=Quad5
+  - Super popul
+introitus:
+  - "!Ps 30:10, 16, 18"
+  - "v. Miserére mihi, Dómine, quóniam tríbulor: líbera me, et éripe me de
+    mánibus inimicórum meórum et a persequéntibus me: Dómine, non confúndar,
+    quóniam invocávi te."
+  - "!Ps 30:2"
+  - "In te, Dómine, sperávi, non confúndar in ætérnum: in justítia tua libera
+    me."
+  - "v. Miserére mihi, Dómine, quóniam tríbulor: líbera me, et éripe me de
+    mánibus inimicórum meórum et a persequéntibus me: Dómine, non confúndar,
+    quóniam invocávi te."
+oratio:
+  - "Córdibus nostris, quǽsumus, Dómine, grátiam tuam benígnus infúnde: ut
+    peccáta nostra castigatióne voluntária cohibéntes, temporáliter pótius
+    macerémur, quam supplíciis deputémur ætérnis."
+  - $Per Dominum
+rubrica-1955-aut-rubrica-1960-aut-rubrica-innovata/commemoratio-oratio:
+  - "!Commemoratio Septem Dolorum B. M. V."
+  - "Deus, in cujus passióne, secúndum Simeónis prophetíam, dulcíssimam ánimam
+    gloriósæ Vírginis et Matris Maríæ dolóris gladius pertransívit: concéde
+    propítius; ut, qui transfixiónem ejus et passiónem venerándo recólimus,
+    gloriósis méritis et précibus ómnium Sanctórum Cruci fidéliter astántium
+    intercedéntibus, passiónis tuæ efféctum felícem consequámur:"
+  - $Qui vivis
+lectio:
+  - Léctio Jeremíæ Prophétæ
+  - "!Jer 17:13-18"
+  - "In diébus illis: Dixit Jeremías: Dómine, omnes, qui te derelínquunt,
+    confundéntur: recedéntes a te in terra scribéntur: quóniam dereliquérunt
+    venam aquárum vivéntium Dóminum. Sana me. Dómine, et sanábor: salvum me fac,
+    et salvus ero: quóniam laus mea tu es. Ecce, ipsi dicunt ad me: Ubi est
+    verbum Dómini? Véniat. Et ego non sum turbátus, te pastórem sequens: et diem
+    hóminis non desiderávi, tu scis. Quod egréssum est de lábiis meis, rectum in
+    conspéctu tuo fuit. Non sis tu mihi formídini, spes mea tu in die
+    afflictiónis. Confundántur, qui me persequúntur, et non confúndar ego:
+    páveant illi, et non páveam ego. Induc super eos diem afflictiónis, et
+    dúplici contritióne cóntere eos, Dómine, Deus noster."
+graduale:
+  - "!Ps 34:20, 22"
+  - "Pacífice loquebántur mihi inimíci mei: et in ira molésti erant mihi."
+  - "V. Vidísti, Dómine, ne síleas: ne discédas a me."
+  - _
+  - "!Tractus"
+  - "!Ps 102:10"
+  - "Dómine, non secúndum peccáta nostra, quæ fécimus nos: neque secúndum
+    iniquitátes nostras retríbuas nobis."
+  - "!Ps 78:8-9"
+  - "V. Dómine, ne memíneris iniquitátum nostrárum antiquárum: cito antícipent
+    nos misericórdiæ tuæ, quia páuperes facti sumus nimis. (Hic genuflectitur)"
+  - "V. Adjuva nos, Deus, salutáris noster: et propter glóriam nóminis tui,
+    Dómine, líbera nos: et propítius esto peccátis nostris, propter nomen tuum."
+evangelium:
+  - Sequéntia ++ sancti Evangélii secúndum Joánnem
+  - "!Joann 11:47-54"
+  - "In illo témpore: Collegérunt pontífices et pharisǽi concílium advérsus
+    Jesum, et dicébant: Quid fácimus, quia hic homo multa signa facit? Si
+    dimíttimus eum sic, omnes credent in eum: et vénient Románi, et tollent
+    nostrum locum et gentem. Unus autem ex ipsis, Cáiphas nómine, cum esset
+    póntifex anni illíus, dixit eis: Vos nescítis quidquam, nec cogitátis, quia
+    éxpedit vobis, ut unus moriátur homo pro pópulo, et non tota gens péreat.
+    Hoc autem a semetípso non dixit: sed cum esset póntifex anni illíus,
+    prophetávit, quod Jesus moritúrus erat pro gente, et non tantum pro gente,
+    sed ut fílios Dei, qui erant dispérsi, congregáret in unum. Ab illo ergo die
+    cogitavérunt, ut interfícerent eum. Jesus ergo jam non in palam ambulábat
+    apud Judǽos: sed ábiit in regiónem juxta desértum, in civitátem, quæ dícitur
+    Ephrem, et ibi morabátur cum discípulis suis."
+offertorium:
+  - "!Ps 118:12, 121, 42"
+  - "Benedíctus es, Dómine, doce me justificatiónes tuas: et non tradas
+    calumniántibus me supérbis: et respondébo exprobrántibus mihi verbum."
+secreta:
+  - "Præsta nobis, miséricors Deus: ut digne tuis servíre semper altáribus
+    mereámur; et eórum perpétua participatióne salvári."
+  - $Per Dominum
+rubrica-1955-aut-rubrica-1960-aut-rubrica-innovata/commemoratio-secreta:
+  - "!Commemoratio Septem Dolorum B. M. V."
+  - "Offérimus tibi preces et hóstias, Dómine Jesu Christe, humíliter
+    supplicántes: ut, qui Transfixiónem dulcíssimi spíritus beátæ Maríæ, Matris
+    tuæ, précibus recensémus; suo suorúmque sub Cruce Sanctórum consórtium
+    multiplicáto piíssimo intervéntu, méritis mortis tuæ, méritum cum beátis
+    habeámus:"
+  - $Qui vivis
+communio:
+  - "!Ps 26:12"
+  - "Ne tradíderis me, Dómine, in animas persequéntium me: quóniam insurrexérunt
+    in me testes iníqui, et mentíta est iníquitas sibi."
+postcommunio:
+  - "Sumpti sacrifícii, Dómine, perpetua nos tuítio non derelínquat: et nóxia
+    semper a nobis cuncta depéllat."
+  - $Per Dominum
+rubrica-1955-aut-rubrica-1960-aut-rubrica-innovata/commemoratio-postcommunio:
+  - "!Commemoratio Septem Dolorum B. M. V."
+  - "Sacrifícia, quæ súmpsimus, Dómine Jesu Christe, Transfixiónem Matris tuæ et
+    Vírginis devóte celebrántes: nobis ímpetrent apud cleméntiam tuam omnis boni
+    salutáris efféctum:"
+  - $Qui vivis
+super-populum:
+  - "!Oratio super populum"
+  - v. Orémus.
+  - v. Humiliáte cápita vestra Deo.
+  - "v. Concéde, quǽsumus, omnípotens Deus: ut, qui protectiónis tuæ grátiam
+    quǽrimus, liberáti a malis ómnibus, secúra tibi mente serviámus."
+  - $Per Dominum
+lectio1:
+  - Léctio sancti Evangélii secúndum Joánnem
+  - "!Joannes 11:47-54"
+  - "In illo témpore: Collegérunt pontífices et pharisǽi concílium advérsus
+    Jesum, et dicébant: Quid fácimus, quia hic homo multa signa facit? Et
+    réliqua."
+  - _
+  - Homilía sancti Augustíni Epíscopi
+  - "!Tract. 49 in Joannem, sub finem"
+  - "Pontífices et pharisǽi sibi consulébant: nec tamen dicébant: Credámus. Plus
+    enim pérditi hómines cogitábant, quómodo nocérent, ut pérderent, quam
+    quómodo sibi consúlerent, ne perírent: et tamen timébant, et quasi
+    consulébant. Dicébant enim: Quid fácimus, quia hic homo multa signa facit?
+    Si dimíttimus eum sic, omnes credent in eum: et vénient Románi, et tollent
+    nostrum locum et gentem. Temporália pérdere timuérunt, et vitam ætérnam non
+    cogitavérunt, ac sic utrúmque amisérunt."
+responsory1:
+  - "@Tempora/Quad5-0:Responsory4"
+lectio2:
+  - "Nam et Románi post Dómini passiónem et glorificatiónem tulérunt eis et
+    locum et gentem, expúgnando et transferéndo: et illud eos séquitur, quod
+    álibi dictum est: Fílii autem regni hujus ibunt in ténebras exterióres. Hoc
+    autem timuérunt, ne, si omnes in Christum créderent, nemo remanéret, qui
+    advérsus Romános civitátem Dei templúmque defénderet: quóniam contra ipsum
+    templum, et contra suas patérnas leges doctrínam Christi esse sentiébant."
+responsory2:
+  - "@Tempora/Quad5-0:Responsory5"
+lectio3:
+  - "Unus autem ex ipsis Cáiphas, cum esset Póntifex anni illíus, dixit eis: Vos
+    nescítis quidquam, nec cogitátis, quia éxpedit vobis ut unus moriátur homo
+    pro pópulo, et non tota gens péreat. Hoc autem a semetípso non dixit: sed
+    cum esset póntifex anni illíus, prophetávit. Hic docémur, étiam hómines
+    malos prophetíæ spíritu futúra prædícere: quod tamen Evangelísta divíno
+    tríbuit sacraménto, quia póntifex fuit, id est summus sacérdos."
+responsory3:
+  - "@Tempora/Quad5-0:Responsory6"
+ant-2:
+  - "Appropinquábat autem * dies festus Judæórum: et quærébant príncipes
+    sacerdótum quómodo Jesum interfícerent, sed timébant plebem."
+oratio-2:
+  - "Córdibus nostris, quǽsumus, Dómine, grátiam tuam benígnus infúnde: ut
+    peccáta nostra castigatióne voluntária cohibéntes, temporáliter pótius
+    macerémur, quam supplíciis deputémur ætérnis."
+  - $Per Dominum
+rubrica-1955-aut-rubrica-1960-aut-rubrica-innovata-aut-rubrica-monastica/commemoratio-2:
+  - "!Commemoratio Septem Dolorum Beatæ Mariæ Virginis"
+  - "@Tempora/Quad5-5:Oratio"
+rubrica-ordo-praedicatorum/commemoratio-2:
+  - "!Memoria Compassionis Beatæ Mariæ Virginis"
+  - "Ant. Ecce pósitus est hic in signum cui contradicétur: et tuam ipsíus
+    ánimam pertransíbit gládius, ut reveléntur ex multis córdibus cogitatiónes."
+  - V. María Virgo, per virtútem tot dolórum.
+  - R. Fac nos gaudére in regno cælórum.
+  - $Oremus
+  - "v. Intervéniat pro nobis, quǽsumus, Dómine, Jesu Christe, nunc et in hora
+    mortis nostræ apud tuam cleméntiam beáta Virgo María mater tua: cujus
+    sacratíssimam ánimam in hora benedíctæ passiónis tuæ dolóris gládius
+    pertransívit, et in gloriósa resurrectióne tua ingens gáudium lætificávit."
+  - $Qui vivis
+ant-3:
+  - "Príncipes sacerdótum * consílium fecérunt ut Jesum occíderent: dicébant
+    autem: Non in die festo, ne forte tumúltus fíeret in pópulo."
+oratio-3:
+  - "Concéde, quǽsumus, omnípotens Deus: ut qui protectiónis tuæ grátiam
+    quǽrimus, liberáti a malis ómnibus, secúra tibi mente serviámus."
+  - $Per Dominum

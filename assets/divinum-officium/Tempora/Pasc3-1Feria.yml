@@ -1,0 +1,39 @@
+officium:
+  - Feria Secunda infra Hebdomadam III post Octavam Paschæ
+rank:
+  - ""
+  - Feria
+  - "1"
+rule:
+  - Una Antiphona
+  - Feria Te Deum
+  - Oratio Dominica
+  - Gloria
+  - no Credo
+  - Suffr=Maria3;Ecclesiæ,Papa;;
+lectio1:
+  - "@Tempora/Pasc3-1:Lectio1"
+responsory1:
+  - "@Tempora/Pasc3-1:Responsory1"
+lectio2:
+  - "@Tempora/Pasc3-1:Lectio2"
+responsory2:
+  - "@Tempora/Pasc3-1:Responsory2"
+lectio3:
+  - "@Tempora/Pasc3-1:Lectio3"
+responsory3:
+  - "@Tempora/Pasc3-0"
+ant-2:
+  - Et incípiens * a Moyse et ómnibus prophétis, interpretabátur illis
+    Scriptúras, quæ de ipso erant, allelúja.
+rubrica-cisterciensis/ant-2:
+  - "@Tempora/Pasc1-1"
+oratio-2:
+  - "@Tempora/Pasc3-0:Oratio"
+ant-3:
+  - "Tristítia vestra * vertétur in gáudium, allelúja: et gáudium vestrum nemo
+    tollet a vobis, allelúja, allelúja."
+rubrica-cisterciensis/ant-3:
+  - "@Tempora/Pasc1-1"
+oratio-3:
+  - "@Tempora/Pasc3-0:Oratio"

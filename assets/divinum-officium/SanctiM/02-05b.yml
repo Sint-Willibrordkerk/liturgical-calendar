@@ -1,0 +1,11 @@
+references: "@SanctiM/02-05"
+rank:
+  - S. Agathæ Virginis et Martyris
+  - Duplex majus
+  - "5"
+  - "@C6"
+rule:
+  - ex C6;
+  - 12 lectiones
+  - in 1 Nocturno Lectiones ex Commune in 2 loco;
+  - in 3 Nocturno Lectiones ex Commune in 3 loco;

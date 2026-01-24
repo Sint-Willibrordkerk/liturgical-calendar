@@ -1,0 +1,17 @@
+references: "@Tempora/Pent23-0"
+officium:
+  - De Dominica XXIII post Pentecosten
+rank:
+  - ""
+  - Simplex Dominica anticipata
+  - "1.5"
+rule:
+  - 3 lectiones
+  - Symbolum Athanasium
+  - No prima vespera
+lectio1:
+  - "@Tempora/Pent23-0:Lectio7"
+lectio2:
+  - "@Tempora/Pent23-0:Lectio8"
+lectio3:
+  - "@Tempora/Pent23-0:Lectio9"

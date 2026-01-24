@@ -1,0 +1,13 @@
+officium:
+  - Feria III infra Octavam Ascensionis
+rank:
+  - ""
+  - Semiduplex
+  - "2"
+  - "@Tempora/Pasc5-4"
+rule:
+  - Evangelium non appropriatum
+  - ex Tempora/Pasc5-4;
+  - Gloria
+  - Suffr=Maria3;Ecclesiæ,Papa;;
+references: "@Tempora/Pasc6-2"

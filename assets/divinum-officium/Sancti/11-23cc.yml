@@ -1,0 +1,34 @@
+officium:
+  - S. Felicitatis Martyris
+rank:
+  - ""
+  - Simplex
+  - "1.1"
+  - "@C7"
+rule:
+  - vide C7;
+oratio:
+  - "Præsta, quǽsumus, omnípotens Deus: ut, beátæ Felicitátis Martyris tuæ
+    sollémnia recenséntes, méritis ipsíus protegámur et précibus."
+  - $Per Dominum
+secreta:
+  - "Vota pópuli tui, Dómine, propitiátus inténde: et, cujus nos tríbuis
+    sollémnia celebráre, fac gaudére suffrágiis."
+  - $Per Dominum
+postcommunio:
+  - "Súpplices te rogámus, omnípotens Deus: ut, intercedéntibus Sanctis tuis, et
+    tua in nobis dona multíplices, et témpora nostra dispónas."
+  - $Per Dominum
+rubrica-cisterciensis/versum-1:
+  - "@CommuneCist/C7:Nocturn 1 Versum"
+lectio93:
+  - Sermo sancti Gregórii Papæ
+  - "!Ex Homilía 3 in Evangelica"
+  - Beáta Felícitas, cujus hódie natalícia celebrámus, septem fílios sic post se
+    tímuit vivos in carne relínquere, sicut carnáles paréntes solent metúere ne
+    mórtuos præmíttant. In persecutiónis enim labóre deprehénsa, filiórum corda
+    in amóre supérnæ pátriæ prædicándo roborávit; et parturívit spíritu quos
+    carne pepérerat, ut prædicatióne páreret Deo quos carne pepérerat mundo.
+    Numquid ergo hanc féminam Mártyrem díxerim? Sed plus quam Mártyrem; quæ,
+    septem pignóribus ad regnum præmíssis, tot ante se mórtuos transmísit. Ad
+    pœnam prima venit, sed pervénit octáva.

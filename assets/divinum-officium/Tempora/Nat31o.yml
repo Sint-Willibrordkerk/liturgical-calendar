@@ -1,0 +1,19 @@
+references: "@Tempora/Nat31"
+comment:
+  - Dec 31 always has Romans 2, with S. Silvester Responsories.
+rubrica-tridentina/lectio1:
+  - "@Tempora/Nat30"
+rubrica-tridentina/responsory1:
+  - "@Commune/C4"
+rubrica-tridentina/lectio2:
+  - "@Tempora/Nat30"
+rubrica-tridentina/responsory2:
+  - "@Commune/C4"
+rubrica-tridentina/lectio3:
+  - "@Tempora/Nat30"
+rubrica-tridentina/responsory3:
+  - "@Commune/C4"
+rubrica-tridentina-nisi-rubrica-altovadensis/commemoratio-2:
+  - "@Sancti/12-26:Octava"
+  - "@Sancti/12-27:Octava"
+  - "@Sancti/12-28:Octava"

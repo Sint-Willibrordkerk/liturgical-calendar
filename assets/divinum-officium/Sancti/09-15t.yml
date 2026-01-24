@@ -1,0 +1,110 @@
+rank:
+  - In Octava Nativitatis Beatæ Mariæ Virginis
+  - Duplex
+  - "3.1"
+  - "@Sancti/09-08"
+rule:
+  - ex Sancti/09-08;
+  - 9 lectiones
+  - Doxology=Nat
+  - Gloria
+  - Credo
+  - Prefatio=Maria=Nativitate;
+rubrica-cisterciensis/rank:
+  - In Octava Nativitatis Beatæ Mariæ Virginis
+  - Semiduplex
+  - "2.2"
+  - "@Sancti/09-08"
+lectio1:
+  - "@Sancti/08-22t"
+lectio2:
+  - "@Sancti/08-22t"
+lectio3:
+  - "@Sancti/08-22t"
+lectio4:
+  - "@:Lectio4o"
+rubrica-1888/lectio4:
+  - "@:Lectio4o:s/hodie cœtum fidelium/cœtum Sanctorum/ s/quod/quæ/
+    s/convocaris/convocasti/ s/lucerna inextincti luminis/lampas
+    inexstinguibilis/ s/: tu benedicta inter inter mulieres, ejus parens qui
+    benedictus venit in nomine domini/; per quam benedictus, qui venit in nomine
+    Domini, in sanctis Evangeliis nominatur/"
+rubrica-1906/lectio4:
+  - "@:Lectio4o:s/hodie cœtum fidelium/cœtum Sanctorum/ s/quod/quæ/
+    s/convocaris/convocasti/ s/lucerna inextincti luminis/lampas
+    inexstinguibilis/ s/: tu benedicta inter inter mulieres, ejus parens qui
+    benedictus venit in nomine domini/; per quam benedictus, qui venit in nomine
+    Domini, in sanctis Evangeliis nominatur/"
+lectio4o:
+  - Sermo sancti Cyrilli Epíscopi Alexandrini.
+  - "!Homilia contra Nestorium."
+  - "Hilarem video hodie cœtum fidelium omnium, qui convenerunt promptis animis,
+    a sancta et Dei Matre Maria semper Virgine convocati. Laus et gloria sit
+    tibi sancta Trinitas, quod omnes nos ad hanc celebritatem convocaris. Sit
+    étiam tibi sancta Dei Mater laus. Tu enim es pretiosa margarita orbis
+    terrarum: tu lucerna inextincti luminis, corona virginitatis, sceptrum
+    orthodoxæ fidei, templum indissolubile continens eum qui nusquam contineri
+    potest, Mater et Virgo: tu benedicta inter inter mulieres, ejus parens qui
+    benedictus venit in nomine domini."
+lectio5:
+  - "@:Lectio5o"
+rubrica-1888/lectio5:
+  - "@:Lectio5o:s/dicitur,/celebratur/ s/Omnis/Per te omnis/
+    s/notitiam/agnitionem/"
+rubrica-1906/lectio5:
+  - "@:Lectio5o:s/dicitur,/celebratur/ s/Omnis/Per te omnis/
+    s/notitiam/agnitionem/"
+lectio5o:
+  - "Per te Trinitas sanctificatur: per te crux pretiosa dicitur, et adoratur in
+    toto orbe terrarum. Per te exsultat cælum, lætantur Angeli et Archangeli,
+    fugantur dæmones, et homo ipse ad cælum revocatur. Omnis creatura idolorum
+    errore detenta, conversa est ad notitiam veritatis, et fideles homines ad
+    sanctum baptisma pervenerunt, atque in toto orbe terrarum constructæ sunt
+    ecclesiæ."
+lectio6:
+  - "@:Lectio6o"
+rubrica-1888/lectio6:
+  - "@:Lectio6o:s/Te (?=Prophetæ)/Per te / s/te apostoli summis laudibus
+    celebrarut./per te Apostoli salutem Gentibus prædicarunt/"
+rubrica-1906/lectio6:
+  - "@:Lectio6o:s/Te (?=Prophetæ)/Per te / s/te apostoli summis laudibus
+    celebrarut./per te Apostoli salutem Gentibus prædicarunt/"
+lectio6o:
+  - "Te adjutrice gentes veniunt ad pœnitentiam. Quid plura? Per te unigenitus
+    Dei Filius vera illa lux effulsit sedentibus in tenebris et umbra mortis. Te
+    Prophetæ prænuntiarunt, te apostoli summis laudibus celebrarut.. Quisnam
+    poterit tuarum laudum præconia explicare, Maria Mater et Virgo? Hanc,
+    fratres dilectissimi, celebremus, ejus Filium Ecclesiæ sponsum immaculatum
+    adorantes: cui honor et gloria in sæcula sæculorum. Amen."
+lectio7:
+  - Léctio sancti Evangélii secúndum Matthǽum.
+  - "!Matt 1:1-17"
+  - Liber generationis Jesu Christi filii David, filii Abraham. Abraham genuit
+    Isaac. Isaac autem genuit Jacob. Et réliqua.
+  - _
+  - Homilia sancti Joannis Chrysostomi.
+  - "!Homil. 2. in Matth., post init."
+  - "Auditu quidem mirabile est quod ineffabilis Deus, et qui nec sermonibus
+    explicari potest, nec cogitationibus comprehendi, Patrique per omnia
+    coæqualis, per Virginis ad nos venit uterum, et fieri ex muliere dignatus
+    est, et habere progenitores David et Abraham: et quid dico, David et
+    Abraham? étiam illas, quod magis stupendum est, feminas, quas paulo ante
+    memoravi. Hæc igitur audiens mente consurge, nihilque humile suspiceris, sed
+    potius propter hoc ipsum maxime mirare, quia cum verus et dilectus Filius
+    sit sempiterni Dei, étiam filius David esse dignatus est, modo ut te filium
+    faceret Dei: servum patrem habere dignatus est, ut tibi servo patrem faceret
+    ipsum Deum."
+responsory7:
+  - "@Sancti/07-02:Responsory7"
+lectio8:
+  - "Vides ab ipso statim principio, quam læta sint hæc unita. Quod si ambigis
+    de his quæ ad tuum spectant honorem, ab iis quæ illius sunt, étiam tua disce
+    credere. Quantum enim consequi potest humana ratio, multo est difficilius
+    Deum hominem fieri, quam hominem Dei filium consecrari. Cum ergo audieris,
+    quia Filius Dei filius sit et David et Abrahæ: dubitare jam desine, quod et
+    tu, qui filius es Adæ, futurus sis filius Dei. Non enim semetipsum ita
+    humiliasset, nisi nos esset exaltaturus. Natus est enim secundum carnem, ut
+    tu nascerere spiritu: natus est ex muliere, ut tu desineres filius esse
+    mulieris."
+responsory8:
+  - "@Sancti/07-02:Responsory8"

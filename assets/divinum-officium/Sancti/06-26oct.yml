@@ -1,0 +1,10 @@
+officium:
+  - Die tertia infra Octavam Nativitatis S. Joannis Baptistæ
+rank:
+  - ""
+  - Semiduplex
+  - "2"
+  - "@Sancti/06-24"
+rule:
+  - ex Sancti/06-24;
+  - Gloria

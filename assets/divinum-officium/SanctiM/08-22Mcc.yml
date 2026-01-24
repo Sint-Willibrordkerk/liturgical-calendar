@@ -1,0 +1,20 @@
+references: "@Sancti/08-22cc"
+rubrica-1930/officium:
+  - Ss. Timothei et Symphoriani Martyrum
+rubrica-1963/officium:
+  - S. Timothei Martyris
+rubrica-1930/rank:
+  - ""
+  - Simplex
+  - "1.1"
+  - "@C3a-1"
+rubrica-1963/rank:
+  - ""
+  - Simplex
+  - "1.1"
+  - "@C2a"
+rubrica-1963/oratio:
+  - "Auxílium tuum nobis, Dómine, quǽsumus, placátus impende: et,
+    intercedéntibus beáto Mártyre tuo Timótheo, déxteram super nos tuæ
+    propitiatiónis exténde."
+  - $Per Dominum

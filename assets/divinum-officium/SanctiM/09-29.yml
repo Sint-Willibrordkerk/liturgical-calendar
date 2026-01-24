@@ -1,0 +1,114 @@
+references: "@Sancti/05-08"
+officium:
+  - "@Sancti/09-29"
+rule:
+  - 12 lectiones
+  - Psalmi Dominica
+rubrica-cisterciensis/ant-vespera:
+  - "@Sancti/09-29"
+rubrica-barroux/responsory-vespera-1:
+  - "@Sancti/05-08:Responsory3"
+rubrica-cisterciensis/responsory-vespera:
+  - "@Sancti/08-06:Responsory Laudes"
+hymnus-matutinum:
+  - "@:HymnusM Vespera"
+antmatutinumm:
+  - Sancte Míchaël Archángele, defénde nos in proélio, * ut non pereámus in
+    treméndo judício, allelúja.;;89
+  - Stetit Angelus juxta aram templi, * habens thuríbulum áureum in manu sua.;;98
+  - "Benedícite Dóminum, omnes Angeli ejus: * benedícite, minístri ejus, qui
+    fácitis voluntátem ejus: † benedícite Dóminum.;;102"
+ant-matutinum-3n:
+  - "Míchaël, Gábriel, * Chérubim et Séraphim, qui non cessant clamáre quotídie,
+    dicéntes: † Dignus es, Dómine, accípere glóriam, allelúja."
+ant-matutinum:
+  - "@Sancti/09-29::1-6"
+  - "@:AntMatutinumM:1"
+  - "@Sancti/09-29::7-9 s/102/97/"
+  - "@:AntMatutinumM:2-3"
+  - ;;266;267;268
+lectio2:
+  - "@Sancti/05-08::s/-8/-6/ s/7 .*//s"
+lectio3:
+  - "@Sancti/05-08:Lectio2:s/4-8/7-9/ s/4 .*7 /7 /s"
+  - "@Sancti/05-08:Lectio3:s/!.*// s/10 .*//s"
+lectio4:
+  - "@Sancti/05-08:Lectio3:s/9-/10-/ s/9 .*10 /10 /s"
+responsory4:
+  - "R. Te sanctum Dóminum in excélsis laudant omnes Angeli, dicéntes:"
+  - "* Te decet laus et honor, Dómine."
+  - V. Chérubim quoque et Séraphim sanctus proclámant, † et omnis cǽlicus ordo
+    dicens.
+  - R. Te decet laus et honor, Dómine.
+lectio5:
+  - "@Sancti/09-29:Lectio4"
+responsory5:
+  - "@Sancti/05-08:Responsory4"
+lectio6:
+  - "@Sancti/09-29:Lectio5:s/ Hi autem.*//s"
+responsory6:
+  - "@Sancti/05-08:Responsory5"
+lectio7:
+  - "@Sancti/09-29:Lectio5:s/.*Hi autem/Hi autem/s"
+responsory7:
+  - "@Sancti/05-08:Responsory6"
+lectio8:
+  - "@Sancti/09-29:Lectio6"
+responsory8:
+  - R. Míchaël et Angeli ejus pugnábant cum diábolo;
+  - "* Et ille hostis antíquus victus est ab eis."
+  - "V. Factum est proélium magnum in cælo: † Míchaël et Angeli ejus
+    præliabántur cum dracóne."
+  - R. Et ille hostis antíquus victus est ab eis.
+lectio9:
+  - "@Sancti/09-29:Lectio7"
+responsory9:
+  - "@Sancti/05-08:Responsory7"
+lectio10:
+  - "@Sancti/09-29:Lectio8:s/ Si, inquit.*//"
+responsory10:
+  - "@Sancti/05-08:Responsory8"
+lectio11:
+  - "@Sancti/09-29:Lectio8:s/.*Si, inquit/Si, inquit/"
+responsory11:
+  - R. Nunc facta est salus et virtus et regnum Deo nostro et potéstas Christi
+    ejus,
+  - "* Quia projéctus est accusátor fratrum nostrórum, † qui accusábat illos
+    ante conspéctum Dei nostri die ac nocte, † allelúja, allelúja."
+  - V. Proptérea lætámini cæli, et qui habitátis in eis.
+  - R. Quia projéctus est accusátor fratrum nostrórum, † qui accusábat illos
+    ante conspéctum Dei nostri die ac nocte, † allelúja, allelúja.
+lectio12:
+  - "@Sancti/09-29:Lectio9"
+responsory12:
+  - "R. Fidélis sermo, et omni acceptióne dignus: † Míchaël Archángelus qui
+    pugnávit cum diábolo:"
+  - "* Grátia Dei ille victor in cælis éxstitit et ille hostis antíquus pátuit
+    ruínæ magnæ."
+  - V. Gaudent Angeli lætántur Archángeli de Michaéle Dei núntio.
+  - R. Grátia Dei ille victor in cælis éxstitit et ille hostis antíquus pátuit
+    ruínæ magnæ.
+rubrica-cisterciensis/ant-laudes:
+  - "@Sancti/09-29:Ant Vespera"
+responsory-laudes:
+  - "@Sancti/05-08:Responsory Breve Nona"
+rubrica-cisterciensis/responsory-laudes:
+  - "@Sancti/05-08:Responsory Breve Tertia"
+responsory-tertiam:
+  - "@:Versum 1"
+rubrica-cisterciensis/responsory-tertiam:
+  - "@Sancti/05-08:Nocturn 1 Versum:s/, all?el[uú][ij]a//g"
+responsory-sextam:
+  - "@Sancti/05-08:Nocturn 2 Versum_"
+rubrica-cisterciensis/responsory-sextam:
+  - "@Sancti/05-08:Nocturn 2 Versum:s/, all?el[uú][ij]a//g"
+responsory-nonam:
+  - "@:Versum 3"
+rubrica-cisterciensis/responsory-nonam:
+  - "@Sancti/05-08:Nocturn 3 Versum:s/, all?el[uú][ij]a//g"
+ant-vespera-3:
+  - "@Sancti/05-08:Ant Vespera:s/\\.$/;;109/ s/\\.$/;;110/ s/\\.$/;;111/
+    s/\\.$/;;137/"
+rubrica-cisterciensis/ant-vespera-3: []
+rubrica-cisterciensis/ant-3:
+  - "@Sancti/09-29"

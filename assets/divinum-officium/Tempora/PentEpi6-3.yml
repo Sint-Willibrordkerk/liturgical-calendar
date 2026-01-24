@@ -1,0 +1,9 @@
+officium:
+  - Feria IV infra Hebdomadam VI quæ superfuit post Epiphaniam
+rank:
+  - ""
+  - Feria
+  - "1"
+rule:
+  - Oratio Dominica
+  - Suffr=Sanctorum;Maria3,Ecclesiæ,Papa;;

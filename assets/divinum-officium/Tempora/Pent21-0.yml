@@ -1,0 +1,139 @@
+officium:
+  - Dominica XXI Post Pentecosten
+rank:
+  - ""
+  - Semiduplex
+  - "5"
+rule:
+  - 9 lectiones
+  - Psalmi Dominica
+  - Antiphonas horas
+  - Symbolum Athanasium
+  - Gloria
+  - Credo
+  - Prefatio=Trinitate
+  - Suffr=Sanctorum;Maria3,Ecclesiæ,Papa;;
+introitus:
+  - "!Esth 13:9; 13:10-11"
+  - "v. In voluntáte tua, Dómine, univérsa sunt pósita, et non est, qui possit
+    resístere voluntáti tuæ: tu enim fecísti ómnia, cœlum et terram et univérsa,
+    quæ cœli ámbitu continéntur: Dominus universórum tu es."
+  - "!Ps 118:1"
+  - "Beáti immaculáti in via: qui ámbulant in lege Dómini."
+  - "&Gloria"
+  - "v. In voluntáte tua, Dómine, univérsa sunt pósita, et non est, qui possit
+    resístere voluntáti tuæ: tu enim fecísti ómnia, cœlum et terram et univérsa,
+    quæ cœli ámbitu continéntur: Dominus universórum tu es."
+oratio:
+  - "Famíliam tuam, quǽsumus, Dómine, contínua pietáte custódi: ut a cunctis
+    adversitátibus, te protegénte, sit líbera, et in bonis áctibus tuo nómini
+    sit devóta."
+  - $Per Dominum
+lectio:
+  - Lectio Epistolæ beáti Pauli Apóstoli ad Ephésios
+  - "!Ephes 6:10-17"
+  - "Fratres: Confortámini in Dómino et in poténtia virtútis ejus. Indúite vos
+    armatúram Dei, ut póssitis stare advérsus insídias diáboli. Quóniam non est
+    nobis colluctátio advérsus carnem et sánguinem: sed advérsus príncipes et
+    potestátes, advérsus mundi rectóres tenebrárum harum, contra spirituália
+    nequítiæ, in cœléstibus. Proptérea accípite armatúram Dei, ut póssitis
+    resístere in die malo et in ómnibus perfécti stare. State ergo succíncti
+    lumbos vestros in veritáte, et indúti lorícam justítiæ, et calceáti pedes in
+    præparatióne Evangélii pacis: in ómnibus suméntes scutum fídei, in quo
+    póssitis ómnia tela nequíssimi ígnea exstínguere: et gáleam salútis
+    assúmite: et gládium spíritus, quod est verbum Dei."
+graduale:
+  - "!Ps 89:1-2"
+  - Dómine, refúgium factus es nobis, a generatióne et progénie.
+  - "V. Priúsquam montes fíerent aut formarétur terra et orbis: a sǽculo et
+    usque in sǽculum tu es, Deus."
+  - Allelúja, allelúja.
+  - "!Ps 113:1"
+  - In éxitu Israël de Ægýpto, domus Jacob de pópulo bárbaro. Allelúja.
+evangelium:
+  - Sequéntia ++ sancti Evangélii secúndum Matthǽum
+  - "!Matt 18:23-35"
+  - "In illo témpore: Dixit Jesus discípulis suis parábolam hanc: Assimilátum
+    est regnum cœlórum hómini regi, qui vóluit ratiónem pónere cum servis suis.
+    Et cum cœpísset ratiónem pónere, oblátus est ei unus, qui debébat ei decem
+    mília talénta. Cum autem non habéret, unde rédderet, jussit eum dóminus ejus
+    venúmdari et uxórem ejus et fílios et ómnia, quæ habébat, et reddi.
+    Prócidens autem servus ille, orábat eum, dicens: Patiéntiam habe in me, et
+    ómnia reddam tibi. Misértus autem dóminus servi illíus, dimísit eum et
+    débitum dimísit ei. Egréssus autem servus ille, invénit unum de consérvis
+    suis, qui debébat ei centum denários: et tenens suffocábat eum, dicens:
+    Redde, quod debes. Et prócidens consérvus ejus, rogábat eum, dicens:
+    Patiéntiam habe in me, et ómnia reddam tibi. Ille autem nóluit: sed ábiit,
+    et misit eum in cárcerem, donec rédderet débitum. Vidéntes autem consérvi
+    ejus, quæ fiébant, contristáti sunt valde: et venérunt et narravérunt dómino
+    suo ómnia, quæ facta fúerant. Tunc vocávit illum dóminus suus: et ait illi:
+    Serve nequam, omne débitum dimísi tibi, quóniam rogásti me: nonne ergo
+    opórtuit et te miseréri consérvi tui, sicut et ego tui misértus sum? Et
+    irátus dóminus ejus, trádidit eum tortóribus, quoadúsque rédderet univérsum
+    débitum. Sic et Pater meus cœléstis fáciet vobis, si non remiséritis
+    unusquísque fratri suo de córdibus vestris."
+offertorium:
+  - "!Job 1.1"
+  - "Vir erat in terra Hus, nómine Job: simplex et rectus ac timens Deum: quem
+    Satan pétiit ut tentáret: et data est ei potéstas a Dómino in facultátes et
+    in carnem ejus: perdidítque omnem substántiam ipsíus et fílios: carnem
+    quoque ejus gravi úlcere vulnerávit."
+secreta:
+  - "Suscipe, Dómine, propítius hóstias: quibus et te placári voluísti, et nobis
+    salútem poténti pietáte restítui."
+  - $Per Dominum
+communio:
+  - "!Ps 118:81; 118:84; 118:86"
+  - "In salutári tuo ánima mea, et in verbum tuum sperávi: quando fácies de
+    persequéntibus me judícium? iníqui persecúti sunt me, ádjuva me, Dómine,
+    Deus meus."
+postcommunio:
+  - "Immortalitátis alimóniam consecúti, quǽsumus, Dómine: ut, quod ore
+    percépimus, pura mente sectémur."
+  - $Per Dominum
+lectio7:
+  - Léctio sancti Evangélii secúndum Matthǽum
+  - "!Matt 18:23-35"
+  - "In illo témpore: Dixit Jesus discípulis suis parábolam hanc: Assimilátum
+    est regnum cælórum hómini regi, qui vóluit ratiónem pónere cum servis suis.
+    Et réliqua."
+  - _
+  - Homilía sancti Hierónymi Presbýteri
+  - "!Lib. 3 Comm. in cap. 18 Matth."
+  - "Familiáre est Syris, et máxime Palæstínis, ad omnem sermónem suum parábolas
+    júngere: ut quod per simplex præcéptum tenéri ab auditóribus non potest, per
+    similitúdinem exempláque teneátur. Præcépit ítaque Dóminus Petro sub
+    comparatióne regis et dómini, et servi, qui débitor decem míllium talentórum
+    a dómino rogans véniam impetráverat, ut ipse quoque dimíttat consérvis suis
+    minóra peccántibus. Si enim ille rex et dóminus servo debitóri decem míllia
+    talentórum tam fácile dimísit: quanto magis servi consérvis suis debent
+    minóra dimíttere?"
+lectio8:
+  - Quod ut maniféstius fiat, dicámus sub exémplo. Si quis nostrum commíserit
+    adultérium, homicídium, sacrilégium; majóra crímina decem míllium talentórum
+    rogántibus dimittúntur, si et ipsi dimíttant minóra peccántibus. Sin autem
+    ob factam contuméliam simus implacábiles, et propter amárum verbum pérpetes
+    habeámus discórdias; nonne nobis vidémur recte redigéndi in cárcerem, et sub
+    exémplo óperis nostri hoc ágere, ut majórum nobis delictórum vénia non
+    relaxétur?
+lectio9:
+  - "Sic et Pater meus cæléstis fáciet vobis, si non remiséritis unusquísque
+    fratri suo de córdibus vestris. Formidolósa senténtia, si juxta nostram
+    mentem senténtia Dei fléctitur, atque mutátur: si parva frátribus non
+    dimíttimus, magna nobis a Deo non dimitténtur. Et quia potest unusquísque
+    dícere: Nihil hábeo contra eum, ipse novit, habet Deum júdicem; non mihi
+    curæ est quid velit ágere, ego ignóvi ei: confírmat senténtiam suam, et
+    omnem simulatiónem fictæ pacis evértit, dicens: Si non remiséritis
+    unusquísque fratri suo de córdibus vestris."
+  - "&teDeum"
+ant-2:
+  - "Dixit autem * dóminus servo: Redde quod debes. Prócidens autem servus ille
+    rogábat eum, dicens: Patiéntiam habe in me, et ómnia reddam tibi."
+ant-3:
+  - "Serve nequam, * omne débitum dimísi tibi, quóniam rogásti me: nonne ergo
+    opórtuit et te miseréri consérvi tui, sicut et ego tui misértus sum,
+    allelúja."
+rubrica-cisterciensis/ant-3:
+  - "Serve nequam, * omne débitum dimísi tibi, quóniam rogásti me: nonne ergo
+    opórtuit et te miseréri consérvi tui, sicut et ego tui misértus sum? dicit
+    Dóminus."

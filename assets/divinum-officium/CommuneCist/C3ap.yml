@@ -1,0 +1,30 @@
+references:
+  references: "@CommuneCist/C2p"
+  officium:
+    - "@Commune/C3p"
+  hymnusm-vespera:
+    - "@Commune/C3:HymnusM Laudes"
+  oratio:
+    - "@Commune/C3"
+  hymnusm-matutinum:
+    - "@Commune/C3"
+  ant-matutinum:
+    - Allelúia, * allelúia, Allelúia.;;1
+    - ;;2
+    - ;;4
+    - ;;5
+    - ;;8
+    - ;;15
+    - Allelúia, * allelúia, Allelúia.;;23
+    - ;;32
+    - ;;33
+    - ;;45
+    - ;;64
+    - ;;78
+    - Allelúia, * allelúia, Allelúia.;;259;254;255
+  hymnusm-laudes:
+    - "@Commune/C3"
+oratio:
+  - "Deus, qui nos concédis sanctórum Mártyrum tuórum N. et N. natalítia cólere:
+    da nobis in ætérna beatitúdine de eórum societáte gaudére."
+  - $Per Dominum

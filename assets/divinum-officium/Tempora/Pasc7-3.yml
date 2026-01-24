@@ -1,0 +1,221 @@
+officium:
+  - Feria Quarta Quattuor Temporum Pentecostes
+rank:
+  - ""
+  - Semiduplex I classis
+  - "6.9"
+  - "@Pasc7-0"
+rule:
+  - ex Pasc7-0;
+  - 1 nocturn;
+  - Psalmi Dominica;
+  - Antiphonas horas
+  - Feria Te Deum
+  - no93
+  - LectioL1
+  - no Gloria
+  - Sequentia
+  - Suffr=Ecclesiæ;Papa;;
+  - Credo
+  - Prefatio=Spiritu=hodierna die;
+introitus:
+  - "!Ps 67:8 67:9"
+  - "v. Deus, dum egrederéris coram pópulo tuo, iter fáciens eis, hábitans in
+    illis, allelúja: terra mota est, cœli distillavérunt, allelúja, allelúja."
+  - "!Ps. 67:2."
+  - "Exsúrgat Deus, et dissipéntur inimíci ejus: et fúgiant, qui odérunt eum, a
+    fácie ejus."
+  - "&Gloria"
+  - "v. Deus, dum egrederéris coram pópulo tuo, iter fáciens eis, hábitans in
+    illis, allelúja: terra mota est, cœli distillavérunt, allelúja, allelúja."
+lectiol1:
+  - Léctio Actuum Apostolórum
+  - "!Act 2:14-21."
+  - "In diébus illis: Stans Petrus cum úndecim, levávit vocem suam, et locútus
+    est eis: Viri Judǽi, et qui habitátis Jerúsalem univérsi, hoc vobis notum
+    sit, et áuribus percípite verba mea. Non enim, sicut vos æstimátis, hi ébrii
+    sunt, cum sit hora diéi tértia: sed hoc est, quod dictum est per Prophétam
+    Joël: Et erit in novíssimis diébus - dicit Dóminus - effúndam de Spíritu meo
+    super omnem carnem, et prophetábunt fílii vestri et fíliæ vestræ, et júvenes
+    vestri visiónes vidébunt, et senióres vestri sómnia somniábunt. Et quidem
+    super servos meos et super ancíllas meas in diébus illis effúndam de Spíritu
+    meo, et prophetábunt: et dabo prodígia in cœlo sursum et signa in terra
+    deórsum, sánguinem et ignem et vapórem fumi. Sol convertétur in ténebras et
+    luna in sánguinem, antequam véniat dies Dómini magnus et maniféstus. Et
+    erit: omnis, quicúmque invocáverit nomen Dómini, salvus erit."
+  - $Deo gratias
+gradualel1:
+  - Alleluia.
+  - "!Ps 32:6"
+  - Verbo Dómini cœli firmáti sunt, et Spíritu oris ejus omnis virtus eórum.
+  - _
+  - "#Gloria"
+  - v. Glória in excélsis Deo. Et in terra pax homínibus bonæ voluntátis.
+    Laudámus te. Benedícimus te. Adorámus te. Glorificámus te. Grátias ágimus
+    tibi propter magnam glóriam tuam. Dómine Deus, Rex cæléstis, Deus Pater
+    omnípotens. Dómine Fili unigénite, Jesu Christe. Dómine Deus, Agnus Dei,
+    Fílius Patris. Qui tollis peccáta mundi, miserére nobis. Qui tollis peccáta
+    mundi, súscipe deprecatiónem nostram. Qui sedes ad déxteram Patris, miserére
+    nobis. Quóniam tu solus Sanctus. Tu solus Dóminus. Tu solus Altíssimus, Jesu
+    Christe. Cum Sancto Spíritu + in glória Dei Patris. Amen.
+oratiol1:
+  - "Præsta, quǽsumus, omnípotens et miséricors Deus: ut Spíritus Sanctus
+    advéniens, templum nos glóriæ suæ dignánter inhabitándo perfíciat."
+  - $Per Dominum eiusdem
+oratio:
+  - "Mentes nostras, quǽsumus, Dómine, Paráclitus, qui a te procédit, illúminet:
+    et indúcat in omnem, sicut tuus promísit Fílius, veritátem:"
+  - $Qui tecum eiusdem
+lectio:
+  - Léctio Actuum Apostolórum
+  - "!Acts 5:12-16"
+  - "In diébus illis: Per manus autem Apostolórum fiébant signa et prodígia
+    multa in plebe. Et erant unanímiter omnes in pórticu Salomónis. Ceterórum
+    autem nemo audébat se conjúngere illis: sed magnificábat eos pópulus. Magis
+    autem augebátur credéntium in Dómino multitúdo virórum ac mulíerum, ita ut
+    in pláteas ejícerent infírmos, et pónerent in léctulis ac grabátis, ut,
+    veniénte Petro, saltem umbra illíus obumbráret quemquam illórum, et
+    liberaréntur ab infirmitátibus suis. Concurrébat autem et multitúdo
+    vicinárum civitátum Jerúsalem, afferéntes ægros et vexátos a spirítibus
+    immúndis: qui curabántur omnes."
+graduale:
+  - Allelúja, allelúja.
+  - "V. (Hic genuflectitur) Veni, Sancte Spíritus, reple tuórum corda fidélium:
+    et tui amóris in eis ignem accénde."
+sequentia:
+  - "@Tempora/Pasc7-0:Sequentia"
+evangelium:
+  - Sequéntia ++ sancti Evangélii secúndum Joánnem
+  - "!Joannes 6:44-52"
+  - "In illo témpore: Dixit Jesus turbis Judæórum: Nemo potest veníre ad me,
+    nisi Pater, qui misit me, tráxerit eum: et ego resuscitábo eum in novíssimo
+    die. Est scriptum in Prophétis: Et erunt omnes docíbiles Dei. Omnis, qui
+    audívit a Patre et dídicit, venit ad me. Non quia Patrem vidit quisquam,
+    nisi is, qui est a Deo, hic vidit Patrem. Amen, amen, dico vobis: qui credit
+    in me, habet vitam ætérnam. Ego sum panis vitæ. Patres vestri manducavérunt
+    manna in desérto, et mórtui sunt. Hic est panis de cœlo descéndens: ut, si
+    quis ex ipso manducáverit, non moriátur. Ego sum panis vivus, qui de cœlo
+    descéndi. Si quis manducáverit ex hoc pane, vivet in ætérnum: et panis, quem
+    ego dabo, caro mea est pro mundi vita."
+offertorium:
+  - "!Ps 118:47-48"
+  - "Meditábor in mandátis tuis, quæ diléxi valde: et levábo manus meas ad
+    mandáta tua, quæ diléxi, allelúja."
+secreta:
+  - "Accipe, quǽsumus, Dómine, munus oblátum: et dignánter operáre; ut, quod
+    mystériis ágimus, piis efféctibus celebrámus."
+  - $Per Dominum.
+communio:
+  - "!Joannes 14:27"
+  - "Pacem relínquo vobis, allelúja: pacem meam do vobis, allelúja, allelúja."
+postcommunio:
+  - "Suméntes, Dómine, cœléstia sacraménta, quǽsumus cleméntiam tuam: ut quod
+    temporáliter gérimus ætérnis gáudiis consequámur"
+  - $Per Dominum.
+rubrica-1960/rank:
+  - ""
+  - Semiduplex I classis
+  - "6"
+  - "@Pasc7-0"
+rubrica-cisterciensis/rule:
+  - ex Pasc7-0;
+  - 1 nocturn;
+  - Psalmi Feria
+  - Antiphonas horas
+  - Feria Te Deum
+  - no93
+ant-matutinum:
+  - "@Tempora/Pasc7-0::s/V\\. .*/V. Repléti sunt omnes Spíritu Sancto,
+    allelúja.\\nR. Et cœpérunt loqui, allelúja./s"
+lectio1:
+  - Léctio sancti Evangélii secúndum Joánnem
+  - "!Joannes 6:44-52"
+  - "In illo témpore: Dixit Jesus turbis Judæórum: Nemo potest veníre ad me,
+    nisi Pater, qui misit me, tráxerit eum. Et réliqua."
+  - _
+  - Homilía sancti Augustíni Epíscopi
+  - "!Tract. 26 in Joann., post init."
+  - "Noli cogitáre te invítum trahi: tráhitur ánimus et amóre. Nec timére
+    debémus, ne ab homínibus, qui verba perpéndunt, et a rebus máxime divínis
+    intellegéndis longe remóti sunt, in hoc Scripturárum sanctárum evangélico
+    verbo fórsitan reprehendámur, et dicátur nobis: Quómodo voluntáte credo, si
+    trahor? Ego dico: Parum est voluntáte: étiam voluptáte tráheris. Quid est,
+    trahi voluptáte? Delectáre in Dómino: et dabit tibi petitiónes cordis tui.
+    Est quædam volúptas cordis, cui panis dulcis est ille cæléstis. Porro si
+    poétæ dícere lícuit: Trahit sua quemque volúptas: non necéssitas, sed
+    volúptas; non obligátio, sed delectátio: quanto fórtius nos dícere debémus,
+    trahi hóminem ad Christum, qui delectátur veritáte, delectátur beatitúdine,
+    delectátur justítia, delectátur sempitérna vita, quod totum Christus est? An
+    vero habent córporis sensus voluptátes suas, et ánimus deséritur a
+    voluptátibus suis? Si ánimus non habet voluptátes suas, unde dícitur: Fílii
+    autem hóminum sub tégmine alárum tuárum sperábunt: inebriabúntur ab ubertáte
+    domus tuæ, et torrénte voluptátis tuæ potábis eos. Quóniam apud te est fons
+    vitæ: et in lúmine tuo vidébimus lumen."
+responsory1:
+  - "R. Disciplínam et sapiéntiam dócuit eos Dóminus, allelúja: firmávit in
+    illis grátiam Spíritus sui,"
+  - "* Et intelléctu implévit corda eórum, allelúja."
+  - V. Repentíno namque sónitu Spíritus Sanctus super eos venit.
+  - R. Et intelléctu implévit corda eórum, allelúja.
+lectio2:
+  - "Da amántem, et sentit quod dico: da desiderántem, da esuriéntem, da in ista
+    solitúdine peregrinántem, atque sitiéntem, et fontem ætérnæ pátriæ
+    suspirántem: da talem, et scit quid dicam. Si autem frígido loquor, nescit,
+    quid loquor. Tales erant isti, qui ínvicem murmurábant. Pater, inquit, quem
+    tráxerit, venit ad me. Quid est autem, Pater quem tráxerit, cum ipse
+    Christus trahat? Quare vóluit dícere, Pater quem tráxerit? Si trahéndi
+    sumus, ab illo trahámur, cui dicit quædam, quæ díligit: Post odórem
+    unguentórum tuórum currémus. Sed quid intéllegi vóluit, advertámus fratres,
+    et, quantum póssumus, capiámus. Trahit Pater ad Fílium eos, qui proptérea
+    credunt in Fílium, quia eum cógitant Patrem habére Deum. Deus enim Pater
+    æquálem sibi génuit Fílium; et qui cógitat, atque in fide sua sentit et
+    rúminat, æquálem esse Patri eum, in quem credit, ipsum trahit Pater ad
+    Fílium."
+responsory2:
+  - "R. Ite in univérsum orbem, et prædicáte Evangélium, allelúja:"
+  - "* Qui credíderit et baptizátus fúerit, salvus erit, allelúja, allelúja,
+    allelúja."
+  - V. In nómine meo dæmónia ejícient, linguis loquéntur novis, serpéntes
+    tollent.
+  - R. Qui credíderit et baptizátus fúerit, salvus erit, allelúja, allelúja,
+    allelúja.
+  - "&Gloria"
+  - R. Qui credíderit et baptizátus fúerit, salvus erit, allelúja, allelúja,
+    allelúja.
+lectio3:
+  - "Aríus crédidit creatúram, non eum traxit Pater; quia non consíderat Patrem,
+    qui Fílium non credit æquálem. Quid dicis, o Ari? quid dicis, hærétice? quid
+    loquéris? Quid est Christus? Non, inquit, Deus verus, sed quem fecit Deus
+    verus. Non te traxit Pater; non enim intellexísti Patrem, cujus Fílium
+    negas. Aliud cógitas, non est ipse Fílius: nec a Patre tráheris, nec ad
+    Fílium tráheris. Aliud est enim Fílius, áliud quod tu dicis. Photínus dicit:
+    Homo solum est Christus, non est et Deus. Qui sic credit, non Pater eum
+    traxit. Quem traxit Pater? Illum qui dicit: Tu es Christus Fílius Dei vivi.
+    Ramum víridem osténdis ovi, et trahis illam. Nuces púero demonstrántur, et
+    tráhitur: et quod currit, tráhitur, amándo tráhitur, sine læsióne córporis
+    tráhitur, cordis vínculo tráhitur. Si ergo ista, quæ inter delícias et
+    voluptátes terrénas revelántur amántibus, trahunt, quóniam verum est, Trahit
+    sua quemque volúptas; non trahit revelátus Christus a Patre? Quid enim
+    fórtius desíderat ánima, quam veritátem?"
+  - "&teDeum"
+ant-2:
+  - Ego sum panis vivus, * dicit Dóminus, qui de cælo descéndi, allelúja,
+    allelúja.
+rubrica-cisterciensis/ant-2:
+  - "Ego sum panis vivus, * qui de cælo descéndi: si quis manducáverit ex hoc
+    pane, vivet in ætérnum: et panis, quem ego dabo, caro mea est pro mundi
+    vita, allelúia, allelúia."
+rubrica-praedicatorum/ant-2:
+  - "Ego sum panis vivus, * qui de cælo descéndi: si quis manducáverit ex hoc
+    pane, vivet in ætérnum: et panis, quem ego dabo, caro mea est pro mundi
+    vita, allelúia, allelúia."
+ant-3:
+  - "Ego sum panis vivus, * dicit Dóminus, qui de cælo descéndi: si quis
+    manducáverit ex hoc pane, vivet in ætérnum: et panis, quem ego dabo, caro
+    mea est pro mundi vita, allelúja."
+rubrica-cisterciensis/ant-3:
+  - Amen, * amen dico vobis, qui credit in me, habet vitam ætérnam, allelúia,
+    allelúia.
+rubrica-praedicatorum/ant-3:
+  - Amen, * amen dico vobis, qui credit in me, habet vitam ætérnam, allelúia,
+    allelúia.

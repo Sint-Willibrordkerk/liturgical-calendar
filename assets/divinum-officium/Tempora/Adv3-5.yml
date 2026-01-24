@@ -1,0 +1,148 @@
+officium:
+  - Feria VI Quattuor Temporum in Adventu
+rank:
+  - ""
+  - Feria major
+  - "2.1"
+rubrica-196/rank:
+  - ""
+  - Feria major
+  - "4.9"
+rubrica-1930/rank:
+  - ""
+  - Feria major
+  - "4.9"
+rule:
+  - Preces Feriales
+  - Oratio Dominica
+  - no Gloria
+  - no Credo
+  - Suffr=Maria1;Ecclesiæ,Papa;;
+introitus:
+  - "!Ps 118:151-152"
+  - "v. Prope es tu, Dómine, et omnes viæ tuæ véritas: inítio cognóvi de
+    testimóniis tuis, quia in ætérnum tu es."
+  - "!Ps 118:1"
+  - "Beati immaculáti in via: qui ámbulant in lege Dómini."
+  - "&Gloria"
+  - "v. Prope es tu, Dómine, et omnes viæ tuæ véritas: inítio cognóvi de
+    testimóniis tuis, quia in ætérnum tu es."
+oratio:
+  - "Excita, quǽsumus, Dómine, poténtiam tuam, et veni: ut hi, qui in tua
+    pietáte confídunt, ab omni cítius adversitáte liberéntur:"
+  - $Qui vivis
+lectio:
+  - Léctio Isaíæ Prophétæ
+  - "!Is 11:1-5"
+  - "Hæc dicit Dóminus Deus: Egrediétur virga de radíce Jesse, et flos de radíce
+    ejus ascéndet. Et requiéscet super eum spíritus Dómini: spíritus sapiéntiæ
+    et intelléctus, spíritus consílii et fortitúdinis, spíritus sciéntiæ et
+    pietátis; et replébit eum spíritus timóris Dómini. Non secundum visiónem
+    oculórum judicábit: neque secúndum audítum áurium árguet: sed judicábit in
+    justítia páuperes, et árguet in æquitáte pro mansuétis terræ: et percútiet
+    terram virga oris sui, et spíritu labiórum suórum interfíciet ímpium. Et
+    erit justítia cíngulum lumbórum ejus: et fides cinctórium renum ejus."
+graduale:
+  - "!Ps 84:8; 84:2"
+  - "Osténde nobis, Dómine, misericórdiam tuam: et salutáre tuum da nobis."
+  - "V. Benedixísti, Dómine, terram tuam: avertísti captivitátem Jacob."
+evangelium:
+  - Sequéntia ++ sancti Evangélii secúndum Lucam
+  - "!Luc 1:39-47"
+  - "In illo témpore: Exsúrgens María ábiit in montána cum festinatióne in
+    civitátem Juda: et intrávit in domum Zacharíæ et salutávit Elísabeth. Et
+    factum est, ut audivit salutatiónem Maríæ Elísabeth, exsultávit infans in
+    útero ejus: et repléta est Spíritu Sancto Elísabeth, et exclamávit voce
+    magna et dixit: Benedícta tu inter mulíeres, et benedíctus fructus ventris
+    tui. Et unde hoc mihi, ut véniat Mater Dómini mei ad me? Ecce enim, ut facta
+    est vox salutatiónis tuæ in áuribus meis, exsultávit in gáudio infans in
+    útero meo. Et beáta, quæ credidísti, quóniam perficiéntur ea, quæ dicta sunt
+    tibi a Dómino. Et ait María: Magníficat ánima mea Dóminum: et exsultávit
+    spíritus meus in Deo, salutári meo."
+offertorium:
+  - "!Ps 84:7-8"
+  - "Deus, tu convérsus vivificábis nos, et plebs tua lætábitur in te: osténde
+    nobis, Dómine, misericórdiam tuam, et salutáre tuum da nobis."
+secreta:
+  - "@Commune/C2"
+communio:
+  - "!Zach 14:5"
+  - "Ecce, Dóminus véniet et omnes Sancti ejus cum eo: et erit in die illa lux
+    magna."
+postcommunio:
+  - "Tui nos, Dómine, sacraménti libátio sancta restáuret: et a vetustáte
+    purgátos, in mystérii salutáris fáciat transíre consórtium."
+  - $Per Dominum
+rubrica-196/officium:
+  - Feria VI Quattuor Temporum Adventus
+rubrica-1930/officium:
+  - Feria VI Quattuor Temporum Adventus
+lectio1:
+  - Léctio sancti Evangélii secúndum Lucam
+  - "!Luc 1:39-47"
+  - "In illo témpore: Exsúrgens María ábiit in montána cum festinatióne in
+    civitátem Juda: et intrávit in domum Zacharíæ, et salutávit Elísabeth. Et
+    réliqua."
+  - _
+  - Homilía sancti Ambrósii Epíscopi
+  - "!Lib. 2 in Luc. cap. 1 post init."
+  - "Morále est ómnibus, ut qui fidem éxigunt, fidem ástruant. Et ídeo Angelus,
+    cum abscóndita nuntiáret, ut fidem astrúeret exémplo, senióris féminæ
+    sterilísque concéptum Vírgini Maríæ nuntiávit: ut possíbile Deo omne, quod
+    ei placúerit, asséreret. Ubi audívit hoc María, non quasi incrédula de
+    oráculo, nec quasi incérta de núntio, nec quasi dúbitans de exémplo, sed
+    quasi læta pro voto, religiósa pro offício, festína pro gáudio, in montána
+    perréxit. Quo enim jam Deo plena, nisi ad superióra cum festinatióne
+    conténderet? Nescit tarda molímina Sancti Spíritus grátia."
+responsory1:
+  - R. Emítte Agnum, Dómine, Dominatórem terræ,
+  - "* De Petra desérti ad montem fíliæ Sion."
+  - V. Osténde nobis, Dómine, misericórdiam tuam, et salutáre tuum da nobis.
+  - R. De Petra desérti ad montem fíliæ Sion.
+lectio2:
+  - Díscite et vos, sanctæ mulíeres, sedulitátem, quam prægnántibus debeátis
+    exhibére cognátis. Maríam, quæ ante sola in íntimis penetrálibus versabátur,
+    non a público virginitátis pudor, non ab stúdio aspéritas móntium, non ab
+    offício prolíxitas itíneris retardávit. In montána Virgo cum festinatióne,
+    Virgo offícii memor, injúriæ ímmemor, afféctu urgénte non sexu, relícta
+    perréxit domo. Díscite, vírgines, non circumcursáre per aliénas ædes, non
+    demorári in platéis, non áliquos in público miscére sermónes. María in domo
+    sera, festína in público, mansit apud cognátam suam tribus ménsibus.
+responsory2:
+  - "R. Roráte, cæli, désuper, et nubes pluant justum:"
+  - "* Aperiátur terra, et gérminet Salvatórem."
+  - V. Emítte Agnum, Dómine, Dominatórem terræ, de Petra desérti ad montem fíliæ
+    Sion.
+  - R. Aperiátur terra, et gérminet Salvatórem.
+lectio3:
+  - "Didicístis, vírgines, pudórem Maríæ: díscite humilitátem. Venit propínqua
+    ad próximam, júnior ad seniórem: nec solum venit, sed étiam prior salutávit.
+    Decet enim, ut quanto cástior virgo, tanto humílior sit. Nóverit deférre
+    senióribus. Sit magístra humilitátis, in qua est proféssio castitátis. Est
+    et causa pietátis, est étiam norma doctrínæ. Contuéndum est enim, quia
+    supérior venit ad inferiórem, ut inférior adjuvétur: María ad Elísabeth,
+    Christus ad Joánnem."
+responsory3:
+  - "R. Germinavérunt campi erémi germen odóris Israël: quia ecce Deus noster
+    cum virtúte véniet,"
+  - "* Et splendor ejus cum eo."
+  - "V. Ex Sion spécies decóris ejus: Deus noster maniféste véniet."
+  - R. Et splendor ejus cum eo.
+  - "&Gloria"
+  - R. Et splendor ejus cum eo.
+rubrica-cisterciensis/ant-laudes:
+  - Constántes estóte, * vidébitis auxílium Dómini super vos.
+ant-2:
+  - Ex quo facta est * vox salutatiónis tuæ in áuribus meis, exsultávit in
+    gáudio infans in útero meo, allelúja.
+rubrica-cisterciensis/ant-prima:
+  - "@TemporaOP/Adv4-3:Ant 2"
+rubrica-cisterciensis/ant-tertia:
+  - "Veni, Dómine, * et noli tardáre: reláxa facínora plebi tuæ Israël."
+rubrica-cisterciensis/ant-sexta:
+  - Deus a Líbano véniet, * et splendor ejus sicut lumen erit.
+rubrica-cisterciensis/ant-nona:
+  - Ego autem * ad Dóminum aspíciam, et exspectábo Deum, Salvatórem meum.
+ant-3:
+  - "Hoc est testimónium, * quod perhíbuit Joánnes: Qui post me venit, ante me
+    factus est."

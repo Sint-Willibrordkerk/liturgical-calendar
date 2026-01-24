@@ -1,0 +1,93 @@
+references: "@Sancti/10-07"
+rubrica-1963/rank:
+  - Beatæ Mariæ Virginis a Rosario
+  - Duplex
+  - "3"
+  - "@C11"
+rubrica-1930/rule:
+  - 12 lectiones
+responsory-vespera:
+  - "@Sancti/10-07:Responsory Breve Sexta"
+antmatutinumm:
+  - Conservábat María * ómnia verba hæc, cþnferens in corde suo.;;47
+  - "Crucis impérium * super húmerum ejus: livóre ejus sanáti sumus.;;96"
+  - "Dícite * in géntibus: quia Dóminus regnávit a ligno;;97"
+ant-matutinum-3n:
+  - "@Sancti/12-08:Responsory3:3 s/V. // s/, /$&*"
+ant-matutinum:
+  - "@Sancti/10-07::1-5"
+  - "@:AntMatutinumM:1"
+  - "@Sancti/10-07::6-9 s/86/84/ s/95/86/ s/96/95/"
+  - "@:AntMatutinumM:2-3"
+  - ;;249;250;251
+lectio1:
+  - "@Sancti/10-07::1-5 s/-16/-13/"
+lectio2:
+  - "@Sancti/10-07:Lectio1:2 s/11-/14-/"
+  - "@Sancti/10-07:Lectio1:6-8"
+lectio3:
+  - "@Sancti/10-07:Lectio2"
+lectio4:
+  - "@Sancti/10-07:Lectio3"
+responsory4:
+  - "R. Gaude, † Maria Virgo:"
+  - "* Cunctas hǽreses sola interemísti in univérso mundo."
+  - V. Virgam hanc sume in manu tua, in qua factúrus es signa.
+  - R. Cunctas hǽreses sola interemísti in univérso mundo.
+lectio5:
+  - "@Sancti/10-07:Lectio4"
+responsory5:
+  - "@Sancti/10-07:Responsory4"
+lectio6:
+  - "@Sancti/10-07:Lectio5"
+responsory6:
+  - "@Sancti/10-07:Responsory5"
+lectio94:
+  - "@Sancti/10-07:Lectio7:s/.*_//s s/!.*//s"
+  - "@Sancti/10-07:Lectio8_1: s/$/~/"
+  - "@Sancti/10-07:Lectio8_2"
+lectio7:
+  - "@Sancti/10-07:Lectio6:s/ Quam .*//"
+responsory7:
+  - "@Sancti/10-07:Responsory6"
+lectio8:
+  - "@Sancti/10-07:Lectio6:s/.* (?=Quam)//"
+responsory8:
+  - R. Pulchra es † ed decóra, fília Jerúsalem,
+  - "* Terríbilis ut castrórum ácies ordináta."
+  - V. Dignáre me laudáre te, Virgo sacráta. da mihi virtútem contra hostes tuos.
+  - R. Terríbilis ut castrórum ácies ordináta.
+lectio9:
+  - "@Sancti/10-07:Lectio7:s/ Heva .*//"
+responsory9:
+  - "@Sancti/10-07:Responsory7"
+lectio10:
+  - "@Sancti/10-07:Lectio7:s/.*? (?=Heva)//s"
+responsory10:
+  - "@Sancti/10-07:Responsory8"
+lectio11:
+  - "@Sancti/10-07:Lectio8_1"
+responsory11:
+  - "@Commune/C11:Responsory7:s/sanctam festivitátem/sacratíssimi Rosárii
+    solemnitátem/"
+lectio12:
+  - "@Sancti/10-07:Lectio8_2"
+responsory12:
+  - "R. Ne tímeas, María, † invenísti enim grátiam apud Dóminum:"
+  - "* Ecce concípies, et páries, et vocábis nomen ejus Jesus."
+  - V. Spiritus Sanctus supervéniet in te, et virtus Altíssimi obumbrávit tibi.
+  - R. Ecce concípies, et páries, et vocábis nomen ejus Jesus.
+mm-capitulum:
+  - "@Sancti/10-07:Capitulum Sexta"
+  - _
+  - "@Sancti/10-07:Nocturn 2 Versum"
+responsory-laudes:
+  - "@Sancti/10-07:Responsory Breve Nona"
+hymnus-laudes:
+  - "@Sancti/10-07::s/Nat/NatT/"
+responsory-tertiam:
+  - "@Sancti/10-07:Nocturn 1 Versum"
+responsory-sextam:
+  - "@Sancti/10-07:Nocturn 2 Versum"
+responsory-nonam:
+  - "@Sancti/10-07:Nocturn 3 Versum"

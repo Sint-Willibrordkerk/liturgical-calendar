@@ -1,0 +1,21 @@
+officium:
+  - Sabbato infra Hebdomadam II post Octavam Pentecostes
+rank:
+  - ""
+  - Feria
+  - "1"
+rule:
+  - Oratio Dominica
+  - Suffr=Sanctorum;Maria3,Ecclesiæ,Papa;;
+lectio1:
+  - "@Tempora/Pent02-6:Lectio1"
+responsory1:
+  - "@Tempora/Pent01-3:Responsory1"
+lectio2:
+  - "@Tempora/Pent02-6:Lectio2"
+responsory2:
+  - "@Tempora/Pent01-3:Responsory2"
+lectio3:
+  - "@Tempora/Pent02-6:Lectio3"
+responsory3:
+  - "@Tempora/Pent01-3:Responsory3"

@@ -1,0 +1,41 @@
+references: "@Sancti/12-31"
+rank:
+  - S. Silvestri Papæ et Confessoris
+  - Duplex
+  - "3"
+  - "@C4"
+rubrica-cisterciensis/rank:
+  - S. Silvestri Papæ et Confessoris
+  - Duplex
+  - "3.1"
+  - "@C4"
+rule:
+  - vide C4;
+  - 12 lectiones
+  - OPapaC=Silvéstrum;
+  - Lectio1 OctNat
+lectio5:
+  - "@Sancti/12-31o:Lectio4"
+lectio6:
+  - "@Sancti/12-31:Lectio5: s/Multa item.*//"
+lectio7:
+  - "@Sancti/12-31:Lectio5: s/.* Multa item/Multa item/"
+  - "@Sancti/12-31:Lectio6: s/Huic.*//"
+lectio8:
+  - "@Sancti/12-31:Lectio6: s/.* Huic/Huic/"
+lectio9:
+  - "@CommuneM/C5"
+rubrica-cisterciensis/lectio9:
+  - "@CommuneCist/C5"
+lectio10:
+  - "@CommuneM/C5"
+rubrica-cisterciensis/lectio10:
+  - "@CommuneCist/C5"
+lectio11:
+  - "@CommuneM/C5"
+rubrica-cisterciensis/lectio11:
+  - "@CommuneCist/C5"
+lectio12:
+  - "@CommuneM/C5"
+rubrica-cisterciensis/lectio12:
+  - "@CommuneCist/C5"

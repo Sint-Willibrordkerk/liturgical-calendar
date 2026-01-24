@@ -1,0 +1,231 @@
+officium:
+  - Dominica VI Post Pentecosten
+rank:
+  - ""
+  - Semiduplex
+  - "5"
+rule:
+  - 9 lectiones
+  - Psalmi Dominica
+  - Antiphonas horas
+  - Symbolum Athanasium
+  - Gloria
+  - Credo
+  - Prefatio=Trinitate
+  - Suffr=Sanctorum;Maria3,Ecclesiæ,Papa;;
+introitus:
+  - "!Ps 27:8-9"
+  - "v. Dóminus fortitudo plebis suæ, et protéctor salutárium Christi sui est:
+    salvum fac pópulum tuum, Dómine, et benedic hereditáti tuæ, et rege eos
+    usque in sǽculum."
+  - "!Ps 27:1"
+  - "Ad te, Dómine, clamábo, Deus meus, ne síleas a me: ne quando táceas a me,
+    et assimilábor descendéntibus in lacum."
+  - "&Gloria"
+  - "v. Dóminus fortitudo plebis suæ, et protéctor salutárium Christi sui est:
+    salvum fac pópulum tuum, Dómine, et benedic hereditáti tuæ, et rege eos
+    usque in sǽculum."
+oratio:
+  - "Deus virtútum, cujus est totum quod est óptimum: ínsere pectóribus nostris
+    amórem tui nóminis, et præsta in nobis religiónis augméntum; ut, quæ sunt
+    bona, nútrias, ac pietátis stúdio, quæ sunt nutríta, custódias."
+  - $Per Dominum
+lectio:
+  - Léctio Epístolæ beáti Pauli Apóstoli ad Romános
+  - "!Rom 6:3-11"
+  - "Fratres: Quicúmque baptizáti sumus in Christo Jesu, in morte ipsíus
+    baptizáti sumus. Consepúlti enim sumus cum illo per baptísmum in mortem: ut,
+    quómodo Christus surréxit a mórtuis per glóriam Patris, ita et nos in
+    novitáte vitæ ambulémus. Si enim complantáti facti sumus similitúdini mortis
+    ejus: simul et resurrectiónis érimus. Hoc sciéntes, quia vetus homo noster
+    simul crucifíxus est: ut destruátur corpus peccáti, et ultra non serviámus
+    peccáto. Qui enim mórtuus est, justificátus est a peccáto. Si autem mórtui
+    sumus cum Christo: crédimus, quia simul étiam vivémus cum Christo: sciéntes,
+    quod Christus resurgens ex mórtuis, jam non móritur, mors illi ultra non
+    dominábitur. Quod enim mórtuus est peccáto, mórtuus est semel: quod autem
+    vivit, vivit Deo. Ita et vos existimáte, vos mórtuos quidem esse peccáto,
+    vivéntes autem Deo, in Christo Jesu, Dómino nostro."
+graduale:
+  - "!Ps 89:13; 89:1"
+  - Convértere, Dómine, aliquántulum, et deprecáre super servos tuos.
+  - V. Dómine, refúgium factus es nobis, a generatióne et progénie.
+  - Allelúja, allelúja.
+  - "!Ps 30:2-3"
+  - "In te, Dómine, sperávi, non confúndar in ætérnum: in justítia tua líbera me
+    et éripe me: inclína ad me aurem tuam, accélera, ut erípias me. Allelúja."
+evangelium:
+  - Sequéntia ++ sancti Evangélii secúndum Marcum
+  - "!Marc 8:1-9"
+  - "In illo témpore: Cum turba multa esset cum Jesu, nec habérent, quod
+    manducárent, convocátis discípulis, ait illis: Miséreor super turbam: quia
+    ecce jam tríduo sústinent me, nec habent quod mandúcent: et si dimísero eos
+    jejúnos in domum suam, defícient in via: quidam enim ex eis de longe
+    venérunt. Et respondérunt ei discípuli sui: Unde illos quis póterit hic
+    saturáre pánibus in solitúdine? Et interrogávit eos: Quot panes habétis? Qui
+    dixérunt: Septem. Et præcépit turbæ discúmbere super terram. Et accípiens
+    septem panes, grátias agens fregit, et dabat discípulis suis, ut appónerent,
+    et apposuérunt turbæ. Et habébant piscículos paucos: et ipsos benedíxit, et
+    jussit appóni. Et manducavérunt, et saturáti sunt, et sustulérunt quod
+    superáverat de fragméntis, septem sportas. Erant autem qui manducáverant,
+    quasi quátuor mília: et dimísit eos."
+offertorium:
+  - "!Ps 16:5; 16:6-7"
+  - "Pérfice gressus meos in sémitis tuis, ut non moveántur vestígia mea:
+    inclína aurem tuam, et exáudi verba mea: mirífica misericórdias tuas, qui
+    salvos facis sperántes in te, Dómine."
+secreta:
+  - "Propitiáre, Dómine, supplicatiónibus nostris, et has pópuli tui oblatiónes
+    benígnus assúme: et, ut nullíus sit írritum votum, nullíus vácua postulátio,
+    præsta; ut, quod fidéliter pétimus, efficáciter consequámur."
+  - $Per Dominum.
+communio:
+  - "!Ps 26:6"
+  - "Circuíbo et immolábo in tabernáculo ejus hóstiam jubilatiónis: cantábo et
+    psalmum dicam Dómino."
+postcommunio:
+  - "Repléti sumus, Dómine, munéribus tuis: tríbue, quǽsumus; ut eórum et
+    mundémur efféctu et muniámur auxílio."
+  - $Per Dominum
+ant-1_:
+  - Obsecro, Dómine, * aufer iniquitátem servi tui, quia insipiénter egi.
+ant-1:
+  - "@:Ant 1_"
+rubrica-cisterciensis/ant-1:
+  - "@:Ant 1C"
+ant-1c:
+  - "Nonne iste est David * de quo canébant in choro, dicéntes: Saül percússit
+    mile, et David decem míllia in míllibus suis?"
+lectio1:
+  - De libro secúndo Regum
+  - "!2 Reg 12:1-4"
+  - "1 Misit ergo Dóminus Nathan ad David: qui, cum venísset ad eum, dixit ei:
+    Duo viri erant in civitáte una, unus dives et alter pauper."
+  - 2 Dives habébat oves et boves plúrimos valde,
+  - 3 pauper autem nihil habébat omníno præter ovem unam párvulam, quam émerat
+    et nutríerat, et quæ créverat apud eum cum fíliis ejus simul de pane illíus
+    cómedens et de cálice ejus bibens et in sinu illíus dórmiens; erátque illic
+    sicut fília.
+  - 4 Cum autem peregrínus quidam venísset ad dívitem, parcens ille súmere de
+    óvibus et de bobus suis, ut exhibéret convívium peregríno illi qui vénerat
+    ad se, tulit ovem viri páuperis et præparávit cibos hómini qui vénerat ad
+    se.
+responsory1:
+  - "@Tempora/Pent01-1"
+lectio2:
+  - "!2 Reg 12:5-9"
+  - "5 Irátus autem indignatióne David advérsus hóminem illum nimis, dixit ad
+    Nathan: Vivit Dóminus, quóniam fílius mortis est vir qui fecit hoc:"
+  - 6 ovem reddet in quádruplum, eo quod fécerit verbum istud et non pepércerit.
+  - "7 Dixit autem Nathan ad David: Tu es ille vir. Hæc dicit Dóminus Deus
+    Israël: Ego unxi te in regem super Israël et ego érui te de manu Saul,"
+  - 8 et dedi tibi domum dómini tui, et uxóres dómini tui in sinu tuo dedíque
+    tibi domum Israël et Juda; et, si parva sunt ista, adíciam tibi multo
+    majóra.
+  - 9 Quare ergo contempsísti verbum Dómini, ut fáceres malum in conspéctu meo?
+    Uríam Hethǽum percussísti gládio et uxórem illíus accepísti in uxórem tibi
+    et interfecísti eum gládio filiórum Ammon.
+responsory2:
+  - "@Tempora/Pent01-1"
+lectio3:
+  - "!2 Reg 12:10-16"
+  - 10 Quam ob rem non recédet gládius de domo tua usque in sempitérnum, eo quod
+    despéxeris me et túleris uxórem Uríæ Hethǽi ut esset uxor tua.
+  - "11 Itaque hæc dicit Dóminus: Ecce ego suscitábo super te malum de domo tua,
+    et tollam uxóres tuas in óculis tuis et dabo próximo tuo, et dórmiet cum
+    uxóribus tuis in óculis solis hujus."
+  - 12 Tu enim fecísti abscóndite, ego autem fáciam verbum istud in conspéctu
+    omnis Israël et in conspéctu solis.
+  - "13 Et dixit David ad Nathan: Peccávi Dómino. Dixítque Nathan ad David:
+    Dóminus quoque tránstulit peccátum tuum: non moriéris."
+  - 14 Verúmtamen, quóniam blasphemáre fecísti inimícos Dómini propter verbum
+    hoc, fílius, qui natus est tibi, morte moriétur.
+  - 15 Et revérsus est Nathan in domum suam. Percússit quoque Dóminus párvulum,
+    quem pepérerat uxor Uríæ David, et desperátus est.
+  - 16 Deprecatúsque est David Dóminum pro párvulo, et jejunávit David jejúnio
+    et ingréssus seórsum jácuit super terram.
+responsory3:
+  - "@Tempora/Pent01-1"
+lectio4:
+  - Ex libro sancti Ambrósii Epíscopi de Apología David
+  - "!Apolog. 1, c. 2"
+  - Unusquísque nostrum per síngulas horas quam multa delínquit! nec tamen
+    unusquísque de plebe peccátum suum confiténdum putat. Ille rex, tantus ac
+    potens, ne exíguo quidem moménto manére penes se delícti passus est
+    consciéntiam; sed, præmatúra confessióne atque imménso dolóre, réddidit
+    peccátum suum Dómino. Quem mihi nunc fácile repérias honorátum ac dívitem,
+    qui, si arguátur alicújus culpæ reus, non moléste ferat? At ille régio
+    clarus império, tot divínis probátus oráculis, cum a priváto hómine
+    corriperétur quod gráviter deliquísset, non indignátus infrémuit, sed
+    conféssus ingémuit culpæ dolóre.
+responsory4:
+  - "@Tempora/Pent01-2:Responsory1"
+lectio5:
+  - "Dénique Dóminum dolor íntimi movit afféctus, ut Nathan díceret: Quóniam
+    pœnítuit te, et Dóminus ábstulit peccátum tuum. Matúritas ítaque véniæ,
+    profúndam regis fuísse pœniténtiam declarávit, quæ tanti erróris offénsam
+    tradúxerit. Alii hómines cum a sacerdótibus corripiúntur, peccátum suum
+    íngravant, dum negáre cúpiunt aut deféndere; ibíque eórum lapsus est major,
+    ubi sperátur corréctio. Sancti autem Dómini, qui consummáre pium certámen
+    géstiunt, et cúrrere cursum salútis, sícubi forte ut hómines corrúerint,
+    natúræ magis fragilitáte quam peccándi libídine, acrióres ad curréndum
+    resúrgunt, pudóris stímulo majóra reparántes certámina; ut non solum nullum
+    attulísse æstimétur lapsus impediméntum, sed étiam velocitátis incentíva
+    cumulásse."
+responsory5:
+  - "@Tempora/Pent01-2:Responsory2"
+lectio6:
+  - "Peccávit David, quod solent reges; sed pœniténtiam gessit, flevit,
+    ingémuit, quod non solent reges. Conféssus est culpam, obsecrávit
+    indulgéntiam, humi stratus deplorávit ærúmnam, jejunávit, orávit,
+    confessiónis suæ testimónium in perpétua sǽcula vulgáto dolóre transmísit.
+    Quod erubéscunt fácere priváti, rex non erúbuit confitéri. Qui tenéntur
+    légibus, audent suum negáre peccátum, dedignántur rogáre indulgéntiam, quam
+    petébat qui nullis légibus tenebátur humánis. Quod peccávit, conditiónis
+    est; quod supplicávit, correctiónis. Lapsus commúnis, sed speciális
+    conféssio. Culpam ítaque incidísse, natúræ est: diluísse, virtútis."
+responsory6:
+  - "@Tempora/Pent01-2:Responsory3"
+lectio7:
+  - Léctio sancti Evangélii secúndum Marcum
+  - "!Marc 8:1-9"
+  - "In illo témpore: Cum turba multa esset cum Jesu nec habérent quod
+    manducárent, convocátis discípulis, ait illis: Miséreor super turbam, quia
+    ecce jam tríduo sústinent me nec habent quod mandúcent. Et réliqua."
+  - _
+  - Homilía sancti Ambrósii Epíscopi
+  - "!Liber 6 in Lucæ cap. 9, post initium"
+  - Posteáquam illa, quæ Ecclésiæ typum accépit, a fluxu curáta est sánguinis,
+    posteáquam Apóstoli ad evangelizándum regnum Dei sunt destináti, grátiæ
+    cæléstis impartítur aliméntum. Sed quibus impartiátur, advérte. Non otiósis,
+    non in civitáte, quasi in synagóga vel sæculári dignitáte residéntibus; sed
+    inter desérta quæréntibus Christum. Qui enim non fastídiunt, ipsi
+    excipiúntur a Christo, et cum ipsis lóquitur Dei Verbum, non de sæculáribus,
+    sed de regno Dei. Et si qui corporális gerunt úlcera passiónis, his
+    medicínam suam libénter indúlget.
+responsory7:
+  - "@Tempora/Pent01-3:Responsory1"
+lectio8:
+  - "Cónsequens ígitur erat, ut quos a vúlnerum dolóre sanáverat, eos alimóniis
+    spiritálibus a jejúnio liberáret. Itaque nemo cibum áccipit Christi, nisi
+    fúerit ante sanátus; et illi qui vocántur ad cœnam, prius vocándo sanántur.
+    Si claudus fuit, gradiéndi facultátem, ut veníret, accépit: si lúmine
+    oculórum privátus, domum útique Dómini, nisi refúsa luce, intráre non
+    pótuit."
+responsory8:
+  - "@Tempora/Pent01-0:Responsory8"
+lectio9:
+  - "Ubíque ígitur mystérii ordo servátur, ut prius per remissiónem peccatórum
+    vulnéribus medicína tribuátur, post alimónia mensæ cæléstis exúberat;
+    quamquam nondum validióribus hæc turba reficiátur aliméntis, neque Christi
+    córpore et sánguine jejúna solidióris fídei corda pascántur. Lacte, inquit,
+    vos potávi, non esca; nondum enim poterátis, sed nec adhuc quidem potéstis.
+    In modum lactis quinque sunt panes: esca autem solídior, corpus est
+    Christus; potus veheméntior, sanguis est Dómini."
+  - "&teDeum"
+ant-2:
+  - "Cum turba multa * esset cum Jesu nec habérent quod manducárent, convocátis
+    discípulis, ait illis: Miséreor super turbam, quia ecce jam tríduo sústinent
+    me nec habent quod mandúcent, allelúja."
+ant-3:
+  - Miséreor * super turbam, quia ecce jam tríduo sústinent me nec habent quod
+    mandúcent, et, si dimísero eos jejúnos, defícient in via, allelúja.

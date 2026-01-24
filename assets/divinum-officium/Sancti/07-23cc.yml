@@ -1,0 +1,49 @@
+officium:
+  - S. Liborii Episcopi et Confessoris
+rank:
+  - ""
+  - Simplex
+  - "1.1"
+  - "@C4"
+name:
+  - Libórii
+  - Postcommunio=Libório
+feria-7/name:
+  - Libórii
+  - Postcommunio=Libório
+  - Postcommunio=Libórii
+rubrica-1955/name:
+  - Libórii
+  - Postcommunio=Libório
+rubrica-196/name:
+  - Libórii
+  - Postcommunio=Libório
+oratio:
+  - "@Commune/C4"
+feria-7/oratio:
+  - "@Commune/C4"
+  - "@Commune/C4-1"
+rubrica-1955/oratio:
+  - "@Commune/C4"
+rubrica-196/oratio:
+  - "@Commune/C4"
+secreta:
+  - "@Commune/C4"
+feria-7/secreta:
+  - "@Commune/C4"
+  - "@Commune/C4-1"
+rubrica-1955/secreta:
+  - "@Commune/C4"
+rubrica-196/secreta:
+  - "@Commune/C4"
+postcommunio:
+  - "@Commune/C4"
+feria-7/postcommunio:
+  - "@Commune/C4"
+  - "@Commune/C4-1"
+rubrica-1955/postcommunio:
+  - "@Commune/C4"
+rubrica-196/postcommunio:
+  - "@Commune/C4"
+rule:
+  - vide C4;

@@ -1,0 +1,10 @@
+references: "@Sancti/05-03r"
+officium:
+  - Ss. Alexándri, Evéntii et Theodúli Martyrum
+rank:
+  - ""
+  - Simplex
+  - "1.1"
+  - "@C3"
+oratio:
+  - "@Sancti/05-03r::s/\\,?\\s(T\\w*)(\\,? \\w*)\\sJ\\w*/$2 $1/"

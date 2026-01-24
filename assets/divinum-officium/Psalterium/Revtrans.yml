@@ -1,0 +1,75 @@
+pater-noster:
+  - $Pater noster
+pater_noster:
+  - "&pater_noster"
+ave-maria:
+  - $Ave Maria
+credo:
+  - $Credo
+gloria:
+  - "&Gloria"
+gloria-omittitur: []
+requiem:
+  - $Requiem
+alleluia:
+  - "&Alleluia"
+laus-tibi:
+  - "&Alleluia"
+dominus-vobiscum:
+  - "&Dominus_vobiscum"
+domine-exaudi:
+  - "&Dominus_vobiscum"
+confiteor:
+  - $Confiteor
+misereatur:
+  - $Misereatur
+indulgentiam:
+  - $Indulgentiam
+domine-labia:
+  - $Domine labia
+deus-in-adjutorium:
+  - $Deus in adjutorium
+deus-in-adiutorium:
+  - $Deus in adiutorium
+tu-autem:
+  - $Tu autem
+aperi:
+  - $Aperi
+benedicamus-domino:
+  - "&Benedicamus_Domino"
+fidelium-animae:
+  - $Fidelium animae
+oremus:
+  - Oremus
+hymnus:
+  - Hymnus
+psalmus:
+  - Psalmus
+per-dominum:
+  - $Per Dominum
+per-dominum-eiusdem:
+  - $Per Dominum eiusdem
+qui-cum-patre:
+  - $Qui cum Patre
+per-eumdem:
+  - $Per eundem
+qui-vivis:
+  - $Qui vivis
+qui-tecum:
+  - $Qui tecum
+sacrosanctea:
+  - $Sacrosanctaea
+te-deum:
+  - "&teDeum"
+deo-gratias:
+  - $Deo gratias
+lectio:
+  - Lectio
+ante:
+  - $Ante
+divinum-officium:
+  - Divinum Officium
+post:
+  - $Post
+pater-ave-l:
+  - $Pater Ave L
