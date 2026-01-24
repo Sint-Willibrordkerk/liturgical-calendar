@@ -1,7 +1,0 @@
-references: "@Sancti/02-01"
-rule:
-  - vide C2;
-  - (rubrica 1617)12 lectiones
-responsory3:
-  - "@Commune/C2a:Responsory1"
-rubrica-1617/responsory3: []

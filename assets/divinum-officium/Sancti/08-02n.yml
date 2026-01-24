@@ -1,9 +1,0 @@
-officium:
-  - S. Eusebius of Vercelli, bishop
-rank:
-  - ""
-  - Duplex optional
-  - "2"
-  - "@C4"
-rule:
-  - vide C4;

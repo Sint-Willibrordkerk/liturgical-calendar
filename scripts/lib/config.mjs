@@ -40,7 +40,15 @@ export const SOURCE_DIRS = {
   ),
 };
 
-export const OUTPUT_BASE = join(PROJECT_BASE, "assets/divinum-officium");
+export const COPY_BASE = join(PROJECT_BASE, ".divinum-officium/copy");
+export const MIGRATION_BASE = join(
+  PROJECT_BASE,
+  ".divinum-officium/initial-migration"
+);
+export const RESOLVE_REFERENCES_BASE = join(
+  PROJECT_BASE,
+  ".divinum-officium/resolve-references"
+);
 
 export const STANDARD_ENDINGS = {
   "$Per Dominum": "per-dominum", // "Per Dóminum nostrum Jesum Christum, Fílium tuum: qui tecum vivit et regnat in unitáte Spíritus Sancti Deus, per ómnia sǽcula sæculórum. Amen.",

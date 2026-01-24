@@ -1,5 +1,9 @@
 import { join } from "path";
-import { SOURCE_DIRS, OUTPUT_BASE, FILE_FILTER } from "./lib/config.mjs";
+import {
+  SOURCE_DIRS,
+  RESOLVE_REFERENCES_BASE,
+  FILE_FILTER,
+} from "./lib/config.mjs";
 import { logger } from "./lib/logger.mjs";
 import { maybeArrayEach } from "./lib/utils.mjs";
 import { migrateFile } from "./lib/migration.mjs";
@@ -11,7 +15,7 @@ function initialMigration() {
   logger.info("Starting initial migration...");
 
   for (const [dirName, sourceDirs] of Object.entries(SOURCE_DIRS)) {
-    const to = join(OUTPUT_BASE, dirName);
+    const to = join(RESOLVE_REFERENCES_BASE, dirName);
     if (!existsSync(to)) mkdirSync(to, { recursive: true });
 
     maybeArrayEach(sourceDirs, (from) => {
@@ -38,7 +42,7 @@ function resolveReferences() {
   logger.info("Starting reference resolution...");
 
   eachFile(
-    OUTPUT_BASE,
+    RESOLVE_REFERENCES_BASE,
     (file) => {
       resolveReferencesInFile(file);
     },
@@ -50,8 +54,18 @@ function resolveReferences() {
 
 logger.debug(`Debug mode: ${logger.isDebugMode()}`);
 
-rmSync(OUTPUT_BASE, { recursive: true });
-initialMigration();
-resolveReferences();
+const command = process.argv[2];
+
+if (command === "initialMigration") {
+  rmSync(RESOLVE_REFERENCES_BASE, { recursive: true });
+  initialMigration();
+} else if (command === "resolveReferences") {
+  resolveReferences();
+} else {
+  // Default: run both in sequence
+  rmSync(RESOLVE_REFERENCES_BASE, { recursive: true });
+  initialMigration();
+  resolveReferences();
+}
 
 logger.logCounters();

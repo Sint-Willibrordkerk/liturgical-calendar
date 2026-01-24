@@ -1,0 +1,16 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "copySourceFiles": {
+      "outputs": [".divinum-officium/copy"]
+    },
+    "initialMigration": {
+      "dependsOn": ["copySourceFiles"],
+      "outputs": [".divinum-officium/initial-migration"]
+    },
+    "resolveReferences": {
+      "dependsOn": ["initialMigration"],
+      "outputs": [".divinum-officium/resolve-references"]
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import { join } from "path";
-import { OUTPUT_BASE } from "./config.mjs";
+import { existsSync } from "fs";
+import { RESOLVE_REFERENCES_BASE, MIGRATION_BASE } from "./config.mjs";
 import { logger } from "./logger.mjs";
 import { readYamlFile, writeYamlFile } from "./fileUtils.mjs";
 import { maybeArrayEach, toKebabCase } from "./utils.mjs";
@@ -17,10 +18,19 @@ export function resolveReference(reference, path, root) {
       `type: "${type}" file: "${file}" key: "${key}" replacements: "${replacements}"`
     );
 
-    const content =
-      type && file
-        ? readYamlFile(join(OUTPUT_BASE, type, file + ".yml"))
-        : root;
+    // Try reading from OUTPUT_BASE first (resolved files), fallback to MIGRATION_BASE
+    let content;
+    if (type && file) {
+      const outputPath = join(RESOLVE_REFERENCES_BASE, type, file + ".yml");
+      const migrationPath = join(MIGRATION_BASE, type, file + ".yml");
+      if (existsSync(outputPath)) {
+        content = readYamlFile(outputPath);
+      } else {
+        content = readYamlFile(migrationPath);
+      }
+    } else {
+      content = root;
+    }
 
     if (!key && !path) return content;
 

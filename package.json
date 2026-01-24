@@ -19,7 +19,10 @@
   "scripts": {
     "build": "tsup",
     "start": "pnpm build && node scripts/main.js",
-    "test": "vitest"
+    "test": "vitest",
+    "copySourceFiles": "node scripts/copy-source-files.mjs",
+    "initialMigration": "node scripts/initial-migration.mjs",
+    "resolveReferences": "node scripts/resolve-references.mjs"
   },
   "files": [
     "dist"
@@ -31,8 +34,10 @@
     "@types/node": "^22.9.4",
     "dotenv": "^17.2.3",
     "tsup": "^8.5.0",
+    "turbo": "^2.7.6",
     "typescript": "^5.7.2",
     "vitest": "^3.2.4",
     "yaml": "^2.6.1"
-  }
+  },
+  "packageManager": "pnpm@10.9.0"
 }

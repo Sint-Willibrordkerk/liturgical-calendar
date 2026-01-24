@@ -1,8 +1,0 @@
-references: "@Sancti/10-DU"
-ant-matutinum:
-  - "@Sancti/10-DU::s/31-53/31-38/"
-lectio8:
-  - "@Sancti/10-DU::s/ Póterat autem Dóminus.*//"
-lectio9:
-  - "@Sancti/10-DU:Lectio8:s/.*sive Judǽis esset advérsum. //s"
-  - "&teDeum"
