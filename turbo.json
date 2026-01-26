@@ -2,10 +2,16 @@
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
     "copySourceFiles": {
-      "outputs": [".divinum-officium/copy"]
+      "inputs": ["./scripts/copy-source-files.mjs", "./scripts/common"],
+      "outputs": [".divinum-officium/copy-source-files"]
     },
     "initialMigration": {
       "dependsOn": ["copySourceFiles"],
+      "inputs": [
+        "./.divinum-officium/copy",
+        "./scripts/initial-migration.mjs",
+        "./scripts/lib"
+      ],
       "outputs": [".divinum-officium/initial-migration"]
     },
     "resolveReferences": {

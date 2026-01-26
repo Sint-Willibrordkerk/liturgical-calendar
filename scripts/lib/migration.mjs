@@ -1,7 +1,8 @@
-import { readFileSync, existsSync } from "fs";
-import { logger } from "./logger.mjs";
-import { writeYamlFile, readYamlFile } from "./fileUtils.mjs";
-import { toKebabCase } from "./utils.mjs";
+import { readFile, access } from "fs/promises";
+import { logger } from "../common/logger.mjs";
+import { writeYamlFile, readYamlFile } from "../common/fileUtils.mjs";
+import { toKebabCase } from "../common/utils.mjs";
+import { constants } from "fs";
 
 const rubricTypes = [
   "rubrica [tT]ridentina",
@@ -219,58 +220,54 @@ function migrateContent(content) {
   }, {});
 }
 
-export function migrateFile(from, to) {
-  const fileName = from.split(/[\\/]/).pop();
-  const dirName = to.split(/[\\/]/).at(-2);
+export async function migrateFile(from, to) {
+  const content = await readFile(from, "utf-8");
+  let result = migrateContent(content);
+  let hasOtherResult = true;
 
   try {
-    logger.debug(`Reading file: ${from}`);
-    const content = readFileSync(from, "utf-8");
-    let result = migrateContent(content);
-
-    if (existsSync(to)) {
-      const otherResult = readYamlFile(to);
-      result = { ...otherResult, ...result };
-
-      Object.entries(result).forEach(([key, value]) => {
-        if (
-          !otherResult[key] ||
-          (typeof value === "string" && value === otherResult[key]) ||
-          (Array.isArray(value) &&
-            value.length === otherResult[key].length &&
-            value.every((item, index) => item === otherResult[key][index]))
-        )
-          return;
-        const rubrica = key.includes("/") ? key.split("/")[0] : undefined;
-        const subKey = rubrica ? key.split("/")[1] : key;
-
-        if (subKey === "references")
-          result.references = [value, otherResult.references];
-        else if (subKey === "rule")
-          result.rule = Array.from(new Set([...value, ...otherResult.rule]));
-        else if (
-          subKey === "name" &&
-          value[0] === otherResult[key][0] &&
-          value.slice(1).every((item) => item.includes("=")) &&
-          otherResult[key].slice(1).every((item) => item.includes("="))
-        ) {
-          result.name = [
-            value[0],
-            ...new Set([...value.slice(1), ...otherResult[key].slice(1)]),
-          ];
-        } else {
-          logger.debug(`value: ${value}`);
-          logger.debug(`other: ${otherResult[key]}`);
-          throw new Error(`Duplicate key: ${key}`);
-        }
-      });
-    }
-
-    writeYamlFile(to, result);
-    logger.incrementCounter(`files.migrated.${dirName}`);
-  } catch (error) {
-    logger.error(`Error processing ${fileName}:`, error.message);
-    logger.debug("Error details:", error);
-    logger.incrementCounter(`files.errors.${dirName}`);
+    await access(to, constants.F_OK);
+  } catch {
+    hasOtherResult = false;
   }
+
+  if (hasOtherResult) {
+    const otherResult = await readYamlFile(to);
+    result = { ...otherResult, ...result };
+
+    Object.entries(result).forEach(([key, value]) => {
+      if (
+        !otherResult[key] ||
+        (typeof value === "string" && value === otherResult[key]) ||
+        (Array.isArray(value) &&
+          value.length === otherResult[key].length &&
+          value.every((item, index) => item === otherResult[key][index]))
+      )
+        return;
+      const rubrica = key.includes("/") ? key.split("/")[0] : undefined;
+      const subKey = rubrica ? key.split("/")[1] : key;
+
+      if (subKey === "references")
+        result.references = [value, otherResult.references];
+      else if (subKey === "rule")
+        result.rule = Array.from(new Set([...value, ...otherResult.rule]));
+      else if (
+        subKey === "name" &&
+        value[0] === otherResult[key][0] &&
+        value.slice(1).every((item) => item.includes("=")) &&
+        otherResult[key].slice(1).every((item) => item.includes("="))
+      ) {
+        result.name = [
+          value[0],
+          ...new Set([...value.slice(1), ...otherResult[key].slice(1)]),
+        ];
+      } else {
+        logger.debug(`value: ${value}`);
+        logger.debug(`other: ${otherResult[key]}`);
+        throw new Error(`Duplicate key: ${key}`);
+      }
+    });
+  }
+
+  await writeYamlFile(to, result);
 }

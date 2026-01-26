@@ -20,9 +20,9 @@
     "build": "tsup",
     "start": "pnpm build && node scripts/main.js",
     "test": "vitest",
-    "copySourceFiles": "node scripts/copy-source-files.mjs",
-    "initialMigration": "node scripts/initial-migration.mjs",
-    "resolveReferences": "node scripts/resolve-references.mjs"
+    "copySourceFiles": "node scripts/copy-source-files.mjs > out.log 2> out-err.log",
+    "initialMigration": "node scripts/initial-migration.mjs > out.log 2> out-err.log",
+    "resolveReferences": "node scripts/resolve-references.mjs > out.log 2> out-err.log"
   },
   "files": [
     "dist"

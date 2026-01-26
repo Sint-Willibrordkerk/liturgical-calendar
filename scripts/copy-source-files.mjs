@@ -1,32 +1,53 @@
 import { join } from "path";
-import { SOURCE_DIRS, COPY_BASE, FILE_FILTER } from "./lib/config.mjs";
-import { logger } from "./lib/logger.mjs";
-import { maybeArrayEach } from "./lib/utils.mjs";
-import { existsSync, mkdirSync, rmSync, copyFileSync } from "fs";
-import { eachFile } from "./lib/fileUtils.mjs";
+import {
+  SOURCE_DIRS,
+  COPY_BASE,
+  DIVINUM_OFFICIUM_BASE,
+  FILE_FILTER,
+} from "./common/config.mjs";
+import { logger } from "./common/logger.mjs";
+import {
+  appendFile,
+  copyFile,
+  mkdir,
+  open,
+  readdir,
+  readFile,
+  writeFile,
+} from "fs/promises";
+import { executeStep } from "./common/step.mjs";
+import { constants } from "fs";
 
-logger.debug(`Debug mode: ${logger.isDebugMode()}`);
+await executeStep("copy-source-files", () =>
+  Promise.all(
+    SOURCE_DIRS.map((dirName) => {
+      const from = join(DIVINUM_OFFICIUM_BASE, dirName);
+      const to = join(
+        COPY_BASE,
+        dirName.replaceAll(/\/Latin|horas|missa/g, "")
+      );
+      console.log({ dirName, to });
 
-logger.info("Starting source file copy...");
+      return mkdir(to, { recursive: true })
+        .then(() => readdir(from))
+        .then((files) =>
+          Promise.all(
+            files.filter(FILE_FILTER).map((file) => {
+              const fileFrom = join(from, file);
+              const fileTo = join(to, file);
 
-rmSync(COPY_BASE, { recursive: true, force: true });
-
-for (const [dirName, sourceDirs] of Object.entries(SOURCE_DIRS)) {
-  const to = join(COPY_BASE, dirName);
-  if (!existsSync(to)) mkdirSync(to, { recursive: true });
-
-  maybeArrayEach(sourceDirs, (from) => {
-    eachFile(from, (fileFrom) => {
-      if (!FILE_FILTER(fileFrom)) return;
-
-      const fileName = fileFrom.split(/[\\/]/).pop();
-      const fileTo = join(to, fileName);
-
-      copyFileSync(fileFrom, fileTo);
-      logger.debug(`Copied ${fileName} to ${fileTo}`);
-    });
-  });
-}
-
-logger.info("\nSource file copy complete!");
-logger.logCounters();
+              logger.debug(`Copying ${fileFrom}`);
+              return copyFile(fileFrom, fileTo, constants.COPYFILE_EXCL)
+                .catch(() =>
+                  readFile(fileFrom).then((content) =>
+                    appendFile(fileTo, `\n${content}`)
+                  )
+                )
+                .catch((error) => logger.error({ fileFrom, fileTo, error }));
+            })
+          )
+        )
+        .catch((error) => logger.error({ from, to, error }));
+    })
+  )
+);

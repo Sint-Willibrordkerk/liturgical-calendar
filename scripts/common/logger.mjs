@@ -19,6 +19,7 @@ class Logger {
   }
 
   error(...args) {
+    this.incrementCounter("errors");
     console.error("[ERROR]", ...args);
   }
 
@@ -46,7 +47,7 @@ class Logger {
     this.counters.clear();
   }
 
-  logCounters() {
+  async logCounters() {
     if (this.debugMode && this.counters.size > 0) {
       console.log("[STATS]", Object.fromEntries(this.counters));
     }
