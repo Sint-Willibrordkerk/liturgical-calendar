@@ -1,19 +1,15 @@
 import { join } from "path";
-import { COPY_BASE, MIGRATION_BASE } from "./common/config.mjs";
+import { MODIFY_BASE, MIGRATION_BASE } from "./common/config.mjs";
 import { logger } from "./common/logger.mjs";
 import { readdir, mkdir, readFile } from "fs/promises";
 import { executeStep } from "./common/step.mjs";
 import { writeYamlFile } from "./common/fileUtils.mjs";
+import { resolveRubrics, applyRubrics } from "./pre-process/rubrics.mjs";
+import { toKebabCase } from "./common/utils.mjs";
+import { parseContent } from "./pre-process/parse.mjs";
 
 const rootReferencePattern = /^(?:\((.+)\))?(@.*)$/;
-
-function resolveRubrics(rubrics) {
-  if (!rubrics) return { allow: ["default"] };
-
-  if (rubrics === "rubrica tridentina") return { allow: ["1570"] };
-  if (rubrics === "nisi rubrica cisterciensis") return { disallow: ["SOCist"] };
-  logger.error(`Unknown rubrics: ${rubrics}`);
-}
+const keyPattern = /^\[([^\]]+)\](?: *\((.+)\))?$/;
 
 function migrateSection(section) {
   const sectionLines = section
@@ -25,21 +21,14 @@ function migrateSection(section) {
     const rootReference = sectionLines[0].match(rootReferencePattern);
     if (rootReference) {
       const rubrics = resolveRubrics(rootReference[1]);
-
-      const result = {};
-      rubrics.allow?.forEach((rubric) => {
-        rubric = rubric === "default" ? null : rubric;
-        result[rubric ? `${rubric}/references` : "references"] = [
-          rootReference[2],
-        ];
-      });
-      rubrics.disallow?.forEach((rubric) => {
-        result[rubric ? `${rubric}/references` : "references"] = [];
-      });
-      return result;
+      return applyRubrics(rubrics, "references", [rootReference[2]]);
     } else throw new Error(`Unknown root reference: ${sectionLines[0]}`);
   }
-  return {};
+
+  const key = sectionLines[0].match(keyPattern);
+  if (!key) throw new Error(`Unknown key: ${sectionLines[0]}`);
+  const rubrics = resolveRubrics(key[2]);
+  return applyRubrics(rubrics, toKebabCase(key[1]), sectionLines.slice(1));
 }
 
 function migrateContent(content) {
@@ -51,17 +40,30 @@ function migrateContent(content) {
   return sections.reduce((acc, section) => {
     const result = migrateSection(section);
 
-    const duplicateKeys = Object.keys(result).filter((key) => {
-      const isDuplicate = !!acc[key];
-      if (isDuplicate && key === "references") {
-        result.references = new Set([...acc.references, ...result.references]);
-        return false;
+    const duplicateKeys = [];
+    for (const key of Object.keys(result)) {
+      if (!acc[key]) continue;
+
+      if (
+        !result[key].length ||
+        key.match(/(?:\/|^)(?:rank|oratio_?|officium|name)$/)
+      ) {
+        result[key] = acc[key];
+        continue;
       }
-      return isDuplicate;
-    });
+
+      if (key.match(/(?:\/|^)references$/) || key.match(/(?:\/|^)rule$/)) {
+        result[key] = new Set([...acc[key], ...result[key]]);
+        continue;
+      }
+
+      if (!acc[key].find((item, i) => result[key][i] !== item)) continue;
+
+      duplicateKeys.push(key);
+    }
 
     if (duplicateKeys.length > 0)
-      throw new Error(`Duplicate key: ${duplicateKeys.join(", ")}`);
+      throw new Error(`Duplicate keys: ${duplicateKeys.join(", ")}`);
 
     return {
       ...acc,
@@ -77,12 +79,12 @@ function migrateFile(from, to) {
 }
 
 executeStep("initial-migration", () =>
-  readdir(COPY_BASE, { recursive: true }).then((files) =>
+  readdir(MODIFY_BASE, { recursive: true }).then((files) =>
     Promise.all(
       files
         .filter((file) => file.endsWith(".txt"))
         .map((file) => {
-          const from = join(COPY_BASE, file);
+          const from = join(MODIFY_BASE, file);
           const to = join(MIGRATION_BASE, file.replace(/\.txt$/, ".yml"));
           const dirName = to.split(/[\\/]/).slice(0, -1).join("\\");
           const shortDirName = dirName

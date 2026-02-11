@@ -5,12 +5,21 @@
       "inputs": ["./scripts/copy-source-files.mjs", "./scripts/common"],
       "outputs": [".divinum-officium/copy-source-files"]
     },
-    "initialMigration": {
+    "modifySourceFiles": {
       "dependsOn": ["copySourceFiles"],
       "inputs": [
-        "./.divinum-officium/copy",
+        "./.divinum-officium/modify-source-files",
+        "./scripts/modify-source-files.mjs",
+        "./scripts/common"
+      ],
+      "outputs": [".divinum-officium/modify-source-files"]
+    },
+    "initialMigration": {
+      "dependsOn": ["modifySourceFiles"],
+      "inputs": [
+        "./.divinum-officium/modify-source-files",
         "./scripts/initial-migration.mjs",
-        "./scripts/lib"
+        "./scripts/common"
       ],
       "outputs": [".divinum-officium/initial-migration"]
     },

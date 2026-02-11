@@ -27,6 +27,7 @@ export const SOURCE_DIRS = [
 
 export const STEP_BASE = join(PROJECT_BASE, ".divinum-officium");
 export const COPY_BASE = join(STEP_BASE, "copy-source-files");
+export const MODIFY_BASE = join(STEP_BASE, "modify-source-files");
 export const MIGRATION_BASE = join(
   PROJECT_BASE,
   ".divinum-officium/initial-migration"
@@ -44,4 +45,6 @@ export const STANDARD_ENDINGS = {
 };
 
 export const FILE_FILTER = (file) =>
-  file.endsWith(".txt") && !file.endsWith("pl.txt");
+  file.endsWith(".txt") &&
+  !file.endsWith("pl.txt") &&
+  !file.endsWith("tts.txt");

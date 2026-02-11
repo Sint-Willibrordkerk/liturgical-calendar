@@ -18,36 +18,30 @@ import {
 import { executeStep } from "./common/step.mjs";
 import { constants } from "fs";
 
-await executeStep("copy-source-files", () =>
-  Promise.all(
-    SOURCE_DIRS.map((dirName) => {
-      const from = join(DIVINUM_OFFICIUM_BASE, dirName);
-      const to = join(
-        COPY_BASE,
-        dirName.replaceAll(/\/Latin|horas|missa/g, "")
-      );
-      console.log({ dirName, to });
+await executeStep("copy-source-files", async () => {
+  for (const dirName of SOURCE_DIRS) {
+    const from = join(DIVINUM_OFFICIUM_BASE, dirName);
+    const to = join(COPY_BASE, dirName.replaceAll(/\/Latin|horas|missa/g, ""));
 
-      return mkdir(to, { recursive: true })
-        .then(() => readdir(from))
-        .then((files) =>
-          Promise.all(
-            files.filter(FILE_FILTER).map((file) => {
-              const fileFrom = join(from, file);
-              const fileTo = join(to, file);
+    await mkdir(to, { recursive: true })
+      .then(() => readdir(from))
+      .then((files) =>
+        Promise.all(
+          files.filter(FILE_FILTER).map((file) => {
+            const fileFrom = join(from, file);
+            const fileTo = join(to, file);
 
-              logger.debug(`Copying ${fileFrom}`);
-              return copyFile(fileFrom, fileTo, constants.COPYFILE_EXCL)
-                .catch(() =>
-                  readFile(fileFrom).then((content) =>
-                    appendFile(fileTo, `\n${content}`)
-                  )
+            logger.debug(`Copying ${fileFrom}`);
+            return copyFile(fileFrom, fileTo, constants.COPYFILE_EXCL)
+              .catch(() =>
+                readFile(fileFrom).then((content) =>
+                  appendFile(fileTo, `\r\n${content}`)
                 )
-                .catch((error) => logger.error({ fileFrom, fileTo, error }));
-            })
-          )
+              )
+              .catch((error) => logger.error({ fileFrom, fileTo, error }));
+          })
         )
-        .catch((error) => logger.error({ from, to, error }));
-    })
-  )
-);
+      )
+      .catch((error) => logger.error({ from, to, error }));
+  }
+});
