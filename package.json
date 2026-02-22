@@ -20,10 +20,20 @@
     "build": "tsup",
     "start": "pnpm build && node scripts/main.js",
     "test": "vitest",
-    "copySourceFiles": "node scripts/copy-source-files.mjs > out.log 2> out-err.log",
-    "modifySourceFiles": "node scripts/modify-source-files.mjs > out.log 2> out-err.log",
-    "initialMigration": "node scripts/initial-migration.mjs > out.log 2> out-err.log",
-    "resolveReferences": "node scripts/resolve-references.mjs > out.log 2> out-err.log"
+    "pipeline": "turbo run step10",
+    "step1": "node scripts2/step1.mjs",
+    "step1b": "node scripts2/step1b.mjs",
+    "step2": "node scripts2/step2.mjs",
+    "step3": "node scripts2/step3.mjs",
+    "step4": "node scripts2/step4.mjs",
+    "step4a": "node scripts2/step4a.mjs",
+    "step5": "node scripts2/step5.mjs",
+    "step6": "node scripts2/step6.mjs",
+    "step7": "node scripts2/step7.mjs",
+    "step8": "node scripts2/step8.mjs",
+    "step9": "node scripts2/step9.mjs",
+    "step9a": "node scripts2/step9a.mjs",
+    "step10": "node scripts2/step10.mjs"
   },
   "files": [
     "dist"

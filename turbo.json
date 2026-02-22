@@ -1,31 +1,69 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
-    "copySourceFiles": {
-      "inputs": ["./scripts/copy-source-files.mjs", "./scripts/common"],
-      "outputs": [".divinum-officium/copy-source-files"]
+    "step1": {
+      "inputs": ["./scripts2/step1.mjs"],
+      "outputs": [".divinum-officium/step1"]
     },
-    "modifySourceFiles": {
-      "dependsOn": ["copySourceFiles"],
-      "inputs": [
-        "./.divinum-officium/modify-source-files",
-        "./scripts/modify-source-files.mjs",
-        "./scripts/common"
-      ],
-      "outputs": [".divinum-officium/modify-source-files"]
+    "step1b": {
+      "inputs": ["./scripts2/step1b.mjs", ".divinum-officium/step1"],
+      "dependsOn": ["step1"],
+      "outputs": [".divinum-officium/step1b"]
     },
-    "initialMigration": {
-      "dependsOn": ["modifySourceFiles"],
-      "inputs": [
-        "./.divinum-officium/modify-source-files",
-        "./scripts/initial-migration.mjs",
-        "./scripts/common"
-      ],
-      "outputs": [".divinum-officium/initial-migration"]
+    "step2": {
+      "inputs": ["./scripts2/step2.mjs", ".divinum-officium/step1b"],
+      "dependsOn": ["step1b"],
+      "outputs": [".divinum-officium/step2"]
     },
-    "resolveReferences": {
-      "dependsOn": ["initialMigration"],
-      "outputs": [".divinum-officium/resolve-references"]
+    "step3": {
+      "inputs": ["./scripts2/step3.mjs", ".divinum-officium/step2"],
+      "dependsOn": ["step2"],
+      "outputs": [".divinum-officium/step3"]
+    },
+    "step4": {
+      "inputs": ["./scripts2/step4.mjs", ".divinum-officium/step3"],
+      "dependsOn": ["step3"],
+      "outputs": [".divinum-officium/step4"]
+    },
+    "step4a": {
+      "inputs": ["./scripts2/step4a.mjs", ".divinum-officium/step4"],
+      "dependsOn": ["step4"],
+      "outputs": [".divinum-officium/step4a"]
+    },
+    "step5": {
+      "inputs": ["./scripts2/step5.mjs", ".divinum-officium/step4a"],
+      "dependsOn": ["step4a"],
+      "outputs": [".divinum-officium/step5"]
+    },
+    "step6": {
+      "inputs": ["./scripts2/step6.mjs", ".divinum-officium/step5"],
+      "dependsOn": ["step5"],
+      "outputs": [".divinum-officium/step6"]
+    },
+    "step7": {
+      "inputs": ["./scripts2/step7.mjs", ".divinum-officium/step6"],
+      "dependsOn": ["step6"],
+      "outputs": [".divinum-officium/step7"]
+    },
+    "step8": {
+      "inputs": ["./scripts2/step8.mjs", ".divinum-officium/step7"],
+      "dependsOn": ["step7"],
+      "outputs": [".divinum-officium/step8"]
+    },
+    "step9": {
+      "inputs": ["./scripts2/step9.mjs", ".divinum-officium/step8"],
+      "dependsOn": ["step8"],
+      "outputs": [".divinum-officium/step9"]
+    },
+    "step9a": {
+      "inputs": ["./scripts2/step9a.mjs", ".divinum-officium/step9"],
+      "dependsOn": ["step9"],
+      "outputs": [".divinum-officium/step9a"]
+    },
+    "step10": {
+      "inputs": ["./scripts2/step10.mjs", ".divinum-officium/step9a"],
+      "dependsOn": ["step9a"],
+      "outputs": [".divinum-officium/step10"]
     }
   }
 }
