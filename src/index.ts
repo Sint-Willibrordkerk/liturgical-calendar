@@ -16,9 +16,9 @@ function deleteFields(day: Partial<LiturgicalDay | Commemoration>) {
   // Note: mass field is preserved and not deleted
 }
 
-export default (year: number, propers: string[] = [], lang?: string) => {
-  const translations = lang ? loadTranslations(lang) : {};
-  const calendar = parseCalendarData(year, propers, translations);
+export default (year: number, propers: string[] = [], lang: string = "la") => {
+  const translations = loadTranslations(lang);
+  const calendar = parseCalendarData(year, propers, lang, translations);
 
   eachDay(year, ({ month, day }) => {
     const dayData = calendar[month]![day]!;

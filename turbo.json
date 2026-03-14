@@ -5,14 +5,9 @@
       "inputs": ["./scripts2/step1.mjs"],
       "outputs": [".divinum-officium/step1"]
     },
-    "step1b": {
-      "inputs": ["./scripts2/step1b.mjs", ".divinum-officium/step1"],
-      "dependsOn": ["step1"],
-      "outputs": [".divinum-officium/step1b"]
-    },
     "step2": {
-      "inputs": ["./scripts2/step2.mjs", ".divinum-officium/step1b"],
-      "dependsOn": ["step1b"],
+      "inputs": ["./scripts2/step2.mjs", ".divinum-officium/step1"],
+      "dependsOn": ["step1"],
       "outputs": [".divinum-officium/step2"]
     },
     "step3": {
@@ -25,14 +20,9 @@
       "dependsOn": ["step3"],
       "outputs": [".divinum-officium/step4"]
     },
-    "step4a": {
-      "inputs": ["./scripts2/step4a.mjs", ".divinum-officium/step4"],
-      "dependsOn": ["step4"],
-      "outputs": [".divinum-officium/step4a"]
-    },
     "step5": {
-      "inputs": ["./scripts2/step5.mjs", ".divinum-officium/step4a"],
-      "dependsOn": ["step4a"],
+      "inputs": ["./scripts2/step5.mjs", ".divinum-officium/step4"],
+      "dependsOn": ["step4"],
       "outputs": [".divinum-officium/step5"]
     },
     "step6": {
@@ -55,15 +45,25 @@
       "dependsOn": ["step8"],
       "outputs": [".divinum-officium/step9"]
     },
-    "step9a": {
-      "inputs": ["./scripts2/step9a.mjs", ".divinum-officium/step9"],
-      "dependsOn": ["step9"],
-      "outputs": [".divinum-officium/step9a"]
-    },
     "step10": {
-      "inputs": ["./scripts2/step10.mjs", ".divinum-officium/step9a"],
-      "dependsOn": ["step9a"],
+      "inputs": ["./scripts2/step10.mjs", ".divinum-officium/step9"],
+      "dependsOn": ["step9"],
       "outputs": [".divinum-officium/step10"]
+    },
+    "step11": {
+      "inputs": ["./scripts2/step11.mjs", ".divinum-officium/step10"],
+      "dependsOn": ["step10"],
+      "outputs": [".divinum-officium/step11"]
+    },
+    "step12": {
+      "inputs": ["./scripts2/step12.mjs", ".divinum-officium/step11"],
+      "dependsOn": ["step11"],
+      "outputs": [".divinum-officium/step12"]
+    },
+    "step13": {
+      "inputs": ["./scripts2/step13.mjs", ".divinum-officium/step12"],
+      "dependsOn": ["step12"],
+      "outputs": [".divinum-officium/step13"]
     }
   }
 }

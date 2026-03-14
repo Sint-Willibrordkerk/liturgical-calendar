@@ -32,7 +32,36 @@ function readAssetsFromFolder(
 }
 
 // Pre-parse all YAML files to JSON and compress
-const bundledAssets = readAssetsFromFolder("assets");
+// Only bundle essential divinum-officium folders (Sancti and Tempora) for Latin
+const divinumOfficiumLanguages = ["la"];
+const divinumOfficiumFolders = ["Sancti", "Tempora"];
+
+function readDivinumOfficium(): Record<string, any> {
+  const assets: Record<string, any> = {};
+  const basePath = ".divinum-officium/step10";
+
+  for (const lang of divinumOfficiumLanguages) {
+    for (const folder of divinumOfficiumFolders) {
+      const folderPath = join(basePath, lang, folder);
+      try {
+        const folderAssets = readAssetsFromFolder(
+          folderPath,
+          `divinum-officium/${lang}/${folder}`
+        );
+        Object.assign(assets, folderAssets);
+      } catch {
+        // Folder may not exist for all languages
+      }
+    }
+  }
+
+  return assets;
+}
+
+const bundledAssets = {
+  ...readAssetsFromFolder("assets"),
+  ...readDivinumOfficium(),
+};
 
 export default defineConfig({
   entry: ["src/index.ts"],

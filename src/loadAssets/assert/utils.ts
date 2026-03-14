@@ -19,6 +19,22 @@ export const loadAsset = (path: string) => {
   throw new Error(`Asset ${path} not found`);
 };
 
+export const tryLoadAsset = (path: string): any | undefined => {
+  // Normalize path to handle both forward and backward slashes
+  const normalizedPath = path.replace(/\\/g, "/");
+
+  if (typeof bundledAssets !== "undefined" && bundledAssets[normalizedPath]) {
+    return bundledAssets[normalizedPath];
+  }
+
+  // Try with original path as fallback
+  if (typeof bundledAssets !== "undefined" && bundledAssets[path]) {
+    return bundledAssets[path];
+  }
+
+  return undefined;
+};
+
 export function zRegex<T extends string>(
   expr: string,
   type: string

@@ -3,296 +3,202 @@ import { readdir, readFile, writeFile, mkdir, rm } from "fs/promises";
 import { parse, stringify } from "yaml";
 
 const PROJECT_BASE = process.cwd();
-const STEP9_INPUT = join(PROJECT_BASE, ".divinum-officium", "step9a");
+const STEP9_INPUT = join(PROJECT_BASE, ".divinum-officium", "step9");
 const STEP10_OUTPUT = join(PROJECT_BASE, ".divinum-officium", "step10");
 const CONCURRENCY = 150;
 
-const MISSA_SECTION_TYPES = {
-  introitus: "antiphonal",
-  oratio: "prayer",
-  lectio: "verse",
-  graduale: "antiphonal",
-  tractus: "antiphonal",
-  gradualep: "antiphonal",
-  evangelium: "verse",
-  offertorium: "verse",
-  secreta: "prayer",
-  communio: "verse",
-  postcommunio: "prayer",
-  "ultima-evangelium": "verse",
-};
+const fileCache = new Map();
 
-const V_START = /^\s*v\.\s*/i;
-/** First line of lectio/evangelium that is the title/introduction (e.g. "Léctio Epístolæ...", "Sequéntia sancti Evangélii...") */
-const LECTIO_INTRODUCTION = /^\s*(Léctio|Lectio|Sequéntia|Sequentia)\s+.+$/i;
-/** Trailing "Allelúja, allelúja" cue before the alleluia section (may be omitted) */
-const ALLELUIA_CUE = /\s*,?\s*Allel[uú]ja\s*,?\s*Allel[uú]ja\.?\s*$/i;
+const EX_REGEX = /\bex\s+([A-Za-z0-9/-]+)/g;
+const VIDE_REGEX = /\bvide\s+([A-Za-z0-9/-]+)/g;
+const EX_REMOVE = /\bex\s+[A-Za-z0-9/-]+;?\s*/g;
+const VIDE_REMOVE = /\bvide\s+[A-Za-z0-9/-]+;?\s*/g;
 
-function getSectionType(key) {
-  const base = key.split("/")[0];
-  return MISSA_SECTION_TYPES[base] || null;
+function normalizePath(path) {
+  if (!path || typeof path !== "string") return path;
+  const p = path.replace(/;\s*$/, "").trim();
+  if (p.includes("/")) return p;
+  if (/^C[A-Za-z0-9-]+$/.test(p)) return `Commune/${p}`;
+  if (/^(Epi|Pasc|Quadp)[A-Za-z0-9-]*$/.test(p)) return `Tempora/${p}`;
+  return p;
 }
 
-function stripLeadingV(text) {
-  if (!text || typeof text !== "string") return text;
-  const lines = text.split("\n");
-  if (lines.length === 0) return text;
-  lines[0] = lines[0].trim().replace(V_START, "").trim();
-  return lines.join("\n").trim();
+function isVideKey(key) {
+  if (!key || key === "__preamble") return false;
+  if (/^lectio/i.test(key)) return true;
+  if (/^ant-laudes(\/|$)/.test(key) || /^ant-vespera(\/|$)/.test(key)) return true;
+  if (/^ant-1(\/|$)/.test(key) || /^ant-2(\/|$)/.test(key) || /^ant-3(\/|$)/.test(key)) return true;
+  if (/^versum/i.test(key)) return true;
+  if (key === "oratio" || key.startsWith("oratio/")) return true;
+  return false;
 }
 
-function linesToVerse(lines) {
-  if (!Array.isArray(lines) || lines.length === 0) return { ref: "", text: "" };
-  let ref = "";
-  const textParts = [];
-  for (const line of lines) {
-    const s = typeof line === "string" ? line : String(line);
-    if (s.startsWith("!")) ref = s.slice(1).trim();
-    else if (!s.startsWith("$")) textParts.push(s);
-  }
-  return { ref, text: stripLeadingV(textParts.join("\n").trim()) };
-}
-
-function linesToPrayer(lines) {
-  if (!Array.isArray(lines) || lines.length === 0)
-    return { text: "", closure: "" };
-  let closure = "";
-  const textParts = [];
-  for (const line of lines) {
-    const s = typeof line === "string" ? line : String(line);
-    if (s.startsWith("$")) closure = s.slice(1).trim();
-    else textParts.push(s);
-  }
-  return { text: textParts.join("\n").trim(), closure };
-}
-
-function splitRefPair(refStr) {
-  if (!refStr || typeof refStr !== "string")
-    return { antiphonRef: "", verseRef: "" };
-  const parts = refStr
-    .split(/[;,]/)
-    .map((s) => s.trim())
-    .filter(Boolean);
-  if (parts.length < 2) return { antiphonRef: refStr.trim(), verseRef: "" };
-  const first = parts[0];
-  const bookMatch = first.match(/^(.+?)\s+\d/);
-  const book = bookMatch ? bookMatch[1].trim() : "";
-  const second = parts[1];
-  const verseRef = /^\d/.test(second) && book ? `${book} ${second}` : second;
-  return { antiphonRef: first, verseRef };
-}
-
-function linesToAntiphonal(lines) {
-  const empty = { ref: "", text: "" };
-  if (!Array.isArray(lines) || lines.length === 0) {
-    return { antiphon: { ...empty }, verse: { ...empty } };
-  }
-  // Split by ref positions: first ref = antiphon ref, lines until second ref = antiphon text, second ref = verse ref, rest = verse text
-  const refs = [];
-  const segments = []; // [{ refIndex, start, end }] for content between refs
-  let i = 0;
-  while (i < lines.length) {
-    const s = typeof lines[i] === "string" ? lines[i] : String(lines[i]);
-    if (s.startsWith("!")) {
-      refs.push(s.slice(1).trim());
-      segments.push({ refIndex: refs.length - 1, start: i + 1 });
-      i++;
-      while (i < lines.length) {
-        const t = typeof lines[i] === "string" ? lines[i] : String(lines[i]);
-        if (t.startsWith("!")) break; // next ref only; & stays in same segment
-        i++;
-      }
-      if (segments[segments.length - 1]) segments[segments.length - 1].end = i;
-    } else {
-      i++;
-    }
-  }
-  const antiphonLines =
-    segments.length > 0 && segments[0].end > segments[0].start
-      ? lines
-          .slice(segments[0].start, segments[0].end)
-          .filter((l) => !String(l).startsWith("&"))
-      : [];
-  const verseLines =
-    segments.length > 1 && segments[1].end > segments[1].start
-      ? lines
-          .slice(segments[1].start, segments[1].end)
-          .filter((l) => !String(l).startsWith("&"))
-      : [];
-  const antiphonText = stripLeadingV(antiphonLines.join("\n").trim());
-  let verseText = verseLines.join("\n").trim();
-  // If the verse ends with the antiphon repeated (with or without "v."), leave it out
-  if (antiphonText) {
-    const verseLinesArr = verseText.split("\n");
-    while (verseLinesArr.length > 0) {
-      const last = verseLinesArr[verseLinesArr.length - 1].trim();
-      const lastNorm = last.replace(V_START, "").trim();
-      if (lastNorm === antiphonText) {
-        verseLinesArr.pop();
-        verseText = verseLinesArr.join("\n").trim();
-      } else break;
-    }
-  }
-  const pair = splitRefPair(refs[0] ?? "");
-  return {
-    antiphon: { ref: pair.antiphonRef, text: antiphonText },
-    verse: { ref: refs[1] ?? pair.verseRef, text: stripLeadingV(verseText) },
+function extractExVideSources(obj) {
+  const ex = new Set();
+  const vide = new Set();
+  const add = (path, set) => {
+    const norm = normalizePath(path);
+    if (norm) set.add(norm);
   };
-}
-
-/** Filter out standalone "_" lines (placeholders) from graduale content. */
-function filterGradualeLines(lines) {
-  return lines.filter((l) => String(l).trim() !== "_");
-}
-
-/** Graduale (and gradualep): same ref/segment parsing, but second segment = alleluia (ref + text), first segment = antiphon + verse split by V. "!Tractus" = no alleluia. */
-function linesToGraduale(lines) {
-  const empty = { ref: "", text: "" };
-  if (!Array.isArray(lines) || lines.length === 0) {
-    return {
-      antiphon: { ...empty },
-      verse: { ...empty },
-      alleluia: { ...empty },
-    };
-  }
-  const refs = [];
-  const segments = [];
-  let i = 0;
-  while (i < lines.length) {
-    const s = typeof lines[i] === "string" ? lines[i] : String(lines[i]);
-    if (s.startsWith("!")) {
-      refs.push(s.slice(1).trim());
-      segments.push({ refIndex: refs.length - 1, start: i + 1 });
-      i++;
-      while (i < lines.length) {
-        const t = typeof lines[i] === "string" ? lines[i] : String(lines[i]);
-        if (t.startsWith("!")) break;
-        i++;
+  for (const key of Object.keys(obj)) {
+    if (key !== "__preamble" && !key.startsWith("__preamble/")) continue;
+    const preamble = obj[key];
+    if (!Array.isArray(preamble)) continue;
+    for (const line of preamble) {
+      if (typeof line === "string" && line.startsWith("@")) {
+        const path = line.slice(1).split(":")[0].trim();
+        if (path) add(path, ex);
       }
-      if (segments[segments.length - 1]) segments[segments.length - 1].end = i;
-    } else {
-      i++;
     }
   }
-  const firstBlock =
-    segments.length > 0 && segments[0].end > segments[0].start
-      ? filterGradualeLines(
-          lines.slice(segments[0].start, segments[0].end).filter((l) => !String(l).startsWith("&"))
-        )
-      : [];
-  const secondBlock =
-    segments.length > 1 && segments[1].end > segments[1].start
-      ? filterGradualeLines(
-          lines.slice(segments[1].start, segments[1].end).filter((l) => !String(l).startsWith("&"))
-        )
-      : [];
-  const firstText = firstBlock.join("\n").trim();
-  const vIdx = firstBlock.findIndex((l) => V_START.test(String(l).trim()));
-  let antiphonText = "";
-  let verseText = "";
-  if (vIdx < 0) {
-    antiphonText = stripLeadingV(firstText);
-  } else {
-    antiphonText = firstBlock.slice(0, vIdx).join("\n").trim();
-    const verseBlock = firstBlock.slice(vIdx);
-    if (verseBlock.length) {
-      verseBlock[0] = String(verseBlock[0]).trim().replace(V_START, "").trim();
-      verseText = verseBlock.join("\n").trim();
+  const rankRuleKeys = Object.keys(obj).filter(
+    (k) => k !== "__preamble" && (k === "rank" || k.startsWith("rank/") || k === "rule" || k.startsWith("rule/"))
+  );
+  for (const key of rankRuleKeys) {
+    const arr = obj[key];
+    if (!Array.isArray(arr)) continue;
+    for (const line of arr) {
+      if (typeof line !== "string") continue;
+      let m;
+      EX_REGEX.lastIndex = 0;
+      while ((m = EX_REGEX.exec(line)) !== null) add(m[1], ex);
+      VIDE_REGEX.lastIndex = 0;
+      while ((m = VIDE_REGEX.exec(line)) !== null) add(m[1], vide);
     }
   }
-  const pair = splitRefPair(refs[0] ?? "");
-  const secondRef = refs[1] ?? "";
-  const isTractus = /^Tractus/i.test(secondRef);
-  const alleluiaRef = isTractus ? "" : secondRef;
-  const alleluiaText = isTractus ? "" : stripLeadingV(secondBlock.join("\n").trim());
-  // Remove trailing "Allelúja, allelúja" cue from gradual verse (it only signals the alleluia follows)
-  const verseTextClean = stripLeadingV(verseText)
-    .replace(ALLELUIA_CUE, "")
-    .trim();
-  return {
-    antiphon: { ref: pair.antiphonRef, text: stripLeadingV(antiphonText) },
-    verse: { ref: pair.verseRef, text: verseTextClean },
-    alleluia: { ref: alleluiaRef, text: alleluiaText },
-  };
+  return { ex, vide };
 }
 
-const PREFATIO_PREFIX = /^Prefatio\s*=\s*(.+)$/i;
-
-/** Transform rule array: drop Gloria/Credo, extract Prefatio=X as prefatio key (value lowercase). */
-function transformRule(value) {
-  if (!Array.isArray(value)) return { rule: value, prefatio: undefined };
-  let prefatio = undefined;
-  const rule = value.filter((item) => {
-    const s = typeof item === "string" ? item : String(item);
-    if (s === "Gloria" || s === "Credo") return false;
-    const m = s.match(PREFATIO_PREFIX);
-    if (m) {
-      prefatio = m[1].trim().toLowerCase();
-      return false;
-    }
-    return true;
-  });
-  return { rule, prefatio };
+async function getFileContent(basePath, relPath) {
+  const key = relPath;
+  if (fileCache.has(key)) return fileCache.get(key);
+  const fullPath = join(basePath, relPath);
+  let raw;
+  try {
+    raw = await readFile(fullPath, "utf-8");
+  } catch (_) {
+    fileCache.set(key, null);
+    return null;
+  }
+  let obj;
+  try {
+    obj = parse(raw);
+  } catch (_) {
+    fileCache.set(key, null);
+    return null;
+  }
+  if (typeof obj !== "object" || obj === null || Array.isArray(obj)) {
+    fileCache.set(key, null);
+    return null;
+  }
+  fileCache.set(key, obj);
+  return obj;
 }
 
-function stripLectioIntroduction(text) {
-  if (!text || typeof text !== "string") return text;
-  const lines = text.split("\n").map((l) => l.trimEnd());
-  if (lines.length > 0 && LECTIO_INTRODUCTION.test(lines[0])) {
-    return lines.slice(1).join("\n").trim();
-  }
-  return text;
+async function loadDoc(basePath, language, normalizedPath) {
+  const relPath = `${language}/${normalizedPath}.yml`;
+  return getFileContent(basePath, relPath);
 }
 
-function transformSection(key, value, sectionType) {
-  if (!Array.isArray(value)) return value;
-  switch (sectionType) {
-    case "verse": {
-      const out = linesToVerse(value);
-      if (
-        key === "lectio" ||
-        key.startsWith("lectio/") ||
-        key === "evangelium" ||
-        key.startsWith("evangelium/")
-      ) {
-        out.text = stripLectioIntroduction(out.text);
-      }
-      return out;
+async function transformObject(obj, currentFileRel, basePath) {
+  const pathParts = currentFileRel.replace(/\\/g, "/").split("/");
+  const language = pathParts[0];
+  if (!language) return obj;
+
+  const { ex, vide } = extractExVideSources(obj);
+  const currentKeys = new Set(Object.keys(obj).filter((k) => k !== "__preamble"));
+  const added = Object.create(null);
+
+  for (const path of ex) {
+    const doc = await loadDoc(basePath, language, path);
+    if (!doc) continue;
+    for (const [k, v] of Object.entries(doc)) {
+      if (k === "__preamble") continue;
+      if (currentKeys.has(k)) continue;
+      currentKeys.add(k);
+      added[k] = v;
     }
-    case "prayer":
-      return linesToPrayer(value);
-    case "antiphonal":
-      if (key === "graduale" || key.startsWith("graduale"))
-        return linesToGraduale(value);
-      return linesToAntiphonal(value);
-    default:
-      return value;
   }
+
+  for (const path of vide) {
+    const doc = await loadDoc(basePath, language, path);
+    if (!doc) continue;
+    for (const [k, v] of Object.entries(doc)) {
+      if (k === "__preamble") continue;
+      if (!isVideKey(k)) continue;
+      if (currentKeys.has(k)) continue;
+      currentKeys.add(k);
+      added[k] = v;
+    }
+  }
+
+  const addedKeys = Object.keys(added).sort();
+  let result = addedKeys.length === 0 ? obj : { ...obj };
+  if (addedKeys.length > 0) {
+    for (const k of addedKeys) result[k] = added[k];
+  }
+  return stripPreambleExVide(result);
 }
 
-function transformObject(obj, rel) {
-  const result = {};
-  for (const [key, value] of Object.entries(obj)) {
-    if (key === "rule" || key.startsWith("rule/")) {
-      const { rule: ruleArr, prefatio: prefatioVal } = transformRule(value);
-      result[key] = ruleArr;
-      if (prefatioVal !== undefined) {
-        const prefatioKey =
-          key === "rule"
-            ? "prefatio"
-            : "prefatio/" + key.replace(/^rule\//, "");
-        result[prefatioKey] = prefatioVal;
-      }
-      continue;
-    }
-    const sectionType = getSectionType(key);
-    if (sectionType) {
-      result[key] = transformSection(key, value, sectionType);
-    } else {
-      result[key] = value;
+/**
+ * Transform object by resolving ex/vide references and importing sections.
+ * Exported for streaming pipeline.
+ *
+ * @param {Object} obj - Sections object
+ * @param {{ relPath: string }} context - Context with relative path
+ * @param {Map<string, Object>} resolvedFiles - Map of outputKey → transformed data
+ * @returns {Promise<Object>} Transformed object with ex/vide resolved
+ */
+export async function transform(obj, context, resolvedFiles) {
+  // For streaming: use resolvedFiles as the file cache
+  fileCache.clear();
+  if (resolvedFiles) {
+    for (const [key, value] of resolvedFiles) {
+      fileCache.set(key + ".yml", value);
     }
   }
-  return result;
+  return transformObject(obj, context.relPath, "");
+}
+
+/**
+ * Extract ex/vide dependencies from object for dependency analysis.
+ * Exported for streaming pipeline.
+ *
+ * @param {Object} obj - Sections object
+ * @returns {Set<string>} Set of referenced file paths
+ */
+export function extractDependencies(obj) {
+  const { ex, vide } = extractExVideSources(obj);
+  return new Set([...ex, ...vide]);
+}
+
+function stripPreambleExVide(result) {
+  const out = { ...result };
+  for (const key of Object.keys(out)) {
+    if (key !== "__preamble" && !key.startsWith("__preamble/")) continue;
+    if (!Array.isArray(out[key])) continue;
+    out[key] = out[key].filter(
+      (line) => typeof line !== "string" || !line.startsWith("@")
+    );
+    if (out[key].length === 0) delete out[key];
+  }
+  const rankRuleKeys = Object.keys(out).filter(
+    (k) => k !== "__preamble" && (k === "rank" || k.startsWith("rank/") || k === "rule" || k.startsWith("rule/"))
+  );
+  for (const key of rankRuleKeys) {
+    const arr = out[key];
+    if (!Array.isArray(arr)) continue;
+    const cleaned = arr
+      .map((line) => {
+        if (typeof line !== "string") return line;
+        let s = line.replace(EX_REMOVE, "").replace(VIDE_REMOVE, "").trim();
+        s = s.replace(/\s*;;\s*$/, "").replace(/\s*;\s*$/, "");
+        return s;
+      })
+      .filter((line) => line !== "" || typeof line !== "string");
+    out[key] = cleaned;
+  }
+  return out;
 }
 
 async function runBatched(items, concurrency, fn) {
@@ -349,15 +255,17 @@ async function main() {
       if (typeof obj !== "object" || obj === null || Array.isArray(obj)) {
         throw new Error("Expected object");
       }
-      const out = transformObject(obj, rel);
+      const out = await transformObject(obj, rel, STEP9_INPUT);
       await ensureDir(outputPath, mkdirCache);
       await writeFile(outputPath, stringify(out), "utf-8");
     }
   );
 
-  console.log(
-    `Step 10 done. ${processed} files in ${STEP10_OUTPUT}, ${errors} errors`
-  );
+  console.log(`Step 10 done. ${processed} files in ${STEP10_OUTPUT}, ${errors} errors`);
 }
 
-main();
+const isMainModule = import.meta.url.endsWith("step10.mjs") &&
+  process.argv[1]?.replace(/\\/g, "/").endsWith("step10.mjs");
+if (isMainModule) {
+  main();
+}

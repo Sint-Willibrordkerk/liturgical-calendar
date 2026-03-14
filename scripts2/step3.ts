@@ -1,0 +1,93 @@
+function toKebabCase(str: string) {
+  if (str == null) return "";
+  return String(str).trim().toLowerCase().replace(/\s+/g, "-");
+}
+
+/** Normalized rubric key → source condition parts that map to it */
+const conditionMap: Record<string, string[]> = {
+  "1570": [
+    "tridentina",
+    "t",
+    "1570",
+    "tt",
+    "oct",
+    "octt",
+    "coct",
+    "moct",
+    "trident",
+    "so",
+  ],
+  "1617": ["1617"],
+  "1888": ["o", "bmv", "1888", "oc", "om"],
+  "1906": ["o", "bmv", "1906", "oc", "om"],
+  "1910": ["1910"],
+  "1913": ["divino", "bmv", "g", "da"],
+  "1930": ["1930", "bmv", "193"],
+  "1942": ["communi-summorum-pontificum", "bmv", "b", "bp"],
+  "1951": ["bmv", "b", "1951", "bp"],
+  "1955": ["1955", "communi-summorum-pontificum", "bmv", "b", "1954", "1955r"],
+  "1962": [
+    "1960",
+    "196",
+    "r",
+    "communi-summorum-pontificum",
+    "b",
+    "1963",
+    "1962",
+    "rm",
+    "rúbrica-1960",
+  ],
+  "1962-new": ["n", "innovata", "communi-summorum-pontificum", "b", "newcal"],
+
+  monastica: ["monastica", "^monastic", "m"],
+  cist: ["cisterciensis", "c", "cist", "cisterciensisa", "cisterciensisi"],
+  "cist-altovadensis": ["altovadensis", "av", "avcc"],
+  op: ["praedicatorum", "op"],
+  osb: ["barroux"],
+
+  adventus: ["adventus"],
+  septuagesima: ["post-septuagesimam"],
+  lent: ["q"],
+  "coena-domini": ["die-in-cœna-domini"],
+  parasceve: ["die-in-parasceve"],
+  paschali: ["paschali", "pasc", "p", "ap", "bp", "ccp"],
+  defunctorum: ["def"],
+  malachiae: ["die-malachiae"],
+  caroli: ["die-caroli"],
+  nicolai: ["die-nicolai"],
+  bernardi: ["vb"],
+  eucharistiae: ["ve"],
+  dolorum: ["dt", "septem"],
+  annuntiatione: ["an"],
+
+  "feria-1": ["feria-1"],
+  "feria-2": ["feria-2"],
+  "feria-3": ["feria-3"],
+  "feria-4": ["feria-4"],
+  "feria-5": ["feria-5"],
+  "feria-6": ["feria-6"],
+  "feria-7": ["feria-7", "sab"],
+
+  commemoration: ["cc", "ccc", "mcc", "sec", "ca", "ccp"],
+  vigilia: ["v"],
+  "ssmi-cordis": ["octava-ssmi-cordis"],
+  "corpus-christi": ["octava-corpus"],
+  special: ["a", "s", "translatio-altera", "version-altera"],
+  "ad-missam": ["ad-missam"],
+  "ad-vesperam": ["ad-vesperam"],
+  "missa-brevior": ["missa-brevior"],
+  "missa-longior": ["missa-longior"],
+  singulariter: ["versio-altera-singulariter"],
+  numquam: ["numquam"],
+  mense: [
+    "mense-4",
+    "mense-5",
+    "mense-6",
+    "mense-7",
+    "mense-8",
+    "mense-9",
+    "mense-10",
+  ],
+};
+
+export function transform(input: { [key: string]: any }) {}

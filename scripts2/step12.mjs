@@ -3,8 +3,8 @@ import { readdir, readFile, writeFile, mkdir, rm } from "fs/promises";
 import { parse, stringify } from "yaml";
 
 const PROJECT_BASE = process.cwd();
-const STEP9_INPUT = join(PROJECT_BASE, ".divinum-officium", "step9");
-const STEP9A_OUTPUT = join(PROJECT_BASE, ".divinum-officium", "step9a");
+const STEP11_INPUT = join(PROJECT_BASE, ".divinum-officium", "step11");
+const STEP12_OUTPUT = join(PROJECT_BASE, ".divinum-officium", "step12");
 const CONCURRENCY = 150;
 
 const COMMEMORATIO_PREFIX =
@@ -48,7 +48,7 @@ function withoutCommemoratioKeys(obj) {
   return out;
 }
 
-/** Extract commemoration sections from a step9 object. Returns [{ slug, displayName, oratio, secreta, postcommunio }]. */
+/** Extract commemoration sections from a step11 object. Returns [{ slug, displayName, oratio, secreta, postcommunio }]. */
 function extractCommemorations(obj) {
   if (obj == null || typeof obj !== "object") return [];
   const bySlug = new Map(); // slug -> { displayName, oratio, secreta, postcommunio }
@@ -84,6 +84,20 @@ function extractCommemorations(obj) {
   }));
 }
 
+/**
+ * Transform object by removing commemoratio keys.
+ * Returns { main: Object, commemorations: Array }.
+ * Exported for streaming pipeline.
+ *
+ * @param {Object} obj - Sections object
+ * @returns {{ main: Object, commemorations: Array }}
+ */
+export function transform(obj) {
+  const commemorations = extractCommemorations(obj);
+  const main = withoutCommemoratioKeys(obj);
+  return { main, commemorations };
+}
+
 async function runBatched(items, concurrency, fn) {
   const queue = [...items];
   let processed = 0;
@@ -113,10 +127,10 @@ function collectYmlFiles(dirPath) {
 }
 
 async function main() {
-  await rm(STEP9A_OUTPUT, { recursive: true, force: true });
-  await mkdir(STEP9A_OUTPUT, { recursive: true });
+  await rm(STEP12_OUTPUT, { recursive: true, force: true });
+  await mkdir(STEP12_OUTPUT, { recursive: true });
 
-  const allRelPaths = await collectYmlFiles(STEP9_INPUT);
+  const allRelPaths = await collectYmlFiles(STEP11_INPUT);
   const mkdirCache = new Set();
   const byOutputKey = new Map(); // "dir/slug" -> { dir, slug, displayName, oratio, secreta, postcommunio }
   const toWriteMain = []; // { relPath, content } for main files (without commemoratio keys)
@@ -133,7 +147,7 @@ async function main() {
     allRelPaths,
     CONCURRENCY,
     async (relPath) => {
-      const absPath = join(STEP9_INPUT, relPath);
+      const absPath = join(STEP11_INPUT, relPath);
       const raw = await readFile(absPath, "utf-8");
       let obj;
       try {
@@ -174,13 +188,13 @@ async function main() {
   );
 
   if (readErrors > 0) {
-    console.error(`Step 9a read errors: ${readErrors}`);
+    console.error(`Step 12 read errors: ${readErrors}`);
   }
 
   let writeErrors = 0;
   for (const { relPath, content } of toWriteMain) {
     try {
-      const outPath = join(STEP9A_OUTPUT, relPath);
+      const outPath = join(STEP12_OUTPUT, relPath);
       await ensureDir(outPath);
       await writeFile(outPath, content, "utf-8");
     } catch (err) {
@@ -191,7 +205,7 @@ async function main() {
   for (const entry of byOutputKey.values()) {
     const { dir, slug, displayName, oratio, secreta, postcommunio } = entry;
     const outRelPath = dir ? `${dir}/${slug}.yml` : `${slug}.yml`;
-    const outPath = join(STEP9A_OUTPUT, outRelPath);
+    const outPath = join(STEP12_OUTPUT, outRelPath);
     const doc = {
       name: displayName,
       oratio,
@@ -208,8 +222,12 @@ async function main() {
   }
 
   console.log(
-    `Step 9a done. ${toWriteMain.length} main files + ${byOutputKey.size} commemoration files in ${STEP9A_OUTPUT}, ${writeErrors} write errors`
+    `Step 12 done. ${toWriteMain.length} main files + ${byOutputKey.size} commemoration files in ${STEP12_OUTPUT}, ${writeErrors} write errors`
   );
 }
 
-main();
+const isMainModule = import.meta.url.endsWith("step12.mjs") &&
+  process.argv[1]?.replace(/\\/g, "/").endsWith("step12.mjs");
+if (isMainModule) {
+  main();
+}

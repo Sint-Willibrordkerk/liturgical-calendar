@@ -2,20 +2,14 @@ import { join } from "path";
 import { readdir, readFile, writeFile, mkdir, rm } from "fs/promises";
 import { parse, stringify } from "yaml";
 
-const PROJECT_BASE = process.cwd();
-const STEP6_INPUT = join(PROJECT_BASE, ".divinum-officium", "step6");
-const STEP7_OUTPUT = join(PROJECT_BASE, ".divinum-officium", "step7");
-const CONCURRENCY = 150;
-const MAX_RESOLVE_DEPTH = 3;
-
 const fileCache = new Map();
 
-function toKebabCase(str) {
+function toKebabCase(str: string) {
   if (str == null) return "";
   return String(str).trim().toLowerCase().replace(/\s+/g, "-");
 }
 
-function parseSubstitutions(substStr) {
+function parseSubstitutions(substStr: string) {
   if (!substStr || typeof substStr !== "string") return [];
   const result = [];
   const re = /\s*s\/((?:[^/\\]|\\.)*)\/((?:[^/\\]|\\.)*)\/([igms]*)/g;
@@ -30,24 +24,29 @@ function parseSubstitutions(substStr) {
   return result;
 }
 
-function parseReference(str) {
+function parseReference(str: string) {
   if (typeof str !== "string" || !str.startsWith("@")) return null;
   const rest = str.slice(1);
   const firstColon = rest.indexOf(":");
   const filePath = firstColon >= 0 ? rest.slice(0, firstColon) : rest;
   const remainder = firstColon >= 0 ? rest.slice(firstColon + 1) : "";
   if (!remainder) {
-    return { filePath: filePath.trim(), section: "", lineRange: null, substitutions: [] };
+    return {
+      filePath: filePath.trim(),
+      section: "",
+      lineRange: null,
+      substitutions: [],
+    };
   }
   const parts = remainder.split(":");
   let lineRange = null;
   let substPart = undefined;
-  if (parts.length && /^\d(-\d)?$/.test(parts[parts.length - 1])) {
-    const lr = parts.pop();
+  if (parts.length && /^\d(-\d)?$/.test(parts[parts.length - 1]!)) {
+    const lr = parts.pop()!;
     const [a, b] = lr.split("-").map(Number);
     lineRange = b != null ? { start: a, end: b } : { start: a, end: a };
   }
-  if (parts.length && parts[parts.length - 1].trim().startsWith("s/")) {
+  if (parts.length && parts[parts.length - 1]!.trim().startsWith("s/")) {
     substPart = parts.pop();
   }
   const section = parts.join(":").trim();
@@ -60,7 +59,7 @@ function parseReference(str) {
   };
 }
 
-async function getFileContent(basePath, relPath) {
+async function getFileContent(basePath: string, relPath: string) {
   const key = relPath;
   if (fileCache.has(key)) return fileCache.get(key);
   const fullPath = join(basePath, relPath);
@@ -86,19 +85,27 @@ async function getFileContent(basePath, relPath) {
   return obj;
 }
 
-function findSectionContent(doc, sectionKey) {
+function findSectionContent(doc: { [key: string]: any }, sectionKey: string) {
   if (!doc || typeof doc !== "object") return null;
   if (sectionKey) {
     if (Array.isArray(doc[sectionKey])) return doc[sectionKey];
     for (const [k, v] of Object.entries(doc)) {
-      if (k !== "__preamble" && (k === sectionKey || k.endsWith("/" + sectionKey)) && Array.isArray(v)) {
+      if (
+        k !== "__preamble" &&
+        (k === sectionKey || k.endsWith("/" + sectionKey)) &&
+        Array.isArray(v)
+      ) {
         return v;
       }
     }
     // Prefix match: "Ant Vespera" → ant-vespera; key "ant-vespera-3" or "ant-vespera/cisterciensis" also matches
     for (const [k, v] of Object.entries(doc)) {
       if (k === "__preamble" || !Array.isArray(v)) continue;
-      if (k === sectionKey || k.startsWith(sectionKey + "-") || k.startsWith(sectionKey + "/")) {
+      if (
+        k === sectionKey ||
+        k.startsWith(sectionKey + "-") ||
+        k.startsWith(sectionKey + "/")
+      ) {
         return v;
       }
     }
@@ -110,7 +117,10 @@ function findSectionContent(doc, sectionKey) {
   return null;
 }
 
-function applySubstitutions(lines, substitutions) {
+function applySubstitutions(
+  lines: string[],
+  substitutions: { pattern: string; replacement: string; flags: string }[]
+) {
   if (!substitutions.length) return lines;
   return lines.map((line) => {
     let s = String(line);
@@ -124,8 +134,19 @@ function applySubstitutions(lines, substitutions) {
   });
 }
 
-async function resolveReference(parsed, currentFileRel, basePath, depth = 0, currentSectionKey = "") {
-  if (depth >= MAX_RESOLVE_DEPTH) return null;
+async function resolveReference(
+  parsed: {
+    filePath: string;
+    section: string;
+    lineRange: { start: number; end: number };
+    substitutions: { pattern: string; replacement: string; flags: string }[];
+  },
+  currentFileRel: string,
+  basePath: string,
+  depth = 0,
+  currentSectionKey = ""
+): Promise<string[] | null> {
+  if (depth >= 5) return null;
   const pathParts = currentFileRel.replace(/\\/g, "/").split("/");
   const isBranch = pathParts[0] === "horas" || pathParts[0] === "missa";
   const branch = isBranch ? pathParts[0] : null;
@@ -135,7 +156,9 @@ async function resolveReference(parsed, currentFileRel, basePath, depth = 0, cur
   // When ref has no section (e.g. @Sancti/12-29), use base of current key for lookup:
   // name/1960 → "name", lectio1/1888 → "lectio1", so we resolve to the base section in the target file
   const rawSection = parsed.section || currentSectionKey || "";
-  const sectionKey = rawSection.includes("/") ? rawSection.replace(/\/.*/, "") : rawSection;
+  const sectionKey = rawSection.includes("/")
+    ? rawSection.replace(/\/.*/, "")
+    : rawSection;
   let content = null;
   let doc = null;
 
@@ -187,8 +210,12 @@ async function resolveReference(parsed, currentFileRel, basePath, depth = 0, cur
   return content;
 }
 
-async function transformObject(input, currentFileRel, basePath) {
-  const result = {};
+async function transformObject(
+  input: { [key: string]: any },
+  currentFileRel: string,
+  basePath: string
+) {
+  const result: { [key: string]: any } = {};
   for (const [key, value] of Object.entries(input)) {
     if (key === "__preamble") {
       result[key] = value;
@@ -205,7 +232,13 @@ async function transformObject(input, currentFileRel, basePath) {
         out.push(line);
         continue;
       }
-      const resolved = await resolveReference(parsed, currentFileRel, basePath, 0, key);
+      const resolved = await resolveReference(
+        parsed,
+        currentFileRel,
+        basePath,
+        0,
+        key
+      );
       if (resolved) {
         out.push(...resolved);
       } else {
@@ -217,67 +250,48 @@ async function transformObject(input, currentFileRel, basePath) {
   return result;
 }
 
-async function runBatched(items, concurrency, fn) {
-  const queue = [...items];
-  let processed = 0;
-  let errors = 0;
-  async function worker() {
-    while (queue.length > 0) {
-      const item = queue.shift();
-      if (item === undefined) break;
-      try {
-        await fn(item);
-        processed++;
-      } catch (err) {
-        errors++;
-        console.error(`Error processing ${item}:`, err.message);
+/**
+ * Transform object by resolving @File:Section references.
+ * Exported for streaming pipeline.
+ *
+ * @param {Object} obj - Sections object
+ * @param {{ relPath: string }} context - Context with relative path
+ * @param {Map<string, Object>} resolvedFiles - Map of outputKey → transformed data (for lookups)
+ * @returns {Promise<Object>} Transformed object with references resolved
+ */
+export async function transform(
+  obj: { [key: string]: any },
+  context: { relPath: string },
+  resolvedFiles: Map<string, { [key: string]: any }>
+) {
+  // For streaming: use resolvedFiles as the file cache
+  // Clear and populate fileCache from resolvedFiles
+  fileCache.clear();
+  if (resolvedFiles) {
+    for (const [key, value] of resolvedFiles) {
+      fileCache.set(key + ".yml", value);
+    }
+  }
+  return transformObject(obj, context.relPath, "");
+}
+
+/**
+ * Extract references from object for dependency analysis.
+ * Exported for streaming pipeline.
+ *
+ * @param {Object} obj - Sections object
+ * @returns {Set<string>} Set of referenced file paths
+ */
+export function extractDependencies(obj: { [key: string]: any }) {
+  const deps = new Set();
+  for (const [key, value] of Object.entries(obj)) {
+    if (key === "__preamble" || !Array.isArray(value)) continue;
+    for (const line of value) {
+      const parsed = parseReference(line);
+      if (parsed?.filePath) {
+        deps.add(parsed.filePath);
       }
     }
   }
-  const n = Math.min(concurrency, items.length) || 1;
-  await Promise.all(Array(n).fill(0).map(worker));
-  return { processed, errors };
+  return deps;
 }
-
-async function ensureDir(filePath, mkdirCache) {
-  const outDir = join(filePath, "..");
-  if (!mkdirCache.has(outDir)) {
-    await mkdir(outDir, { recursive: true });
-    mkdirCache.add(outDir);
-  }
-}
-
-function collectYmlFiles(dirPath) {
-  return readdir(dirPath, { recursive: true }).then((entries) =>
-    entries.filter((rel) => typeof rel === "string" && rel.endsWith(".yml"))
-  );
-}
-
-async function main() {
-  await rm(STEP7_OUTPUT, { recursive: true, force: true });
-  await mkdir(STEP7_OUTPUT, { recursive: true });
-
-  const files = await collectYmlFiles(STEP6_INPUT);
-  const mkdirCache = new Set();
-
-  const { processed, errors } = await runBatched(
-    files,
-    CONCURRENCY,
-    async (rel) => {
-      const inputPath = join(STEP6_INPUT, rel);
-      const outputPath = join(STEP7_OUTPUT, rel);
-      const raw = await readFile(inputPath, "utf-8");
-      const obj = parse(raw);
-      if (typeof obj !== "object" || obj === null || Array.isArray(obj)) {
-        throw new Error("Expected object");
-      }
-      const out = await transformObject(obj, rel, STEP6_INPUT);
-      await ensureDir(outputPath, mkdirCache);
-      await writeFile(outputPath, stringify(out), "utf-8");
-    }
-  );
-
-  console.log(`Step 7 done. ${processed} files in ${STEP7_OUTPUT}, ${errors} errors`);
-}
-
-main();

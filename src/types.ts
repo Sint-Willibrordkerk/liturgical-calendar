@@ -48,13 +48,34 @@ export type Sanctorum = Record<
   }
 >;
 
+export type RawMassProper = {
+  name?: string;
+  introitus?: {
+    antiphon?: { ref?: string; text?: string };
+    verse?: { ref?: string; text?: string };
+  };
+  oratio?: { text?: string; closure?: string };
+  lectio?: { ref?: string; text?: string };
+  graduale?: {
+    antiphon?: { ref?: string; text?: string };
+    verse?: { ref?: string; text?: string };
+    alleluia?: { ref?: string; text?: string };
+  };
+  tractus?: { verses?: string[] };
+  evangelium?: { ref?: string; text?: string };
+  offertorium?: { ref?: string; text?: string };
+  secreta?: { text?: string; closure?: string };
+  communio?: { ref?: string; text?: string };
+  postcommunio?: { text?: string; closure?: string };
+};
+
 export type Commemoration = {
   title?: string;
   type?: string;
   liturgicalClass: number;
   commemorationType?: string;
   acceptCommemorationTypes?: string[];
-  mass?: MassProper | MassProper[];
+  mass?: MassProper | MassProper[] | RawMassProper;
 };
 
 export type LiturgicalDay = Commemoration & {

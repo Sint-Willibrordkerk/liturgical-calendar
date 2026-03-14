@@ -3,8 +3,8 @@ import { readdir, readFile, writeFile, mkdir, rm } from "fs/promises";
 import { parse, stringify } from "yaml";
 
 const PROJECT_BASE = process.cwd();
-const STEP8_INPUT = join(PROJECT_BASE, ".divinum-officium", "step8");
-const STEP9_OUTPUT = join(PROJECT_BASE, ".divinum-officium", "step9");
+const STEP10_INPUT = join(PROJECT_BASE, ".divinum-officium", "step10");
+const STEP11_OUTPUT = join(PROJECT_BASE, ".divinum-officium", "step11");
 const CONCURRENCY = 150;
 
 /** Invalid filename characters (Windows): replace with - */
@@ -48,8 +48,8 @@ function getRankFirstPart(rank) {
   let s = Array.isArray(rank)
     ? rank.find((v) => typeof v === "string" && v.trim() !== "")
     : typeof rank === "string"
-      ? rank
-      : null;
+    ? rank
+    : null;
   if (s == null) return null;
   s = String(s).trim();
   const first = s.split(";;")[0];
@@ -103,14 +103,23 @@ function resolveCollisions(entries) {
     const byContent = new Map();
     for (const { originalStem, relPath, content } of list) {
       const key = content;
-      if (!byContent.has(key)) byContent.set(key, { originalStem, relPath, content });
+      if (!byContent.has(key))
+        byContent.set(key, { originalStem, relPath, content });
     }
     const uniq = [...byContent.values()];
     if (uniq.length === 1) {
-      result.push({ relPath: uniq[0].relPath, finalBasename: base, content: uniq[0].content });
+      result.push({
+        relPath: uniq[0].relPath,
+        finalBasename: base,
+        content: uniq[0].content,
+      });
     } else {
       for (const { originalStem, relPath, content } of uniq) {
-        result.push({ relPath, finalBasename: `${base}-${originalStem}`, content });
+        result.push({
+          relPath,
+          finalBasename: `${base}-${originalStem}`,
+          content,
+        });
       }
     }
   }
@@ -122,14 +131,19 @@ function getStem(relPath) {
   return base.replace(/\.yml$/i, "") || base;
 }
 
-/** Transform content for step9 output: name as string (from name, officium, or rank), remove officium and rank. */
-function transformContentForStep9(rawContent) {
+/** Transform content for step11 output: name as string (from name, officium, or rank), remove officium and rank. */
+function transformContentForStep11(rawContent) {
   const obj = parse(rawContent);
   if (obj == null || typeof obj !== "object") return rawContent;
+  return transformObjectForStep11(obj);
+}
+
+function transformObjectForStep11(obj) {
   const out = {};
   for (const [key, value] of Object.entries(obj)) {
     if (key === "rank" || key.startsWith("rank/")) {
-      const nameKey = key === "rank" ? "name" : "name/" + key.replace(/^rank\//, "");
+      const nameKey =
+        key === "rank" ? "name" : "name/" + key.replace(/^rank\//, "");
       if (out[nameKey] === undefined || out[nameKey] === "") {
         out[nameKey] = getRankFirstPart(value) ?? "";
       }
@@ -140,7 +154,8 @@ function transformContentForStep9(rawContent) {
       continue;
     }
     if (key === "officium" || key.startsWith("officium/")) {
-      const nameKey = key === "officium" ? "name" : "name/" + key.replace(/^officium\//, "");
+      const nameKey =
+        key === "officium" ? "name" : "name/" + key.replace(/^officium\//, "");
       if (out[nameKey] === undefined || out[nameKey] === "") {
         out[nameKey] = firstString(value) ?? "";
       }
@@ -151,14 +166,25 @@ function transformContentForStep9(rawContent) {
   for (const k of Object.keys(out)) {
     if ((k === "name" || k.startsWith("name/")) && out[k] === "") delete out[k];
   }
-  return stringify(out);
+  return out;
+}
+
+/**
+ * Transform object by extracting name from rank/officium.
+ * Exported for streaming pipeline.
+ *
+ * @param {Object} obj - Sections object
+ * @returns {Object} Transformed object
+ */
+export function transform(obj) {
+  return transformObjectForStep11(obj);
 }
 
 async function main() {
-  await rm(STEP9_OUTPUT, { recursive: true, force: true });
-  await mkdir(STEP9_OUTPUT, { recursive: true });
+  await rm(STEP11_OUTPUT, { recursive: true, force: true });
+  await mkdir(STEP11_OUTPUT, { recursive: true });
 
-  const allRelPaths = await collectYmlFiles(STEP8_INPUT);
+  const allRelPaths = await collectYmlFiles(STEP10_INPUT);
   const mkdirCache = new Set();
   async function ensureDir(filePath) {
     const outDir = dirname(filePath);
@@ -173,7 +199,7 @@ async function main() {
     allRelPaths,
     CONCURRENCY,
     async (relPath) => {
-      const absPath = join(STEP8_INPUT, relPath);
+      const absPath = join(STEP10_INPUT, relPath);
       const raw = await readFile(absPath, "utf-8");
       const obj = parse(raw);
       const originalStem = getStem(relPath);
@@ -192,7 +218,7 @@ async function main() {
   );
 
   if (readErrors > 0) {
-    console.error(`Step 9 read errors: ${readErrors}`);
+    console.error(`Step 11 read errors: ${readErrors}`);
     return;
   }
 
@@ -208,15 +234,20 @@ async function main() {
     const resolved = resolveCollisions(entries);
     for (const { relPath, finalBasename, content } of resolved) {
       const dir = dirname(relPath);
-      const outRelPath = dir ? `${dir}/${finalBasename}.yml` : `${finalBasename}.yml`;
-      toWrite.push({ outRelPath, content: transformContentForStep9(content) });
+      const outRelPath = dir
+        ? `${dir}/${finalBasename}.yml`
+        : `${finalBasename}.yml`;
+      toWrite.push({
+        outRelPath,
+        content: stringify(transformContentForStep11(content)),
+      });
     }
   }
 
   let writeErrors = 0;
   for (const { outRelPath, content } of toWrite) {
     try {
-      const outPath = join(STEP9_OUTPUT, outRelPath);
+      const outPath = join(STEP11_OUTPUT, outRelPath);
       await ensureDir(outPath);
       await writeFile(outPath, content, "utf-8");
     } catch (err) {
@@ -226,8 +257,13 @@ async function main() {
   }
 
   console.log(
-    `Step 9 done. ${toWrite.length} files in ${STEP9_OUTPUT}, ${writeErrors} write errors`
+    `Step 11 done. ${toWrite.length} files in ${STEP11_OUTPUT}, ${writeErrors} write errors`
   );
 }
 
-main();
+const isMainModule =
+  import.meta.url.endsWith("step11.mjs") &&
+  process.argv[1]?.replace(/\\/g, "/").endsWith("step11.mjs");
+if (isMainModule) {
+  main();
+}

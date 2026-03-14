@@ -8,9 +8,12 @@ import type {
 import { CalendarBuilder } from "./parse";
 import { calculateAdvent, calculateEaster, getDate } from "./utils";
 import { weekdays } from "./constants";
-import { loadCalendarData, loadPropers, loadMassPropers } from "./loadAssets";
-import type { MassProper } from "./types";
-import type { MassPropersData } from "./loadAssets/assert/massPropers";
+import {
+  loadCalendarData,
+  loadPropers,
+  loadMassPropersByTitle,
+  type RawMassProper,
+} from "./loadAssets";
 import { ordinals, days } from "./ordinals";
 
 type Translations = Record<string, string>;
@@ -132,6 +135,7 @@ function getDates(
 export function parseCalendarData(
   year: number,
   propers: string[],
+  language: string = "la",
   translations?: Translations
 ) {
   const calendarData = loadCalendarData();
@@ -150,15 +154,6 @@ export function parseCalendarData(
   const advent = calculateAdvent(year);
   const easter = calculateEaster(year);
 
-  // Load mass propers early to use for matching
-  let massPropers: MassPropersData | null = null;
-  try {
-    massPropers = loadMassPropers();
-  } catch (error) {
-    // Mass propers file may not exist yet, ignore silently
-    console.error(error);
-  }
-
   list.reverse().forEach((item) => {
     if (item.occurence) {
       const dates = getDates(item.occurence, advent, easter, year);
@@ -173,8 +168,7 @@ export function parseCalendarData(
           translations
         );
 
-        // Build title with variable substitution but before translation for mass proper matching
-        // Use Latin ordinals and day names (not translated) to match mass propers data
+        // Build title with variable substitution for mass proper matching
         const latinOrdinal =
           ordinals[(index + 1) as keyof typeof ordinals] || "";
         const latinDay = days[(date.getDay() + 1) as keyof typeof days] || "";
@@ -182,13 +176,10 @@ export function parseCalendarData(
           ?.replace("$count", latinOrdinal)
           .replace("$day", latinDay);
 
-        // Find mass proper(s) using original title (before translation) with variable substitution
-        let massData =
-          massPropers && titleWithSubstitution
-            ? massPropers[titleWithSubstitution]
-            : undefined;
-
-        const mass: MassProper | MassProper[] | undefined = massData;
+        // Load mass proper by title and language
+        const mass: RawMassProper | undefined = titleWithSubstitution
+          ? loadMassPropersByTitle(titleWithSubstitution, language)
+          : undefined;
 
         let title = translate(
           originalTitle?.replace("$count", ordinal!).replace("$day", day!),
