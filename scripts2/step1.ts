@@ -1,8 +1,8 @@
-import { applyCondition, parseCondition } from "./condition";
+import { applyCondition } from "./condition";
 
 /** Section content: array of lines, or when conditional a map condition -> lines (use "" for default). */
 export type Step1Output = {
-  [key: string]: object[];
+  [key: string]: { value: string[]; condition: string[] }[];
 };
 
 const WHITESPACE = /\s+/g;
@@ -21,18 +21,7 @@ function trimTrailingEmptyLines(lines: string[]) {
   return lines;
 }
 
-function setSection(
-  result: object[],
-  baseKey: string,
-  conditionKey: string | null,
-  lines: string[],
-  strictMode: boolean
-) {
-  const trimmed = trimTrailingEmptyLines(lines);
-  applyCondition(conditionKey, trimmed, result);
-}
-
-export function transform(lines: string[], strictMode: boolean) {
+export function transform(lines: string[]) {
   const result: Step1Output = { __preamble: [] };
   let currentBase = "__preamble";
   let currentCondition: string | null = null;
@@ -41,7 +30,7 @@ export function transform(lines: string[], strictMode: boolean) {
   for (const line of lines) {
     const keyLine = KEY_LINE.exec(line);
     if (keyLine) {
-      applyCondition(
+      result[currentBase] = applyCondition(
         currentCondition,
         trimTrailingEmptyLines(currentLines),
         result[currentBase]!
@@ -55,10 +44,22 @@ export function transform(lines: string[], strictMode: boolean) {
       currentLines.push(line);
     }
   }
-  applyCondition(
+  result[currentBase] = applyCondition(
     currentCondition,
     trimTrailingEmptyLines(currentLines),
     result[currentBase]!
   );
-  return result;
+  return Object.fromEntries(
+    Object.entries(result)
+      .map(
+        ([key, value]) =>
+          [
+            key,
+            value.filter(
+              (item) => item.value.length > 0 || item.condition.length > 0
+            ),
+          ] as [string, { value: string[]; condition: string[] }[]]
+      )
+      .filter(([, value]) => value.length)
+  );
 }

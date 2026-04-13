@@ -1,93 +1,300 @@
-function toKebabCase(str: string) {
-  if (str == null) return "";
-  return String(str).trim().toLowerCase().replace(/\s+/g, "-");
+import {
+  applyCondition,
+  applyIncludes,
+  getIncludesExcludes,
+  parseConditional,
+} from "./condition";
+import { Step2Output } from "./step2";
+
+function isBlankLine(line: string): boolean {
+  return line.at(-1) === "" || line.at(-1) === "_";
 }
 
-/** Normalized rubric key → source condition parts that map to it */
-const conditionMap: Record<string, string[]> = {
-  "1570": [
-    "tridentina",
-    "t",
-    "1570",
-    "tt",
-    "oct",
-    "octt",
-    "coct",
-    "moct",
-    "trident",
-    "so",
-  ],
-  "1617": ["1617"],
-  "1888": ["o", "bmv", "1888", "oc", "om"],
-  "1906": ["o", "bmv", "1906", "oc", "om"],
-  "1910": ["1910"],
-  "1913": ["divino", "bmv", "g", "da"],
-  "1930": ["1930", "bmv", "193"],
-  "1942": ["communi-summorum-pontificum", "bmv", "b", "bp"],
-  "1951": ["bmv", "b", "1951", "bp"],
-  "1955": ["1955", "communi-summorum-pontificum", "bmv", "b", "1954", "1955r"],
-  "1962": [
-    "1960",
-    "196",
-    "r",
-    "communi-summorum-pontificum",
-    "b",
-    "1963",
-    "1962",
-    "rm",
-    "rúbrica-1960",
-  ],
-  "1962-new": ["n", "innovata", "communi-summorum-pontificum", "b", "newcal"],
+/** Step 3 is not applied to files under an `Ordo` directory (per-language rubric tables). */
+export function isStep3SkippedForPath(relPath: string): boolean {
+  const segments = relPath.replace(/\\/g, "/").split("/");
+  return segments.includes("Ordo");
+}
 
-  monastica: ["monastica", "^monastic", "m"],
-  cist: ["cisterciensis", "c", "cist", "cisterciensisa", "cisterciensisi"],
-  "cist-altovadensis": ["altovadensis", "av", "avcc"],
-  op: ["praedicatorum", "op"],
-  osb: ["barroux"],
+export type Step3Output = Step2Output;
+type Scope = "scope-null" | "scope-line" | "scope-chunk" | "scope-nest";
+type ConditionalState = "affirmative" | "not-yet-affirmative" | "dummy-frame";
 
-  adventus: ["adventus"],
-  septuagesima: ["post-septuagesimam"],
-  lent: ["q"],
-  "coena-domini": ["die-in-cœna-domini"],
-  parasceve: ["die-in-parasceve"],
-  paschali: ["paschali", "pasc", "p", "ap", "bp", "ccp"],
-  defunctorum: ["def"],
-  malachiae: ["die-malachiae"],
-  caroli: ["die-caroli"],
-  nicolai: ["die-nicolai"],
-  bernardi: ["vb"],
-  eucharistiae: ["ve"],
-  dolorum: ["dt", "septem"],
-  annuntiatione: ["an"],
+/**
+ * Detects an inline conditional at the start of a line (replaces Divinum Officium
+ * `conditional_regex`): leading optional space, `(…)`, optional rest on the same line.
+ */
+export function parseConditionalLine(
+  line: string
+): { conditional: string; rest: string } | null {
+  const trimmed = line.trimStart();
+  if (!trimmed.startsWith("(")) return null;
+  const close = trimmed.indexOf(")");
+  if (close === -1) return null;
+  return {
+    conditional: trimmed.slice(1, close),
+    rest: trimmed.slice(close + 1).trimStart(),
+  };
+}
 
-  "feria-1": ["feria-1"],
-  "feria-2": ["feria-2"],
-  "feria-3": ["feria-3"],
-  "feria-4": ["feria-4"],
-  "feria-5": ["feria-5"],
-  "feria-6": ["feria-6"],
-  "feria-7": ["feria-7", "sab"],
+function rubricMatchesCondition(
+  conditionStr: string,
+  rubric: string[]
+): boolean {
+  const branches = getIncludesExcludes(conditionStr);
+  if (branches.length === 0) return true;
+  for (const { includes, excludes } of branches) {
+    const allInc =
+      includes.length === 0 || includes.every((k) => rubric.includes(k));
+    const noExc = !excludes.some((k) => rubric.includes(k));
+    if (allInc && noExc) return true;
+  }
+  return false;
+}
 
-  commemoration: ["cc", "ccc", "mcc", "sec", "ca", "ccp"],
-  vigilia: ["v"],
-  "ssmi-cordis": ["octava-ssmi-cordis"],
-  "corpus-christi": ["octava-corpus"],
-  special: ["a", "s", "translatio-altera", "version-altera"],
-  "ad-missam": ["ad-missam"],
-  "ad-vesperam": ["ad-vesperam"],
-  "missa-brevior": ["missa-brevior"],
-  "missa-longior": ["missa-longior"],
-  singulariter: ["versio-altera-singulariter"],
-  numquam: ["numquam"],
-  mense: [
-    "mense-4",
-    "mense-5",
-    "mense-6",
-    "mense-7",
-    "mense-8",
-    "mense-9",
-    "mense-10",
-  ],
+function normalizeCondition(tokens: string[]): string[] {
+  return [...new Set(tokens)].sort();
+}
+
+type ProcessorState = {
+  output: string[];
+  conditionalOffsets: number[];
+  conditionalStack: [ConditionalState, Scope][];
 };
 
-export function transform(input: { [key: string]: any }) {}
+function initialProcessorState(): ProcessorState {
+  return {
+    output: [],
+    conditionalOffsets: [-1],
+    conditionalStack: [["affirmative", "scope-nest"]],
+  };
+}
+
+function processorStatesEqual(a: ProcessorState, b: ProcessorState): boolean {
+  return (
+    JSON.stringify(a.output) === JSON.stringify(b.output) &&
+    JSON.stringify(a.conditionalOffsets) ===
+      JSON.stringify(b.conditionalOffsets) &&
+    JSON.stringify(a.conditionalStack) === JSON.stringify(b.conditionalStack)
+  );
+}
+
+/**
+ * One line of Divinum Officium `process_conditional_lines` (mutates `state`).
+ */
+function applyConditionalToFork(
+  fork: RubricFork,
+  parsedConditional: ReturnType<typeof parseConditional>
+): RubricFork[] {
+  const result: RubricFork[] = [fork];
+  let { conditionalOffsets, conditionalStack } = fork;
+  let { strength, backScope, forwardScope, condition } = parsedConditional;
+
+  const parentState = conditionalStack.at(-1)![0];
+  const lastOffsetIdx = conditionalOffsets.length - 1;
+
+  if (parentState === "affirmative" || strength >= lastOffsetIdx) {
+    if (strength >= lastOffsetIdx) {
+      conditionalStack = [];
+    } else {
+      const lastStackIdx = conditionalStack.length - 1;
+      if (strength >= lastOffsetIdx - lastStackIdx) {
+        conditionalStack = conditionalStack.slice(
+          0,
+          Math.max(0, conditionalOffsets.length - strength - 1)
+        );
+      }
+    }
+
+    const branches = getIncludesExcludes(condition);
+    const fence =
+      conditionalOffsets.length > strength ? conditionalOffsets[strength]! : -1;
+
+    for (const { includes, excludes } of branches) {
+      const newValue = [...fork.value];
+      const newConditionalStack = [...conditionalStack];
+      const newConditionalOffsets = [...conditionalOffsets];
+      const outLast = newValue.length - 1;
+
+      if (backScope === "scope-line") {
+        if (outLast > fence) newValue.pop();
+      } else if (backScope === "scope-chunk") {
+        while (newValue.length > fence + 1 && !isBlankLine(newValue.at(-1)!)) {
+          newValue.pop();
+        }
+        while (newValue.length > fence + 1 && isBlankLine(newValue.at(-1)!)) {
+          newValue.pop();
+        }
+      } else if (backScope === "scope-nest") {
+        newValue.length = fence < 0 ? 0 : fence + 1;
+      }
+
+      if (forwardScope === "scope-null") {
+        forwardScope = "scope-nest";
+      }
+
+      const lastOut = newValue.length - 1;
+      while (newConditionalOffsets.length <= strength) {
+        newConditionalOffsets.push(-1);
+      }
+      for (let s = 0; s <= strength; s++) {
+        newConditionalOffsets[s] = lastOut;
+      }
+
+      while (
+        strength <
+        newConditionalOffsets.length - newConditionalStack.length - 1
+      ) {
+        newConditionalStack.push(["dummy-frame", forwardScope]);
+      }
+
+      newConditionalStack.push(["affirmative", forwardScope]);
+
+      result.push({
+        includes,
+        excludes,
+        value: newValue,
+        conditionalOffsets: newConditionalOffsets,
+        conditionalStack: newConditionalStack,
+      });
+    }
+
+    const addedForks = result.slice(1);
+    if (
+      addedForks.some((f) => f.includes.length > 0 || f.excludes.length > 0) &&
+      forwardScope !== "scope-null"
+    ) {
+      const baseFork = result[0]!;
+      result[0] = {
+        ...baseFork,
+        conditionalStack: [
+          ...baseFork.conditionalStack,
+          ["not-yet-affirmative", forwardScope],
+        ],
+      };
+    }
+  }
+
+  return result;
+}
+
+type RubricFork = {
+  includes: string[];
+  excludes: string[];
+  value: string[];
+  conditionalOffsets: number[];
+  conditionalStack: [ConditionalState, Scope][];
+};
+
+function applyLineToFork(fork: RubricFork, line: string) {
+  const { value, conditionalStack } = fork;
+  const output = [...value];
+
+  if (line.startsWith("~")) line = line.slice(1);
+
+  if (conditionalStack.at(-1)![0] === "affirmative") {
+    output.push(line);
+  }
+
+  while (
+    conditionalStack.at(-1)![1] === "scope-line" ||
+    (conditionalStack.at(-1)![1] === "scope-chunk" &&
+      (output.at(-1) === "" || output.at(-1) === "_"))
+  ) {
+    do {
+      conditionalStack.pop();
+    } while (
+      conditionalStack.length &&
+      conditionalStack.at(-1)![0] === "dummy-frame"
+    );
+
+    if (!conditionalStack.length) {
+      conditionalStack.push(["affirmative", "scope-nest"]);
+    }
+  }
+  return { ...fork, value: output, conditionalStack };
+}
+
+function applyConditionalLineToForks(
+  forks: RubricFork[],
+  line: string
+): RubricFork[] {
+  const result: RubricFork[] = [];
+
+  const parsedLine = parseConditionalLine(line);
+  if (!parsedLine) return forks;
+
+  const { conditional, rest } = parsedLine;
+  const parsedConditional = parseConditional(conditional);
+
+  for (const fork of forks) {
+    let newForks = applyConditionalToFork(fork, parsedConditional);
+    if (rest) {
+      newForks = newForks.map((fork) => applyLineToFork(fork, rest));
+    }
+    result.push(...newForks);
+  }
+  return result;
+}
+
+/**
+ * Inline `(…)` branches via {@link applyCondition}. While scanning lines, forks only
+ * track inline `suffix`; `item.condition` is combined in {@link applyForks}.
+ */
+export function processConditionalLines(
+  lines: string[],
+  itemCondition: string[]
+) {
+  let result: Step3Output[string] = [];
+  let forks: RubricFork[] = [
+    {
+      includes: [],
+      excludes: [],
+      value: [],
+      conditionalOffsets: [-1],
+      conditionalStack: [["affirmative", "scope-nest"]],
+    },
+  ];
+
+  for (const line of lines) {
+    if (line.startsWith("(") && line.includes(")")) {
+      forks = applyConditionalLineToForks(forks, line);
+    } else {
+      for (let i = 0; i < forks.length; i++) {
+        forks[i] = applyLineToFork(forks[i]!, line);
+      }
+    }
+  }
+
+  for (const fork of forks) {
+    const condition = normalizeCondition([...itemCondition, ...fork.includes]);
+    result = applyIncludes(condition, fork.excludes, fork.value, result);
+  }
+
+  return result;
+}
+
+export function transformSection(
+  section: Step2Output[string]
+): Step3Output[string] {
+  return section.flatMap((item) =>
+    processConditionalLines(item.value, item.condition)
+  );
+}
+
+export function transform(input: Step2Output, inputFile: string): Step3Output {
+  if (isStep3SkippedForPath(inputFile)) return input;
+
+  const result: Step3Output = {};
+
+  for (const [sectionName, section] of Object.entries(input)) {
+    try {
+      result[sectionName] = transformSection(section);
+    } catch (error) {
+      console.error(`Error transforming section ${sectionName}`);
+      throw error;
+    }
+  }
+
+  return result;
+}

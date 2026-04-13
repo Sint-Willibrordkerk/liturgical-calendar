@@ -1,7 +1,7 @@
 import { applyIncludes } from "./condition";
 import { Step1Output } from "./step1";
 
-export type Step2Output = Record<string, string[]> & { name?: string };
+export type Step2Output = Step1Output;
 
 const WHITESPACE = /\s+/g;
 
@@ -72,7 +72,7 @@ export function getOutputFile(input: string) {
 export function transform(obj: Step1Output, inputFile: string) {
   let { file, dir } = splitSuffix(inputFile);
 
-  const result = { ...obj };
+  const result: { [key: string]: { value: any; condition: string[] }[] } = {};
   const includes: string[] = [];
 
   for (const directory of ["Commune", "Martyrologium", "Sancti", "Tempora"]) {
@@ -164,7 +164,7 @@ export function transform(obj: Step1Output, inputFile: string) {
 
   Object.entries(obj).forEach(([key, value]) => {
     value.forEach((item) => {
-      applyIncludes(includes, [], item, result[key]!);
+      result[key] = applyIncludes(includes, [], item.value, result[key] ?? []);
     });
   });
 

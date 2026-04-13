@@ -6,12 +6,6 @@ import { constants } from "fs";
 import { parse, stringify } from "yaml";
 import { parseArgs } from "util";
 
-import { scanSourceFiles, getSuffixKey } from "./lib/grouper.mjs";
-import {
-  buildDependencyGraph,
-  buildDependencyGraphFromStepDir,
-  topologicalSort,
-} from "./lib/dependency-resolver.mjs";
 import {
   DIVINUM_OFFICIUM_BASE,
   getInputFiles as getStep0InputFiles,
@@ -23,20 +17,17 @@ import { Step1Output, transform as step1Transform } from "./step1.js";
 import {
   transform as step2Transform,
   getOutputFile as getStep2OutputFile,
+  Step2Output,
 } from "./step2.js";
-import { transform as step3Transform } from "./step3.js";
-import { transform as step4Transform } from "./step4.js";
-import { transform as step6Transform } from "./step6.js";
-import { transform as step10Transform } from "./step10.mjs";
-import { transform as step11Transform } from "./step11.mjs";
-import { transform as step12Transform } from "./step12.mjs";
-import { transform as step13Transform } from "./step13.mjs";
+import { Step3Output, transform as step3Transform } from "./step3.js";
+import { extractDependencies, transform as step4Transform } from "./step4.js";
 
 dotenv.config();
 
 const PROJECT_BASE = process.cwd();
 /** Base dir for intermediate step output (used when --from > 1). */
 const STEP_BASE = join(PROJECT_BASE, ".divinum-officium");
+const MISSING_DEPENDENCY_ERROR = "Missing dependency";
 
 function parseCliArgs() {
   const { values } = parseArgs({
@@ -120,119 +111,6 @@ async function ensureDir(filePath: string, mkdirCache: Set<string>) {
   }
 }
 
-/** Merge one source result into existing object (merge-on-write). */
-function mergeOneInto(existing, newObj, sourceFile) {
-  const suffixKey = getSuffixKey(sourceFile);
-  if (suffixKey === null) {
-    return step4Merge(existing, newObj);
-  }
-  const out = { ...(existing ?? {}) };
-  for (const [k, v] of Object.entries(newObj ?? {})) {
-    out[k + "/" + suffixKey] = v;
-  }
-  return out;
-}
-
-/** List all output keys (rel path without .yml) in a step directory. */
-async function listStepOutputKeys(stepDir) {
-  const keys = [];
-  async function walk(dir, prefix = "") {
-    const entries = await readdir(dir, { withFileTypes: true });
-    for (const e of entries) {
-      const rel = prefix ? `${prefix}/${e.name}` : e.name;
-      if (e.isDirectory()) {
-        await walk(join(dir, e.name), rel);
-      } else if (e.name.endsWith(".yml")) {
-        keys.push(rel.replace(/\.yml$/i, ""));
-      }
-    }
-  }
-  try {
-    await walk(stepDir);
-  } catch (err) {
-    if (err?.code !== "ENOENT") throw err;
-  }
-  return keys;
-}
-
-async function processSourceFile(sourceFile, divinumOfficiumBase, toStep) {
-  const filePath = join(divinumOfficiumBase, sourceFile.relPath);
-
-  // Step 1: Read and split into lines
-  const content = await readFileWithEncoding(filePath);
-  let data = step1Transform(content);
-  if (toStep === 1) return { lines: data };
-
-  // Step 2: Apply modifications
-  data = step2Transform(data, { relPath: sourceFile.relPath });
-  if (toStep === 2) return { lines: data };
-
-  // Step 3: Lines to sections object
-  data = step3Transform(data);
-  if (toStep === 3)
-    return {
-      obj: data,
-      rubricSuffix: sourceFile.rubricSuffix,
-      dirSuffix: sourceFile.dirSuffix,
-    };
-
-  // Step 4: Transform (extract name from rank) - no merge yet
-  data = step4Transform(data);
-  return {
-    obj: data,
-    rubricSuffix: sourceFile.rubricSuffix,
-    dirSuffix: sourceFile.dirSuffix,
-  };
-}
-
-async function runStepsFromData(
-  data,
-  outputKey,
-  fromStep,
-  toStep,
-  cache,
-  mkdirCache,
-  outputDir
-) {
-  for (let n = fromStep; n <= toStep; n++) {
-    if (n === 4) data = step4Transform(data);
-    else if (n === 5) data = step5Transform(data);
-    else if (n === 6) data = step6Transform(data);
-    else if (n === 7) data = step7Transform(data);
-    else if (n === 8) data = step8Transform(data);
-    else if (n === 9)
-      data = await step9Transform(data, { relPath: outputKey + ".yml" }, cache);
-    else if (n === 10)
-      data = await step10Transform(
-        data,
-        { relPath: outputKey + ".yml" },
-        cache
-      );
-    else if (n === 11) data = step11Transform(data);
-    else if (n === 12) {
-      const { main, commemorations } = step12Transform(data);
-      data = main;
-      for (const comm of commemorations) {
-        const commPath = join(
-          outputDir,
-          dirname(outputKey),
-          `${comm.slug}.yml`
-        );
-        const commObj = {
-          name: comm.displayName,
-          oratio: comm.oratio,
-          secreta: comm.secreta,
-          postcommunio: comm.postcommunio,
-        };
-        await ensureDir(commPath, mkdirCache);
-        await writeFile(commPath, stringify(commObj), "utf-8");
-      }
-    } else if (n === 13)
-      data = step13Transform(data, { relPath: outputKey + ".yml" });
-  }
-  return data;
-}
-
 async function getInputFiles(fromStep: number): Promise<string[]> {
   if (fromStep === 0) {
     return getStep0InputFiles();
@@ -250,24 +128,13 @@ async function getInputFiles(fromStep: number): Promise<string[]> {
   }
 }
 
-function getOutputPathForInput(
-  inputFile: string,
-  outputDir: string,
-  fromStep: number,
-  toStep: number
-): string {
-  let path = join(outputDir, inputFile);
-  if (fromStep <= 0 && toStep >= 0) path = getStep0OutputFile(path);
-  if (fromStep <= 2 && toStep >= 2) path = getStep2OutputFile(path);
-  return path;
-}
-
 async function groupInputsByOutput(
   inputFiles: string[],
   outputDir: string,
   fromStep: number,
   toStep: number,
-  force: boolean
+  force: boolean,
+  fileCache: Set<string>
 ): Promise<{ total: number; map: Map<string, string[]> }> {
   const result = new Map<string, string[]>();
   for (const inputFile of inputFiles) {
@@ -280,9 +147,12 @@ async function groupInputsByOutput(
     result.get(output)!.push(inputFile);
   }
   const total = result.size;
-  result.keys().forEach(async (output) => {
-    if (!force && (await outputExists(output))) result.delete(output);
-  });
+  for (const output of result.keys()) {
+    if (!force && (await outputExists(output))) {
+      result.delete(output);
+      fileCache.add(output);
+    }
+  }
   return { total, map: result };
 }
 
@@ -292,11 +162,12 @@ async function processInputFiles(
   fromStep: number,
   toStep: number,
   mkdirCache: Set<string>,
+  fileCache: Set<string>,
   strictMode: boolean
 ) {
-  let result: unknown;
+  let result;
   for (const inputFile of inputFiles) {
-    let data: unknown;
+    let data;
     if (fromStep === 0) {
       data = await readFile(join(DIVINUM_OFFICIUM_BASE!, inputFile), "utf-8");
     } else {
@@ -305,13 +176,28 @@ async function processInputFiles(
         "utf-8"
       ).then(parse);
     }
+
     if (fromStep <= 0 && toStep >= 0) data = step0Transform(data as string);
     if (fromStep <= 1 && toStep >= 1)
-      data = step1Transform(data as Step0Output, strictMode);
+      data = step1Transform(data as Step0Output);
     if (fromStep <= 2 && toStep >= 2)
       data = step2Transform(data as Step1Output, inputFile);
-    if (fromStep <= 3 && toStep >= 3) data = step3Transform(data, inputFile);
-    if (fromStep <= 4 && toStep >= 4) data = step4Transform(data);
+    if (fromStep <= 3 && toStep >= 3) {
+      data = step3Transform(data as Step2Output, inputFile);
+    }
+    if (fromStep <= 4 && toStep >= 4) {
+      const dependencies = extractDependencies(data as Step3Output);
+      for (const dependency of dependencies) {
+        if (!fileCache.has(dependency)) {
+          throw new Error(MISSING_DEPENDENCY_ERROR);
+        }
+      }
+      data = await step4Transform(
+        data as Step3Output,
+        inputFile,
+        join(STEP_BASE, "step3")
+      );
+    }
     // if (fromStep <= 5 && toStep >= 5) data = step5Transform(data);
     // if (fromStep <= 6 && toStep >= 6) data = step6Transform(data);
 
@@ -319,7 +205,7 @@ async function processInputFiles(
       result = data;
     } else {
       const hasPriority = inputFile.includes("missa");
-      const merged = hasPriority
+      const merged: any = hasPriority
         ? { ...result, ...data }
         : { ...data, ...result };
       const ruleA = Array.isArray(data.rule) ? data.rule : [];
@@ -331,6 +217,7 @@ async function processInputFiles(
   }
   await ensureDir(outputFile, mkdirCache);
   await writeFile(outputFile, stringify(result), "utf-8");
+  fileCache.add(outputFile);
 }
 
 async function outputExists(filePath: string): Promise<boolean> {
@@ -361,16 +248,15 @@ async function runStreaming(
   }
 
   const mkdirCache = new Set<string>();
-  let processed = 0;
-  let errors = 0;
-
+  const fileCache = new Set<string>();
   const inputFiles = await getInputFiles(fromStep);
   const { map: byOutput, total } = await groupInputsByOutput(
     inputFiles,
     outputDir,
     fromStep,
     toStep,
-    force
+    force,
+    fileCache
   );
   let queue = [...byOutput.entries()];
 
@@ -378,6 +264,44 @@ async function runStreaming(
     await rm(outputDir, { recursive: true, force: true });
   }
 
+  let processed = 0;
+  let workersResult = { processed: 0, failures: new Set<[string, string[]]>() };
+
+  while (workersResult.failures.size === 0 || workersResult.processed > 0) {
+    workersResult = await runWorkers(
+      queue,
+      workersResult.failures,
+      fromStep,
+      toStep,
+      mkdirCache,
+      fileCache,
+      strictMode,
+      processed,
+      total
+    );
+    processed += workersResult.processed;
+    queue.push(...workersResult.failures);
+  }
+
+  const errors = workersResult.failures.size;
+
+  console.log(`\nStreaming pipeline done.`);
+  console.log(`  Processed: ${processed} files`);
+  console.log(`  Errors: ${errors}`);
+  console.log(`  Output: ${outputDir}`);
+}
+
+async function runWorkers(
+  queue: [string, string[]][],
+  failures: Set<[string, string[]]>,
+  fromStep: number,
+  toStep: number,
+  mkdirCache: Set<string>,
+  fileCache: Set<string>,
+  strictMode: boolean,
+  processed: number,
+  total: number
+) {
   async function worker() {
     while (queue.length > 0) {
       const item = queue.shift();
@@ -390,11 +314,15 @@ async function runStreaming(
           fromStep,
           toStep,
           mkdirCache,
+          fileCache,
           strictMode
         );
         processed++;
       } catch (err: unknown) {
-        errors++;
+        if (err instanceof Error && err.message === MISSING_DEPENDENCY_ERROR) {
+          failures.add(item);
+          continue;
+        }
         console.log(
           `completion percentage: ${((processed / total) * 100).toFixed(2)}%`
         );
@@ -407,153 +335,7 @@ async function runStreaming(
     }
   }
   await Promise.all(Array(16).fill(0).map(worker));
-
-  // if (fromStep > 0) {
-  //   let order = outputKeys;
-  //   if (toStep >= 9) {
-  //     console.log("Building dependency graph...");
-  //     const graph = await buildDependencyGraphFromStepDir(inputDir, outputKeys);
-  //     order = topologicalSort(graph);
-  //   }
-  //   const cache = new Map();
-  //   for (const outputKey of order) {
-  //     try {
-  //       const inputPath = join(inputDir, outputKey + ".yml");
-  //       let raw;
-  //       try {
-  //         raw = await readFile(inputPath, "utf-8");
-  //       } catch {
-  //         continue;
-  //       }
-  //       let data = parse(raw);
-  //       if (typeof data !== "object" || data === null || Array.isArray(data))
-  //         continue;
-
-  //       data = await runStepsFromData(
-  //         data,
-  //         outputKey,
-  //         fromStep,
-  //         toStep,
-  //         cache,
-  //         mkdirCache,
-  //         outputDir
-  //       );
-  //       cache.set(outputKey, data);
-
-  //       const outputPath = join(outputDir, outputKey + ".yml");
-  //       await ensureDir(outputPath, mkdirCache);
-  //       await writeFile(outputPath, stringify(data), "utf-8");
-  //       processed++;
-  //       if (processed % 1000 === 0)
-  //         console.log(`Processed ${processed}/${order.length} files...`);
-  //     } catch (err) {
-  //       errors++;
-  //       console.error(`Error processing ${outputKey}: ${err.message}`);
-  //     }
-  //   }
-  // } else {
-  //   // fromStep === 1: start from source, merge when file exists
-  //   if (!process.env.DIVINUM_OFFICIUM_BASE) {
-  //     console.error(
-  //       "DIVINUM_OFFICIUM_BASE environment variable is not set (e.g. path to divinum-officium repo)."
-  //     );
-  //     process.exit(1);
-  //   }
-
-  //   await rm(outputDir, { recursive: true, force: true });
-  //   await mkdir(outputDir, { recursive: true });
-
-  //   console.log("Scanning source files...");
-  //   const groups = await scanSourceFiles(DIVINUM_OFFICIUM_BASE);
-  //   console.log(`Found ${groups.size} output keys`);
-
-  //   let order = [...groups.keys()].sort();
-  //   if (toStep >= 9) {
-  //     console.log("Building dependency graph...");
-  //     const graph = await buildDependencyGraph(groups, DIVINUM_OFFICIUM_BASE);
-  //     order = topologicalSort(graph);
-  //   }
-  //   console.log(`Processing ${order.length} files (merge when exists)`);
-
-  //   const cache = new Map();
-  //   const allSources = (group) => {
-  //     const list = [...group.horasFiles, ...group.missaFiles];
-  //     list.sort((a, b) => {
-  //       const aBase = a.rubricSuffix === null && a.dirSuffix === null ? 0 : 1;
-  //       const bBase = b.rubricSuffix === null && b.dirSuffix === null ? 0 : 1;
-  //       if (aBase !== bBase) return aBase - bBase;
-  //       return (a.relPath || "").localeCompare(b.relPath || "");
-  //     });
-  //     return list;
-  //   };
-
-  //   for (const outputKey of order) {
-  //     const group = groups.get(outputKey);
-  //     if (!group) continue;
-
-  //     try {
-  //       const sources = allSources(group);
-  //       const outputPath = join(outputDir, outputKey + ".yml");
-  //       let data = null;
-
-  //       for (const sourceFile of sources) {
-  //         const result = await processSourceFile(
-  //           sourceFile,
-  //           DIVINUM_OFFICIUM_BASE,
-  //           Math.min(toStep, 4)
-  //         );
-
-  //         if (toStep <= 2 && result.lines !== undefined) {
-  //           await ensureDir(outputPath, mkdirCache);
-  //           await writeFile(outputPath, stringify(result.lines), "utf-8");
-  //           data = result.lines;
-  //           break;
-  //         }
-
-  //         const newObj = result.obj ?? null;
-  //         if (newObj === null) continue;
-
-  //         let existing = null;
-  //         try {
-  //           const raw = await readFile(outputPath, "utf-8");
-  //           existing = parse(raw);
-  //         } catch {}
-  //         data = mergeOneInto(existing, newObj, sourceFile);
-  //         await ensureDir(outputPath, mkdirCache);
-  //         await writeFile(outputPath, stringify(data), "utf-8");
-  //       }
-
-  //       if (data === null || (toStep <= 2 && Array.isArray(data))) continue;
-  //       if (typeof data !== "object" || Array.isArray(data)) continue;
-
-  //       if (toStep >= 5) data = step5Transform(data);
-  //       if (toStep >= 6) data = step6Transform(data);
-  //       data = await runStepsFromData(
-  //         data,
-  //         outputKey,
-  //         7,
-  //         toStep,
-  //         cache,
-  //         mkdirCache,
-  //         outputDir
-  //       );
-  //       cache.set(outputKey, data);
-
-  //       await ensureDir(outputPath, mkdirCache);
-  //       await writeFile(outputPath, stringify(data), "utf-8");
-  //       processed++;
-  //       if (processed % 1000 === 0)
-  //         console.log(`Processed ${processed}/${order.length} files...`);
-  //     } catch (err) {
-  //       errors++;
-  //       console.error(`Error processing ${outputKey}: ${err.message}`);
-  //     }
-  //   }
-  // }
-  console.log(`\nStreaming pipeline done.`);
-  console.log(`  Processed: ${processed} files`);
-  console.log(`  Errors: ${errors}`);
-  console.log(`  Output: ${outputDir}`);
+  return { processed, failures };
 }
 
 async function main() {

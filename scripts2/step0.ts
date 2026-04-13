@@ -47,7 +47,8 @@ function fileFilter(filename: string) {
     !filename.endsWith("Quad5-5Feriarc.txt") &&
     !filename.endsWith("Propaganda.txt") &&
     !filename.startsWith("Help\\") &&
-    !filename.startsWith("Latin-gabc\\")
+    !filename.startsWith("Latin-gabc\\") &&
+    filename.startsWith("Latin\\")
   );
 }
 

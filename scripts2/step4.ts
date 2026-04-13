@@ -1,125 +1,216 @@
-/**
- * Conditionals step: process inline conditions in array values per Divinum Officium technical docs.
- * https://www.divinumofficium.com/www/horas/Help/technical.html
- * Lines like (sed rubrica 196 aut rubrica 1930) scope the following lines to those rubrics.
- * Output: content split into base key and key/rubric variants (no condition lines in output).
- */
+import { join } from "path";
+import { readFile } from "fs/promises";
+import { parse } from "yaml";
+import { Step3Output } from "./step3";
 
-function toKebabCase(str: string) {
-  if (str == null) return "";
-  return String(str).trim().toLowerCase().replace(/\s+/g, "-");
+export type Step4Output = Step3Output;
+
+const EX_REMOVE = /\bex\s+[A-Za-z0-9/-]+;?\s*/g;
+const VIDE_REMOVE = /\bvide\s+[A-Za-z0-9/-]+;?\s*/g;
+
+function isVideKey(key: string): boolean {
+  if (!key || key === "__preamble") return false;
+  if (/^lectio/i.test(key)) return true;
+  if (/^ant-laudes(\/|$)/.test(key) || /^ant-vespera(\/|$)/.test(key))
+    return true;
+  if (
+    /^ant-1(\/|$)/.test(key) ||
+    /^ant-2(\/|$)/.test(key) ||
+    /^ant-3(\/|$)/.test(key)
+  )
+    return true;
+  if (/^versum/i.test(key)) return true;
+  if (key === "oratio" || key.startsWith("oratio/")) return true;
+  return false;
 }
 
-/**
- * Check if line is or starts with a condition in parentheses. Returns { condition, rest }
- * or null. Handles one level of parentheses.
- */
-function parseConditionLine(line: string) {
-  if (typeof line !== "string") return null;
-  const s = line.trim();
-  if (!s.startsWith("(")) return null;
-  let depth = 0;
-  let end = -1;
-  for (let i = 0; i < s.length; i++) {
-    if (s[i] === "(") depth++;
-    else if (s[i] === ")") {
-      depth--;
-      if (depth === 0) {
-        end = i;
-        break;
+export function extractExVideReferences(obj: Step3Output): {
+  ex: Set<string>;
+  vide: Set<string>;
+} {
+  const exReferences = new Set<string>();
+  const videReferences = new Set<string>();
+
+  obj.__preamble?.forEach((variant) => {
+    variant.value.forEach((line) => {
+      if (line.startsWith("@")) {
+        const path = line.slice(1).split(":")[0]!.trim();
+        if (path) exReferences.add(path);
       }
-    }
+    });
+  });
+
+  obj.rank?.forEach((variant) => {
+    variant.value.forEach((line) => {
+      const reference = line.split(";;")[3]?.trim();
+      if (reference?.startsWith("ex ")) {
+        exReferences.add(reference.slice(3));
+      } else if (reference?.startsWith("vide ")) {
+        videReferences.add(reference.slice(5));
+      } else {
+        throw new Error(`Invalid rank reference: ${line}`);
+      }
+    });
+  });
+
+  return { ex: exReferences, vide: videReferences };
+}
+
+async function getFileContent(
+  basePath: string,
+  relPath: string,
+  fileCache: Map<string, Step3Output | null>
+): Promise<Step3Output | null> {
+  const key = relPath;
+  if (fileCache.has(key)) return fileCache.get(key) ?? null;
+
+  const fullPath = join(basePath, relPath);
+  let raw: string;
+  try {
+    raw = await readFile(fullPath, "utf-8");
+  } catch {
+    fileCache.set(key, null);
+    return null;
   }
-  if (end < 0) return null;
-  const condition = s.slice(1, end).trim();
-  const rest = s.slice(end + 1).trim();
-  return { condition, rest };
-}
 
-/**
- * Extract rubric identifiers from condition text.
- * Per technical: rubrica 196, rubrica 1930, rubrica tridentina, etc.
- * Split by " aut " and " et "; extract "rubrica X" or "rubricis X"; nisi = except.
- */
-function extractRubricNamesFromCondition(conditionText: string) {
-  if (!conditionText || typeof conditionText !== "string") return [];
-  let c = conditionText
-    .replace(/\b(?:omittitur|omittuntur|dicitur|dicuntur|semper)\b/gi, " ")
-    .replace(/\bnisi\s+/gi, " ")
-    .replace(/^\s*(?:sed|vero|atque|attamen|si|deinde)\s+/i, " ")
-    .trim();
-  const clauses = c
-    .split(/\s+aut\s+|\s+et\s+/i)
-    .map((s) => s.trim())
-    .filter(Boolean);
-  const names = [];
-  const seen = new Set();
-  for (const clause of clauses) {
-    const rubricaMatch = clause.match(/^(?:rubrica|rubricis)\s+(.+)$/i);
-    const name = rubricaMatch
-      ? toKebabCase(rubricaMatch[1]!)
-      : toKebabCase(clause);
-    if (name && !seen.has(name)) {
-      seen.add(name);
-      names.push(name);
-    }
+  let parsed: unknown;
+  try {
+    parsed = parse(raw);
+  } catch {
+    fileCache.set(key, null);
+    return null;
   }
-  return names;
+
+  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    fileCache.set(key, null);
+    return null;
+  }
+
+  const obj = parsed as Step3Output;
+  fileCache.set(key, obj);
+  return obj;
 }
 
-/**
- * Split array of lines by inline conditions; return { baseKey: lines, "key/rubric": lines }.
- * Condition lines are not included in output. Lines after (condition) go to each listed rubric.
- */
-function processArrayWithConditionals(lines: string[], baseKey: string) {
-  const out = { [baseKey]: [] as string[] };
-  let currentRubrics = null;
+async function loadDoc(
+  basePath: string,
+  language: string,
+  normalizedPath: string,
+  fileCache: Map<string, Step3Output | null>
+): Promise<Step3Output | null> {
+  const relPath = `${language}/${normalizedPath}.yml`;
+  return getFileContent(basePath, relPath, fileCache);
+}
 
-  for (const line of lines) {
-    const parsed = parseConditionLine(line);
-    if (parsed) {
-      const rubricNames = extractRubricNamesFromCondition(parsed.condition);
-      currentRubrics = rubricNames.length > 0 ? rubricNames : null;
-      if (parsed.rest) {
-        const target =
-          currentRubrics && currentRubrics.length > 0 ? currentRubrics : [null];
-        for (const r of target) {
-          const k = r ? `${baseKey}/${r}` : baseKey;
-          if (!out[k]) out[k] = [];
-          out[k].push(parsed.rest);
-        }
+function mapSectionLines(
+  sectionVal: Step3Output[string],
+  mapString: (line: string) => string | null
+): Step3Output[string] {
+  const next: Step3Output[string] = [];
+  for (const item of sectionVal) {
+    const newVal: string[] = [];
+    for (const line of item.value) {
+      if (typeof line !== "string") {
+        newVal.push(line);
+        continue;
       }
-      continue;
+      const s = mapString(line);
+      if (s !== null && s !== "") newVal.push(s);
     }
+    if (newVal.length > 0) next.push({ ...item, value: newVal });
+  }
+  return next;
+}
 
-    if (currentRubrics && currentRubrics.length > 0) {
-      for (const r of currentRubrics) {
-        const k = `${baseKey}/${r}`;
-        if (!out[k]) out[k] = [];
-        out[k].push(line);
-      }
-    } else {
-      out[baseKey]!.push(line);
-    }
+function stripPreambleExVide(result: Step3Output): Step4Output {
+  const out: Step4Output = { ...result };
+
+  for (const key of Object.keys(out)) {
+    if (key !== "__preamble" && !key.startsWith("__preamble/")) continue;
+    if (!Array.isArray(out[key])) continue;
+    const mapped = mapSectionLines(out[key], (line) =>
+      line.startsWith("@") ? null : line
+    ) as Step3Output[string];
+    if (mapped.length === 0) delete out[key];
+    else out[key] = mapped;
+  }
+
+  const rankRuleKeys = Object.keys(out).filter(
+    (k) =>
+      k !== "__preamble" &&
+      (k === "rank" ||
+        k.startsWith("rank/") ||
+        k === "rule" ||
+        k.startsWith("rule/"))
+  );
+  for (const key of rankRuleKeys) {
+    if (!Array.isArray(out[key])) continue;
+    const cleaned = mapSectionLines(out[key], (line) => {
+      let s = line.replace(EX_REMOVE, "").replace(VIDE_REMOVE, "").trim();
+      s = s.replace(/\s*;;\s*$/, "").replace(/\s*;\s*$/, "");
+      if (s === "") return null;
+      return s;
+    });
+    out[key] = cleaned;
   }
 
   return out;
 }
 
 /**
- * Transform one object: process array values with processArrayWithConditionals only for
- * base keys (no "/"). Keys that already have a rubric suffix (key/xxx) are copied as-is
- * to avoid double expansion.
+ * Transform object by resolving ex/vide references and importing sections.
+ * @param readBasePath - Directory tree like `.divinum-officium/step3` (lang/file.yml)
  */
-export function transform(input: { [key: string]: any }) {
-  const result: { [key: string]: { [key: string]: any } } = {};
+export async function transform(
+  obj: Step3Output,
+  currentFileRel: string,
+  basePath: string
+): Promise<Step4Output> {
+  const fileCache = new Map<string, Step3Output | null>();
+  let pathParts = currentFileRel.replace(/\\/g, "/").split("/");
+  if (pathParts[0] === "horas" || pathParts[0] === "missa") {
+    pathParts = pathParts.slice(1);
+  }
+  const language = pathParts[0];
+  if (!language) return obj;
 
-  for (const [key, value] of Object.entries(input)) {
-    if (!Array.isArray(value)) {
-      result[key] = value;
-      continue;
+  const { ex, vide } = extractExVideReferences(obj);
+  const currentKeys = new Set(
+    Object.keys(obj).filter((k) => k !== "__preamble")
+  );
+  const added: Step3Output = { ...obj };
+
+  for (const path of ex) {
+    const doc = await loadDoc(basePath, language, path, fileCache);
+    if (!doc) continue;
+    for (const [k, v] of Object.entries(doc)) {
+      if (k === "__preamble") continue;
+      if (currentKeys.has(k)) continue;
+      currentKeys.add(k);
+      added[k] = v;
     }
   }
 
-  return result;
+  for (const path of vide) {
+    const doc = await loadDoc(basePath, language, path, fileCache);
+    if (!doc) continue;
+    for (const [k, v] of Object.entries(doc)) {
+      if (k === "__preamble") continue;
+      if (!isVideKey(k)) continue;
+      if (currentKeys.has(k)) continue;
+      currentKeys.add(k);
+      added[k] = v;
+    }
+  }
+
+  const addedKeys = Object.keys(added).sort();
+  let result: Step3Output = addedKeys.length === 0 ? obj : { ...obj };
+  if (addedKeys.length > 0) {
+    for (const k of addedKeys) result[k] = added[k]!;
+  }
+  return stripPreambleExVide(result);
+}
+
+export function extractDependencies(obj: Step3Output): Set<string> {
+  const { ex, vide } = extractExVideReferences(obj);
+  return new Set([...ex, ...vide]);
 }
