@@ -1,3 +1,4 @@
+import { consola } from "consola";
 import { join } from "path";
 import { readdir, readFile, writeFile, mkdir, rm } from "fs/promises";
 import { parse, stringify } from "yaml";
@@ -66,7 +67,7 @@ async function runBatched(items, concurrency, fn) {
         processed++;
       } catch (err) {
         errors++;
-        console.error(`Error processing ${item}:`, err.message);
+        consola.error(`Error processing ${item}:`, err.message);
       }
     }
   }
@@ -113,7 +114,7 @@ async function main() {
     }
   );
 
-  console.log(
+  consola.log(
     `Step 2 done. ${processed} files in ${STEP2_OUTPUT}, ${errors} errors`
   );
 }

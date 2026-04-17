@@ -1,3 +1,4 @@
+import { consola } from "consola";
 import {
   applyCondition,
   applyIncludes,
@@ -291,7 +292,7 @@ export function transform(input: Step2Output, inputFile: string): Step3Output {
     try {
       result[sectionName] = transformSection(section);
     } catch (error) {
-      console.error(`Error transforming section ${sectionName}`);
+      consola.error(`Error transforming section ${sectionName}`);
       throw error;
     }
   }

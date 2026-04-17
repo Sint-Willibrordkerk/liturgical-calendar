@@ -1,3 +1,4 @@
+import { consola } from "consola";
 import { join } from "path";
 import { readdir } from "fs/promises";
 
@@ -160,7 +161,7 @@ export async function scanSourceFiles(divinumOfficiumBase) {
     try {
       entries = await readdir(rootPath, { recursive: true });
     } catch (err) {
-      console.warn(`Could not read ${rootPath}: ${err.message}`);
+      consola.warn(`Could not read ${rootPath}: ${err.message}`);
       continue;
     }
 

@@ -1,3 +1,4 @@
+import { consola } from "consola";
 import { join, dirname } from "path";
 import { readdir, readFile, writeFile, mkdir, rm } from "fs/promises";
 import { parse, stringify } from "yaml";
@@ -77,7 +78,7 @@ async function runBatched(items, concurrency, fn) {
         processed++;
       } catch (err) {
         errors++;
-        console.error(`Error processing ${item}:`, err.message);
+        consola.error(`Error processing ${item}:`, err.message);
       }
     }
   }
@@ -218,7 +219,7 @@ async function main() {
   );
 
   if (readErrors > 0) {
-    console.error(`Step 11 read errors: ${readErrors}`);
+    consola.error(`Step 11 read errors: ${readErrors}`);
     return;
   }
 
@@ -252,11 +253,11 @@ async function main() {
       await writeFile(outPath, content, "utf-8");
     } catch (err) {
       writeErrors++;
-      console.error(`Error writing ${outRelPath}:`, err.message);
+      consola.error(`Error writing ${outRelPath}:`, err.message);
     }
   }
 
-  console.log(
+  consola.log(
     `Step 11 done. ${toWrite.length} files in ${STEP11_OUTPUT}, ${writeErrors} write errors`
   );
 }

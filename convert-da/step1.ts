@@ -40,6 +40,8 @@ export function transform(lines: string[]) {
       currentCondition = keyLine[2] ? toKebabCase(keyLine[2]!) : null;
       currentLines = [];
       result[currentBase] ??= [];
+    } else if (currentBase === "__preamble" && line.includes(";;")) {
+      currentLines.push(line.split(";;")[0]!);
     } else {
       currentLines.push(line);
     }

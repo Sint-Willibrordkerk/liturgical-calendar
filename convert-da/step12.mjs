@@ -1,3 +1,4 @@
+import { consola } from "consola";
 import { join, dirname } from "path";
 import { readdir, readFile, writeFile, mkdir, rm } from "fs/promises";
 import { parse, stringify } from "yaml";
@@ -111,7 +112,7 @@ async function runBatched(items, concurrency, fn) {
         processed++;
       } catch (err) {
         errors++;
-        console.error(`Error processing ${item}:`, err.message);
+        consola.error(`Error processing ${item}:`, err.message);
       }
     }
   }
@@ -188,7 +189,7 @@ async function main() {
   );
 
   if (readErrors > 0) {
-    console.error(`Step 12 read errors: ${readErrors}`);
+    consola.error(`Step 12 read errors: ${readErrors}`);
   }
 
   let writeErrors = 0;
@@ -199,7 +200,7 @@ async function main() {
       await writeFile(outPath, content, "utf-8");
     } catch (err) {
       writeErrors++;
-      console.error(`Error writing ${relPath}:`, err.message);
+      consola.error(`Error writing ${relPath}:`, err.message);
     }
   }
   for (const entry of byOutputKey.values()) {
@@ -217,11 +218,11 @@ async function main() {
       await writeFile(outPath, stringify(doc), "utf-8");
     } catch (err) {
       writeErrors++;
-      console.error(`Error writing ${outRelPath}:`, err.message);
+      consola.error(`Error writing ${outRelPath}:`, err.message);
     }
   }
 
-  console.log(
+  consola.log(
     `Step 12 done. ${toWriteMain.length} main files + ${byOutputKey.size} commemoration files in ${STEP12_OUTPUT}, ${writeErrors} write errors`
   );
 }

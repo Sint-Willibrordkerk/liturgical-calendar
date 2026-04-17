@@ -1,3 +1,4 @@
+import { consola } from "consola";
 import { join } from "path";
 import { readFile } from "fs/promises";
 import { computeOutputKey, convertLanguage, getBaseStem, parseDirName } from "./grouper.mjs";
@@ -291,7 +292,7 @@ export function topologicalSort(graph) {
   // Check for cycles
   if (result.length !== graph.size) {
     const remaining = [...graph.keys()].filter((k) => !result.includes(k));
-    console.warn(
+    consola.warn(
       `Warning: Possible circular dependencies involving ${remaining.length} files. ` +
         `Processing them in arbitrary order.`
     );

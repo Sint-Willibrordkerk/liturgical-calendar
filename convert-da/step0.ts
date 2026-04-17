@@ -1,3 +1,4 @@
+import { consola } from "consola";
 import dotenv from "dotenv";
 import { readdir } from "fs/promises";
 import { join } from "path";
@@ -54,7 +55,7 @@ function fileFilter(filename: string) {
 
 export async function getInputFiles() {
   if (!DIVINUM_OFFICIUM_BASE) {
-    console.error(
+    consola.error(
       "DIVINUM_OFFICIUM_BASE environment variable is not set (e.g. path to divinum-officium repo)."
     );
     process.exit(1);
@@ -63,11 +64,25 @@ export async function getInputFiles() {
   return Promise.all(
     INPUT_ROOTS.flatMap(async (root) => {
       const rootPath = join(DIVINUM_OFFICIUM_BASE, root);
-      return readdir(rootPath, { recursive: true }).then((entries) =>
-        entries.filter(fileFilter).map((rel) => `${root}\\${rel}`)
+      return readdir(rootPath, { recursive: true, withFileTypes: true }).then(
+        (entries) =>
+          entries.reduce(
+            (acc, entry) => {
+              if (entry.isDirectory()) {
+                acc.directories.push(entry.name);
+              } else if (entry.isFile() && fileFilter(entry.name)) {
+                acc.files.push(`${root.replaceAll("\\", "/")}/${entry.name}`);
+              }
+              return acc;
+            },
+            { directories: [] as string[], files: [] as string[] }
+          )
       );
     })
-  ).then((files) => files.flat());
+  ).then((results) => ({
+    directories: results.flatMap((result) => result.directories),
+    files: results.flatMap((result) => result.files),
+  }));
 }
 
 export function getOutputFile(input: string) {

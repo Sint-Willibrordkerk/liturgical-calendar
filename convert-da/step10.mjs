@@ -1,3 +1,4 @@
+import { consola } from "consola";
 import { join } from "path";
 import { readdir, readFile, writeFile, mkdir, rm } from "fs/promises";
 import { parse, stringify } from "yaml";
@@ -214,7 +215,7 @@ async function runBatched(items, concurrency, fn) {
         processed++;
       } catch (err) {
         errors++;
-        console.error(`Error processing ${item}:`, err.message);
+        consola.error(`Error processing ${item}:`, err.message);
       }
     }
   }
@@ -261,7 +262,7 @@ async function main() {
     }
   );
 
-  console.log(`Step 10 done. ${processed} files in ${STEP10_OUTPUT}, ${errors} errors`);
+  consola.log(`Step 10 done. ${processed} files in ${STEP10_OUTPUT}, ${errors} errors`);
 }
 
 const isMainModule = import.meta.url.endsWith("step10.mjs") &&
