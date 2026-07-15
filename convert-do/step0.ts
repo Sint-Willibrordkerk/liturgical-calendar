@@ -1,7 +1,7 @@
 import { consola } from "consola";
 import dotenv from "dotenv";
 import { readdir } from "fs/promises";
-import { join } from "path";
+import { join, relative } from "path";
 
 dotenv.config();
 
@@ -32,24 +32,24 @@ const LANGUAGE_CODES: [string, string][] = [
   ["Vietnamice", "vi"],
 ];
 
-function fileFilter(filename: string) {
+function fileFilter(relativePath: string) {
   return (
-    filename.endsWith(".txt") &&
-    !filename.endsWith("pl.txt") &&
-    !filename.endsWith("tts.txt") &&
-    !filename.endsWith("ruler.txt") &&
-    !filename.endsWith("Linguae.txt") &&
-    !filename.endsWith("source.txt") &&
-    !filename.endsWith("sundaytable.txt") &&
-    !filename.endsWith("Mobile.txt") &&
-    !filename.endsWith("XPRex.txt") &&
-    !filename.endsWith("02-02-quadp.txt") &&
-    !filename.endsWith("dom-oct.txt") &&
-    !filename.endsWith("Quad5-5Feriarc.txt") &&
-    !filename.endsWith("Propaganda.txt") &&
-    !filename.startsWith("Help\\") &&
-    !filename.startsWith("Latin-gabc\\") &&
-    filename.startsWith("Latin\\")
+    relativePath.endsWith(".txt") &&
+    !relativePath.endsWith("pl.txt") &&
+    !relativePath.endsWith("tts.txt") &&
+    !relativePath.endsWith("ruler.txt") &&
+    !relativePath.endsWith("Linguae.txt") &&
+    !relativePath.endsWith("source.txt") &&
+    !relativePath.endsWith("sundaytable.txt") &&
+    !relativePath.endsWith("Mobile.txt") &&
+    !relativePath.endsWith("XPRex.txt") &&
+    !relativePath.endsWith("02-02-quadp.txt") &&
+    !relativePath.endsWith("dom-oct.txt") &&
+    !relativePath.endsWith("Quad5-5Feriarc.txt") &&
+    !relativePath.endsWith("Propaganda.txt") &&
+    !relativePath.startsWith("Help/") &&
+    !relativePath.startsWith("Latin-gabc/") &&
+    relativePath.startsWith("Latin/")
   );
 }
 
@@ -68,10 +68,18 @@ export async function getInputFiles() {
         (entries) =>
           entries.reduce(
             (acc, entry) => {
+              const relativeDir = relative(rootPath, entry.parentPath).replace(
+                /\\/g,
+                "/"
+              );
+              const relativePath = relativeDir
+                ? `${relativeDir}/${entry.name}`
+                : entry.name;
+              const outputPath = `${root}/${relativePath}`;
               if (entry.isDirectory()) {
-                acc.directories.push(entry.name);
-              } else if (entry.isFile() && fileFilter(entry.name)) {
-                acc.files.push(`${root.replaceAll("\\", "/")}/${entry.name}`);
+                acc.directories.push(outputPath);
+              } else if (entry.isFile() && fileFilter(relativePath)) {
+                acc.files.push(outputPath);
               }
               return acc;
             },

@@ -33,7 +33,7 @@ const PROJECT_BASE = process.cwd();
 const STEP_BASE = join(PROJECT_BASE, ".divinum-officium");
 const MISSING_DEPENDENCY_ERROR = "Missing dependency";
 
-async function getInputFiles(fromStep: number): Promise<{
+export async function getInputFiles(fromStep: number): Promise<{
   directories: string[];
   files: string[];
 }> {
@@ -76,7 +76,7 @@ async function readInput(
   const inputFiles = await getInputFiles(fromStep);
   const result = new Map<string, string[]>();
   const cachedFiles = new Set<string>();
-  for (const inputFile of inputFiles) {
+  for (const inputFile of inputFiles.files) {
     let output = join(outputDir, inputFile);
     if (fromStep <= 0 && toStep >= 0) output = getStep0OutputFile(output);
     if (fromStep <= 2 && toStep >= 2) output = getStep2OutputFile(output);
