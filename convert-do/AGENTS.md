@@ -1,247 +1,204 @@
 # Pipeline: Divinum Officium → gestructureerde YAML
 
-De scripts in `scripts2/` zetten bronbestanden van het Divinum Officium-project stapsgewijs om naar genormaliseerde YAML met duidelijke secties, opgeloste referenties en bestandsnamen op basis van de liturgische naam. Elke stap leest uit de vorige en schrijft naar een eigen map onder `.divinum-officium/`.
+De scripts in `convert-do/` zetten bronbestanden van het [Divinum
+Officium](https://www.divinumofficium.com)-project stapsgewijs om naar
+genormaliseerde YAML met duidelijke secties, rubriek-varianten en opgeloste
+referenties. Elke stap leest uit de output van de vorige stap onder
+`.divinum-officium/step{N}/` (relatief aan `process.cwd()`).
 
-**Uitvoeren:**
-- `pnpm pipeline` — via Turbo, voert step1 … step13 in volgorde uit met tussenbestanden (caching)
-- `pnpm pipeline:streaming` — streaming modus, verwerkt bestanden in-memory zonder tussenbestanden
-- `pnpm step1`, `pnpm step2` … `pnpm step13` — individuele stappen los uitvoeren
-
----
-
-## Overzicht
-
-
-| Stap | Input                                         | Output | Kort                                                                       |
-| ---- | --------------------------------------------- | ------ | -------------------------------------------------------------------------- |
-| 1    | `DIVINUM_OFFICIUM_BASE` (horas, missa) `.txt` | step1  | Tekst → YAML (één array van regels)                                        |
-| 2    | step1                                         | step2  | Modificaties aan regels (zoals scripts/modify-source-files.mjs)            |
-| 3    | step2                                         | step3  | Regels groeperen per sectie `[Key]`                                        |
-| 4    | step3                                         | step4  | Horas + missa mergen per pad (rank→name, rule gededupliceerd)              |
-| 5    | step4                                         | step5  | Rubric-varianten (01-12t, 01-12n, …) mergen in base-bestand met key-suffix |
-| 6    | step5                                         | step6  | Directory-varianten (Martyrologium1570, SanctiCist, …) mergen in base-dir  |
-| 7    | step6                                         | step7  | Keys normaliseren + rubric-conditions → `key/rubric`                       |
-| 8    | step7                                         | step8  | Inline conditionals (rubrica/sed/aut/et) → eigen keys per rubric           |
-| 9    | step8                                         | step9  | Referenties `@File:Section` resolven                                       |
-| 10   | step9                                         | step10 | Bredere refs (preamble, ex, vide); opruimen                                |
-| 11   | step10                                        | step11 | Bestandsnaam(s) = kebab van naam; meerdere bestanden bij meerdere namen    |
-| 12   | step11                                        | step12 | Aparte bestanden voor commemoratio's (oratio, secreta, postcommunio)       |
-| 13   | step12                                        | step13 | Missa-secties structureren (Verse/Prayer/Antiphonal)                       |
-
-
-Elke stap leegt aan het begin de eigen **output-directory** (rm dan mkdir) voordat er wordt geschreven.
+> **Let op — status van deze pipeline**
+> - De actieve implementatie is de **TypeScript**-pipeline in deze map,
+>   aangestuurd door [`index.ts`](index.ts) → [`pipeline.ts`](pipeline.ts).
+>   De stappen zijn **0-geïndexeerd** (`step0` … `step13`).
+> - Alleen **step 0 t/m 5** zijn daadwerkelijk geïmplementeerd en aangesloten.
+>   [`step6.ts`](step6.ts) bestaat maar staat **uitgecommentarieerd** in de
+>   pipeline (andere `transform`-signatuur); step 7–13 bestaan (nog) niet als
+>   TypeScript.
+> - De `pnpm`-scripts (`pipeline`, `pipeline:streaming`, `step1`…`step13`) en
+>   `turbo.json` verwijzen naar een **`scripts2/`-map die niet bestaat** — die
+>   commando's werken op dit moment niet. Zie
+>   [Uitvoeren](#uitvoeren).
 
 ---
 
-## Step 1 — Tekst naar YAML (regel-array)
+## Uitvoeren
 
-- **Input:** `{DIVINUM_OFFICIUM_BASE}/horas` en `{DIVINUM_OFFICIUM_BASE}/missa` (alle `.txt`, behalve o.a. `*.pl.txt`, `*tts.txt`).
-- **Output:** `.divinum-officium/step1` — zelfde mappenstructuur, bestanden als `.yml`. Elk bestand is één YAML-array: elke bronregel één element.
-- **Taalcodes:** Taalmappen worden omgezet naar 2-letterige ISO-codes (of korte variant-codes):
-  | Bron | Code |
-  |------|------|
-  | Latin | la |
-  | Latin-Bea | la-bea |
-  | Latin-gabc | la-gabc |
-  | English | en |
-  | Nederlands | nl |
-  | Deutsch | de |
-  | Francais | fr |
-  | Italiano | it |
-  | Espanol | es |
-  | Portugues | pt |
-  | Polski | pl |
-  | Polski-Newer | pl-newer |
-  | Magyar | hu |
-  | Dansk | da |
-  | Bohemice | cs |
-  | Cesky-Schaller | cs-schaller |
-  | Ukrainian | uk |
-  | Vietnamice | vi |
-- **Doel:** Eenduidig formaat voor verdere stappen. Encoding: eerst UTF-8, fallback Latin-1.
-- **Script:** `pnpm step1` — vereist env `DIVINUM_OFFICIUM_BASE` (bijv. pad naar `divinum-officium/web/www`).
-
----
-
-## Step 2 — Modificaties aan bronregels
-
-- **Input:** `.divinum-officium/step1` (YAML per bestand = array van regels).
-- **Output:** `.divinum-officium/step2` —zelfde structuur; regels waar nodig gewijzigd.
-- **Doel:** Aanpassingen zoals in `scripts/modify-source-files.mjs`: per bestand of pad kunnen regels worden aangepast (vervangen, verwijderen). Eerste toepassing: `(rubrica tridentina)` overal laten verdwijnen in bestanden zoals `12-29o.yml`, zodat sectiekoppen `[Lectio1] (rubrica tridentina)` worden tot `[Lectio1]`. Uitbreidbaar met meer regels in `MODIFICATIONS` in `scripts2/step2.mjs`.
-
----
-
-## Step 3 — Secties als object-keys
-
-- **Input:** `.divinum-officium/step2` (YAML per bestand = array van regels).
-- **Output:** `.divinum-officium/step3` — per bestand een object. Regels die met `[Sectienaam]` of `[Sectie] (condition)` beginnen starten een nieuwe key; regels ervóór komen in `__preamble`. Sectie-inhoud = array van regels.
-
----
-
-## Step 4 — Horas + missa mergen
-
-- **Input:** `.divinum-officium/step3/horas` en `.divinum-officium/step3/missa` (zelfde relatieve paden binnen elk).
-- **Output:** `.divinum-officium/step4` — één bestand per pad (geen aparte horas/missa-mappen meer).
-- **Doel:**
-  - Sectiekeys naar kebab-case.
-  - Keys met condition `[X] (condition)` → base key + variant-keys `baseKey/rubric` (onlyIn/exceptIn); `nisi` = exceptIn.
-  - Rubric-namen uit conditions (o.a. "rubrica tridentina") worden geëxtraheerd en als key-suffix gebruikt.
-
----
-
-## Step 5 — Rubric-varianten mergen in base
-
-- **Input:** `.divinum-officium/step4` (één bestand per pad; bestanden met suffix zoals `01-12t`, `01-12n` naast `01-12`).
-- **Output:** `.divinum-officium/step5` — één bestand per **base**. Rank→name toegepast.
-- **Doel:** Bestanden met rubric-suffix (t, o, r, n, da, p, q, cc, oct, nt, ot, rt, …) worden in het base-bestand gemerged met key-suffix (bijv. `rank/tridentine`). Output-directory wordt aan het begin geleegd.
-
----
-
-## Step 6 — Directory-varianten mergen in base-directory
-
-- **Input:** `.divinum-officium/step5` (bestanden in directories met suffixen zoals `Martyrologium1570`, `SanctiCist`, `TemporaOP`).
-- **Output:** `.divinum-officium/step6` — één directory per **base**. Variant-directories worden opgeheven; bestanden met dezelfde naam worden samengevoegd.
-- **Doel:** Bestanden uit variant-directories (met suffix zoals `1570`, `1955R`, `1960`, `Cist`, `M`, `OP`) worden gemerged met het corresponderende bestand in de base-directory. Keys uit variant-bestanden krijgen een suffix (bijv. `__preamble/1570`, `name/cist`). De suffix is lowercase. Output-directory wordt aan het begin geleegd.
-- **Mapping:**
-  - `Martyrologium1570` → `Martyrologium` met suffix `/1570`
-  - `Martyrologium1955R` → `Martyrologium` met suffix `/1955r`
-  - `Martyrologium1960` → `Martyrologium` met suffix `/1960`
-  - `SanctiCist` → `Sancti` met suffix `/cist`
-  - `SanctiM` → `Sancti` met suffix `/m`
-  - `SanctiOP` → `Sancti` met suffix `/op`
-  - (idem voor `Tempora`-varianten)
-
----
-
-## Step 7 — Key-normalisatie en rubric-conditions
-
-- **Input:** `.divinum-officium/step6`.
-- **Output:** `.divinum-officium/step7`.
-- **Doel:**
-  - Sectiekeys naar kebab-case.
-  - Keys met condition `[X] (condition)` → base key + variant-keys `baseKey/rubric` (onlyIn/exceptIn); `nisi` = exceptIn.
-  - Rubric-namen uit conditions worden geëxtraheerd en als key-suffix gebruikt.
-
----
-
-## Step 8 — Inline conditionals verwerken
-
-- **Input:** `.divinum-officium/step7`.
-- **Output:** `.divinum-officium/step8`.
-- **Doel:** Regels die een condition zijn (bijv. `(sed rubrica 196 aut rubrica 1930)`) worden verwerkt volgens de [Divinum Officium Technical](https://www.divinumofficium.com/www/horas/Help/technical.html) documentatie. De volgende regels tot de volgende condition worden onder eigen keys gezet per rubric: `key`, `key/196`, `key/1930`, enz. Alleen base keys (zonder `/`) worden gesplitst; keys met rubric-suffix blijven ongewijzigd. Condition-regels verdwijnen uit de output.
-
----
-
-## Step 9 — Referenties resolven
-
-- **Input:** `.divinum-officium/step8`.
-- **Output:** `.divinum-officium/step9`.
-- **Doel:** Referenties `@File:Section:lineRange:s/pattern/replacement/` vervangen door de opgehaalde content. Ontbrekende sectie: sectie-context. Beperkte resolutiediepte (MAX_RESOLVE_DEPTH). Ondersteunt single-tree (na step 4).
-
----
-
-## Step 10 — Bredere referenties en opruimen
-
-- **Input:** `.divinum-officium/step9`.
-- **Output:** `.divinum-officium/step10`.
-- **Doel:**
-  - Bredere referenties: preamble-`@`, en `ex …` / `vide …` in rank/rule (genormaliseerde paden, bijv. C11 → Commune/C11).
-  - Deze refs resolven waar nodig; daarna preamble-refs en ex/vide uit de content verwijderen.
-  - Lege `__preamble` weglaten.
-
----
-
-## Step 11 — Bestandsnaam = kebab van naam; meerdere bestanden bij meerdere namen
-
-- **Input:** `.divinum-officium/step10` (huidige bestandsnamen bijv. `01-01.yml`, `C1.yml`).
-- **Output:** `.divinum-officium/step11` —zelfde mappenstructuur. Voor elk bestand worden alle distincte "namen" verzameld uit base en rubric-varianten: `name`, `officium`, `rank` (eerste deel vóór `;;`) en alle `name/xxx`, `officium/xxx`, `rank/xxx`. Per distincte kebab-naam wordt één bestand geschreven met dezelfde inhoud. Hebben verschillende rubrieken dus eigen namen, dan ontstaan meerdere bestanden (zelfde inhoud, verschillende bestandsnaam). Geen naam → originele stem. Collisions (zelfde kebab in één map, andere inhoud) → suffix met originele stem.
-- **Kebab:** lowercase, spaties → `-`, ongeldige tekens weg.
-
----
-
-## Step 12 — Commemoratio's als aparte bestanden
-
-- **Input:** `.divinum-officium/step11`.
-- **Output:** `.divinum-officium/step12` — per directory één bestand per gecommemoreerde heilige. Bestandsnaam = kebab van de naam uit de "!Pro S. …" regel (bijv. `anastasia.yml`, `stephano-protomartyre.yml`).
-- **Doel:** Secties `commemoratio-oratio`, `commemoratio-secreta`, `commemoratio-postcommunio` (eventueel met rubric-suffix) uit step11-bestanden verzamelen; per unieke commemoration-naam een YAML-bestand schrijven met keys `name`, `oratio`, `secreta`, `postcommunio`. De eerste regel ("!Pro S. …") wordt niet in de inhoud opgenomen; de rest van elke sectie wel. Meerdere step11-bestanden die dezelfde heilige commemoreren leveren één step12-bestand (inhoud wordt samengevoegd).
-
----
-
-## Step 13 — Missa-secties structureren
-
-- **Input:** `.divinum-officium/step12` (één boom).
-- **Output:** `.divinum-officium/step13` —zelfde paden; secties introitus, oratio, lectio, enz. omgezet naar vaste types.
-- **Doel:** Secties van het type Verse/Prayer/Antiphonal (introitus, oratio, lectio, graduale, evangelium, offertorium, secreta, communio, postcommunio, …) omzetten naar gestructureerde objecten (`{ ref, text }`, `{ text, closure }`, `{ antiphon, verse }`). Overige keys ongewijzigd. Output-directory wordt aan het begin geleegd.
-- **Missa:** Verse `{ ref, text }`; Prayer `{ text, closure }`; Antiphonal `{ antiphon, verse }`. Regels voor "v.": begin-weglating; halverwege = scheiding antiphon/verse. Alleluia-markers strippen waar afgesproken.
-
----
-
-## Volgorde en afhankelijkheden
-
-- Step 1 vereist alleen `DIVINUM_OFFICIUM_BASE`.
-- Step 2 leest step1; step 3 … 13 lezen steeds de output van de vorige stap.
-- Voor een volledige run: `pnpm pipeline` (Turbo) of `pnpm step1` → `pnpm step2` → … → `pnpm step13`.
-
----
-
-## Streaming modus
-
-De streaming modus (`pnpm pipeline:streaming`) verwerkt bestanden in-memory zonder tussenbestanden op te slaan. Dit is nuttig voor:
-- Snellere volledige runs wanneer caching niet nodig is
-- Testen van de hele pipeline zonder disk I/O overhead
-- Verwerking tot een specifieke stap
-
-### CLI opties
+De pipeline wordt direct via `index.ts` gedraaid met `tsx`:
 
 ```bash
-# Volledige pipeline (step 1-13)
-node scripts2/pipeline.mjs
+# Volledige (geïmplementeerde) pipeline, output in .divinum-officium/step{to}/
+npx tsx convert-do/index.ts
 
-# Tot en met specifieke stap
-node scripts2/pipeline.mjs --to 5
+# Tot en met een specifieke stap
+npx tsx convert-do/index.ts --to 5
 
-# Vanaf specifieke stap
-node scripts2/pipeline.mjs --from 4 --to 8
+# Vanaf een specifieke stap (leest .divinum-officium/step{from-1} als input)
+npx tsx convert-do/index.ts --from 4 --to 5
 
-# Enkele stap
-node scripts2/pipeline.mjs --step 7
+# Eén stap
+npx tsx convert-do/index.ts --step 2
 
-# Help
-node scripts2/pipeline.mjs --help
+# Opnieuw genereren i.p.v. bestaande output hergebruiken
+npx tsx convert-do/index.ts --force
 ```
 
-### Hoe het werkt
+CLI-opties (zie [`index.ts`](index.ts)):
 
-1. **Beginstate (--from):**
-   - `--from 1` (standaard): start bij bron-.txt bestanden.
-   - `--from N` (N > 1): laad beginstate uit `.divinum-officium/step{N-1}` (bestaande YAML-bestanden). Geen bronbestanden nodig.
+| Optie            | Default | Betekenis                                             |
+| ---------------- | ------- | ----------------------------------------------------- |
+| `--from <N>`     | `0`     | Startstap (0–13).                                     |
+| `--to <N>`       | `13`    | Eindstap (0–13). Output komt in `step{to}/`.          |
+| `--step <N>`     | —       | Kortere schrijfwijze voor `--from N --to N`.          |
+| `-f`, `--force`  | `false` | Output-map leegmaken en alle bestanden herverwerken. Zonder deze vlag worden bestaande output-bestanden overgeslagen (caching). |
 
-2. **Verwerking:**
-   - Geen voorafgaande groepering: per output-key worden bronbestanden (of bij --from > 1: één bestand per key) één voor één verwerkt.
-   - **Merge when exists:** als het outputbestand voor die key al bestaat (bijv. door een eerder verwerkt bronbestand), wordt het bestaande bestand geladen en met het nieuwe resultaat gemerged (step 4/5/6 merge), daarna weggeschreven.
-   - Bij `--from 1`: volgorde van keys door dependency graph (topologisch) als toStep ≥ 9.
-   - Stappen fromStep t/m toStep worden op het (gemergede) resultaat uitgevoerd; alleen eindresultaat wordt weggeschreven.
+`step0` vereist de env-variabele **`DIVINUM_OFFICIUM_BASE`** (pad naar de
+`divinum-officium`-repo; er wordt automatisch `web/www` aan toegevoegd). Vanaf
+`--from 1` wordt gelezen uit `.divinum-officium/step{from-1}` en is de
+bronrepo niet nodig.
 
-### Architectuur
+---
 
-De step scripts exporteren nu `transform()` functies (en `merge()` voor step 4-6) die door de pipeline runner worden aangeroepen:
+## Hoe de runner werkt
 
+[`pipeline.ts`](pipeline.ts) verwerkt bestand-voor-bestand in plaats van per
+stap een hele map:
+
+1. **`getInputFiles(fromStep)`** — bij `fromStep 0` alle relevante `.txt` onder
+   `DIVINUM_OFFICIUM_BASE/{horas,missa}` (via [`step0.getInputFiles`](step0.ts));
+   anders alle bestanden onder `.divinum-officium/step{fromStep-1}`.
+2. **Output-pad bepalen** — per invoerbestand wordt het output-pad berekend.
+   Daarbij worden padtransformaties toegepast afhankelijk van het stap-bereik:
+   - `getStep0OutputFile` — `.txt` → `.yml` en taalmap → ISO-code
+     (`Latin` → `la`, enz.).
+   - `getStep2OutputFile` — strip `\horas\` / `\missa\` en de directory- en
+     bestandsnaam-suffixen, zodat varianten op **hetzelfde output-pad**
+     uitkomen.
+3. **Mergen** — meerdere invoerbestanden die naar hetzelfde output-pad wijzen
+   (o.a. horas + missa, en rubriek-varianten) worden samengevoegd. `missa`
+   heeft voorrang bij key-conflicten; `rule`-arrays worden als unie
+   gededupliceerd (zie `processInputFiles`).
+4. **Transformeren** — per bestand worden de transforms `step0` … `step5`
+   in volgorde toegepast, voor zover ze binnen `[fromStep, toStep]` vallen.
+5. **Caching & dependencies** — bestaande output wordt overgeslagen tenzij
+   `--force`. Step 4 en 5 declareren afhankelijkheden (`extractDependencies`);
+   ontbreekt een dependency nog in de cache, dan wordt het bestand achteraan de
+   wachtrij gezet en later opnieuw geprobeerd.
+
+---
+
+## Overzicht van de stappen (0-geïndexeerd)
+
+| Stap | Input                                    | Transform                | Kort                                                                     |
+| ---- | ---------------------------------------- | ------------------------ | ------------------------------------------------------------------------ |
+| 0    | `DIVINUM_OFFICIUM_BASE` `.txt`           | [`step0.ts`](step0.ts)   | Tekst → array van regels; taalmap → ISO-code                             |
+| 1    | step0                                    | [`step1.ts`](step1.ts)   | Regels groeperen per sectie `[Key] (condition)` → object                 |
+| 2    | step1                                    | [`step2.ts`](step2.ts)   | Directory-/bestandsnaam-suffixen → rubriek-condities (`includes`)        |
+| 3    | step2                                    | [`step3.ts`](step3.ts)   | Inline conditionals in regels verwerken → rubriek-varianten              |
+| 4    | step3                                    | [`step4.ts`](step4.ts)   | Brede referenties (`@File`, `ex …`, `vide …`) resolven                   |
+| 5    | step4                                    | [`step5.ts`](step5.ts)   | Inline referenties `@File:Section:…:s/…/…/` resolven                     |
+| 6    | step5                                    | [`step6.ts`](step6.ts)   | **Uitgecommentarieerd** — niet actief in de pipeline                     |
+| 7–13 | —                                        | —                        | **Niet geïmplementeerd** in `convert-do`                                 |
+
+---
+
+## Step 0 — Tekst naar regel-array
+
+- **Input:** `.txt` onder `DIVINUM_OFFICIUM_BASE/horas` en `…/missa`.
+- **Filtering:** [`fileFilter`](step0.ts) houdt alleen `Latin/…`-paden aan (dus
+  geen `Latin-gabc/`, `Help/`) en sluit diverse bestanden uit (`*.pl.txt`,
+  `*tts.txt`, `ruler.txt`, `Linguae.txt`, `source.txt`, `Mobile.txt`, enz.).
+  Het pad wordt relatief aan de taalroot gecontroleerd (bijv. `Latin/01-01.txt`).
+- **`transform`:** splitst de bestandsinhoud op `\r?\n` naar een `string[]`.
+- **`getOutputFile`:** `.txt` → `.yml` en de taalmap → ISO-code. De volledige
+  lijst codes staat in `LANGUAGE_CODES` (`Latin` → `la`, `Nederlands` → `nl`,
+  `English` → `en`, `Latin-Bea` → `la-bea`, enz.).
+
+## Step 1 — Secties als object-keys
+
+- **`transform(lines)`** → object waarin elke `[Sectienaam]` (of
+  `[Sectie] (condition)`) een key wordt (kebab-case). Regels vóór de eerste
+  sectie komen in `__preamble`. Elke sectie is een array van
+  `{ value: string[]; condition: string[] }`; de condition komt uit het
+  `(...)`-deel van de sectiekop (via `applyCondition`).
+- In het preamble worden regels met `;;` afgekapt tot het deel vóór `;;`.
+- Lege secties/varianten worden weggefilterd.
+
+## Step 2 — Suffixen naar rubriek-condities
+
+- **`transform(obj, inputFile)`** — leidt uit de directory- en bestandsnaam de
+  rubriek-context af en voegt die als `includes`-condities toe aan de secties
+  (via `applyIncludes`). De `mappings`-tabel vertaalt suffixen naar tokens,
+  o.a. `t` → `1570`, `n` → `2020`, `r` → `1962`, `o` → `1888`, `oct` →
+  `octava`, `cist` → `cisterciensis`, `M` → `monastica`, `OP` → `praedicatorum`,
+  plus `…Feria`-nummering. `directoryMappings` doet hetzelfde voor
+  variant-directories.
+- **`getOutputFile`** — strip `\horas\`/`\missa\`, herleid variant-directories
+  naar hun basis (`Commune`, `Martyrologium`, `Sancti`, `Tempora`) en verwijder
+  niet-numerieke bestandsnaam-suffixen, zodat varianten naar het basisbestand
+  mergen.
+
+## Step 3 — Inline conditionals
+
+- **`transform(input, inputFile)`** — verwerkt condition-regels binnen een
+  sectie (poort van Divinum Officium's `process_conditional_lines`, zie
+  [technical.html](https://www.divinumofficium.com/www/horas/Help/technical.html)):
+  regels als `(sed rubrica 196 aut rubrica 1930)` splitsen de volgende regels op
+  in rubriek-varianten (`{ value, condition }[]`).
+- **Uitzondering:** bestanden onder een `Ordo/`-map worden ongewijzigd
+  doorgegeven (`isStep3SkippedForPath`).
+
+## Step 4 — Brede referenties resolven
+
+- **`transform(obj, inputFile)`** — resolvet referenties op bestandsniveau:
+  `@File` in het `__preamble` en `ex …` / `vide …` in de `rank`-regels. De
+  gerefereerde secties worden ingeladen en samengevoegd, met propagatie van de
+  condities. Voor `vide` worden alleen bepaalde secties overgenomen (`lectio*`,
+  `ant-laudes`, `ant-vespera`, `versum*`, `oratio*`). `__preamble` wordt daarna
+  verwijderd.
+- **`extractDependencies`** — bepaalt welke andere bestanden eerst verwerkt
+  moeten zijn (gebruikt door de dependency-retry in de runner).
+
+## Step 5 — Inline referenties resolven
+
+- **`transform(obj, inputFile)`** — resolvet referenties **binnen regels** in de
+  vorm `@File:Section:lineRange:s/pattern/replacement/`. Ondersteunt
+  substituties (`s/…/…/flags`) en een beperkte resolutiediepte
+  (`MAX_RESOLVE_DEPTH = 5`).
+- **`extractDependencies`** — zoals step 4.
+
+## Step 6 — (niet actief)
+
+[`step6.ts`](step6.ts) bevat nog een referentie-resolutievariant, maar heeft een
+andere `transform`-signatuur (`(obj, context, resolvedFiles)`) dan de runner
+aanroept, en staat daarom uitgecommentarieerd in [`pipeline.ts`](pipeline.ts).
+Nog niet geïntegreerd.
+
+---
+
+## Ondersteunende modules
+
+- [`condition.ts`](condition.ts) — rubriek-condities parsen en toepassen
+  (`applyCondition`, `applyIncludes`, `getIncludesExcludes`, `parseConditional`).
+- [`lib/`](lib) — `grouper.mjs` en `dependency-resolver.mjs` (hulpmiddelen uit
+  een eerdere opzet).
+
+## Tests
+
+```bash
+pnpm test            # vitest, hele repo
+npx vitest run convert-do/step0.getInputFiles.test.ts
 ```
-scripts2/
-├── lib/
-│   ├── grouper.mjs          # Bepaalt output-key per bronbestand
-│   └── dependency-resolver.mjs  # Bouwt en sorteert dependency graph
-├── pipeline.mjs              # Streaming pipeline runner met CLI
-└── step1.mjs ... step13.mjs  # Stappen met geëxporteerde transform functies
-```
 
-### Opslag halverwege: alternatieven voor YAML
+Bestaande testbestanden: `step0.getInputFiles.test.ts`,
+`pipeline.getInputFiles.test.ts`, `step3.test.ts`, `condition.test.ts`.
 
-YAML is handig: leesbaar, diff-vriendelijk en eenvoudig te debuggen. Als je vooral wilt **versnellen** of **schalen**:
+---
 
-- **JSON** — Sneller parsen dan YAML, geen comments; prima voor tussenstappen.
-- **MessagePack / BSON** — Binair, compacter en sneller I/O; minder leesbaar.
-- **SQLite** — Eén bestand, query’s mogelijk, transacties; wel meer setup en minder handig voor “één object per bestand”.
-- **Alleen eindresultaat opslaan** — Tussenstappen in memory (zoals in streaming) en alleen de laatste stap naar disk; dan is formaat minder belangrijk.
+## Verouderde `pnpm`-scripts
 
-Voor deze pipeline blijft YAML een goede keuze: menselijk leesbaar, werkt goed met git, en de bottleneck zit vaker in de transformaties dan in het schrijven van tussenbestanden.
+`package.json` en `turbo.json` verwijzen nog naar `scripts2/step1.mjs` …
+`scripts2/step13.mjs`. Die map bestaat niet meer, dus `pnpm pipeline`,
+`pnpm pipeline:streaming` en `pnpm step1` … `pnpm step13` falen op dit moment.
+Gebruik in plaats daarvan `npx tsx convert-do/index.ts` (zie
+[Uitvoeren](#uitvoeren)). Deze scripts en `turbo.json` moeten nog worden
+bijgewerkt of verwijderd.
