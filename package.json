@@ -20,21 +20,7 @@
     "build": "tsup",
     "start": "pnpm build && node scripts/main.js",
     "test": "vitest",
-    "pipeline": "turbo run step13",
-    "pipeline:streaming": "node scripts2/pipeline.mjs",
-    "step1": "node scripts2/step1.mjs",
-    "step2": "node scripts2/step2.mjs",
-    "step3": "node scripts2/step3.mjs",
-    "step4": "node scripts2/step4.mjs",
-    "step5": "node scripts2/step5.mjs",
-    "step6": "node scripts2/step6.mjs",
-    "step7": "node scripts2/step7.mjs",
-    "step8": "node scripts2/step8.mjs",
-    "step9": "node scripts2/step9.mjs",
-    "step10": "node scripts2/step10.mjs",
-    "step11": "node scripts2/step11.mjs",
-    "step12": "node scripts2/step12.mjs",
-    "step13": "node scripts2/step13.mjs"
+    "pipeline": "tsx convert-do/index.ts"
   },
   "files": [
     "dist"
