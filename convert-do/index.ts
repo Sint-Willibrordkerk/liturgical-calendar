@@ -9,7 +9,7 @@ function parseCliArgs() {
   const { values } = parseArgs({
     options: {
       from: { type: "string", default: "0" },
-      to: { type: "string", default: "13" },
+      to: { type: "string", default: "9" },
       step: { type: "string" },
       force: { type: "boolean", short: "f", default: false },
       help: { type: "boolean", short: "h", default: false },
@@ -19,22 +19,25 @@ function parseCliArgs() {
 
   if (values.help) {
     consola.log(`
-Pipeline - Process files in streaming mode (in-memory, no intermediate files)
+Pipeline - Convert Divinum Officium sources to structured YAML
 
-Usage: node pipeline.mjs [options]
+Steps 0-6 stream in-memory; steps 7-9 are directory-level batch passes that
+read the materialized step{N-1} folder.
+
+Usage: tsx convert-do/index.ts [options]
 
 Options:
-  --from <step>     Start from step N (0-13, default: 0)
-  --to <step>       Process up to step N (0-13, default: 13)
+  --from <step>     Start from step N (0-9, default: 0)
+  --to <step>       Process up to step N (0-9, default: 9)
   --step <step>     Process only step N (shorthand for --from N --to N)
   -f, --force       Clean output folder and process all files (default: only process missing outputs)
   -h, --help        Show this help
 
 Examples:
-  node pipeline.mjs                    # Full pipeline, output in step13/
-  node pipeline.mjs --to 5             # Steps 1-5, output in step5/
-  node pipeline.mjs --from 4 --to 8    # Steps 4-8, output in step8/
-  node pipeline.mjs --step 7           # Only step 7, output in step7/
+  tsx convert-do/index.ts                 # Full pipeline, output in step9/
+  tsx convert-do/index.ts --to 5          # Steps 0-5, output in step5/
+  tsx convert-do/index.ts --from 7 --to 9 # Batch steps 7-9 (reads step6/)
+  tsx convert-do/index.ts --step 6        # Only step 6, output in step6/
 `);
     process.exit(0);
   }
@@ -43,8 +46,8 @@ Examples:
 
   if (values.step) {
     const step = parseInt(values.step, 10);
-    if (isNaN(step) || step < 0 || step > 13) {
-      consola.error(`Invalid --step value: ${values.step}. Must be 0-13.`);
+    if (isNaN(step) || step < 0 || step > 9) {
+      consola.error(`Invalid --step value: ${values.step}. Must be 0-9.`);
       process.exit(1);
     }
     fromStep = step;
@@ -53,12 +56,12 @@ Examples:
     fromStep = parseInt(values.from, 10);
     toStep = parseInt(values.to, 10);
 
-    if (isNaN(fromStep) || fromStep < 0 || fromStep > 13) {
-      consola.error(`Invalid --from value: ${values.from}. Must be 0-13.`);
+    if (isNaN(fromStep) || fromStep < 0 || fromStep > 9) {
+      consola.error(`Invalid --from value: ${values.from}. Must be 0-9.`);
       process.exit(1);
     }
-    if (isNaN(toStep) || toStep < 0 || toStep > 13) {
-      consola.error(`Invalid --to value: ${values.to}. Must be 0-13.`);
+    if (isNaN(toStep) || toStep < 0 || toStep > 9) {
+      consola.error(`Invalid --to value: ${values.to}. Must be 0-9.`);
       process.exit(1);
     }
     if (fromStep > toStep) {

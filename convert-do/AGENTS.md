@@ -9,15 +9,13 @@ referenties. Elke stap leest uit de output van de vorige stap onder
 > **Let op — status van deze pipeline**
 > - De actieve implementatie is de **TypeScript**-pipeline in deze map,
 >   aangestuurd door [`index.ts`](index.ts) → [`pipeline.ts`](pipeline.ts).
->   De stappen zijn **0-geïndexeerd** (`step0` … `step13`).
-> - Alleen **step 0 t/m 5** zijn daadwerkelijk geïmplementeerd en aangesloten.
->   [`step6.ts`](step6.ts) bestaat maar staat **uitgecommentarieerd** in de
->   pipeline (andere `transform`-signatuur); step 7–13 bestaan (nog) niet als
->   TypeScript.
-> - De `pnpm`-scripts (`pipeline`, `pipeline:streaming`, `step1`…`step13`) en
->   `turbo.json` verwijzen naar een **`scripts2/`-map die niet bestaat** — die
->   commando's werken op dit moment niet. Zie
->   [Uitvoeren](#uitvoeren).
+>   De stappen zijn **0-geïndexeerd** (`step0` … `step9`).
+> - **Step 0 t/m 6** draaien in-memory (streaming); **step 7 t/m 9** zijn
+>   directory-batchstappen (fan-out / cross-file merges) die de
+>   gematerialiseerde `step{N-1}`-map lezen. Zie
+>   [Hoe de runner werkt](#hoe-de-runner-werkt).
+> - Uitvoeren gaat via `npx tsx convert-do/index.ts` (er is geen
+>   `pnpm`-script per stap meer).
 
 ---
 
@@ -26,17 +24,17 @@ referenties. Elke stap leest uit de output van de vorige stap onder
 De pipeline wordt direct via `index.ts` gedraaid met `tsx`:
 
 ```bash
-# Volledige (geïmplementeerde) pipeline, output in .divinum-officium/step{to}/
+# Volledige pipeline (step 0-9), output in .divinum-officium/step9/
 npx tsx convert-do/index.ts
 
 # Tot en met een specifieke stap
 npx tsx convert-do/index.ts --to 5
 
 # Vanaf een specifieke stap (leest .divinum-officium/step{from-1} als input)
-npx tsx convert-do/index.ts --from 4 --to 5
+npx tsx convert-do/index.ts --from 7 --to 9
 
 # Eén stap
-npx tsx convert-do/index.ts --step 2
+npx tsx convert-do/index.ts --step 6
 
 # Opnieuw genereren i.p.v. bestaande output hergebruiken
 npx tsx convert-do/index.ts --force
@@ -46,8 +44,8 @@ CLI-opties (zie [`index.ts`](index.ts)):
 
 | Optie            | Default | Betekenis                                             |
 | ---------------- | ------- | ----------------------------------------------------- |
-| `--from <N>`     | `0`     | Startstap (0–13).                                     |
-| `--to <N>`       | `13`    | Eindstap (0–13). Output komt in `step{to}/`.          |
+| `--from <N>`     | `0`     | Startstap (0–9).                                      |
+| `--to <N>`       | `9`     | Eindstap (0–9). Output komt in `step{to}/`.           |
 | `--step <N>`     | —       | Kortere schrijfwijze voor `--from N --to N`.          |
 | `-f`, `--force`  | `false` | Output-map leegmaken en alle bestanden herverwerken. Zonder deze vlag worden bestaande output-bestanden overgeslagen (caching). |
 
@@ -59,6 +57,10 @@ bronrepo niet nodig.
 ---
 
 ## Hoe de runner werkt
+
+De runner heeft **twee modi**, gesplitst op `STREAMING_MAX_STEP = 6`:
+
+### Streaming (step 0–6)
 
 [`pipeline.ts`](pipeline.ts) verwerkt bestand-voor-bestand in plaats van per
 stap een hele map:
@@ -77,12 +79,23 @@ stap een hele map:
    (o.a. horas + missa, en rubriek-varianten) worden samengevoegd. `missa`
    heeft voorrang bij key-conflicten; `rule`-arrays worden als unie
    gededupliceerd (zie `processInputFiles`).
-4. **Transformeren** — per bestand worden de transforms `step0` … `step5`
+4. **Transformeren** — per bestand worden de transforms `step0` … `step6`
    in volgorde toegepast, voor zover ze binnen `[fromStep, toStep]` vallen.
 5. **Caching & dependencies** — bestaande output wordt overgeslagen tenzij
    `--force`. Step 4 en 5 declareren afhankelijkheden (`extractDependencies`);
    ontbreekt een dependency nog in de cache, dan wordt het bestand achteraan de
    wachtrij gezet en later opnieuw geprobeerd.
+
+### Batch (step 7–9)
+
+Deze stappen kunnen **meerdere output-bestanden per invoer** produceren (step 7
+schrijft één document onder meerdere naam-bestandsnamen; step 8 splitst
+commemoraties naar aparte bestanden) of voegen samen **over bestanden heen**
+(step 8 mergt dezelfde heilige uit meerdere bestanden). Dat past niet in het
+1-op-1 streaming-model, dus `runBatchStep` draait ze als directory-operatie: lees
+de hele `step{N-1}`-map, transformeer, schrijf `step{N}`. Batch-stappen bouwen
+hun output altijd volledig opnieuw op (rm + mkdir); `--force` is voor hen niet
+relevant. De gedeelde helpers staan in [`lib/batch.ts`](lib/batch.ts).
 
 ---
 
@@ -96,8 +109,10 @@ stap een hele map:
 | 3    | step2                                    | [`step3.ts`](step3.ts)   | Inline conditionals in regels verwerken → rubriek-varianten              |
 | 4    | step3                                    | [`step4.ts`](step4.ts)   | Brede referenties (`@File`, `ex …`, `vide …`) resolven                   |
 | 5    | step4                                    | [`step5.ts`](step5.ts)   | Inline referenties `@File:Section:…:s/…/…/` resolven                     |
-| 6    | step5                                    | [`step6.ts`](step6.ts)   | **Uitgecommentarieerd** — niet actief in de pipeline                     |
-| 7–13 | —                                        | —                        | **Niet geïmplementeerd** in `convert-do`                                 |
+| 6    | step5                                    | [`step6.ts`](step6.ts)   | Rubriek-varianten materialiseren → `key` + `key/rubric` (platte `string[]`) |
+| 7    | step6                                    | [`step7.ts`](step7.ts)   | Bestandsnaam = kebab van naam; `rank`/`officium` → `name` *(batch)*      |
+| 8    | step7                                    | [`step8.ts`](step8.ts)   | Commemoraties naar aparte bestanden per heilige *(batch)*               |
+| 9    | step8                                    | [`step9.ts`](step9.ts)   | Missa-secties structureren (`verse`/`prayer`/`antiphonal`) *(batch)*     |
 
 ---
 
@@ -166,12 +181,41 @@ stap een hele map:
   (`MAX_RESOLVE_DEPTH = 5`).
 - **`extractDependencies`** — zoals step 4.
 
-## Step 6 — (niet actief)
+## Step 6 — Rubriek-varianten materialiseren
 
-[`step6.ts`](step6.ts) bevat nog een referentie-resolutievariant, maar heeft een
-andere `transform`-signatuur (`(obj, context, resolvedFiles)`) dan de runner
-aanroept, en staat daarom uitgecommentarieerd in [`pipeline.ts`](pipeline.ts).
-Nog niet geïntegreerd.
+Brug tussen de twee representaties: step 0–5 houden elke sectie als
+`{ value, condition }[]` (de rubriek zit in de data); step 7–9 verwachten platte
+`string[]` per key met de rubriek in de **key-naam**.
+
+- **`transform(obj)`** — per key: de variant met lege condition houdt de basiskey
+  (`oratio`); elke conditionele variant wordt `key/<gesorteerde-tokens>` (bijv.
+  `oratio/1570`, `oratio/1570-octava`). De exacte suffix maakt voor step 7–9 niet
+  uit — die kijken alleen naar het deel vóór de `/`.
+
+## Step 7 — Bestandsnaam uit liturgische naam *(batch)*
+
+- **`transform(obj)`** — vouw `rank`/`officium` samen tot `name` (voor `rank` het
+  eerste deel vóór `;;`); overige keys blijven.
+- **`run(inputDir, outputDir)`** — schrijf elk document onder elke distincte
+  kebab-naam die uit `name`/`officium`/`rank` volgt; botsingen binnen een map
+  (zelfde naam, andere inhoud) krijgen de originele stam als suffix.
+
+## Step 8 — Commemoraties splitsen *(batch)*
+
+- **`transform(obj)`** → `{ main, commemorations }`: `main` is het document zonder
+  `commemoratio-*`-keys; `commemorations` bevat per heilige de `oratio`/`secreta`/
+  `postcommunio`.
+- **`run(inputDir, outputDir)`** — schrijf de gestripte main-bestanden plus per
+  heilige `<dir>/<slug>.yml` (`name` uit de `!Pro S. …`-regel). Dezelfde heilige
+  uit meerdere bestanden in dezelfde map mergt tot één bestand.
+
+## Step 9 — Missa-secties structureren *(batch)*
+
+- **`transform(obj)`** — zet secties om naar vaste types: `verse` `{ ref, text }`,
+  `prayer` `{ text, closure }`, `antiphonal` `{ antiphon, verse }` (graduale ook
+  `alleluia`). `rule` wordt opgeschoond (Gloria/Credo eruit; `Prefatio=X` → een
+  `prefatio`-key). Niet-missa keys blijven ongewijzigd.
+- **`run(inputDir, outputDir)`** — puur per bestand; geen cross-file logica.
 
 ---
 
@@ -179,26 +223,19 @@ Nog niet geïntegreerd.
 
 - [`condition.ts`](condition.ts) — rubriek-condities parsen en toepassen
   (`applyCondition`, `applyIncludes`, `getIncludesExcludes`, `parseConditional`).
-- [`lib/`](lib) — `grouper.mjs` en `dependency-resolver.mjs` (hulpmiddelen uit
-  een eerdere opzet).
+- [`lib/batch.ts`](lib/batch.ts) — gedeelde batch-helpers (`runBatched`,
+  `collectYmlFiles`, `ensureDir`) voor step 7–9.
+- [`lib/`](lib) — `grouper.mjs` en `dependency-resolver.mjs` zijn overblijfselen
+  van een eerdere opzet en worden nergens meer geïmporteerd.
 
 ## Tests
 
 ```bash
 pnpm test            # vitest, hele repo
-npx vitest run convert-do/step0.getInputFiles.test.ts
+npx vitest run convert-do/step9.test.ts
 ```
 
-Bestaande testbestanden: `step0.getInputFiles.test.ts`,
-`pipeline.getInputFiles.test.ts`, `step3.test.ts`, `condition.test.ts`.
-
----
-
-## Verouderde `pnpm`-scripts
-
-`package.json` en `turbo.json` verwijzen nog naar `scripts2/step1.mjs` …
-`scripts2/step13.mjs`. Die map bestaat niet meer, dus `pnpm pipeline`,
-`pnpm pipeline:streaming` en `pnpm step1` … `pnpm step13` falen op dit moment.
-Gebruik in plaats daarvan `npx tsx convert-do/index.ts` (zie
-[Uitvoeren](#uitvoeren)). Deze scripts en `turbo.json` moeten nog worden
-bijgewerkt of verwijderd.
+Per-stap transform-tests: `step6.test.ts` … `step9.test.ts`; een end-to-end
+batchtest in `batchSteps.test.ts`. Verder `step0.getInputFiles.test.ts`,
+`pipeline.getInputFiles.test.ts`, `condition.test.ts`. `step3.test.ts` bevat
+bestaande, niet-gerelateerde faalgevallen (verwijst naar een verwijderde API).

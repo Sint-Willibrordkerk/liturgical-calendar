@@ -27,11 +27,33 @@ import {
 import {
   extractDependencies as extractStep5Dependencies,
   transform as step5Transform,
+  type Step5Output,
 } from "./step5.js";
+import { transform as step6Transform } from "./step6.js";
+import { run as runStep7 } from "./step7.js";
+import { run as runStep8 } from "./step8.js";
+import { run as runStep9 } from "./step9.js";
 
 const PROJECT_BASE = process.cwd();
 const STEP_BASE = join(PROJECT_BASE, ".divinum-officium");
 const MISSING_DEPENDENCY_ERROR = "Missing dependency";
+
+/**
+ * Highest step handled by the in-memory streaming runner. Later steps (7–9)
+ * are directory-level batch operations (fan-out / cross-file merges) and run
+ * against materialized `step{N-1}` folders instead.
+ */
+const STREAMING_MAX_STEP = 6;
+
+/** Batch steps (ported from the original step11–step13 scripts). */
+const BATCH_STEPS: Record<
+  number,
+  (inputDir: string, outputDir: string) => Promise<{ written: number }>
+> = {
+  7: runStep7,
+  8: runStep8,
+  9: runStep9,
+};
 
 export async function getInputFiles(fromStep: number): Promise<{
   directories: string[];
@@ -166,7 +188,8 @@ async function processInputFiles(
         join(STEP_BASE, "step4", inputFile)
       );
     }
-    // if (fromStep <= 6 && toStep >= 6) data = step6Transform(data);
+    if (fromStep <= 6 && toStep >= 6)
+      data = step6Transform(data as Step5Output);
 
     if (!result) {
       result = data;
@@ -284,31 +307,60 @@ async function executePipeline(
   return { processed, errors: workersResult.failures.size };
 }
 
+/** Run one batch step: rebuild `step{step}` from the materialized `step{step-1}`. */
+async function runBatchStep(step: number): Promise<void> {
+  const fn = BATCH_STEPS[step];
+  if (!fn) throw new Error(`No batch step registered for step ${step}`);
+
+  const inputDir = join(STEP_BASE, "step" + (step - 1));
+  const outputDir = join(STEP_BASE, "step" + step);
+
+  consola.start(`Step ${step}: ${inputDir} → ${outputDir}`);
+  // Batch steps fan out / merge across files, so they always fully rebuild.
+  await rm(outputDir, { recursive: true, force: true });
+  await mkdir(outputDir, { recursive: true });
+
+  const { written } = await fn(inputDir, outputDir);
+  consola.success(`Step ${step} done: ${written} files.`);
+}
+
 export async function runPipeline(
   fromStep: number,
   toStep: number,
   force: boolean
 ) {
-  const outputDir = join(STEP_BASE, "step" + toStep);
-
   const stepRange =
     fromStep === toStep ? `step ${fromStep}` : `steps ${fromStep}-${toStep}`;
   consola.box(`Converting Divinum Officium files\n\nProcessing ${stepRange}`);
-  consola.info(`Output: ${outputDir}`);
-  consola.info(
-    `Force: ${
-      force ? "yes (cleaning output folder)" : "no (skipping existing outputs)"
-    }`
-  );
 
-  const { processed, errors } = await executePipeline(
-    fromStep,
-    toStep,
-    outputDir,
-    force
-  );
+  // Streaming portion (steps 0..STREAMING_MAX_STEP), materialized at step{to}.
+  if (fromStep <= STREAMING_MAX_STEP) {
+    const streamingTo = Math.min(toStep, STREAMING_MAX_STEP);
+    const outputDir = join(STEP_BASE, "step" + streamingTo);
+    consola.info(`Streaming steps ${fromStep}-${streamingTo} → ${outputDir}`);
+    consola.info(
+      `Force: ${
+        force ? "yes (cleaning output folder)" : "no (skipping existing outputs)"
+      }`
+    );
 
-  consola.success(`Streaming pipeline done.`);
-  consola.info(`Processed: ${processed} files`);
-  consola.info(`Errors: ${errors}`);
+    const { processed, errors } = await executePipeline(
+      fromStep,
+      streamingTo,
+      outputDir,
+      force
+    );
+    consola.success(`Streaming pipeline done.`);
+    consola.info(`Processed: ${processed} files`);
+    consola.info(`Errors: ${errors}`);
+  }
+
+  // Batch portion (steps STREAMING_MAX_STEP+1 .. toStep).
+  for (
+    let step = Math.max(fromStep, STREAMING_MAX_STEP + 1);
+    step <= toStep;
+    step++
+  ) {
+    await runBatchStep(step);
+  }
 }
