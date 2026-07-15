@@ -8,7 +8,8 @@ import {
 import { Step2Output } from "./step2";
 
 function isBlankLine(line: string): boolean {
-  return line.at(-1) === "" || line.at(-1) === "_";
+  const trimmed = line.trim();
+  return trimmed === "" || trimmed === "_";
 }
 
 /** Step 3 is not applied to files under an `Ordo` directory (per-language rubric tables). */
