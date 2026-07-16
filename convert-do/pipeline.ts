@@ -25,7 +25,6 @@ import {
   transform as step4Transform,
 } from "./step4.js";
 import {
-  extractDependencies as extractStep5Dependencies,
   transform as step5Transform,
   type Step5Output,
 } from "./step5.js";
@@ -166,23 +165,12 @@ async function processInputFiles(
       data = await step4Transform(data as Step3Output, outputFile);
     }
     if (fromStep <= 5 && toStep >= 5) {
-      const cache = [...fileCache].map((item) =>
-        item
-          .replace(STEP_BASE, "")
-          .split("\\")
-          .slice(2)
-          .join("/")
-          .replace(".yml", "")
-      );
-      const dependencies = extractStep5Dependencies(
-        data as Step4Output,
-        outputFile
-      );
-      for (const dependency of dependencies) {
-        if (!cache.includes(dependency)) {
-          throw new Error(MISSING_DEPENDENCY_ERROR);
-        }
-      }
+      // Unlike step 4, step 5 resolves its `@File:Section` references by
+      // reading the already-complete step4 tree (below), not step5 output, so
+      // it needs no dependency gate. Gating here would also wrongly block
+      // references to variant directories (e.g. TemporaOP) that step 2 already
+      // merged into their base, requeuing those files forever. resolveReference
+      // is lenient and leaves anything it cannot resolve in place.
       data = await step5Transform(
         data as Step4Output,
         join(STEP_BASE, "step4", inputFile)
