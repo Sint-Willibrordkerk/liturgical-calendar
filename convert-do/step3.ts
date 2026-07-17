@@ -112,7 +112,23 @@ function applyConditionalToFork(
     const fence =
       conditionalOffsets.length > strength ? conditionalOffsets[strength]! : -1;
 
-    for (const { includes, excludes } of branches) {
+    const effectiveForward: Scope =
+      forwardScope === "scope-null" ? "scope-nest" : forwardScope;
+
+    const commit = (
+      d: Record<string, boolean>,
+      entries: [string, boolean][]
+    ): Record<string, boolean> => {
+      let out = d;
+      for (const [token, value] of entries)
+        if (!(token in out)) out = { ...out, [token]: value };
+      return out;
+    };
+
+    const makeBranchFork = (
+      branch: { includes: string[]; excludes: string[] },
+      decided: Record<string, boolean>
+    ): RubricFork => {
       const newValue = [...fork.value];
       const newConditionalStack = [...conditionalStack];
       const newConditionalOffsets = [...conditionalOffsets];
@@ -131,10 +147,6 @@ function applyConditionalToFork(
         newValue.length = fence < 0 ? 0 : fence + 1;
       }
 
-      if (forwardScope === "scope-null") {
-        forwardScope = "scope-nest";
-      }
-
       const lastOut = newValue.length - 1;
       while (newConditionalOffsets.length <= strength) {
         newConditionalOffsets.push(-1);
@@ -142,36 +154,71 @@ function applyConditionalToFork(
       for (let s = 0; s <= strength; s++) {
         newConditionalOffsets[s] = lastOut;
       }
-
       while (
         strength <
         newConditionalOffsets.length - newConditionalStack.length - 1
       ) {
-        newConditionalStack.push(["dummy-frame", forwardScope]);
+        newConditionalStack.push(["dummy-frame", effectiveForward]);
       }
+      newConditionalStack.push(["affirmative", effectiveForward]);
 
-      newConditionalStack.push(["affirmative", forwardScope]);
-
-      result.push({
-        includes,
-        excludes,
+      return {
+        includes: branch.includes,
+        excludes: branch.excludes,
         value: newValue,
         conditionalOffsets: newConditionalOffsets,
         conditionalStack: newConditionalStack,
-      });
+        decided,
+      };
+    };
+
+    // Classify each branch against what this fork already decided, so a
+    // conditional on an already-resolved rubric does not fork again (the source
+    // of the 2^conditionals blow-up on sections like Commune/C12).
+    const present = (t: string) => fork.decided[t] === true;
+    const absent = (t: string) => fork.decided[t] === false;
+    const hasTokens = (b: { includes: string[]; excludes: string[] }) =>
+      b.includes.length > 0 || b.excludes.length > 0;
+    const isDead = (b: { includes: string[]; excludes: string[] }) =>
+      b.includes.some(absent) || b.excludes.some(present);
+    const isTrue = (b: { includes: string[]; excludes: string[] }) =>
+      hasTokens(b) && b.includes.every(present) && !b.excludes.some(present);
+
+    const firing = branches.find(isTrue);
+    if (firing) {
+      // The conditional definitely fires via an already-present rubric; apply
+      // it once and drop the (impossible) non-firing base.
+      return [makeBranchFork(firing, fork.decided)];
     }
 
-    const addedForks = result.slice(1);
-    if (
-      addedForks.some((f) => f.includes.length > 0 || f.excludes.length > 0) &&
-      forwardScope !== "scope-null"
-    ) {
-      const baseFork = result[0]!;
+    // Keep only branches that are still possible (drop already-excluded ones).
+    const kept = branches.filter((b) => !isDead(b));
+    for (const branch of kept) {
+      result.push(
+        makeBranchFork(
+          branch,
+          commit(fork.decided, [
+            ...branch.includes.map((t) => [t, true] as [string, boolean]),
+            ...branch.excludes.map((t) => [t, false] as [string, boolean]),
+          ])
+        )
+      );
+    }
+
+    if (branches.some(hasTokens)) {
+      // Non-firing base: suppress forward scope, and record cleanly-negatable
+      // single-token branches as absent so later conditionals can prune them.
       result[0] = {
-        ...baseFork,
+        ...fork,
+        decided: commit(
+          fork.decided,
+          kept
+            .filter((b) => b.includes.length === 1 && b.excludes.length === 0)
+            .map((b) => [b.includes[0]!, false] as [string, boolean])
+        ),
         conditionalStack: [
-          ...baseFork.conditionalStack,
-          ["not-yet-affirmative", forwardScope],
+          ...fork.conditionalStack,
+          ["not-yet-affirmative", effectiveForward],
         ],
       };
     }
@@ -186,7 +233,33 @@ type RubricFork = {
   value: string[];
   conditionalOffsets: number[];
   conditionalStack: [ConditionalState, Scope][];
+  /** Rubric tokens this fork has already resolved: present (true) / absent (false). */
+  decided: Record<string, boolean>;
 };
+
+/**
+ * Collapse forks that are in an identical state. Every conditional line
+ * multiplies the fork list, but most resulting forks are duplicates (e.g. all
+ * the "no branch matched" continuations), so without this the list grows as
+ * 2^conditionals and exhausts memory on sections with many conditionals (e.g.
+ * Commune/C12). Two forks with the same includes/excludes/value/offsets/stack
+ * process the remaining lines identically and contribute the same variant.
+ */
+function dedupeForks(forks: RubricFork[]): RubricFork[] {
+  const seen = new Map<string, RubricFork>();
+  for (const fork of forks) {
+    const key = JSON.stringify([
+      fork.includes,
+      fork.excludes,
+      fork.value,
+      fork.conditionalOffsets,
+      fork.conditionalStack,
+      Object.entries(fork.decided).sort(),
+    ]);
+    if (!seen.has(key)) seen.set(key, fork);
+  }
+  return [...seen.values()];
+}
 
 function applyLineToFork(fork: RubricFork, line: string) {
   const { value, conditionalStack } = fork;
@@ -236,7 +309,7 @@ function applyConditionalLineToForks(
     }
     result.push(...newForks);
   }
-  return result;
+  return dedupeForks(result);
 }
 
 /**
@@ -255,6 +328,7 @@ export function processConditionalLines(
       value: [],
       conditionalOffsets: [-1],
       conditionalStack: [["affirmative", "scope-nest"]],
+      decided: {},
     },
   ];
 
