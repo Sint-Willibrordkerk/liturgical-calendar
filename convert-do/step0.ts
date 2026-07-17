@@ -2,6 +2,7 @@ import { consola } from "consola";
 import dotenv from "dotenv";
 import { readdir } from "fs/promises";
 import { join, relative } from "path";
+import { SEP, escapeRegExp } from "./lib/paths";
 
 dotenv.config();
 
@@ -49,6 +50,9 @@ function fileFilter(relativePath: string) {
     !relativePath.endsWith("Propaganda.txt") &&
     !relativePath.startsWith("Help/") &&
     !relativePath.startsWith("Latin-gabc/") &&
+    // TEMPORARY: Latin-only gate so the pipeline can be tested on a single
+    // language. The full LANGUAGE_CODES table in getOutputFile is the intended
+    // design; drop this line to ingest all languages.
     relativePath.startsWith("Latin/")
   );
 }
@@ -97,11 +101,14 @@ export function getOutputFile(input: string) {
   input = input.replace(/\.txt$/i, ".yml");
 
   for (const [lang, code] of LANGUAGE_CODES) {
-    if (input.includes(`\\${lang}\\`)) {
-      return input.replace(`\\${lang}\\`, `\\${code}\\`);
+    // Match the language folder as a full path segment on either platform,
+    // preserving whichever separators surround it.
+    const re = new RegExp(`(${SEP})${escapeRegExp(lang)}(${SEP})`);
+    if (re.test(input)) {
+      return input.replace(re, `$1${code}$2`);
     }
   }
-  if (!input.includes("horas\\Ordinarium"))
+  if (!new RegExp(`horas${SEP}Ordinarium`).test(input))
     throw new Error(`Unknown language: ${input}`);
   return input;
 }
@@ -109,5 +116,5 @@ export function getOutputFile(input: string) {
 const NEW_LINE = /\r?\n/;
 
 export function transform(input: string) {
-  return input.split(NEW_LINE);
+  return input.trim().split(NEW_LINE);
 }

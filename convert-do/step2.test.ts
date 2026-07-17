@@ -35,4 +35,30 @@ describe("step2 getOutputFile", () => {
       "root\\Sancti\\01-01.yml"
     );
   });
+
+  it("strips the root segment and folds variants on POSIX paths", () => {
+    expect(getOutputFile("root/missa/SanctiCist/01-01.yml")).toBe(
+      "root/Sancti/01-01.yml"
+    );
+    expect(getOutputFile("root/horas/Sancti/01-01.yml")).toBe(
+      "root/Sancti/01-01.yml"
+    );
+  });
+});
+
+describe("step2 transform with POSIX paths", () => {
+  it("derives the same conditions from a POSIX input path", () => {
+    expect(
+      transform(
+        { oratio: [{ value: ["x"], condition: [] }] },
+        "missa/Sancti/01-01t.txt"
+      )
+    ).toEqual({ oratio: [{ condition: ["1570"], value: ["x"] }] });
+    expect(
+      transform(
+        { name: [{ value: ["Foo"], condition: [] }] },
+        "missa/SanctiCist/01-01.txt"
+      )
+    ).toEqual({ name: [{ condition: ["cisterciensis"], value: ["Foo"] }] });
+  });
 });

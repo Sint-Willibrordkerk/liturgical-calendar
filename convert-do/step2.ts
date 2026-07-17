@@ -1,5 +1,6 @@
 import { applyIncludes } from "./condition";
 import { Step1Output } from "./step1";
+import { SEP, escapeRegExp, splitPath } from "./lib/paths";
 
 export type Step2Output = Step1Output;
 
@@ -59,7 +60,7 @@ function toKebabCase(str: string) {
 }
 
 function splitSuffix(input: string) {
-  const parts = input.split(".").at(-2)!.split("\\");
+  const parts = splitPath(input.split(".").at(-2)!);
   let file = parts.pop()!.replace("Ferua", "Feria");
   if (file === "Epi1-0") file = "Epi1-0r";
   if (file === "Epi1-0a") file = "Epi1-0";
@@ -82,14 +83,18 @@ const excludedFiles = [
 ];
 
 export function getOutputFile(input: string) {
-  let output = input.replace("\\horas\\", "\\").replace("\\missa\\", "\\");
+  // Strip the `horas`/`missa` root segment, keeping the leading separator.
+  let output = input.replace(new RegExp(`(${SEP})(?:horas|missa)${SEP}`), "$1");
   const { file, dir } = splitSuffix(input);
 
   for (const directory of ["Commune", "Martyrologium", "Sancti", "Tempora"]) {
     if (!dir.startsWith(directory)) continue;
 
     if (dir !== directory) {
-      output = output.replace(`\\${dir}\\`, `\\${directory}\\`);
+      output = output.replace(
+        new RegExp(`(${SEP})${escapeRegExp(dir)}(${SEP})`),
+        `$1${directory}$2`
+      );
     }
 
     if (excludedFiles.includes(file)) break;

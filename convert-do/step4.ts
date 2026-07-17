@@ -3,6 +3,7 @@ import { readFile } from "fs/promises";
 import { parse } from "yaml";
 import { Step3Output } from "./step3";
 import { directoryMappings, mappings } from "./step2";
+import { splitPath } from "./lib/paths";
 
 export type Step4Output = Step3Output;
 
@@ -133,7 +134,7 @@ function cleanReferences(
     .filter(
       (item) =>
         item.path.split("/").at(-1) !==
-        inputFile.replace(".yml", "").split("\\").at(-1)
+        splitPath(inputFile.replace(".yml", "")).at(-1)
     );
 }
 
@@ -147,7 +148,7 @@ async function loadReferenceFiles(
   for (const fileName of fileNames) {
     const doc = parse(
       await readFile(
-        `${join(inputFile.split("\\").slice(0, -2).join("/"), fileName)}.yml`,
+        `${join(splitPath(inputFile).slice(0, -2).join("/"), fileName)}.yml`,
         "utf-8"
       )
     );

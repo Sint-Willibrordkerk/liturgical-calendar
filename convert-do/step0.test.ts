@@ -14,8 +14,9 @@ describe("step0 transform", () => {
     expect(transform("a\nb\r\nc")).toEqual(["a", "b", "c"]);
   });
 
-  it("keeps a trailing empty line as an element", () => {
-    expect(transform("x\n")).toEqual(["x", ""]);
+  it("trims surrounding whitespace before splitting", () => {
+    expect(transform("\n\nx\n")).toEqual(["x"]);
+    expect(transform("  a\nb  ")).toEqual(["a", "b"]);
   });
 });
 
@@ -27,9 +28,22 @@ describe("step0 getOutputFile", () => {
     );
   });
 
+  it("renames the language folder on POSIX-separated paths", () => {
+    expect(getOutputFile("missa/Latin/02-02.txt")).toBe("missa/la/02-02.yml");
+    expect(getOutputFile("horas/Nederlands/01-01.txt")).toBe(
+      "horas/nl/01-01.yml"
+    );
+  });
+
   it("passes horas\\Ordinarium through without a language rename", () => {
     expect(getOutputFile("horas\\Ordinarium\\Prima.txt")).toBe(
       "horas\\Ordinarium\\Prima.yml"
+    );
+  });
+
+  it("passes horas/Ordinarium (POSIX) through without a language rename", () => {
+    expect(getOutputFile("horas/Ordinarium/Prima.txt")).toBe(
+      "horas/Ordinarium/Prima.yml"
     );
   });
 

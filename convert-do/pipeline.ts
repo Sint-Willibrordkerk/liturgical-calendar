@@ -4,6 +4,7 @@ import { join, dirname } from "path";
 import { readdir, readFile, writeFile, mkdir, rm, access } from "fs/promises";
 import { constants } from "fs";
 import { parse, stringify } from "yaml";
+import { SEP_RE } from "./lib/paths.js";
 
 import {
   DIVINUM_OFFICIUM_BASE,
@@ -169,7 +170,7 @@ async function processInputFiles(
 
     if (fromStep <= 0 && toStep >= 0) data = step0Transform(data as string);
     if (fromStep <= 1 && toStep >= 1)
-      data = step1Transform(data as Step0Output);
+      data = step1Transform(data as Step0Output, inputFile);
     if (fromStep <= 2 && toStep >= 2)
       data = step2Transform(data as Step1Output, inputFile);
     if (fromStep <= 3 && toStep >= 3) {
@@ -179,7 +180,7 @@ async function processInputFiles(
       const cache = [...fileCache].map((item) =>
         item
           .replace(STEP_BASE, "")
-          .split("\\")
+          .split(SEP_RE)
           .slice(3)
           .join("/")
           .replace(".yml", "")
