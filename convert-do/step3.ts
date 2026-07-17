@@ -181,14 +181,20 @@ function applyConditionalToFork(
       b.includes.length > 0 || b.excludes.length > 0;
     const isDead = (b: { includes: string[]; excludes: string[] }) =>
       b.includes.some(absent) || b.excludes.some(present);
+    // Fires only when fully determined: every include already present AND every
+    // exclude already absent. An undecided exclude (e.g. a `nisi` branch) is not
+    // yet firing — it must still fork so its variant survives.
     const isTrue = (b: { includes: string[]; excludes: string[] }) =>
-      hasTokens(b) && b.includes.every(present) && !b.excludes.some(present);
+      hasTokens(b) && b.includes.every(present) && b.excludes.every(absent);
 
     const firing = branches.find(isTrue);
     if (firing) {
       // The conditional definitely fires via an already-present rubric; apply
-      // it once and drop the (impossible) non-firing base.
-      return [makeBranchFork(firing, fork.decided)];
+      // its content effect once and drop the (impossible) non-firing base. Keep
+      // the fork's existing rubric label — firing on an already-decided rubric
+      // must not relabel a fork that a distinct branch (e.g. a feria) owns.
+      const fired = makeBranchFork(firing, fork.decided);
+      return [{ ...fired, includes: fork.includes, excludes: fork.excludes }];
     }
 
     // Keep only branches that are still possible (drop already-excluded ones).
