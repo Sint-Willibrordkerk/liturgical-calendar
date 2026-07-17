@@ -120,6 +120,34 @@ async function readInput(
   return { total, map: result, outputDirectories, cachedFiles };
 }
 
+type MergeVariant = { value: unknown; condition: string[] };
+
+/** A section value shaped as rubric variants (`{ value, condition }[]`). */
+function isVariantArray(value: unknown): value is MergeVariant[] {
+  return (
+    Array.isArray(value) &&
+    value.every(
+      (item) =>
+        item != null &&
+        typeof item === "object" &&
+        "value" in item &&
+        Array.isArray((item as MergeVariant).condition)
+    )
+  );
+}
+
+/** Union two variant lists by condition; `high` wins on a condition collision. */
+function mergeVariants(
+  low: MergeVariant[],
+  high: MergeVariant[]
+): MergeVariant[] {
+  const byCondition = new Map<string, MergeVariant>();
+  for (const variant of [...low, ...high]) {
+    byCondition.set([...variant.condition].sort().join("|"), variant);
+  }
+  return [...byCondition.values()];
+}
+
 async function processInputFiles(
   outputFile: string,
   inputFiles: string[],
@@ -182,14 +210,33 @@ async function processInputFiles(
     if (!result) {
       result = data;
     } else {
-      const hasPriority = inputFile.includes("missa");
-      const merged: any = hasPriority
-        ? { ...result, ...data }
-        : { ...data, ...result };
-      const ruleA = Array.isArray(data.rule) ? data.rule : [];
-      const ruleB = Array.isArray(result?.rule) ? result.rule : [];
-      if (ruleA.length || ruleB.length)
-        merged.rule = [...new Set([...ruleA, ...ruleB])];
+      // Multiple input files map to this output: horas + missa, plus the
+      // variant directories (TemporaOP, SanctiCist, …) that step 2 folds into
+      // their base. Union their section variants by condition so no base or
+      // variant content is dropped; missa wins on a condition collision. A
+      // shallow spread kept only one file's variants per shared section,
+      // silently losing e.g. the conditionless base text that rubric variants
+      // reference.
+      const dataIsPriority = inputFile.includes("missa");
+      const [low, high] = dataIsPriority ? [result, data] : [data, result];
+      const merged: any = { ...low };
+      for (const [key, highVal] of Object.entries(high)) {
+        const lowVal = merged[key];
+        merged[key] =
+          isVariantArray(lowVal) && isVariantArray(highVal)
+            ? mergeVariants(lowVal, highVal)
+            : highVal;
+      }
+      // Flat (post-step-6) rule arrays are plain string lists, not variants;
+      // keep the original union for that shape.
+      const flatRuleA =
+        Array.isArray(data.rule) && !isVariantArray(data.rule) ? data.rule : [];
+      const flatRuleB =
+        Array.isArray(result.rule) && !isVariantArray(result.rule)
+          ? result.rule
+          : [];
+      if (flatRuleA.length || flatRuleB.length)
+        merged.rule = [...new Set([...flatRuleA, ...flatRuleB])];
       result = merged;
     }
   }
