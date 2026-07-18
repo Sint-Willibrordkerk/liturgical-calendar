@@ -25,12 +25,12 @@ import {
   extractDependencies,
   transform as step4Transform,
 } from "./step4.js";
+import { transform as step5Transform, type Step5Output } from "./step5.js";
 import {
-  transform as step5Transform,
-  getOutputFile as getStep5OutputFile,
-  type Step5Output,
-} from "./step5.js";
-import { transform as step6Transform, type Step6Output } from "./step6.js";
+  transform as step6Transform,
+  getOutputFile as getStep6OutputFile,
+  type Step6Output,
+} from "./step6.js";
 import { transform as step7Transform } from "./step7.js";
 import { run as runStep8 } from "./step8.js";
 import { run as runStep9 } from "./step9.js";
@@ -48,15 +48,15 @@ const MISSING_DEPENDENCY_ERROR = "Missing dependency";
 const STREAMING_MAX_STEP = 7;
 
 /**
- * Steps after which the streaming pass must materialize a checkpoint, so a
- * later reference step reads a stable, correctly-staged tree from disk:
- * - after **4** — broad references resolve against the still-**unfolded**
- *   step4 tree (variant directories separate), so a reference like
- *   `SanctiM/11-14M` finds its own file. Folding it into the same pass would
- *   leave only the folded `Sancti/11-14` on disk.
- * - after **5** — inline references (step 6) read the folded step5 tree.
+ * Steps after which the streaming pass must materialize a checkpoint. One
+ * checkpoint after step 4 is enough: it materializes the **unfolded** step4
+ * tree (variant directories still separate). Broad references (step 4) resolve
+ * against it within the first segment (dependency-gated); inline references
+ * (step 5) read that same complete step4 tree in the next segment — so both
+ * find variant files like `SanctiM/11-14M`. The fold (step 6) then runs in that
+ * same later segment without needing its own checkpoint.
  */
-const STREAMING_CHECKPOINTS = [4, 5];
+const STREAMING_CHECKPOINTS = [4];
 
 /** Batch steps (directory-level fan-out / cross-file merges). */
 const BATCH_STEPS: Record<
@@ -114,13 +114,13 @@ async function readInput(
   for (const inputFile of inputFiles.files) {
     let output = join(outputDir, inputFile);
     if (fromStep <= 0 && toStep >= 0) output = getStep0OutputFile(output);
-    // Step 2 strips the horas/missa root (combining mass and hours); step 5
+    // Step 2 strips the horas/missa root (combining mass and hours); step 6
     // folds variant directories and strips filename suffixes. Both collapse
-    // several inputs onto one output path, which the runner then merges. Step 5
-    // folds late — after the reference steps (3–4) — so references resolve
+    // several inputs onto one output path, which the runner then merges. Step 6
+    // folds late — after the reference steps (4–5) — so references resolve
     // while variant directories are still separate files.
     if (fromStep <= 2 && toStep >= 2) output = getStep2OutputFile(output);
-    if (fromStep <= 5 && toStep >= 5) output = getStep5OutputFile(output);
+    if (fromStep <= 6 && toStep >= 6) output = getStep6OutputFile(output);
     if (!result.has(output)) {
       result.set(output, []);
     }
@@ -213,19 +213,16 @@ async function processInputFiles(
       data = await step4Transform(data as Step3Output, outputFile);
     }
     if (fromStep <= 5 && toStep >= 5) {
-      data = step5Transform(data as Step4Output, inputFile);
+      // Inline `@File:Section` references resolve against the fully-materialized,
+      // still-unfolded step4 tree (variant directories separate). The resolver
+      // is lenient and leaves anything it cannot resolve in place.
+      data = await step5Transform(
+        data as Step4Output,
+        join(STEP_BASE, "step4", inputFile)
+      );
     }
     if (fromStep <= 6 && toStep >= 6) {
-      // Unlike step 4, step 6 resolves its `@File:Section` references by
-      // reading the already-complete step5 tree (below), not step6 output, so
-      // it needs no dependency gate. Gating here would also wrongly block
-      // references to variant directories (e.g. TemporaOP) that step 5 already
-      // merged into their base, requeuing those files forever. The resolver is
-      // lenient and leaves anything it cannot resolve in place.
-      data = await step6Transform(
-        data as Step5Output,
-        join(STEP_BASE, "step5", inputFile)
-      );
+      data = step6Transform(data as Step5Output, inputFile);
     }
     if (fromStep <= 7 && toStep >= 7)
       data = step7Transform(data as Step6Output);
@@ -235,12 +232,11 @@ async function processInputFiles(
     } else {
       // Multiple input files map to this output: horas + missa (combined by
       // step 2), plus the variant directories (TemporaOP, SanctiCist, …) that
-      // step 3 folds into their base. Union their section variants by
-      // condition so no base or
-      // variant content is dropped; missa wins on a condition collision. A
-      // shallow spread kept only one file's variants per shared section,
-      // silently losing e.g. the conditionless base text that rubric variants
-      // reference.
+      // step 6 folds into their base. Union their section variants by condition
+      // so no base or variant content is dropped; missa wins on a condition
+      // collision. A shallow spread kept only one file's variants per shared
+      // section, silently losing e.g. the conditionless base text that rubric
+      // variants reference.
       const dataIsPriority = inputFile.includes("missa");
       const [low, high] = dataIsPriority ? [result, data] : [data, result];
       const merged: any = { ...low };

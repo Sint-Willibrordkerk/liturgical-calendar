@@ -74,9 +74,9 @@ stap een hele map:
      (`Latin` → `la`, enz.).
    - `getStep2OutputFile` — strip `\horas\` / `\missa\`, zodat mis en officie op
      **hetzelfde output-pad** uitkomen (combineren).
-   - `getStep5OutputFile` — herleid variant-directories naar hun basis en strip
+   - `getStep6OutputFile` — herleid variant-directories naar hun basis en strip
      de bestandsnaam-suffix, zodat rubriek-varianten op hetzelfde output-pad
-     uitkomen. Dit gebeurt bewust pas ná de referentie-stappen (3–4), zodat
+     uitkomen. Dit gebeurt bewust pas ná de referentie-stappen (4–5), zodat
      referenties resolven terwijl variant-directories nog aparte bestanden zijn.
 3. **Mergen** — meerdere invoerbestanden die naar hetzelfde output-pad wijzen
    (o.a. horas + missa, en rubriek-varianten) worden samengevoegd. `missa`
@@ -85,7 +85,7 @@ stap een hele map:
 4. **Transformeren** — per bestand worden de transforms `step0` … `step7`
    in volgorde toegepast, voor zover ze binnen `[fromStep, toStep]` vallen.
 5. **Caching & dependencies** — bestaande output wordt overgeslagen tenzij
-   `--force`. Step 4 en 6 declareren afhankelijkheden (`extractDependencies`);
+   `--force`. Step 4 en 5 declareren afhankelijkheden (`extractDependencies`);
    ontbreekt een dependency nog in de cache, dan wordt het bestand achteraan de
    wachtrij gezet en later opnieuw geprobeerd.
 
@@ -111,8 +111,8 @@ relevant. De gedeelde helpers staan in [`lib/batch.ts`](lib/batch.ts).
 | 2    | step1                                    | [`step2.ts`](step2.ts)   | Mis en officie combineren (strip `\horas\` / `\missa\`)                   |
 | 3    | step2                                    | [`step3.ts`](step3.ts)   | Inline conditionals in regels verwerken → rubriek-varianten              |
 | 4    | step3                                    | [`step4.ts`](step4.ts)   | Brede referenties (`@File`, `ex …`, `vide …`) resolven                   |
-| 5    | step4                                    | [`step5.ts`](step5.ts)   | Directory-/bestandsnaam-suffixen → rubriek-condities; varianten samenvouwen |
-| 6    | step5                                    | [`step6.ts`](step6.ts)   | Inline referenties `@File:Section:…:s/…/…/` resolven                     |
+| 5    | step4                                    | [`step5.ts`](step5.ts)   | Inline referenties `@File:Section:…:s/…/…/` resolven                     |
+| 6    | step5                                    | [`step6.ts`](step6.ts)   | Directory-/bestandsnaam-suffixen → rubriek-condities; varianten samenvouwen |
 | 7    | step6                                    | [`step7.ts`](step7.ts)   | Rubriek-varianten materialiseren → `key` + `key/rubric` (platte `string[]`) |
 | 8    | step7                                    | [`step8.ts`](step8.ts)   | Bestandsnaam = kebab van naam; `rank`/`officium` → `name` *(batch)*      |
 | 9    | step8                                    | [`step9.ts`](step9.ts)   | Commemoraties naar aparte bestanden per heilige *(batch)*               |
@@ -148,7 +148,7 @@ relevant. De gedeelde helpers staan in [`lib/batch.ts`](lib/batch.ts).
 - **`getOutputFile`** — strip `\horas\`/`\missa\`, zodat de mis- en officie-versie
   van dezelfde dag op hetzelfde output-pad uitkomen. De runner voegt beide samen
   (`missa` wint bij key-conflicten). Variant-directories blijven hier nog apart;
-  die vouwt step 5 samen.
+  die vouwt step 6 samen.
 
 ## Step 3 — Inline conditionals
 
@@ -173,7 +173,16 @@ relevant. De gedeelde helpers staan in [`lib/batch.ts`](lib/batch.ts).
   naar variant-directories (bijv. `@SanctiM/11-14M`) nog als aparte bestanden
   te vinden zijn.
 
-## Step 5 — Suffixen naar rubriek-condities
+## Step 5 — Inline referenties resolven
+
+- **`transform(obj, inputFile)`** — resolvet referenties **binnen regels** in de
+  vorm `@File:Section:lineRange:s/pattern/replacement/`. Ondersteunt
+  substituties (`s/…/…/flags`) en een beperkte resolutiediepte
+  (`MAX_RESOLVE_DEPTH = 5`). Leest de gerefereerde bestanden uit de
+  gematerialiseerde, nog **niet-samengevouwen** step4-boom, zodat ook
+  variant-referenties (bv. `@SanctiM/…`) resolven.
+
+## Step 6 — Suffixen naar rubriek-condities
 
 - **`transform(obj, inputFile)`** — leidt uit de directory- en bestandsnaam de
   rubriek-context af en voegt die toe aan de bestaande condition van elke variant
@@ -187,14 +196,6 @@ relevant. De gedeelde helpers staan in [`lib/batch.ts`](lib/batch.ts).
   `Martyrologium`, `Sancti`, `Tempora`) en verwijder niet-numerieke
   bestandsnaam-suffixen, zodat varianten naar het basisbestand mergen. (De
   `\horas\`/`\missa\`-strip is al door step 2 gedaan.)
-
-## Step 6 — Inline referenties resolven
-
-- **`transform(obj, inputFile)`** — resolvet referenties **binnen regels** in de
-  vorm `@File:Section:lineRange:s/pattern/replacement/`. Ondersteunt
-  substituties (`s/…/…/flags`) en een beperkte resolutiediepte
-  (`MAX_RESOLVE_DEPTH = 5`).
-- **`extractDependencies`** — zoals step 5.
 
 ## Step 7 — Rubriek-varianten materialiseren
 

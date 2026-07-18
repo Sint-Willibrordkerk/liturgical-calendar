@@ -1,69 +1,48 @@
-import { describe, expect, it } from "vitest";
-import { transform, getOutputFile } from "./step5";
+import { mkdtempSync, rmSync } from "fs";
+import { mkdir, writeFile } from "fs/promises";
+import { tmpdir } from "os";
+import { join } from "path";
+import { stringify } from "yaml";
+import { afterEach, describe, expect, it } from "vitest";
+import { extractDependencies, transform } from "./step5";
 
-describe("step5 transform", () => {
-  it("turns a filename rubric suffix into a condition", () => {
-    // `01-01t` — the `t` suffix maps to the 1570 rubric.
-    expect(
-      transform(
-        { oratio: [{ value: ["x"], condition: [] }] },
-        "Sancti\\01-01t.yml"
-      )
-    ).toEqual({ oratio: [{ condition: ["1570"], value: ["x"] }] });
-  });
-
-  it("adds a directory-variant condition", () => {
-    // `SanctiCist` — the Cist directory maps to cisterciensis.
-    expect(
-      transform(
-        { name: [{ value: ["Foo"], condition: [] }] },
-        "SanctiCist\\01-01.yml"
-      )
-    ).toEqual({ name: [{ condition: ["cisterciensis"], value: ["Foo"] }] });
-  });
-
-  it("extends an existing variant condition instead of replacing it", () => {
-    // A step-1 header condition (1570) is kept, with the directory token added.
-    expect(
-      transform(
-        { oratio: [{ value: ["x"], condition: ["1570"] }] },
-        "SanctiCist\\01-01.yml"
-      )
-    ).toEqual({ oratio: [{ condition: ["1570", "cisterciensis"], value: ["x"] }] });
-  });
-
-  it("derives the same conditions from a POSIX input path", () => {
-    expect(
-      transform({ oratio: [{ value: ["x"], condition: [] }] }, "Sancti/01-01t.yml")
-    ).toEqual({ oratio: [{ condition: ["1570"], value: ["x"] }] });
-    expect(
-      transform(
-        { name: [{ value: ["Foo"], condition: [] }] },
-        "SanctiCist/01-01.yml"
-      )
-    ).toEqual({ name: [{ condition: ["cisterciensis"], value: ["Foo"] }] });
+describe("step5 extractDependencies", () => {
+  it("returns file paths from inline @File:Section references", () => {
+    const deps = extractDependencies(
+      { lectio1: [{ value: ["@Sancti/12-26:Lectio1"], condition: [] }] } as never,
+      "la\\Sancti\\12-25.yml"
+    );
+    expect([...deps]).toEqual(["Sancti/12-26"]);
   });
 });
 
-describe("step5 getOutputFile", () => {
-  it("folds a variant directory into its base", () => {
-    expect(getOutputFile("root\\SanctiCist\\01-01.yml")).toBe(
-      "root\\Sancti\\01-01.yml"
-    );
+describe("step5 transform", () => {
+  let root: string | undefined;
+  afterEach(() => {
+    if (root) rmSync(root, { recursive: true, force: true });
+    root = undefined;
   });
 
-  it("strips a filename rubric suffix", () => {
-    expect(getOutputFile("root\\Sancti\\01-01t.yml")).toBe(
-      "root\\Sancti\\01-01.yml"
+  it("inlines a referenced section's lines in place of the @ reference", async () => {
+    root = mkdtempSync(join(tmpdir(), "lc-step5-"));
+    // Inline references read the materialized step4 tree; the base path needs a
+    // `step{N}/<lang>` segment for the language root to be located.
+    const base = join(root, "step4");
+    await mkdir(join(base, "la", "Commune"), { recursive: true });
+    await mkdir(join(base, "la", "Sancti"), { recursive: true });
+    await writeFile(
+      join(base, "la", "Commune", "C1.yml"),
+      stringify({ lectio1: [{ value: ["borrowed lectio"], condition: [] }] }),
+      "utf-8"
     );
-  });
 
-  it("folds and strips on POSIX paths", () => {
-    expect(getOutputFile("root/SanctiCist/01-01.yml")).toBe(
-      "root/Sancti/01-01.yml"
+    const out = await transform(
+      { lectio1: [{ value: ["@Commune/C1:Lectio1"], condition: [] }] } as never,
+      join(base, "la", "Sancti", "12-25.yml")
     );
-    expect(getOutputFile("root/Sancti/01-01t.yml")).toBe(
-      "root/Sancti/01-01.yml"
-    );
+
+    expect(out.lectio1).toEqual([
+      { value: ["borrowed lectio"], condition: [] },
+    ]);
   });
 });

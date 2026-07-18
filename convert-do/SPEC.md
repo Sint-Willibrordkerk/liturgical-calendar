@@ -239,7 +239,7 @@ shared, root-stripped output path, and the runner unions whatever lands there.
 - Files that resolve to the same path are unioned by the runner: section
   variants are merged by condition, and on a condition collision the `missa`
   version wins. Variant directories of the same day are still separate at this
-  point — step 5 folds those.
+  point — step 6 folds those.
 
 ### Path mapping
 
@@ -383,10 +383,10 @@ This step resolves those **file-level** references — a whole-file include
 file and merging its sections in, propagating the referencing rubric condition.
 
 Step 4 runs while variant directories (e.g. `SanctiM`, `SanctiCist`) are still
-**separate** files — step 5 has not yet folded them onto their base — so a
-reference such as `@SanctiM/11-14M` resolves directly to its own file. This
-ordering (references before the suffix/fold step) is why steps 3–5 sit in this
-order.
+**separate** files — the suffix/fold step (step 6) has not yet folded them onto
+their base — so a reference such as `@SanctiM/11-14M` resolves directly to its
+own file. Both reference steps (4 and 5) run before that fold, which is why
+steps 3–6 sit in this order.
 
 ### Input
 
@@ -407,7 +407,7 @@ Each reference carries the rubric condition of the variant it was found in.
 
 - **`__preamble`** — a line beginning with `@` is a whole-file include. The path
   is the text after `@` up to the first `:`; any `:Section` suffix is ignored
-  here (inline `@File:Section` references are step 6's concern).
+  here (inline `@File:Section` references are step 5's concern).
 - **`rank`** — the fourth `;;`-separated field of a rank line:
   - `ex X` → whole-file include;
   - `vide X` → selective borrow;
@@ -437,7 +437,7 @@ A raw reference target is normalized before lookup:
 The target is otherwise used **as written**: a variant directory (`SanctiM`) or
 a filename rubric suffix (`…t`) is **not** stripped, because at this step those
 files still exist separately — the reference resolves directly to the specific
-variant file. (Step 5 folds variants onto their base later.)
+variant file. (Step 6 folds variants onto their base later.)
 
 ### Merging and condition propagation
 
@@ -473,7 +473,7 @@ so files nested more than one directory below the language (e.g.
 - **Bare rank reference** (no `ex`/`vide`) is treated as a `vide` commune
   pointer rather than an error.
 - **`@File:Section`** in the preamble is imported as the whole file here; the
-  `:Section` narrowing happens at step 6.
+  `:Section` narrowing happens at step 5.
 - **A declared reference that was never produced** leaves the file queued and,
   if never satisfied, is reported as an error (non-fatal) rather than crashing.
 - A couple of individual targets receive a fixed correction (e.g. `Tempora/Epi4`
@@ -481,18 +481,30 @@ so files nested more than one directory below the language (e.g.
 
 ---
 
-## Step 5 — Directory and filename suffixes to rubric conditions
+## Step 5 — Inline references (`@File:Section:…`)
+
+Resolves references **within a line** of the form `@File:Section:lineRange:s/…/…/`
+— pulling the named section (optionally a line range, optionally with a
+substitution) from another file in place of the reference. *(Full specification
+pending.)*
+
+Like step 4, this runs before the fold (step 6), so it too resolves against the
+still-separate variant files.
+
+---
+
+## Step 6 — Directory and filename suffixes to rubric conditions
 
 Reads the file's **directory** and **filename** to infer which rubric(s) it
 represents, adds that rubric to every section's condition, and computes an
 output path with the variant markers removed so that all rubric variants of the
 same day or feast land on one path. This is also where variant directories are
 folded onto their base — deliberately after references have been resolved
-(steps 3–4).
+(steps 3–5).
 
 ### Input
 
-- The step 4 object for one file, plus its path.
+- The step 5 object for one file, plus its path.
 
 ### Output
 
@@ -657,7 +669,7 @@ A **condition** is a set of rubric *tokens* (e.g. `1570`, `2020`, `monastica`);
 a **variant** pairs a `value` (its lines) with a `condition` (its tokens), where
 an empty condition denotes the default/unconditional case.
 
-> This appendix currently covers the condition handling used by steps 1 and 5.
+> This appendix currently covers the condition handling used by steps 1 and 6.
 > Inline-conditional parsing, used by step 3, is specified alongside that step.
 
 ### Token vocabulary
