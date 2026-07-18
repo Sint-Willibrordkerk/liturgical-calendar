@@ -237,6 +237,13 @@ export async function transform(
   inputFile: string
 ): Promise<Step5Output> {
   const basePath = getLanguageBasePath(inputFile);
+  // The current file's own path relative to the language root, used to resolve
+  // references whose `File` part is omitted (`@:Section`) against this file.
+  const selfPath = inputFile
+    .replace(/\\/g, "/")
+    .slice(basePath.length)
+    .replace(/^\/+/, "")
+    .replace(/\.ya?ml$/i, "");
   const result: Step5Output = {};
 
   for (const [key, value] of Object.entries(obj)) {
@@ -258,7 +265,7 @@ export async function transform(
           }
 
           const resolved = await resolveReference(
-            parsedRef,
+            parsedRef.filePath ? parsedRef : { ...parsedRef, filePath: selfPath },
             basePath,
             baseSection,
             item.condition

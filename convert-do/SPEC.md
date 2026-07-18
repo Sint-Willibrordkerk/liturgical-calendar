@@ -8,7 +8,7 @@ Where [AGENTS.md](AGENTS.md) explains *how to run* the pipeline, this document
 specifies *what each step guarantees*: its inputs, its outputs, the
 transformation it performs, the resulting data shape, and its handling of
 boundary cases. It describes observable behavior, not implementation. Section
-numbering follows the step numbers (step 0 … step 10).
+numbering follows the step numbers (step 0 … step 9).
 
 ## Conventions used in this document
 
@@ -24,9 +24,9 @@ separator differs but the path structure is identical.
 
 The pipeline runs in two modes:
 
-- **Streaming (steps 0–7)** — each source file is processed independently and
+- **Streaming (steps 0–6)** — each source file is processed independently and
   passed through every step in the requested range before being written once.
-- **Batch (steps 8–10)** — whole-directory passes that may produce several
+- **Batch (steps 7–9)** — whole-directory passes that may produce several
   outputs from one input, or merge content across inputs. Each batch step fully
   rebuilds its output directory.
 
@@ -483,13 +483,88 @@ so files nested more than one directory below the language (e.g.
 
 ## Step 5 — Inline references (`@File:Section:…`)
 
-Resolves references **within a line** of the form `@File:Section:lineRange:s/…/…/`
-— pulling the named section (optionally a line range, optionally with a
-substitution) from another file in place of the reference. *(Full specification
-pending.)*
+Replaces a single **reference line** with the lines of a specific section pulled
+from another file. Where step 4 imports whole files, step 5 pulls one named
+section — optionally a line range, optionally with text substitutions — in place
+of the `@…` line. Like step 4 it runs before the fold (step 6), reading the
+still-unfolded step 4 tree, so references to variant files (e.g.
+`@SanctiM/11-14M:…`) resolve to their own file.
 
-Like step 4, this runs before the fold (step 6), so it too resolves against the
-still-separate variant files.
+### Input
+
+- The step 4 object for one file, plus its path.
+- Referenced files, read from the fully materialized (unfolded) step 4 tree.
+
+### Output
+
+- The same object shape. Every reference line is replaced by the resolved lines;
+  a reference that cannot be resolved is **left in place** unchanged. Non-array
+  (scalar) section values pass through untouched.
+
+### Reference syntax
+
+A line whose text begins with `@` is a reference:
+`@File:Section:lineRange:s/pattern/replacement/flags`, colon-separated, where all
+parts after `File` are optional:
+
+- **`File`** — the target file path, relative to the language root. If omitted
+  (the reference begins `@:…`), the **current file** is the target — the section
+  is pulled from the file itself.
+- **`Section`** — the section to pull, kebab-cased. If omitted, the target's
+  first content section is used.
+- **`lineRange`** — `N` or `N-M`, selecting lines *N*…*M* (1-based, inclusive).
+- **`substitution`** — one or more `s/pattern/replacement/flags` groups applied
+  to the pulled lines (sed-like; default flag is global).
+
+### Resolution
+
+For each reference line:
+
+1. Load the target file from the step 4 tree. If it is missing or unreadable,
+   the reference line is left unchanged.
+2. Choose the section — matched by exact key, by a `…/section` suffix, or by a
+   `section-` / `section/` prefix; with no name given, the first non-preamble
+   section.
+3. From that section choose the variant matching the current rubric condition:
+   an exact condition match, else the default (unconditional) variant, else the
+   first.
+4. Apply the line range, if any.
+5. Apply the substitutions, if any — each as a regular-expression replace; an
+   invalid pattern is skipped.
+6. If the result is a single line that is itself a reference, resolve it
+   recursively (transitively), up to a depth of **5**.
+
+The reference line is then replaced by the resulting lines. A reference that
+resolves to an empty section removes the line; only an *unresolvable* reference
+(missing file or section) leaves the line in place.
+
+### Dependencies
+
+Step 5 reads the **complete** step 4 tree (materialized before this step runs),
+so every referenced file is already present; it does not block on or requeue
+missing targets — an unresolvable reference is simply left in place. The set of
+referenced file paths (excluding self-references) is still exposed, consistent
+with step 4.
+
+### Examples
+
+- Pulling one section:
+
+  ```
+  section lectio1 = [{ value: ["@Commune/C1:Lectio1"], condition: [] }]
+  with Commune/C1 → { lectio1: [{ value: ["borrowed lectio"], condition: [] }] }
+  ⇒ lectio1 = [{ value: ["borrowed lectio"], condition: [] }]
+  ```
+
+- Declared dependency: `@Sancti/12-26:Lectio1` → `Sancti/12-26`.
+
+### Edge cases
+
+- **Unresolvable reference** (missing file or section) → the `@…` line is kept
+  verbatim.
+- **Recursion depth** is capped at 5; deeper chains stop resolving.
+- **Empty target section** → the reference line is removed (replaced by nothing).
+- **Non-array section values** pass through unchanged.
 
 ---
 

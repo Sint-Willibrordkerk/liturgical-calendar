@@ -31,21 +31,20 @@ import {
   getOutputFile as getStep6OutputFile,
   type Step6Output,
 } from "./step6.js";
-import { transform as step7Transform } from "./step7.js";
+import { run as runStep7 } from "./step7.js";
 import { run as runStep8 } from "./step8.js";
 import { run as runStep9 } from "./step9.js";
-import { run as runStep10 } from "./step10.js";
 
 const PROJECT_BASE = process.cwd();
 const STEP_BASE = join(PROJECT_BASE, ".divinum-officium");
 const MISSING_DEPENDENCY_ERROR = "Missing dependency";
 
 /**
- * Highest step handled by the in-memory streaming runner. Later steps (8–10)
+ * Highest step handled by the in-memory streaming runner. Later steps (7–9)
  * are directory-level batch operations (fan-out / cross-file merges) and run
  * against materialized `step{N-1}` folders instead.
  */
-const STREAMING_MAX_STEP = 7;
+const STREAMING_MAX_STEP = 6;
 
 /**
  * Steps after which the streaming pass must materialize a checkpoint. One
@@ -63,9 +62,9 @@ const BATCH_STEPS: Record<
   number,
   (inputDir: string, outputDir: string) => Promise<{ written: number }>
 > = {
+  7: runStep7,
   8: runStep8,
   9: runStep9,
-  10: runStep10,
 };
 
 export async function getInputFiles(fromStep: number): Promise<{
@@ -224,8 +223,6 @@ async function processInputFiles(
     if (fromStep <= 6 && toStep >= 6) {
       data = step6Transform(data as Step5Output, inputFile);
     }
-    if (fromStep <= 7 && toStep >= 7)
-      data = step7Transform(data as Step6Output);
 
     if (!result) {
       result = data;

@@ -1,70 +1,65 @@
 import { describe, expect, it } from "vitest";
 import {
   transform,
-  getAllDisplayNames,
-  toKebabFileName,
-  resolveCollisions,
+  extractCommemorations,
+  withoutCommemoratioKeys,
+  commemorationNameToSlug,
 } from "./step8";
 
-describe("step8 name/filename", () => {
-  it("folds rank into name using the first ;;-part", () => {
-    const out = transform({
-      rank: ["Ss. Nominis Iesu;;3;;something"],
-      lectio1: ["x"],
+const v = (value: string[], condition: string[] = []) => ({ value, condition });
+
+describe("step8 commemorations", () => {
+  it("slugs a Pro-line, dropping the S./Ss. honorific", () => {
+    expect(commemorationNameToSlug("!Pro S. Anastasia")).toBe("anastasia");
+    expect(commemorationNameToSlug("Pro Ss. Stephano Protomartyre")).toBe(
+      "stephano-protomartyre"
+    );
+    expect(commemorationNameToSlug("not a pro line")).toBeNull();
+  });
+
+  it("extracts commemoration sections keyed by slug, preserving variants", () => {
+    const comms = extractCommemorations({
+      "commemoratio-oratio": [v(["!Pro S. Anastasia", "oratio line 1"])],
+      "commemoratio-secreta": [v(["!Pro S. Anastasia", "secreta line 1"])],
     });
-    expect(out).toEqual({ name: "Ss. Nominis Iesu", lectio1: ["x"] });
+    expect(comms).toHaveLength(1);
+    expect(comms[0]).toMatchObject({
+      slug: "anastasia",
+      displayName: "S. Anastasia",
+      oratio: [v(["oratio line 1"])],
+      secreta: [v(["secreta line 1"])],
+      postcommunio: [],
+    });
   });
 
-  it("folds officium into name and drops the officium key", () => {
-    const out = transform({ officium: ["De Sancta Maria"] });
-    expect(out).toEqual({ name: "De Sancta Maria" });
+  it("splits distinct saints across a section's variants", () => {
+    const comms = extractCommemorations({
+      "commemoratio-oratio": [
+        v(["!Pro S. Anastasia", "a"]),
+        v(["!Pro S. Stephano", "b"], ["1570"]),
+      ],
+    });
+    expect(comms.map((c) => c.slug).sort()).toEqual(["anastasia", "stephano"]);
+    const stephano = comms.find((c) => c.slug === "stephano")!;
+    expect(stephano.oratio).toEqual([v(["b"], ["1570"])]);
   });
 
-  it("maps rubric-suffixed rank/officium to matching name suffix", () => {
-    const out = transform({ "rank/1570": ["Old Rite;;2"] });
-    expect(out).toEqual({ "name/1570": "Old Rite" });
+  it("removes commemoratio keys from the main object", () => {
+    expect(
+      withoutCommemoratioKeys({
+        lectio1: [v(["x"])],
+        "commemoratio-oratio": [v(["!Pro S. Anastasia", "a"])],
+      })
+    ).toEqual({ lectio1: [v(["x"])] });
   });
 
-  it("keeps an explicit name and normalizes to a string", () => {
-    const out = transform({ name: ["Explicit Name"] });
-    expect(out).toEqual({ name: "Explicit Name" });
-  });
-
-  it("collects distinct kebab display names across variants", () => {
-    const names = getAllDisplayNames(
-      { name: "Sanctae Mariae", "name/1570": "Beatae Mariae Virginis" },
-      "01-01"
-    );
-    expect(names.sort()).toEqual(
-      ["beatae-mariae-virginis", "sanctae-mariae"].sort()
-    );
-  });
-
-  it("falls back to the original stem when there is no name", () => {
-    expect(getAllDisplayNames({ lectio1: ["x"] }, "12-25")).toEqual(["12-25"]);
-  });
-
-  it("kebab-cases and strips invalid filename characters", () => {
-    expect(toKebabFileName("S. Joannis: Ante Portam")).toBe(
-      "s.-joannis-ante-portam"
-    );
-  });
-
-  it("disambiguates same-name different-content by original stem", () => {
-    const resolved = resolveCollisions([
-      { targetBasename: "maria", originalStem: "01-01", relPath: "la/01-01.yml", content: "a" },
-      { targetBasename: "maria", originalStem: "02-02", relPath: "la/02-02.yml", content: "b" },
-    ]);
-    const names = resolved.map((r) => r.finalBasename).sort();
-    expect(names).toEqual(["maria-01-01", "maria-02-02"]);
-  });
-
-  it("collapses same-name same-content into one file", () => {
-    const resolved = resolveCollisions([
-      { targetBasename: "maria", originalStem: "01-01", relPath: "la/01-01.yml", content: "same" },
-      { targetBasename: "maria", originalStem: "02-02", relPath: "la/02-02.yml", content: "same" },
-    ]);
-    expect(resolved).toHaveLength(1);
-    expect(resolved[0]!.finalBasename).toBe("maria");
+  it("transform returns both the stripped main and the commemorations", () => {
+    const { main, commemorations } = transform({
+      lectio1: [v(["x"])],
+      "commemoratio-oratio": [v(["!Pro S. Anastasia", "a"])],
+    });
+    expect(main).toEqual({ lectio1: [v(["x"])] });
+    expect(commemorations).toHaveLength(1);
+    expect(commemorations[0]!.slug).toBe("anastasia");
   });
 });

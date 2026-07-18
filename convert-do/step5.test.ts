@@ -45,4 +45,23 @@ describe("step5 transform", () => {
       { value: ["borrowed lectio"], condition: [] },
     ]);
   });
+
+  it("resolves an omitted-File reference (@:Section) against the current file", async () => {
+    root = mkdtempSync(join(tmpdir(), "lc-step5-self-"));
+    const base = join(root, "step4");
+    await mkdir(join(base, "la", "Sancti"), { recursive: true });
+    // The current file's own materialized (step4) version holds the section.
+    await writeFile(
+      join(base, "la", "Sancti", "12-25.yml"),
+      stringify({ oratio: [{ value: ["self oratio"], condition: [] }] }),
+      "utf-8"
+    );
+
+    const out = await transform(
+      { intro: [{ value: ["@:Oratio"], condition: [] }] } as never,
+      join(base, "la", "Sancti", "12-25.yml")
+    );
+
+    expect(out.intro).toEqual([{ value: ["self oratio"], condition: [] }]);
+  });
 });
