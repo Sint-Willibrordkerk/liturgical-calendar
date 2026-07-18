@@ -47,6 +47,17 @@ const MISSING_DEPENDENCY_ERROR = "Missing dependency";
  */
 const STREAMING_MAX_STEP = 7;
 
+/**
+ * Steps after which the streaming pass must materialize a checkpoint, so a
+ * later reference step reads a stable, correctly-staged tree from disk:
+ * - after **4** — broad references resolve against the still-**unfolded**
+ *   step4 tree (variant directories separate), so a reference like
+ *   `SanctiM/11-14M` finds its own file. Folding it into the same pass would
+ *   leave only the folded `Sancti/11-14` on disk.
+ * - after **5** — inline references (step 6) read the folded step5 tree.
+ */
+const STREAMING_CHECKPOINTS = [4, 5];
+
 /** Batch steps (directory-level fan-out / cross-file merges). */
 const BATCH_STEPS: Record<
   number,
@@ -381,23 +392,40 @@ export async function runPipeline(
     fromStep === toStep ? `step ${fromStep}` : `steps ${fromStep}-${toStep}`;
   consola.box(`Converting Divinum Officium files\n\nProcessing ${stepRange}`);
 
-  // Streaming portion (steps 0..STREAMING_MAX_STEP), materialized at step{to}.
+  // Streaming portion (steps 0..STREAMING_MAX_STEP). Split into segments at the
+  // checkpoints so each reference step reads a materialized, correctly-staged
+  // tree; each segment materializes its own `step{to}` folder.
   if (fromStep <= STREAMING_MAX_STEP) {
     const streamingTo = Math.min(toStep, STREAMING_MAX_STEP);
-    const outputDir = join(STEP_BASE, "step" + streamingTo);
-    consola.info(`Streaming steps ${fromStep}-${streamingTo} → ${outputDir}`);
-    consola.info(
-      `Force: ${
-        force ? "yes (cleaning output folder)" : "no (skipping existing outputs)"
-      }`
-    );
-
-    const { processed, errors } = await executePipeline(
-      fromStep,
+    const segmentEnds = [
+      ...STREAMING_CHECKPOINTS.filter((c) => c >= fromStep && c < streamingTo),
       streamingTo,
-      outputDir,
-      force
-    );
+    ];
+
+    let segmentFrom = fromStep;
+    let processed = 0;
+    let errors = 0;
+    for (const segmentTo of segmentEnds) {
+      const outputDir = join(STEP_BASE, "step" + segmentTo);
+      consola.info(`Streaming steps ${segmentFrom}-${segmentTo} → ${outputDir}`);
+      consola.info(
+        `Force: ${
+          force
+            ? "yes (cleaning output folder)"
+            : "no (skipping existing outputs)"
+        }`
+      );
+      const result = await executePipeline(
+        segmentFrom,
+        segmentTo,
+        outputDir,
+        force
+      );
+      processed += result.processed;
+      errors += result.errors;
+      segmentFrom = segmentTo + 1;
+    }
+
     consola.success(`Streaming pipeline done.`);
     consola.info(`Processed: ${processed} files`);
     consola.info(`Errors: ${errors}`);

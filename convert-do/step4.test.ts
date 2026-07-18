@@ -28,16 +28,27 @@ describe("step4 extractExVideReferences", () => {
   });
 
   it("treats a bare rank reference (no ex/vide keyword) as a vide commune pointer", () => {
-    // `C5c` is a commune pointer; it goes through the same normalization as any
-    // reference — `Commune/` prefix, then the `c` variant suffix stripped into a
-    // condition — resolving to `Commune/C5` (which exists) rather than throwing.
+    // `C5c` is a commune pointer; it only gains the `Commune/` prefix and
+    // resolves directly to `Commune/C5c` (its own file). No suffix is stripped:
+    // at this step variant files are not yet folded.
     const { ex, vide } = extractExVideReferences(
       { rank: [{ value: [";;Duplex;;3;;C5c"], condition: [] }] } as never,
       "la\\Sancti\\Urbis\\11-29.yml"
     );
-    expect(vide.map((r) => r.path)).toEqual(["Commune/C5"]);
-    expect(vide[0]!.condition).toContain("special-c");
+    expect(vide.map((r) => r.path)).toEqual(["Commune/C5c"]);
+    expect(vide[0]!.condition).toEqual([]);
     expect(ex).toEqual([]);
+  });
+
+  it("resolves a variant-directory reference as written, without folding it", () => {
+    // Variant directories are still separate at step 4, so `@SanctiM/11-14M`
+    // points at its own file rather than being rewritten to `Sancti/11-14`.
+    const { ex } = extractExVideReferences(
+      { __preamble: [{ value: ["@SanctiM/11-14M"], condition: [] }] } as never,
+      "la\\SanctiOP\\11-14M.yml"
+    );
+    expect(ex.map((r) => r.path)).toEqual(["SanctiM/11-14M"]);
+    expect(ex[0]!.condition).toEqual([]);
   });
 });
 

@@ -2,7 +2,6 @@ import { join } from "path";
 import { readFile } from "fs/promises";
 import { parse } from "yaml";
 import { Step3Output } from "./step3";
-import { directoryMappings, mappings } from "./lib/mappings";
 import { splitPath } from "./lib/paths";
 
 export type Step4Output = Step3Output;
@@ -117,28 +116,9 @@ function cleanReferences(
         path = `Tempora/${path}`;
       }
 
-      for (const [suffix, value] of mappings) {
-        if (path.endsWith(suffix)) {
-          path = path.slice(0, -suffix.length);
-          condition = [...condition, ...value];
-          break;
-        }
-      }
-
-      for (const key of ["Commune", "Martyrologium", "Sancti", "Tempora"]) {
-        if (path.startsWith(`${key}`)) {
-          for (const [suffix, value] of Object.entries(directoryMappings)) {
-            if (
-              path
-                .toLowerCase()
-                .startsWith(`${key}${suffix}`.toLocaleLowerCase())
-            ) {
-              path = path.replace(new RegExp(`${key}${suffix}`, "i"), `${key}`);
-              condition = [...condition, value];
-            }
-          }
-        }
-      }
+      // Variant-directory and filename rubric suffixes are deliberately NOT
+      // stripped here: at this step (before step 5 folds variants) the specific
+      // variant file still exists, so the reference resolves directly to it.
 
       if (path === "Tempora/Pasc5-4 (rubrica tridentina aut rubrica divino)") {
         path = "Tempora/Pasc5-4";
@@ -150,11 +130,21 @@ function cleanReferences(
 
       return { path, condition };
     })
-    .filter(
-      (item) =>
-        item.path.split("/").at(-1) !==
-        splitPath(inputFile.replace(".yml", "")).at(-1)
-    );
+    .filter((item) => item.path !== ownReferencePath(inputFile));
+}
+
+/**
+ * The file's own reference path (`<Dir>/<file>` relative to `step{N}/<lang>`),
+ * used to drop a self-reference. Comparing the full relative path — not just the
+ * filename — keeps a reference to a same-named file in a different directory
+ * (e.g. `SanctiOP/11-14M` → `SanctiM/11-14M`) from being mistaken for a
+ * self-reference.
+ */
+function ownReferencePath(inputFile: string): string {
+  const parts = splitPath(inputFile.replace(/\.yml$/i, ""));
+  const stepIndex = parts.findIndex((part) => /^step\d+$/.test(part));
+  if (stepIndex >= 0) return parts.slice(stepIndex + 2).join("/");
+  return parts.slice(-2).join("/");
 }
 
 async function loadReferenceFiles(

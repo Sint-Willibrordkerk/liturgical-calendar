@@ -258,9 +258,6 @@ inline conditional such as `(sed rubrica 1960)` or `(si innovata)`. This step
 expands each section into rubric variants according to those conditionals. It is
 a port of Divinum Officium's line-conditional processing.
 
-Step 3 runs **before** the reference steps (4–5) so that broad references (step
-4) resolve while variant directories are still separate on disk.
-
 ### Input
 
 - The step 2 object for one file, plus its path.
@@ -380,14 +377,107 @@ Full-variant view — `(si innovata) kept` yields two variants: the default
 
 ## Step 4 — Broad references (`@File`, `ex …`, `vide …`)
 
-Resolves file-level references, pulling in and merging the referenced sections.
-*(Full specification pending.)*
+Some files carry little or no proper text and instead point at another file.
+This step resolves those **file-level** references — a whole-file include
+(`@File` or `ex …`) or a selective borrow (`vide …`) — by loading the referenced
+file and merging its sections in, propagating the referencing rubric condition.
 
-Runs while variant directories (e.g. `SanctiM`, `SanctiCist`) are still
+Step 4 runs while variant directories (e.g. `SanctiM`, `SanctiCist`) are still
 **separate** files — step 5 has not yet folded them onto their base — so a
 reference such as `@SanctiM/11-14M` resolves directly to its own file. This
-ordering (references before the suffix/fold step) is the reason steps 3–5 sit in
-this order.
+ordering (references before the suffix/fold step) is why steps 3–5 sit in this
+order.
+
+### Input
+
+- The step 3 object for one file, plus its path.
+- The referenced files, read from the same materialized step tree. The runner
+  processes a referenced file before any file that references it (see
+  [Dependencies](#dependencies) below).
+
+### Output
+
+- The same object shape. The referenced sections are merged into the file's own
+  sections, and the reserved `__preamble` key is removed. Content that is not a
+  reference is left unchanged.
+
+### Where references come from
+
+Each reference carries the rubric condition of the variant it was found in.
+
+- **`__preamble`** — a line beginning with `@` is a whole-file include. The path
+  is the text after `@` up to the first `:`; any `:Section` suffix is ignored
+  here (inline `@File:Section` references are step 6's concern).
+- **`rank`** — the fourth `;;`-separated field of a rank line:
+  - `ex X` → whole-file include;
+  - `vide X` → selective borrow;
+  - a bare value with no keyword (e.g. `C5c`) → treated as `vide`.
+- **`rule`** — a line beginning `ex X` or `vide X` (other rule lines are
+  ignored).
+
+### Include vs. borrow
+
+- **Include (`@` / `ex`)** — import **all** sections of the referenced file.
+- **Borrow (`vide`)** — import only these sections: `lectio*`, `ant-laudes`,
+  `ant-vespera`, `versum*`, `oratio*`.
+
+### Reference-path normalization
+
+A raw reference target is normalized before lookup:
+
+- stray `;mtv`, `;` and `:` characters are removed; `sancti/` is corrected to
+  `Sancti/`; surrounding whitespace is trimmed;
+- a `…Feria…` marker: the number *n* before `Feria` becomes the condition
+  `feria-(n+1)` and `Feria` is dropped from the path;
+- a bare `Cn…` target (a `C` followed by a digit) gains a `Commune/` prefix; a
+  `Quadp…` / `Epi…` / `Pasc…` target gains a `Tempora/` prefix;
+- a **self-reference** (whose final path segment equals the file's own name) is
+  dropped.
+
+The target is otherwise used **as written**: a variant directory (`SanctiM`) or
+a filename rubric suffix (`…t`) is **not** stripped, because at this step those
+files still exist separately — the reference resolves directly to the specific
+variant file. (Step 5 folds variants onto their base later.)
+
+### Merging and condition propagation
+
+- Imported section variants have the reference's condition **prepended** to
+  their own, so a `vide` made under `1570` contributes sections tagged `1570`.
+- If the file already has that section, the imported variants are unioned in; a
+  variant whose exact condition set already exists is not duplicated.
+
+### Dependencies
+
+The set of referenced paths a file declares is what the runner uses to order
+work: a file is held back until every file it references has been produced,
+then retried. References are resolved relative to the `step{N}/<language>` root,
+so files nested more than one directory below the language (e.g.
+`Sancti/Urbis/…`) resolve correctly.
+
+### Examples
+
+- Preamble include + rank `ex`/`vide` (rank `vide` under `1570`):
+
+  ```
+  { __preamble: [{ value: ["@Sancti/12-26:Lectio1"], condition: [] }],
+    rank: [{ value: [";;Duplex;;3;;ex Commune/C1"],   condition: [] },
+           { value: [";;Simplex;;1;;vide Sancti/12-26"], condition: ["1570"] }] }
+  →  includes: Commune/C1, Sancti/12-26   borrows: Sancti/12-26 (condition 1570)
+  ```
+
+- A bare rank pointer `C5c` normalizes to a `vide` on `Commune/C5c` (the
+  `Commune/` prefix added, nothing stripped — `Commune/C5c` is its own file).
+
+### Edge cases
+
+- **Bare rank reference** (no `ex`/`vide`) is treated as a `vide` commune
+  pointer rather than an error.
+- **`@File:Section`** in the preamble is imported as the whole file here; the
+  `:Section` narrowing happens at step 6.
+- **A declared reference that was never produced** leaves the file queued and,
+  if never satisfied, is reported as an error (non-fatal) rather than crashing.
+- A couple of individual targets receive a fixed correction (e.g. `Tempora/Epi4`
+  → `Tempora/Epi4-0`).
 
 ---
 
