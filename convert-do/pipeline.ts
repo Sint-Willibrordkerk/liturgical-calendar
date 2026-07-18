@@ -17,9 +17,9 @@ import { Step1Output, transform as step1Transform } from "./step1.js";
 import {
   transform as step2Transform,
   getOutputFile as getStep2OutputFile,
-  Step2Output,
+  type Step2Output,
 } from "./step2.js";
-import { Step3Output, transform as step3Transform } from "./step3.js";
+import { transform as step3Transform, type Step3Output } from "./step3.js";
 import {
   Step4Output,
   extractDependencies,
@@ -27,32 +27,34 @@ import {
 } from "./step4.js";
 import {
   transform as step5Transform,
+  getOutputFile as getStep5OutputFile,
   type Step5Output,
 } from "./step5.js";
-import { transform as step6Transform } from "./step6.js";
-import { run as runStep7 } from "./step7.js";
+import { transform as step6Transform, type Step6Output } from "./step6.js";
+import { transform as step7Transform } from "./step7.js";
 import { run as runStep8 } from "./step8.js";
 import { run as runStep9 } from "./step9.js";
+import { run as runStep10 } from "./step10.js";
 
 const PROJECT_BASE = process.cwd();
 const STEP_BASE = join(PROJECT_BASE, ".divinum-officium");
 const MISSING_DEPENDENCY_ERROR = "Missing dependency";
 
 /**
- * Highest step handled by the in-memory streaming runner. Later steps (7–9)
+ * Highest step handled by the in-memory streaming runner. Later steps (8–10)
  * are directory-level batch operations (fan-out / cross-file merges) and run
  * against materialized `step{N-1}` folders instead.
  */
-const STREAMING_MAX_STEP = 6;
+const STREAMING_MAX_STEP = 7;
 
-/** Batch steps (ported from the original step11–step13 scripts). */
+/** Batch steps (directory-level fan-out / cross-file merges). */
 const BATCH_STEPS: Record<
   number,
   (inputDir: string, outputDir: string) => Promise<{ written: number }>
 > = {
-  7: runStep7,
   8: runStep8,
   9: runStep9,
+  10: runStep10,
 };
 
 export async function getInputFiles(fromStep: number): Promise<{
@@ -101,7 +103,13 @@ async function readInput(
   for (const inputFile of inputFiles.files) {
     let output = join(outputDir, inputFile);
     if (fromStep <= 0 && toStep >= 0) output = getStep0OutputFile(output);
+    // Step 2 strips the horas/missa root (combining mass and hours); step 5
+    // folds variant directories and strips filename suffixes. Both collapse
+    // several inputs onto one output path, which the runner then merges. Step 5
+    // folds late — after the reference steps (3–4) — so references resolve
+    // while variant directories are still separate files.
     if (fromStep <= 2 && toStep >= 2) output = getStep2OutputFile(output);
+    if (fromStep <= 5 && toStep >= 5) output = getStep5OutputFile(output);
     if (!result.has(output)) {
       result.set(output, []);
     }
@@ -172,7 +180,7 @@ async function processInputFiles(
     if (fromStep <= 1 && toStep >= 1)
       data = step1Transform(data as Step0Output, inputFile);
     if (fromStep <= 2 && toStep >= 2)
-      data = step2Transform(data as Step1Output, inputFile);
+      data = step2Transform(data as Step1Output);
     if (fromStep <= 3 && toStep >= 3) {
       data = step3Transform(data as Step2Output, inputFile);
     }
@@ -194,26 +202,30 @@ async function processInputFiles(
       data = await step4Transform(data as Step3Output, outputFile);
     }
     if (fromStep <= 5 && toStep >= 5) {
-      // Unlike step 4, step 5 resolves its `@File:Section` references by
-      // reading the already-complete step4 tree (below), not step5 output, so
+      data = step5Transform(data as Step4Output, inputFile);
+    }
+    if (fromStep <= 6 && toStep >= 6) {
+      // Unlike step 4, step 6 resolves its `@File:Section` references by
+      // reading the already-complete step5 tree (below), not step6 output, so
       // it needs no dependency gate. Gating here would also wrongly block
-      // references to variant directories (e.g. TemporaOP) that step 2 already
-      // merged into their base, requeuing those files forever. resolveReference
-      // is lenient and leaves anything it cannot resolve in place.
-      data = await step5Transform(
-        data as Step4Output,
-        join(STEP_BASE, "step4", inputFile)
+      // references to variant directories (e.g. TemporaOP) that step 5 already
+      // merged into their base, requeuing those files forever. The resolver is
+      // lenient and leaves anything it cannot resolve in place.
+      data = await step6Transform(
+        data as Step5Output,
+        join(STEP_BASE, "step5", inputFile)
       );
     }
-    if (fromStep <= 6 && toStep >= 6)
-      data = step6Transform(data as Step5Output);
+    if (fromStep <= 7 && toStep >= 7)
+      data = step7Transform(data as Step6Output);
 
     if (!result) {
       result = data;
     } else {
-      // Multiple input files map to this output: horas + missa, plus the
-      // variant directories (TemporaOP, SanctiCist, …) that step 2 folds into
-      // their base. Union their section variants by condition so no base or
+      // Multiple input files map to this output: horas + missa (combined by
+      // step 2), plus the variant directories (TemporaOP, SanctiCist, …) that
+      // step 3 folds into their base. Union their section variants by
+      // condition so no base or
       // variant content is dropped; missa wins on a condition collision. A
       // shallow spread kept only one file's variants per shared section,
       // silently losing e.g. the conditionless base text that rubric variants

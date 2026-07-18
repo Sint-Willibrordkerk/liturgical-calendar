@@ -26,6 +26,19 @@ describe("step4 extractExVideReferences", () => {
     expect(vide.map((r) => r.path)).toEqual(["Sancti/12-26"]);
     expect(vide[0]!.condition).toEqual(["1570"]);
   });
+
+  it("treats a bare rank reference (no ex/vide keyword) as a vide commune pointer", () => {
+    // `C5c` is a commune pointer; it goes through the same normalization as any
+    // reference — `Commune/` prefix, then the `c` variant suffix stripped into a
+    // condition — resolving to `Commune/C5` (which exists) rather than throwing.
+    const { ex, vide } = extractExVideReferences(
+      { rank: [{ value: [";;Duplex;;3;;C5c"], condition: [] }] } as never,
+      "la\\Sancti\\Urbis\\11-29.yml"
+    );
+    expect(vide.map((r) => r.path)).toEqual(["Commune/C5"]);
+    expect(vide[0]!.condition).toContain("special-c");
+    expect(ex).toEqual([]);
+  });
 });
 
 describe("step4 extractDependencies", () => {
@@ -67,5 +80,27 @@ describe("step4 transform", () => {
     expect(out.lectio1).toEqual([
       { value: ["borrowed lectio"], condition: [] },
     ]);
+  });
+
+  it("resolves references for files nested deeper than one dir under the language", async () => {
+    // `Sancti/Urbis/…` sits two directories below the language; the reference
+    // base must still resolve to `step4/<lang>`, not `step4/<lang>/Sancti`.
+    base = mkdtempSync(join(tmpdir(), "lc-step4-nested-"));
+    const step4 = join(base, "step4");
+    await mkdir(join(step4, "la", "Sancti", "Urbis"), { recursive: true });
+    await writeFile(
+      join(step4, "la", "Sancti", "08-06.yml"),
+      stringify({ oratio: [{ value: ["borrowed oratio"], condition: [] }] }),
+      "utf-8"
+    );
+
+    const out = await transform(
+      {
+        rank: [{ value: [";;Semiduplex;;2;;vide Sancti/08-06"], condition: [] }],
+      } as never,
+      join(step4, "la", "Sancti", "Urbis", "08-07oct.yml")
+    );
+
+    expect(out.oratio).toEqual([{ value: ["borrowed oratio"], condition: [] }]);
   });
 });

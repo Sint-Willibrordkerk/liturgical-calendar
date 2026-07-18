@@ -1,296 +1,136 @@
-import { join } from "path";
-import { readFile } from "fs/promises";
-import { parse } from "yaml";
+import { applyIncludes } from "./condition";
 import { Step4Output } from "./step4";
+import { SEP, escapeRegExp, splitPath } from "./lib/paths";
+import { directoryMappings, mappings } from "./lib/mappings";
 
 export type Step5Output = Step4Output;
 
-const fileCache = new Map<string, Step4Output | null>();
-const MAX_RESOLVE_DEPTH = 5;
+const WHITESPACE = /\s+/g;
 
 function toKebabCase(str: string) {
-  if (str == null) return "";
-  return String(str).trim().toLowerCase().replace(/\s+/g, "-");
+  const result = str.toLowerCase().trim().replace(WHITESPACE, "-");
+  return result.startsWith("-") ? result.slice(1) : result;
 }
 
-function parseSubstitutions(substStr: string) {
-  if (!substStr || typeof substStr !== "string") return [];
-  const result: { pattern: string; replacement: string; flags: string }[] = [];
-  const re = /\s*s\/((?:[^/\\]|\\.)*)\/((?:[^/\\]|\\.)*)\/([igms]*)/g;
-  let match: RegExpExecArray | null = null;
-  while ((match = re.exec(substStr)) !== null) {
-    const pattern = match[1];
-    const replacement = match[2];
-    const flags = match[3];
-    if (pattern == null || replacement == null) continue;
-    result.push({
-      pattern: pattern.replace(/\\(.)/g, "$1"),
-      replacement: replacement.replace(/\\(.)/g, "$1"),
-      flags: flags || "",
-    });
-  }
-  return result;
-}
-
-function parseReference(str: string) {
-  if (typeof str !== "string" || !str.startsWith("@")) return null;
-  const rest = str.slice(1);
-  const firstColon = rest.indexOf(":");
-  const filePath = firstColon >= 0 ? rest.slice(0, firstColon) : rest;
-  const remainder = firstColon >= 0 ? rest.slice(firstColon + 1) : "";
-
-  if (!remainder) {
-    return {
-      filePath: filePath.trim(),
-      section: "",
-      lineRange: null as { start: number; end: number } | null,
-      substitutions: [] as {
-        pattern: string;
-        replacement: string;
-        flags: string;
-      }[],
-    };
-  }
-
-  const parts = remainder.split(":");
-  let lineRange: { start: number; end: number } | null = null;
-  let substitutionPart: string | undefined;
-
-  if (parts.length > 0 && /^\d+(?:-\d+)?$/.test(parts[parts.length - 1]!)) {
-    const [startStr, endStr] = parts.pop()!.split("-");
-    const start = Number(startStr);
-    const end = Number(endStr ?? startStr);
-    lineRange = { start, end };
-  }
-
-  if (parts.length > 0 && parts[parts.length - 1]!.trim().startsWith("s/")) {
-    substitutionPart = parts.pop();
-  }
-
-  const section = parts.join(":").trim();
-  const substitutions = substitutionPart
-    ? parseSubstitutions(substitutionPart)
-    : [];
-
+function splitSuffix(input: string) {
+  const parts = splitPath(input.split(".").at(-2)!);
+  let file = parts.pop()!.replace("Ferua", "Feria");
+  if (file === "Epi1-0") file = "Epi1-0r";
+  if (file === "Epi1-0a") file = "Epi1-0";
   return {
-    filePath: filePath.trim(),
-    section: toKebabCase(section) || "",
-    lineRange,
-    substitutions,
+    file,
+    dir: parts.pop()!,
   };
 }
 
-function getBaseSectionName(sectionKey: string) {
-  return sectionKey.includes("/") ? sectionKey.split("/")[0]! : sectionKey;
-}
+const excludedFiles = [
+  "Coronatio",
+  "10-DU",
+  "10-DP",
+  "07-DP",
+  "11-03sec",
+  "00-VB",
+  "00-VE",
+  "09-DP",
+  "09-DT",
+];
 
-function findSectionContent(doc: Step4Output, sectionKey: string) {
-  if (!doc || typeof doc !== "object") return null;
+export function getOutputFile(input: string) {
+  // The `horas`/`missa` root has already been stripped by step 2; here we only
+  // fold a variant directory onto its base and strip the filename suffix.
+  let output = input;
+  const { file, dir } = splitSuffix(input);
 
-  if (sectionKey) {
-    if (Array.isArray(doc[sectionKey])) return doc[sectionKey];
+  for (const directory of ["Commune", "Martyrologium", "Sancti", "Tempora"]) {
+    if (!dir.startsWith(directory)) continue;
 
-    for (const [key, value] of Object.entries(doc)) {
-      if (
-        key !== "__preamble" &&
-        Array.isArray(value) &&
-        (key === sectionKey || key.endsWith(`/${sectionKey}`))
-      ) {
-        return value as Step4Output[string];
-      }
-    }
-
-    for (const [key, value] of Object.entries(doc)) {
-      if (key === "__preamble" || !Array.isArray(value)) continue;
-      if (
-        key === sectionKey ||
-        key.startsWith(`${sectionKey}-`) ||
-        key.startsWith(`${sectionKey}/`)
-      ) {
-        return value as Step4Output[string];
-      }
-    }
-    return null;
-  }
-
-  for (const [key, value] of Object.entries(doc)) {
-    if (key !== "__preamble" && Array.isArray(value))
-      return value as Step4Output[string];
-  }
-  return null;
-}
-
-function conditionKey(condition: string[]) {
-  return [...condition].sort().join("|");
-}
-
-function pickVariantLines(
-  section: Step4Output[string],
-  currentCondition: string[]
-): string[] {
-  if (!section.length) return [];
-  const exact = section.find(
-    (item) => conditionKey(item.condition) === conditionKey(currentCondition)
-  );
-  if (exact) return exact.value;
-  const fallback = section.find((item) => item.condition.length === 0);
-  return (fallback ?? section[0]!).value;
-}
-
-function applySubstitutions(
-  lines: string[],
-  substitutions: { pattern: string; replacement: string; flags: string }[]
-) {
-  if (!substitutions.length) return lines;
-  return lines.map((line) => {
-    let result = String(line);
-    for (const { pattern, replacement, flags } of substitutions) {
-      try {
-        result = result.replace(new RegExp(pattern, flags || "g"), replacement);
-      } catch {}
-    }
-    return result;
-  });
-}
-
-async function getFileContent(basePath: string, filePath: string) {
-  const cacheKey = `${basePath}::${filePath}`;
-  if (fileCache.has(cacheKey)) return fileCache.get(cacheKey)!;
-
-  const targetPath = join(basePath, `${filePath}.yml`);
-  try {
-    const raw = await readFile(targetPath, "utf-8");
-    const parsed = parse(raw) as Step4Output;
-    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
-      fileCache.set(cacheKey, null);
-      return null;
-    }
-    fileCache.set(cacheKey, parsed);
-    return parsed;
-  } catch {
-    fileCache.set(cacheKey, null);
-    return null;
-  }
-}
-
-async function resolveReference(
-  parsedRef: {
-    filePath: string;
-    section: string;
-    lineRange: { start: number; end: number } | null;
-    substitutions: { pattern: string; replacement: string; flags: string }[];
-  },
-  basePath: string,
-  currentSectionKey: string,
-  currentCondition: string[],
-  depth = 0
-): Promise<string[] | null> {
-  if (depth >= MAX_RESOLVE_DEPTH || !parsedRef.filePath) return null;
-
-  const sectionKey = getBaseSectionName(parsedRef.section || currentSectionKey);
-  const doc = await getFileContent(basePath, parsedRef.filePath);
-  if (!doc) return null;
-
-  const section = findSectionContent(doc, sectionKey);
-  if (!section) return null;
-
-  let resolved = [...pickVariantLines(section, currentCondition)];
-  if (parsedRef.lineRange) {
-    const { start, end } = parsedRef.lineRange;
-    resolved = resolved.slice(
-      Math.max(0, start - 1),
-      Math.min(resolved.length, end)
-    );
-  }
-
-  resolved = applySubstitutions(resolved, parsedRef.substitutions);
-
-  if (resolved.length === 1 && typeof resolved[0] === "string") {
-    const nestedRef = parseReference(resolved[0]);
-    if (nestedRef) {
-      const nestedResolved = await resolveReference(
-        nestedRef,
-        basePath,
-        parsedRef.section || currentSectionKey,
-        currentCondition,
-        depth + 1
+    if (dir !== directory) {
+      output = output.replace(
+        new RegExp(`(${SEP})${escapeRegExp(dir)}(${SEP})`),
+        `$1${directory}$2`
       );
-      if (nestedResolved) return nestedResolved;
-    }
-  }
-
-  return resolved;
-}
-
-function getLanguageBasePath(inputFile: string) {
-  const normalized = inputFile.replace(/\\/g, "/");
-  const parts = normalized.split("/");
-  const stepIndex = parts.findIndex((part) => part === "step4");
-  if (stepIndex < 0 || stepIndex + 1 >= parts.length) {
-    throw new Error(`Cannot determine language base path for ${inputFile}`);
-  }
-  return parts.slice(0, stepIndex + 2).join("/");
-}
-
-export async function transform(
-  obj: Step4Output,
-  inputFile: string
-): Promise<Step5Output> {
-  const basePath = getLanguageBasePath(inputFile);
-  const result: Step5Output = {};
-
-  for (const [key, value] of Object.entries(obj)) {
-    if (!Array.isArray(value)) {
-      result[key] = value;
-      continue;
     }
 
-    const baseSection = getBaseSectionName(key);
+    if (excludedFiles.includes(file)) break;
 
-    result[key] = await Promise.all(
-      value.map(async (item) => {
-        const out: string[] = [];
-        for (const line of item.value) {
-          const parsedRef = parseReference(line);
-          if (!parsedRef) {
-            out.push(line);
-            continue;
-          }
+    let suffixLength = 0;
+    while (
+      file[file.length - suffixLength - 1]! < "0" ||
+      file[file.length - suffixLength - 1]! > "9"
+    ) {
+      suffixLength++;
+      if (["10-DU"].includes(file)) break;
+    }
+    if (suffixLength > 0)
+      output = output.replace(`${file.slice(-suffixLength)}.yml`, ".yml");
+  }
+  return output;
+}
 
-          const resolved = await resolveReference(
-            parsedRef,
-            basePath,
-            baseSection,
-            item.condition
-          );
-          if (resolved) out.push(...resolved);
-          else out.push(line);
+export function transform(obj: Step4Output, inputFile: string) {
+  let { file, dir } = splitSuffix(inputFile);
+
+  const result: { [key: string]: { value: any; condition: string[] }[] } = {};
+  const includes: string[] = [];
+
+  for (const directory of ["Commune", "Martyrologium", "Sancti", "Tempora"]) {
+    if (!dir.startsWith(directory)) continue;
+
+    if (dir !== directory) {
+      includes.push(
+        directoryMappings[
+          toKebabCase(
+            dir.replace(directory, "")
+          ) as keyof typeof directoryMappings
+        ]
+      );
+    }
+
+    if (excludedFiles.includes(file)) break;
+
+    if (file.includes("Feria")) {
+      const match = file.match(/(\d+)Feria/);
+      includes.push(`feria-${Number(match![1]) + 1}`);
+      file = file.replace("Feria", "");
+    }
+
+    let hasChanged;
+    do {
+      hasChanged = false;
+      for (const [suffix, value] of mappings) {
+        if (file.endsWith(suffix)) {
+          includes.push(...value);
+          file = file.slice(0, -suffix.length);
+          hasChanged = true;
         }
-        return { ...item, value: out };
-      })
-    );
+      }
+    } while (hasChanged);
+
+    if (["10-DU"].includes(file)) continue;
+
+    let suffixLength = 0;
+    while (
+      file[file.length - suffixLength - 1]! < "0" ||
+      file[file.length - suffixLength - 1]! > "9"
+    ) {
+      suffixLength++;
+    }
+
+    if (suffixLength > 0) {
+      throw new Error(`Suffix is not supported: ${file}`);
+    }
   }
+
+  Object.entries(obj).forEach(([key, value]) => {
+    value.forEach((item) => {
+      // Combine the path-derived tokens with the variant's own condition
+      // (from step 1 header conditions) rather than replacing it, so a variant
+      // keeps its identity. This keeps the result independent of whether step 2
+      // (combine mass and hours) was materialized separately before step 3.
+      const condition = [...new Set([...item.condition, ...includes])];
+      result[key] = applyIncludes(condition, [], item.value, result[key] ?? []);
+    });
+  });
 
   return result;
-}
-
-export function extractDependencies(
-  obj: Step4Output,
-  outputFile: string
-): Set<string> {
-  const dependencies = new Set<string>();
-  for (const section of Object.values(obj)) {
-    if (!Array.isArray(section)) continue;
-    for (const item of section) {
-      for (const line of item.value) {
-        const parsedRef = parseReference(line);
-        if (
-          parsedRef?.filePath &&
-          !outputFile.includes(parsedRef.filePath.replace("/", "\\"))
-        )
-          dependencies.add(parsedRef.filePath);
-      }
-    }
-  }
-  return dependencies;
 }

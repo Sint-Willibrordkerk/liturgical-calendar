@@ -1,37 +1,47 @@
-import { describe, expect, it } from "vitest";
-import { transform, conditionSuffix } from "./step6";
+import { mkdtempSync, rmSync } from "fs";
+import { mkdir, writeFile } from "fs/promises";
+import { tmpdir } from "os";
+import { join } from "path";
+import { stringify } from "yaml";
+import { afterEach, describe, expect, it } from "vitest";
+import { extractDependencies, transform } from "./step6";
 
-describe("step6 materialize", () => {
-  it("keeps the empty-condition variant on the base key", () => {
-    const out = transform({
-      lectio1: [{ value: ["X"], condition: [] }],
-    });
-    expect(out).toEqual({ lectio1: ["X"] });
+describe("step6 extractDependencies", () => {
+  it("returns file paths from inline @File:Section references", () => {
+    const deps = extractDependencies(
+      { lectio1: [{ value: ["@Sancti/12-26:Lectio1"], condition: [] }] } as never,
+      "la\\Sancti\\12-25.yml"
+    );
+    expect([...deps]).toEqual(["Sancti/12-26"]);
+  });
+});
+
+describe("step6 transform", () => {
+  let root: string | undefined;
+  afterEach(() => {
+    if (root) rmSync(root, { recursive: true, force: true });
+    root = undefined;
   });
 
-  it("splits conditional variants into suffixed keys", () => {
-    const out = transform({
-      lectio1: [
-        { value: ["X"], condition: [] },
-        { value: ["Y"], condition: ["1570"] },
-      ],
-    });
-    expect(out).toEqual({ lectio1: ["X"], "lectio1/1570": ["Y"] });
-  });
+  it("inlines a referenced section's lines in place of the @ reference", async () => {
+    root = mkdtempSync(join(tmpdir(), "lc-step6-"));
+    // getLanguageBasePath requires a `step5/<lang>` segment in the path.
+    const base = join(root, "step5");
+    await mkdir(join(base, "la", "Commune"), { recursive: true });
+    await mkdir(join(base, "la", "Sancti"), { recursive: true });
+    await writeFile(
+      join(base, "la", "Commune", "C1.yml"),
+      stringify({ lectio1: [{ value: ["borrowed lectio"], condition: [] }] }),
+      "utf-8"
+    );
 
-  it("joins multi-token conditions in sorted order", () => {
-    expect(conditionSuffix(["octava", "1570"])).toBe("1570-octava");
-    const out = transform({
-      oratio: [{ value: ["Z"], condition: ["octava", "1570"] }],
-    });
-    expect(out).toEqual({ "oratio/1570-octava": ["Z"] });
-  });
+    const out = await transform(
+      { lectio1: [{ value: ["@Commune/C1:Lectio1"], condition: [] }] } as never,
+      join(base, "la", "Sancti", "12-25.yml")
+    );
 
-  it("passes non-variant values through untouched", () => {
-    const out = transform({
-      // e.g. a plain scalar that slipped through
-      name: "Sanctae Mariae" as unknown as never,
-    });
-    expect(out).toEqual({ name: "Sanctae Mariae" });
+    expect(out.lectio1).toEqual([
+      { value: ["borrowed lectio"], condition: [] },
+    ]);
   });
 });

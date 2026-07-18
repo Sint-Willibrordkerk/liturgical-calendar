@@ -2,10 +2,26 @@ import { join } from "path";
 import { readFile } from "fs/promises";
 import { parse } from "yaml";
 import { Step3Output } from "./step3";
-import { directoryMappings, mappings } from "./step2";
+import { directoryMappings, mappings } from "./lib/mappings";
 import { splitPath } from "./lib/paths";
 
 export type Step4Output = Step3Output;
+
+/**
+ * The `step{N}/<lang>` prefix of an output path, used as the base for resolving
+ * references (`fileName` values already include the directory below the
+ * language). Locating the `step{N}` segment — rather than slicing a fixed
+ * number of trailing segments — keeps this correct for files nested more than
+ * one directory deep under the language (e.g. `Sancti/Urbis/…`).
+ */
+function languageBasePath(inputFile: string): string {
+  const parts = splitPath(inputFile);
+  const stepIndex = parts.findIndex((part) => /^step\d+$/.test(part));
+  if (stepIndex >= 0 && stepIndex + 1 < parts.length) {
+    return parts.slice(0, stepIndex + 2).join("/");
+  }
+  return parts.slice(0, -2).join("/");
+}
 
 export function extractExVideReferences(
   obj: Step3Output,
@@ -40,7 +56,10 @@ export function extractExVideReferences(
           condition: variant.condition,
         });
       } else if (reference) {
-        throw new Error(`Invalid rank reference: ${line}`);
+        // A bare reference with no `ex`/`vide` keyword (e.g. `C5c`) is a commune
+        // pointer; treat it as `vide` — borrow the standard sections — which is
+        // its conventional meaning in a rank line.
+        videReferences.push({ path: reference, condition: variant.condition });
       }
     });
   });
@@ -148,7 +167,7 @@ async function loadReferenceFiles(
   for (const fileName of fileNames) {
     const doc = parse(
       await readFile(
-        `${join(splitPath(inputFile).slice(0, -2).join("/"), fileName)}.yml`,
+        `${join(languageBasePath(inputFile), fileName)}.yml`,
         "utf-8"
       )
     );

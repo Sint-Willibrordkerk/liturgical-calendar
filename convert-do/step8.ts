@@ -8,127 +8,163 @@ import {
   runBatched,
   DEFAULT_CONCURRENCY,
 } from "./lib/batch";
+import { Step7Output } from "./step7";
 
 /**
- * Step 8 — split commemorations into their own files (ported from step12).
+ * Step 7 — derive filenames from the liturgical name (ported from step11).
  *
- * `commemoratio-oratio` / `-secreta` / `-postcommunio` sections (any rubric
- * variant) are pulled out of each document. Their first line (`!Pro S. …`)
- * names the commemorated saint; the remaining lines become that saint's file
- * (`<dir>/<slug>.yml` with `name`/`oratio`/`secreta`/`postcommunio`). The main
- * file is rewritten without the commemoratio keys. Multiple documents that
- * commemorate the same saint in the same directory merge into one file.
+ * Content transform: fold `rank`/`officium` into `name` (first `;;`-part for
+ * rank), keep everything else. Filenames: each document is written once per
+ * distinct kebab-cased name found across its `name`/`officium`/`rank`
+ * variants; collisions within a directory are disambiguated by original stem.
  */
-export type Commemoration = {
-  slug: string;
-  displayName: string;
-  oratio: string[];
-  secreta: string[];
-  postcommunio: string[];
-};
+export type Step8Output = { [key: string]: unknown };
 
-const COMMEMORATIO_PREFIX =
-  /^commemoratio-(oratio|secreta|postcommunio)(?:\/.*)?$/;
-const PRO_LINE = /^\s*!?\s*Pro\s+(.+)$/i;
+/** Invalid filename characters (Windows): replaced with `-`. */
 const INVALID_FILE_CHARS = /[\\/:*?"<>|]/g;
 
-export function commemorationNameToSlug(firstLine: unknown): string | null {
-  if (!firstLine || typeof firstLine !== "string") return null;
-  const m = firstLine.trim().match(PRO_LINE);
-  if (!m) return null;
-  let name = m[1]!.trim();
-  if (name.startsWith("S. ")) name = name.slice(3).trim();
-  else if (name.startsWith("Ss. ")) name = name.slice(4).trim();
-  if (!name) return null;
-  const slug = name
-    .toLowerCase()
-    .replace(/\s+/g, "-")
-    .replace(INVALID_FILE_CHARS, "-")
-    .replace(/-+/g, "-")
-    .replace(/^-|-$/g, "");
-  return slug || null;
-}
-
-function getProDisplayName(firstLine: unknown): string {
-  if (!firstLine || typeof firstLine !== "string") return "";
-  let s = firstLine.trim().replace(/^!\s*/, "");
-  if (/^Pro\s+/i.test(s)) s = s.replace(/^Pro\s+/i, "");
-  return s || "";
-}
-
-/** Remove every `commemoratio-{oratio,secreta,postcommunio}` key (any variant). */
-export function withoutCommemoratioKeys<T extends Record<string, unknown>>(
-  obj: T
-): Partial<T> {
-  if (obj == null || typeof obj !== "object") return obj;
-  const out: Record<string, unknown> = {};
-  for (const [key, value] of Object.entries(obj)) {
-    if (COMMEMORATIO_PREFIX.test(key)) continue;
-    out[key] = value;
+function firstString(val: unknown): string | null {
+  if (typeof val === "string" && val.trim() !== "") return val.trim();
+  if (Array.isArray(val)) {
+    const s = val.find((v) => typeof v === "string" && v.trim() !== "");
+    return s != null ? (s as string).trim() : null;
   }
-  return out as Partial<T>;
+  return null;
 }
 
-export function extractCommemorations(
-  obj: Record<string, unknown>
-): Commemoration[] {
-  if (obj == null || typeof obj !== "object") return [];
-  const bySlug = new Map<
-    string,
-    {
-      displayName: string;
-      oratio: string[] | null;
-      secreta: string[] | null;
-      postcommunio: string[] | null;
+function getRankFirstPart(rank: unknown): string | null {
+  let s: string | null | undefined = Array.isArray(rank)
+    ? (rank.find((v) => typeof v === "string" && v.trim() !== "") as
+        | string
+        | undefined)
+    : typeof rank === "string"
+    ? rank
+    : null;
+  if (s == null) return null;
+  s = String(s).trim();
+  const first = s.split(";;")[0];
+  return first != null && first.trim() !== "" ? first.trim() : null;
+}
+
+export function toKebabFileName(s: unknown): string | null {
+  if (s == null) return null;
+  let t = String(s).trim().toLowerCase().replace(/\s+/g, "-");
+  t = t.replace(INVALID_FILE_CHARS, "-");
+  t = t.replace(/-+/g, "-").replace(/^-|-$/g, "");
+  return t === "" ? null : t;
+}
+
+export function getAllDisplayNames(
+  obj: unknown,
+  originalStem: string
+): string[] {
+  const kebabs = new Set<string>();
+  const add = (s: unknown) => {
+    const k = toKebabFileName(s);
+    if (k) kebabs.add(k);
+  };
+  if (obj == null || typeof obj !== "object") return [originalStem];
+  for (const key of Object.keys(obj as Record<string, unknown>)) {
+    const value = (obj as Record<string, unknown>)[key];
+    if (key === "name" || key.startsWith("name/")) {
+      add(firstString(value));
+    } else if (key === "officium" || key.startsWith("officium/")) {
+      if (Array.isArray(value)) {
+        const first = value.find(
+          (v) => typeof v === "string" && v.trim() !== ""
+        );
+        if (first != null) add((first as string).trim());
+      } else if (typeof value === "string") add(value);
+    } else if (key === "rank" || key.startsWith("rank/")) {
+      add(getRankFirstPart(value));
     }
-  >();
-  for (const [key, value] of Object.entries(obj)) {
-    const match = key.match(COMMEMORATIO_PREFIX);
-    if (!match || !Array.isArray(value) || value.length === 0) continue;
-    const type = match[1] as "oratio" | "secreta" | "postcommunio";
-    const firstLine = value[0];
-    const slug = commemorationNameToSlug(
-      typeof firstLine === "string" ? firstLine : String(firstLine)
-    );
-    if (!slug) continue;
-    const content = value.slice(1) as string[];
-    const displayName = getProDisplayName(firstLine);
-    if (!bySlug.has(slug)) {
-      bySlug.set(slug, {
-        displayName,
-        oratio: null,
-        secreta: null,
-        postcommunio: null,
-      });
-    }
-    const entry = bySlug.get(slug)!;
-    entry[type] = content;
-    if (displayName) entry.displayName = displayName;
   }
-  return [...bySlug.entries()].map(([slug, data]) => ({
-    slug,
-    displayName: data.displayName || slug,
-    oratio: data.oratio ?? [],
-    secreta: data.secreta ?? [],
-    postcommunio: data.postcommunio ?? [],
-  }));
+  if (kebabs.size === 0) return [originalStem];
+  return [...kebabs];
 }
 
 /**
- * Transform a document into its commemoratio-free main object plus the list of
- * commemorations it contains. Exported for the runner and tests.
+ * Content transform: `rank`/`officium` → `name` (string), drop rank/officium.
+ * Exported for the streaming/batch runner and for tests.
  */
-export function transform(obj: Record<string, unknown>): {
-  main: Record<string, unknown>;
-  commemorations: Commemoration[];
-} {
-  return {
-    main: withoutCommemoratioKeys(obj),
-    commemorations: extractCommemorations(obj),
-  };
+export function transform(obj: Step7Output): Step8Output {
+  const out: Step8Output = {};
+  for (const [key, value] of Object.entries(obj)) {
+    if (key === "rank" || key.startsWith("rank/")) {
+      const nameKey = key === "rank" ? "name" : "name/" + key.slice("rank/".length);
+      if (out[nameKey] === undefined || out[nameKey] === "") {
+        out[nameKey] = getRankFirstPart(value) ?? "";
+      }
+      continue;
+    }
+    if (key === "name" || key.startsWith("name/")) {
+      out[key] = firstString(value) ?? "";
+      continue;
+    }
+    if (key === "officium" || key.startsWith("officium/")) {
+      const nameKey =
+        key === "officium" ? "name" : "name/" + key.slice("officium/".length);
+      if (out[nameKey] === undefined || out[nameKey] === "") {
+        out[nameKey] = firstString(value) ?? "";
+      }
+      continue;
+    }
+    out[key] = value;
+  }
+  for (const k of Object.keys(out)) {
+    if ((k === "name" || k.startsWith("name/")) && out[k] === "") delete out[k];
+  }
+  return out;
 }
 
-/** Batch runner: writes stripped main files plus per-saint commemoration files. */
+function getStem(relPath: string): string {
+  const base = relPath.replace(/^.*[/\\]/, "");
+  return base.replace(/\.yml$/i, "") || base;
+}
+
+type CollisionEntry = {
+  targetBasename: string;
+  originalStem: string;
+  relPath: string;
+  content: string;
+};
+
+export function resolveCollisions(
+  entries: CollisionEntry[]
+): { relPath: string; finalBasename: string; content: string }[] {
+  const byBasename = new Map<string, Omit<CollisionEntry, "targetBasename">[]>();
+  for (const { targetBasename, originalStem, relPath, content } of entries) {
+    if (!byBasename.has(targetBasename)) byBasename.set(targetBasename, []);
+    byBasename.get(targetBasename)!.push({ originalStem, relPath, content });
+  }
+  const result: { relPath: string; finalBasename: string; content: string }[] =
+    [];
+  for (const [base, list] of byBasename) {
+    const byContent = new Map<string, (typeof list)[number]>();
+    for (const entry of list) {
+      if (!byContent.has(entry.content)) byContent.set(entry.content, entry);
+    }
+    const uniq = [...byContent.values()];
+    if (uniq.length === 1) {
+      result.push({
+        relPath: uniq[0]!.relPath,
+        finalBasename: base,
+        content: uniq[0]!.content,
+      });
+    } else {
+      for (const { originalStem, relPath, content } of uniq) {
+        result.push({
+          relPath,
+          finalBasename: `${base}-${originalStem}`,
+          content,
+        });
+      }
+    }
+  }
+  return result;
+}
+
+/** Batch runner: reads all `.yml` under `inputDir`, writes name-based files to `outputDir`. */
 export async function run(
   inputDir: string,
   outputDir: string
@@ -136,73 +172,47 @@ export async function run(
   const allRelPaths = await collectYmlFiles(inputDir);
   const mkdirCache = new Set<string>();
 
-  const byOutputKey = new Map<
-    string,
-    { dir: string; slug: string } & Omit<Commemoration, "slug">
-  >();
-  const toWriteMain: { relPath: string; content: string }[] = [];
-
+  const shared: (CollisionEntry & { dir: string })[] = [];
   const { errors: readErrors } = await runBatched(
     allRelPaths,
     DEFAULT_CONCURRENCY,
     async (relPath) => {
       const raw = await readFile(join(inputDir, relPath), "utf-8");
-      let obj: Record<string, unknown>;
-      try {
-        obj = parse(raw);
-      } catch {
-        return;
-      }
+      const obj = parse(raw);
+      const originalStem = getStem(relPath);
       const dir = dirname(relPath);
-      for (const {
-        slug,
-        displayName,
-        oratio,
-        secreta,
-        postcommunio,
-      } of extractCommemorations(obj)) {
-        const outKey = `${dir}/${slug}`;
-        if (!byOutputKey.has(outKey)) {
-          byOutputKey.set(outKey, {
-            dir,
-            slug,
-            displayName,
-            oratio,
-            secreta,
-            postcommunio,
-          });
-        } else {
-          const existing = byOutputKey.get(outKey)!;
-          if (oratio.length) existing.oratio = oratio;
-          if (secreta.length) existing.secreta = secreta;
-          if (postcommunio.length) existing.postcommunio = postcommunio;
-          if (displayName) existing.displayName = displayName;
-        }
+      for (const targetBasename of getAllDisplayNames(obj, originalStem)) {
+        shared.push({ relPath, dir, targetBasename, originalStem, content: raw });
       }
-      toWriteMain.push({
-        relPath,
-        content: stringify(withoutCommemoratioKeys(obj)),
-      });
     }
   );
 
-  if (readErrors > 0) consola.error(`Step 8 read errors: ${readErrors}`);
+  if (readErrors > 0) {
+    consola.error(`Step 7 read errors: ${readErrors}`);
+  }
+
+  const byDir = new Map<string, (CollisionEntry & { dir: string })[]>();
+  for (const item of shared) {
+    if (!byDir.has(item.dir)) byDir.set(item.dir, []);
+    byDir.get(item.dir)!.push(item);
+  }
 
   let written = 0;
-  for (const { relPath, content } of toWriteMain) {
-    const outPath = join(outputDir, relPath);
-    await ensureDir(outPath, mkdirCache);
-    await writeFile(outPath, content, "utf-8");
-    written++;
-  }
-  for (const { dir, slug, displayName, oratio, secreta, postcommunio } of byOutputKey.values()) {
-    const outRelPath =
-      dir && dir !== "." ? `${dir}/${slug}.yml` : `${slug}.yml`;
-    const outPath = join(outputDir, outRelPath);
-    const doc = { name: displayName, oratio, secreta, postcommunio };
-    await ensureDir(outPath, mkdirCache);
-    await writeFile(outPath, stringify(doc), "utf-8");
-    written++;
+  for (const [, entries] of byDir) {
+    for (const { relPath, finalBasename, content } of resolveCollisions(
+      entries
+    )) {
+      const dir = dirname(relPath);
+      const outRelPath =
+        dir && dir !== "."
+          ? `${dir}/${finalBasename}.yml`
+          : `${finalBasename}.yml`;
+      const outPath = join(outputDir, outRelPath);
+      const transformed = transform(parse(content) as Step7Output);
+      await ensureDir(outPath, mkdirCache);
+      await writeFile(outPath, stringify(transformed), "utf-8");
+      written++;
+    }
   }
 
   return { written };
