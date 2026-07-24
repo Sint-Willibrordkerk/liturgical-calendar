@@ -20,7 +20,8 @@
     "build": "tsup",
     "start": "pnpm build && node scripts/main.js",
     "test": "vitest",
-    "pipeline": "tsx convert-do/index.ts"
+    "pipeline": "tsx convert-do/index.ts",
+    "copy-mass-propers": "node scripts/copy-mass-propers.mjs"
   },
   "files": [
     "dist"

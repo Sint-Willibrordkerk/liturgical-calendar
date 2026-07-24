@@ -1,7 +1,8 @@
 import { join } from "path";
 import { readFile } from "fs/promises";
-import { parse } from "yaml";
+
 import { Step4Output } from "./step4";
+import { STEP_EXT, parseStep } from "./lib/serialize.js";
 
 export type Step5Output = Step4Output;
 
@@ -157,10 +158,10 @@ async function getFileContent(basePath: string, filePath: string) {
   const cacheKey = `${basePath}::${filePath}`;
   if (fileCache.has(cacheKey)) return fileCache.get(cacheKey)!;
 
-  const targetPath = join(basePath, `${filePath}.yml`);
+  const targetPath = join(basePath, `${filePath}${STEP_EXT}`);
   try {
     const raw = await readFile(targetPath, "utf-8");
-    const parsed = parse(raw) as Step4Output;
+    const parsed = parseStep(raw) as Step4Output;
     if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
       fileCache.set(cacheKey, null);
       return null;
@@ -243,7 +244,7 @@ export async function transform(
     .replace(/\\/g, "/")
     .slice(basePath.length)
     .replace(/^\/+/, "")
-    .replace(/\.ya?ml$/i, "");
+    .replace(new RegExp(`\\${STEP_EXT}$`, "i"), "");
   const result: Step5Output = {};
 
   for (const [key, value] of Object.entries(obj)) {

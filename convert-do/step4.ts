@@ -1,10 +1,49 @@
 import { join } from "path";
 import { readFile } from "fs/promises";
-import { parse } from "yaml";
+
 import { Step3Output } from "./step3";
 import { splitPath } from "./lib/paths";
+import { STEP_EXT, stripStepExt, parseStep } from "./lib/serialize.js";
 
 export type Step4Output = Step3Output;
+
+/**
+ * The Office texts a day takes from its common: the Matins lessons, and the
+ * antiphons, versicles and orations of Lauds and Vespers. A `vide` always
+ * borrows these.
+ */
+function isOfficeBorrow(key: string): boolean {
+  return (
+    key.startsWith("lectio") ||
+    key === "ant-laudes" ||
+    key === "ant-vespera" ||
+    key.startsWith("versum") ||
+    key.startsWith("oratio")
+  );
+}
+
+/**
+ * The Mass propers a `vide` borrows only to fill a gap. A day that resolves its
+ * own Mass keeps it; one that has none — a commemoration pointing at a common,
+ * say — takes the common's rather than being left without.
+ */
+const MASS_PROPERS = new Set([
+  "introitus",
+  "graduale",
+  "gradualep",
+  "tractus",
+  "evangelium",
+  "offertorium",
+  "secreta",
+  "communio",
+  "postcommunio",
+  "ultima-evangelium",
+]);
+
+/** True when a section is already resolved, and needs no filling in. */
+function hasContent(value: unknown): boolean {
+  return Array.isArray(value) && value.length > 0;
+}
 
 /**
  * The `step{N}/<lang>` prefix of an output path, used as the base for resolving
@@ -141,7 +180,7 @@ function cleanReferences(
  * self-reference.
  */
 function ownReferencePath(inputFile: string): string {
-  const parts = splitPath(inputFile.replace(/\.yml$/i, ""));
+  const parts = splitPath(stripStepExt(inputFile));
   const stepIndex = parts.findIndex((part) => /^step\d+$/.test(part));
   if (stepIndex >= 0) return parts.slice(stepIndex + 2).join("/");
   return parts.slice(-2).join("/");
@@ -155,9 +194,9 @@ async function loadReferenceFiles(
   const fileNames = extractDependencies(obj, inputFile);
 
   for (const fileName of fileNames) {
-    const doc = parse(
+    const doc = parseStep(
       await readFile(
-        `${join(languageBasePath(inputFile), fileName)}.yml`,
+        `${join(languageBasePath(inputFile), fileName)}${STEP_EXT}`,
         "utf-8"
       )
     );
@@ -183,17 +222,12 @@ export async function transform(
     if (!file) throw new Error(`Reference file not found: ${path.path}`);
 
     for (let [key, value] of Object.entries(file)) {
-      if (
-        !ex.includes(path) &&
-        !(
-          key.startsWith("lectio") ||
-          key === "ant-laudes" ||
-          key === "ant-vespera" ||
-          key.startsWith("versum") ||
-          key.startsWith("oratio")
-        )
-      )
-        continue;
+      if (!ex.includes(path) && !isOfficeBorrow(key)) {
+        // A Mass proper travels with a borrow only where normal resolution —
+        // the day's own text, and anything an `ex` already included — has left
+        // nothing in its place.
+        if (!MASS_PROPERS.has(key) || hasContent(result[key])) continue;
+      }
 
       value = value.map((item) => ({
         ...item,

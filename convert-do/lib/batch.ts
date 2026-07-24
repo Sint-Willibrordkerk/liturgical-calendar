@@ -1,6 +1,7 @@
 import { readdir, mkdir } from "fs/promises";
 import { dirname } from "path";
 import { consola } from "consola";
+import { STEP_EXT } from "./serialize.js";
 
 export const DEFAULT_CONCURRENCY = 150;
 
@@ -33,11 +34,14 @@ export async function runBatched<T>(
   return { processed, errors };
 }
 
-/** Recursively list `.yml` files under `dirPath`, as paths relative to it. */
-export function collectYmlFiles(dirPath: string): Promise<string[]> {
+/** Recursively list tree files under `dirPath`, as paths relative to it. */
+export function collectYmlFiles(
+  dirPath: string,
+  ext: string = STEP_EXT
+): Promise<string[]> {
   return readdir(dirPath, { recursive: true }).then((entries) =>
     entries.filter(
-      (rel): rel is string => typeof rel === "string" && rel.endsWith(".yml")
+      (rel): rel is string => typeof rel === "string" && rel.endsWith(ext)
     )
   );
 }

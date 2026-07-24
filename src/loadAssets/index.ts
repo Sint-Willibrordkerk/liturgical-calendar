@@ -1,4 +1,8 @@
 import { loadAsset, tryLoadAsset } from "./assert/utils";
+import { selectMassProper, type Stores } from "../massPropers";
+import type { RawMassProper } from "../types";
+
+export type { RawMassProper };
 import { assertSanctorum } from "./assert/sanctorum";
 import { assertCalendarData } from "./assert/calendarData";
 import { assertMassPropers, type MassPropersData } from "./assert/massPropers";
@@ -61,68 +65,67 @@ export function loadTranslations(lang: string): Record<string, string> {
   return translations;
 }
 
-export type RawMassProper = {
-  name?: string;
-  introitus?: {
-    antiphon?: { ref?: string; text?: string };
-    verse?: { ref?: string; text?: string };
-  };
-  oratio?: { text?: string; closure?: string };
-  lectio?: { ref?: string; text?: string };
-  graduale?: {
-    antiphon?: { ref?: string; text?: string };
-    verse?: { ref?: string; text?: string };
-    alleluia?: { ref?: string; text?: string };
-  };
-  tractus?: { verses?: string[] };
-  evangelium?: { ref?: string; text?: string };
-  offertorium?: { ref?: string; text?: string };
-  secreta?: { text?: string; closure?: string };
-  communio?: { ref?: string; text?: string };
-  postcommunio?: { text?: string; closure?: string };
-};
+/**
+ * The rubric the shipped calendar is generated under. `calendar1962.yml` is the
+ * 1962 calendar, so its propers are read under the 1962 rubric.
+ */
+export const DEFAULT_RUBRICS = new Set(["1962"]);
 
-const MASS_PROPER_FIELDS = [
-  "name",
-  "introitus",
-  "oratio",
-  "lectio",
-  "graduale",
-  "alleluia",
-  "tractus",
-  "evangelium",
-  "offertorium",
-  "secreta",
-  "communio",
-  "postcommunio",
-] as const;
+/**
+ * A liturgical title as the propers are filed under it. This must match, byte
+ * for byte, the filename step 7 derives from the same title (`toKebabFileName`),
+ * or a day fails to find its file: accents folded, dots and commas dropped, any
+ * other run a single hyphen, and a leading `s`/`ss`/`b`/`bb` honorific segment
+ * removed.
+ */
+export function titleToFileName(title: string): string {
+  return title
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[.,]/g, "")
+    .replace(/[^a-z0-9æœ]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .replace(/^(ss?|bb?)-/, "");
+}
 
+function loadStores(language: string): Stores {
+  return {
+    readings: (tryLoadAsset(`mass-propers/${language}/lectio.yml`) ??
+      {}) as Stores["readings"],
+    prayers: (tryLoadAsset(`mass-propers/${language}/oratio.yml`) ??
+      {}) as Stores["prayers"],
+    chants: (tryLoadAsset(`mass-propers/${language}/antiphona.yml`) ??
+      {}) as Stores["chants"],
+  };
+}
+
+/**
+ * The mass proper for a liturgical title, reduced to the rubric in force and
+ * with its readings resolved against the store.
+ */
 export function loadMassPropersByTitle(
   title: string,
-  language: string
+  language: string,
+  rubrics: ReadonlySet<string> = DEFAULT_RUBRICS
 ): RawMassProper | undefined {
-  const sanctiPath = `divinum-officium/${language}/Sancti/${title}.yml`;
-  const temporaPath = `divinum-officium/${language}/Tempora/${title}.yml`;
-
-  let data = tryLoadAsset(sanctiPath);
-  if (!data) {
-    data = tryLoadAsset(temporaPath);
-  }
+  const fileName = titleToFileName(title);
+  const data =
+    tryLoadAsset(`mass-propers/${language}/Sancti/${fileName}.yml`) ??
+    tryLoadAsset(`mass-propers/${language}/Tempora/${fileName}.yml`);
 
   if (!data || typeof data !== "object") {
     return undefined;
   }
 
-  const result: RawMassProper = {};
-  for (const field of MASS_PROPER_FIELDS) {
-    if (field in data) {
-      (result as any)[field] = data[field];
-    }
-  }
+  const proper = selectMassProper(
+    data as Record<string, unknown>,
+    rubrics,
+    loadStores(language)
+  );
 
-  if (Object.keys(result).length === 0) {
-    return undefined;
-  }
-
-  return result;
+  return Object.keys(proper).length === 0
+    ? undefined
+    : (proper as RawMassProper);
 }

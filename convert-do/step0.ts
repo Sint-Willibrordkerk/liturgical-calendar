@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import { readdir } from "fs/promises";
 import { join, relative } from "path";
 import { SEP, escapeRegExp } from "./lib/paths";
+import { STEP_EXT } from "./lib/serialize.js";
 
 dotenv.config();
 
@@ -98,7 +99,7 @@ export async function getInputFiles() {
 }
 
 export function getOutputFile(input: string) {
-  input = input.replace(/\.txt$/i, ".yml");
+  input = input.replace(/\.txt$/i, STEP_EXT);
 
   for (const [lang, code] of LANGUAGE_CODES) {
     // Match the language folder as a full path segment on either platform,

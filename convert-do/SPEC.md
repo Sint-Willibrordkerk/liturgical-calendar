@@ -8,7 +8,7 @@ Where [AGENTS.md](AGENTS.md) explains *how to run* the pipeline, this document
 specifies *what each step guarantees*: its inputs, its outputs, the
 transformation it performs, the resulting data shape, and its handling of
 boundary cases. It describes observable behavior, not implementation. Section
-numbering follows the step numbers (step 0 … step 9).
+numbering follows the step numbers (step 0 … step 10).
 
 ## Conventions used in this document
 
@@ -22,13 +22,25 @@ numbering follows the step numbers (step 0 … step 9).
 Paths are shown with the Windows separator (`\`); on other platforms the
 separator differs but the path structure is identical.
 
+The trees each step writes are **intermediates**: nothing reads them but the
+next step. They are stored as JSON (`.json`), which parses and serializes far
+faster than YAML — on this data the difference decides whether a run takes
+minutes or seconds. The examples throughout this document are written as YAML
+for readability; they describe the structure, not the file format.
+
+The **last step's output is published**, read by people and shipped alongside
+the hand-maintained assets, and is written as YAML (`.yml`). Step 11 is
+therefore the one place the two formats meet.
+
 The pipeline runs in two modes:
 
 - **Streaming (steps 0–6)** — each source file is processed independently and
   passed through every step in the requested range before being written once.
-- **Batch (steps 7–9)** — whole-directory passes that may produce several
-  outputs from one input, or merge content across inputs. Each batch step fully
-  rebuilds its output directory.
+- **Batch (steps 7–10)** — whole-directory passes that may produce several
+  outputs from one input, merge content across inputs, or write a shared file
+  alongside the tree. Each batch step fully rebuilds its output directory. A
+  batch step may also be a plain per-file pass that simply has to run after the
+  file set has been reshaped.
 
 ---
 
@@ -418,8 +430,21 @@ Each reference carries the rubric condition of the variant it was found in.
 ### Include vs. borrow
 
 - **Include (`@` / `ex`)** — import **all** sections of the referenced file.
-- **Borrow (`vide`)** — import only these sections: `lectio*`, `ant-laudes`,
-  `ant-vespera`, `versum*`, `oratio*`.
+- **Borrow (`vide`)** — import these sections:
+  - **always**: `lectio*`, `ant-laudes`, `ant-vespera`, `versum*`, `oratio*` —
+    the Matins lessons and the antiphons, versicles and orations of Lauds and
+    Vespers, the Office texts a day takes from its common.
+  - **only where still missing**: the Mass propers `introitus`, `graduale`,
+    `gradualep`, `tractus`, `evangelium`, `offertorium`, `secreta`, `communio`,
+    `postcommunio`, `ultima-evangelium`.
+
+  The Mass propers fill a gap rather than furnish the day. A day that resolves
+  its own Mass — from its own text, or from a whole-file include — keeps it
+  untouched. One that resolves none, such as a commemoration pointing at a
+  common, takes the common's rather than being left without a Mass at all.
+
+  "Still missing" is judged as the references are resolved, and includes come
+  before borrows, so an `ex` always wins over a `vide` for the same section.
 
 ### Reference-path normalization
 
@@ -682,6 +707,22 @@ Because the derived tokens are **added to** — not substituted for — each
 variant's condition, the outcome is the same whether or not step 2 was
 materialized separately before step 3.
 
+### Commemorations are not folded
+
+A filename ending `cc` — or `octt`, for one kept during an octave — marks a
+**commemoration**: a celebration in its own right that the day merely keeps
+alongside its own. `Sancti/09-08cc` is St Adrian, kept on the Nativity of the
+Blessed Virgin Mary.
+
+Such a file keeps its **own path**. Folding it onto the day's would merge one
+saint's collect and lessons into another feast's file, and everything downstream
+would then have to tell them apart again.
+
+Because it stands alone, it does not take `commemoratio` as a condition either:
+that token existed to distinguish the commemoration's variants from the day's
+once they shared a file, and now nothing shares a file. A `octt` file still
+takes `octava`, which says when it applies rather than what it is.
+
 ### Path mapping
 
 The path has already had its `horas`/`missa` root removed by step 2. Step 3
@@ -733,6 +774,581 @@ Examples:
 - **Unknown directory suffix** — only the six directory suffixes in the table
   above are recognized; any other variant-directory suffix yields no valid
   token.
+
+---
+
+## Step 7 — Filename from liturgical name *(batch)*
+
+The first **batch** step: a whole-directory pass that may write one document
+under several filenames. It names each file from the feast/office title and
+folds `rank`/`officium`/`name` into a single `name` section. Section content
+keeps the rubric-variant shape.
+
+### Input
+
+- The step 6 tree — a directory of variant-shaped YAML files.
+
+### Output
+
+- Each document is written once per distinct name it yields (see Filenames).
+- Its `rank`, `officium` and `name` sections are replaced by a single `name`
+  naming that file; every other section passes through unchanged (still a
+  `{ value, condition }` list).
+
+### Filenames
+
+A celebration is designated under each of its rubrics, and each designation
+becomes a file. For every rubric condition the document gathers what it is called
+there: its `officium`, its `name`, and the text before the first `;;` of its
+`rank`.
+
+A file is filed under the `officium` and under the `rank`. The `name` files on
+its own **only where that condition has no officium** — the officium is the
+formal designation and outranks it. `rank` keeps filing regardless, since it
+often carries the specific feast where the officium gives only a generic one
+(`In Nativitate Beatæ Mariæ Virginis` against `In Festis Beatae Mariae
+Virginis`).
+
+Each name is kebab-cased: accents folded, dots and commas dropped, any other run
+a single hyphen, and a leading honorific segment — `s`, `ss`, `b` or `bb`, being
+`S.`, `Ss.`, `B.` or `Bb.` once their dots are gone — removed, so the file is
+named for the saints rather than the honorific: `S. Adriani, Martyris` files as
+`adriani-martyris`, and `Ss. Fabiani et Sebastiani` as `fabiani-et-sebastiani`.
+Only a whole segment is an honorific, so `Sanctæ Familiæ` keeps its `sanctæ`.
+
+With no designation at all, the original filename stem is kept. Within a
+directory, a collision on the same name with **different** content is
+disambiguated by appending the original stem; identical content collapses to a
+single file.
+
+### Content transform
+
+`rank`, `officium` and `name` are dropped, and the document is designated as the
+**file being written**, with two plain strings:
+
+- **`title`** — the designation the file is filed under: its `officium`, or its
+  `rank` where the file is filed under that. A file therefore never contradicts
+  its own filename.
+- **`name`** — the short name of the celebration, from the `name` section of the
+  same rubric condition.
+
+Only what the source gave is emitted. A document with no `officium` and no `rank`
+carries no `title`; one with no `name` carries no `name`.
+
+```yaml
+# adriani-martyris.yml
+title: S. Adriani, Martyris
+name: Adriáni
+```
+
+A document is written under every designation it yields, so these belong to the
+file rather than to the document. Each file says which celebration it holds, and
+the others are files in their own right.
+
+This also keeps the designations out of the rubric conditions. `Adriáni` is how
+the Cistercian use names St Adrian's commemoration, and `Hadriáni` how the Roman
+does; as a conditioned variant the Cistercian naming would be dropped wherever
+that use is not published, leaving a file called `adriani` claiming to be
+`Hadriáni`.
+
+### Edge cases
+
+- **No derivable designation** → the original stem is the filename, and neither
+  `title` nor `name` is emitted: the file is not named after anything.
+
+---
+
+## Step 8 — Split commemorations *(batch)*
+
+A **batch** step that pulls commemoration sections out into their own per-saint
+files and merges the same saint across documents.
+
+### Input
+
+- The step 7 tree.
+
+### Output
+
+- Each main document rewritten **without** its `commemoratio-*` sections.
+- One file per commemorated saint, `<dir>/<slug>.yml`, holding a display `name`
+  and the saint's `oratio` / `secreta` / `postcommunio` as `{ value, condition }`
+  lists.
+
+### Transform
+
+- The `commemoratio-oratio` / `commemoratio-secreta` / `commemoratio-postcommunio`
+  sections are removed from the main document.
+- Within each such section (a variant list), each variant's first line names the
+  saint — `!Pro S. …` or `Pro Ss. …`; the `S.`/`Ss.` honorific is dropped and
+  the rest is kebab-slugged. The variant's remaining lines become that saint's
+  content for that type, keeping the variant's `condition`.
+- Per saint, the collected type variant-lists plus a display `name` (the `!Pro`
+  text, honorific kept) form the saint's file.
+
+### Merging
+
+- The same saint (slug) appearing in several documents in one directory merges
+  into a single file; a non-empty section replaces the accumulated one.
+
+### Edge cases
+
+- A `commemoratio-*` variant whose first line is not a `!Pro …` line is skipped.
+
+---
+
+## Step 9 — Structure missa sections *(batch)*
+
+A **batch** step (purely per-file) that converts a Mass section's lines into a
+typed object, applied to **each rubric variant** while keeping its `condition`.
+The readings of Matins are given the same reading shape, so that a reading is
+one kind of thing wherever it occurs.
+
+### Input
+
+- The step 8 tree.
+
+### Output
+
+- The same shape; each recognized missa section has every variant's `value`
+  replaced by a typed object. Non-missa sections pass through unchanged, except
+  for the Matins readings described below.
+
+### Section types
+
+| Type         | Sections                                                       | Shape |
+| ------------ | -------------------------------------------------------------- | ----- |
+| `verse`      | `lectio`, `evangelium`, `offertorium`, `communio`, `ultima-evangelium` | `{ ref, text }` |
+| `prayer`     | `oratio`, `secreta`, `postcommunio`                            | `{ text, closure }` |
+| `antiphonal` | `introitus`, `graduale`, `tractus`, `gradualep`                | `{ antiphon: { ref, text }, verse: { ref, text } }` |
+
+- **verse** — a `!ref` line becomes `ref`; `$`-lines are dropped; a leading `v.`
+  is stripped. For `lectio`/`evangelium`, a leading `Léctio…`/`Sequéntia…`
+  introduction line is removed from `text`.
+- **prayer** — a `$`-line becomes `closure`; the rest becomes `text`.
+- **antiphonal** — split into antiphon and verse by `!ref` segments; a verse
+  tail that merely repeats the antiphon is dropped. `graduale` additionally
+  carries an `alleluia { ref, text }`, unless the second block is a `!Tractus`
+  (then no alleluia).
+
+### Readings
+
+The readings are treated as one kind of content wherever they occur: the Mass
+readings `lectio`, `evangelium` and `ultima-evangelium`, and the readings of
+Matins — `lectio1` … `lectio9` and the `…-in-N-loco` counterparts that place a
+reading elsewhere in the Office. Giving them one shape lets
+[step 10](#step-10--shared-lectio-store-and-variant-collapse-batch) store them
+together.
+
+A reading's lines are read as three parts: an optional **introduction** line, a
+**reference marker**, and the **body** beneath it. What the step makes of them
+depends on the reference.
+
+#### A biblical reference
+
+A reference naming a book, chapter and verse — `2 Cor 1:1-5`, `Matt 11:25-30` —
+yields:
+
+```yaml
+ref: 2 Cor 1:1-5
+verses:
+  - "Paulus, Apóstolus Jesu Christi per voluntátem Dei…"
+  - "Grátia vobis, et pax a Deo Patre nostro…"
+  - "Benedíctus Deus et Pater Dómini nostri Jesu Christi…"
+```
+
+- The **introduction is dropped**. A line such as `Léctio Epístolæ beáti Pauli
+  Apóstoli ad Romános`, `De libro Sapiéntiæ` or `Sequéntia sancti Evangélii`
+  announces the passage the reference already names, so it carries nothing the
+  reference does not.
+- The body becomes **one entry per verse**, with the leading verse number
+  removed. Where the body is not numbered, each line of it is one entry.
+
+#### Any other reference
+
+A reference that is not scripture — `Sermo 1 de Nativitate Domini`,
+`Lib. 10. cap. 16.` — keeps the `{ ref, text }` shape, and **keeps its
+introduction**. There the introduction is `Sermo sancti Augustíni Epíscopi` or
+`Ex libro Morálium sancti Gregórii`: it names the author of the reading, which
+nothing else records.
+
+#### No reference
+
+A reading with no marker keeps its lines as `{ text }`, with no `ref`. Step 10
+stores it under a key built from its opening words.
+
+#### Several references
+
+A reading drawn from more than one passage keeps its original lines. Structuring
+it would keep one reference and silently lose the interior ones. Such a reading
+passes through this step unchanged and step 10 then leaves it inline — a
+deliberate omission rather than a final state.
+
+### Rule cleanup
+
+The `rule` section is cleaned per variant: `Gloria` and `Credo` lines are
+dropped, and a `Prefatio=X` line is lifted out into a `prefatio` section (value
+`X`, lowercased) carrying the same condition.
+
+---
+
+## Step 10 — Shared stores and variant collapse *(batch)*
+
+A **batch** step that removes the largest sources of duplication in the tree.
+First it lifts the readings and the prayers out of the day files into shared
+stores per language, leaving a key behind in their place: the same pericope is
+read, and the same oration said, on many days and under many rubrics, so each
+text is stored once and referred to. Then it drops rubric variants that merely
+repeat the default variant's content.
+
+### Input
+
+- The step 9 tree.
+
+### Output
+
+- Two **store files** at the language root, `lectio.yml` and `oratio.yml` — one
+  entry per distinct reading and per distinct prayer, keyed as described under
+  [Keys](#keys), in the shape
+  [step 9](#step-9--structure-missa-sections-batch) gave them.
+
+  A prayer entry keeps its closure:
+
+  ```yaml
+  concede-nos-famulos-tuos-4b1e7c02:
+    text: "Concéde nos fámulos tuos, quǽsumus, Dómine Deus…"
+    closure: Per Dominum
+  ```
+
+  A reading entry:
+
+  ```yaml
+  matt-11-25-30:
+    ref: Matt 11:25-30
+    verses:
+      - "In illo témpore: Respóndens Jesus, dixit…"
+      - "Confíteor tibi, Pater, Dómine cœli et terræ…"
+  sermo-1-de-nativitate-domini:
+    ref: Sermo 1 de Nativitate Domini
+    text: "Sermo sancti Leónis Papæ\nSalvátor noster, dilectíssimi…"
+  sed-et-reproborum-duos-9f2c1a7e:
+    text: "Sed et reprobórum duos ördines…"
+  ```
+
+- Every day file rewritten so that each variant of a covered section holds the
+  **key string** instead of the reading:
+
+  ```yaml
+  evangelium:
+    - condition: []
+      value: matt-11-25-30
+    - condition: [monastica]
+      value: matt-11-25-30
+  ```
+
+Everything else — section keys, variant lists, conditions — is unchanged.
+
+### Covered sections
+
+Two kinds of section are lifted, each into its own store.
+
+**Readings**, into `lectio.yml`: the Mass readings `lectio`, `evangelium` and
+`ultima-evangelium`, and the Matins readings `lectio1` … `lectio9` together with
+their `…-in-N-loco` counterparts. Mass and Matins readings share one store —
+they are the same scripture, and a passage read at Mass on one day and at Matins
+on another is stored once.
+
+**Prayers**, into `oratio.yml`: `oratio`, `secreta` and `postcommunio`. These
+repeat even more heavily than the readings do, because the commons supply one
+oration for a whole class of saint, with the name left as `N.` to be filled in
+when the day is rendered. They keep their own store rather than joining the
+readings: a prayer is a different kind of text, carrying a closure rather than a
+reference, and a store named for the readings should hold readings.
+
+**Chants**, into `antiphona.yml`: the sung propers — `introitus`, `graduale`,
+`gradualep`, `tractus`, `offertorium` and `communio`. They repeat for the same
+reason the prayers do: one introit or gradual serves a whole common. A chant is
+stored whole, with its antiphon, verse and any alleluia together, since those
+travel as one piece.
+
+Every other section is left untouched.
+
+A Matins reading that [step 9](#step-9--structure-missa-sections-batch) left as
+lines — because it carried no reference marker, or several — is not a
+reference/text pair, and so stays inline by the general rule below.
+
+### Scope of the store
+
+The store is **per language root**, shared across every directory beneath it —
+not per directory. Readings recur across the `Sancti` and `Tempora` trees, and a
+per-directory store would keep those copies apart.
+
+### Keys
+
+An entry **with a reference** is keyed by it: lowercased, with accents folded
+away, each run of characters that are not letters or digits becoming a single
+hyphen, and leading and trailing hyphens removed. Folding the accents keeps a
+key readable — `reprobórum` keys as `reproborum`, not `reprob-rum` — and lets an
+entry key the same however its source spelled it.
+
+A chant's reference is the one its **antiphon** carries, where it has no
+reference of its own.
+
+| Reference             | Key                  |
+| --------------------- | -------------------- |
+| `Matt 11:25-30`       | `matt-11-25-30`      |
+| `2 Cor 1:1-5`         | `2-cor-1-1-5`        |
+| `Eccli 51:1-8; 51:12` | `eccli-51-1-8-51-12` |
+
+Two readings that share a reference but differ in content are **both kept**. The
+first keeps the plain key; each further one is disambiguated by appending a
+counter (`matt-11-25-30-2`, `matt-11-25-30-3`). Readings are visited in a
+deterministic order, so the same source tree always yields the same keys and the
+store file is stable between runs.
+
+A **prayer**, and any entry **without a reference**, is keyed by its opening
+words — the first four words of the text, in the same kebab form — followed by a
+short hash of the whole content, so that two texts opening alike stay apart. For
+a chant the opening words are its antiphon's:
+
+| Opening                          | Key                                |
+| -------------------------------- | ---------------------------------- |
+| `Sed et reprobórum duos ördines…` | `sed-et-reproborum-duos-9f2c1a7e`  |
+
+Because the hash covers the content, these keys never collide and take no
+counter. Two identical readings produce the same key, so they still share one
+entry.
+
+In practice these collisions are spelling differences for the same pericope —
+`coeli` against `cœli`, `ejus` against `eius`, `Judæam` against `Judǽam`. They
+are preserved rather than reconciled: the step does not normalize the
+orthography of a liturgical text, and each day keeps the exact wording its
+source carried.
+
+### Edge cases
+
+- **A value step 9 left as lines** — a reading carrying several references — is
+  left inline, unchanged; it does not enter the store and no key replaces it.
+- **A value that is not a reading** is left inline, unchanged.
+- **A reading whose content is only an unresolved reference** — a lone `@…` line
+  that step 5 could not resolve — is left inline. It is not a reading yet, and
+  storing it would key a placeholder.
+- **Identical readings** collapse to one entry, however many days and rubric
+  variants use them.
+- **A reading used only once** still moves to the store, so a covered section
+  holds a key wherever step 9 gave it a shape.
+
+### Variant collapse
+
+Most rubric variants carry content identical to the section's default variant —
+the rubric makes no difference to that text. Those variants are removed, so that
+the tree states a rubric variant only where the rubric actually changes
+something.
+
+This runs **after** the store substitution above, so that the covered sections
+collapse on their keys rather than on their full reading text.
+
+Applied to **every** section, not only the covered ones, within each section
+independently: a variant is removed when all of the following hold.
+
+1. The section has a **default** variant — one whose condition is empty.
+2. The variant is not itself that default.
+3. Its value is identical to the default's value.
+
+Nothing else about the section changes: the default variant is always kept, and
+every variant whose value differs from the default is kept with its condition
+intact.
+
+Example — an introit that is the same under every rubric:
+
+```yaml
+introitus:
+  - condition: []                 value: {antiphon: …, verse: …}
+  - condition: [cisterciensis]    value: {antiphon: …, verse: …}   # same
+  - condition: [monastica]        value: {antiphon: …, verse: …}   # same
+  - condition: ["1570"]           value: {antiphon: …, verse: …}   # differs
+→
+introitus:
+  - condition: []                 value: {antiphon: …, verse: …}
+  - condition: ["1570"]           value: {antiphon: …, verse: …}
+```
+
+#### What this assumes of the consumer
+
+Collapsing is only faithful because a rubric that finds no matching variant
+falls back to the default. A day under `monastica` no longer finds a `monastica`
+variant of the introit above, and must resolve to the default to read the same
+text it read before. Any consumer of this tree that selects a variant by rubric
+has to implement that fallback; without it, collapsing loses content.
+
+#### Edge cases
+
+- **No default variant** — nothing is removed, even when several variants share
+  a value. There is nothing to fall back to, so dropping any of them would
+  change which rubrics resolve to which text.
+- **Every variant identical, with a default present** — only the default
+  remains.
+- **A section that is not a variant list** is left unchanged.
+
+---
+
+## Step 11 — Mass propers *(batch)*
+
+The last step, and the only one whose output leaves the pipeline: it narrows the
+tree to what the calendar consumes — the Mass propers — so that the rest, which
+is the Divine Office, is not carried into the published assets.
+
+### Input
+
+- The step 10 tree.
+
+### Output
+
+- One file per document that has Mass content, holding **only** its Mass
+  sections, in the rubric-variant shape step 10 left them.
+- A `lectio.yml` at the language root holding **only** the store entries those
+  sections refer to.
+- A document with no Mass content is **not written** at all.
+
+### Which trees are published
+
+Only the **day trees** — `Sancti` and `Tempora` — are written. A calendar asks
+for the propers of a day, and those are the two trees that hold days.
+
+`Commune` is not published. It is a base for other days rather than a day
+itself: the commons supply the texts that a saint's own file borrows, and
+[step 4](#step-4--broad-references-file-ex--vide-) has already resolved those
+borrowings by the time the propers are published. Its texts therefore reach the
+calendar through the days that use them, and a copy under `Commune` would only
+be reachable by a lookup no calendar makes.
+
+The remaining trees — `Ordo`, `Psalterium`, and any other the sources carry —
+hold the Office and its rubrics, not the propers of a day, and are not published
+either.
+
+### Kept sections
+
+| Kept                                                                       |
+| -------------------------------------------------------------------------- |
+| `introitus`, `oratio`, `lectio`, `graduale`, `gradualep`, `tractus`, `evangelium`, `offertorium`, `secreta`, `communio`, `postcommunio`, `ultima-evangelium` |
+| `title`, `name`, `prefatio`                                                 |
+
+Everything else is dropped. A document counts as having Mass content when it
+keeps at least one section from the first row; `title`, `name` and `prefatio`
+alone are not enough, since nearly every document carries those.
+
+`rule` is dropped here, at the end. It carries how a day is to be observed —
+how many lessons, which preface — and the pipeline needs it up to this point:
+[step 9](#step-9--structure-missa-sections-batch) reads it to lift out
+`prefatio`. Once that is done nothing in the propers refers to it again, and it
+is the Office it describes rather than the Mass.
+
+### Rubric systems not published
+
+The propers are published for one **rubric system** — the 1962 rubrics, the ones
+the shipped calendar follows. A variant that requires a different system can
+never be chosen when that calendar is generated, so it is dropped rather than
+shipped unreachable.
+
+These are the systems, and dropping a variant conditioned on any of them but the
+one in force:
+
+| Kind                | Tokens                                                              |
+| ------------------- | ------------------------------------------------------------------- |
+| Editions            | `1570`, `1617`, `1888`, `1906`, `1910`, `1913`, `1930`, `1939`, `1951`, `1955`, `1962`, `1963`, `2020` |
+| Orders and usages   | `monastica`, `cisterciensis`, `praedicatorum`, `altovadensis`, `divino`, `summorum`, `trident`, `Barroux` |
+| Local usages        | any `dioecesis …` or `civitate …`                                    |
+
+A condition token that is **not** a rubric system is left alone. Tokens such as
+`octava`, `commemoratio`, `adventus`, `paschali`, `quadragesimae`, `feria-2` …
+`feria-7`, `defunctorum`, `septem-dolorum`, `transfer` and `special-a` … `special-s`
+say *when* a text applies, not *under whose rubrics*. The 1962 calendar uses
+them, so they are published.
+
+A section left with no variants is dropped, and a document left with no Mass
+content is not written — as for a document that never had any.
+
+This narrows what is published; it does not decide which variant applies on a
+given day. That remains a question for whoever generates a calendar, answered
+against the variants shipped here.
+
+### Compaction
+
+The variant shape earns its keep where a section actually varies. Where it does
+not, it is scaffolding around a single value, and the published propers drop it.
+
+Two rules, applied last — after the keys a document holds have been collected:
+
+1. **An empty condition is omitted.** A variant with no rubric tokens carries no
+   `condition` field at all. Its absence means the same thing the empty list did:
+   the unconditional variant.
+
+2. **A section with only the default variant becomes that variant's value** —
+   unless the value is an array. An array would be indistinguishable from a
+   variant list at a glance, so those sections keep their wrapper.
+
+```yaml
+oratio:
+  - value: concede-nos-famulos-tuos-4b1e7c02
+    condition: []
+graduale:
+  - value: ps-44-2
+    condition: []
+  - value: ps-88-21
+    condition: [octava]
+→
+oratio: concede-nos-famulos-tuos-4b1e7c02
+graduale:
+  - value: ps-44-2
+  - value: ps-88-21
+    condition: [octava]
+```
+
+A consumer therefore reads a section as either a value in its own right, or a
+list of variants of which at most one carries a condition-less entry. Both were
+already true of the tree; compaction only stops writing what can be inferred.
+
+### Section order
+
+Sections are written in the order they occur in the Mass, so a day file reads
+the way the day is celebrated rather than in whatever order the sources happened
+to yield:
+
+| # | Section | |
+| - | ------- | - |
+| 1 | `title` | the celebration, before its texts |
+| 2 | `name` | its short name |
+| 3 | `introitus` | Introit |
+| 4 | `oratio` | Collect |
+| 5 | `lectio` | Epistle |
+| 6 | `graduale` | Gradual |
+| 7 | `gradualep` | Gradual in paschaltide |
+| 8 | `tractus` | Tract |
+| 9 | `evangelium` | Gospel |
+| 10 | `offertorium` | Offertory |
+| 11 | `secreta` | Secret |
+| 12 | `prefatio` | Preface |
+| 13 | `communio` | Communion |
+| 14 | `postcommunio` | Postcommunion |
+| 15 | `ultima-evangelium` | Last Gospel |
+
+A section outside this list — there should be none — is written after them, in
+alphabetical order, so nothing is silently dropped by being unrecognized.
+
+The store files are ordered by key, so both they and the day files have a
+deterministic shape and diff cleanly between runs.
+
+### The store subset
+
+Only the readings the kept sections name are carried over. The Office readings
+share the step 10 store but are not published, so most of its entries do not
+travel with the propers; neither do readings only a dropped variant named.
+
+### Edge cases
+
+- **A reading left inline** by step 10 stays inline here; it is content, not a
+  key, and needs no store entry.
+- **A key naming no store entry** is impossible by construction, since the
+  subset is built from the keys the kept sections actually hold.
 
 ---
 

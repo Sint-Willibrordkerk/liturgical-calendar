@@ -21,29 +21,29 @@ describe("step0 transform", () => {
 });
 
 describe("step0 getOutputFile", () => {
-  it("renames .txt to .yml and the language folder to its ISO code", () => {
-    expect(getOutputFile("missa\\Latin\\02-02.txt")).toBe("missa\\la\\02-02.yml");
+  it("renames .txt to .json and the language folder to its ISO code", () => {
+    expect(getOutputFile("missa\\Latin\\02-02.txt")).toBe("missa\\la\\02-02.json");
     expect(getOutputFile("horas\\Nederlands\\01-01.txt")).toBe(
-      "horas\\nl\\01-01.yml"
+      "horas\\nl\\01-01.json"
     );
   });
 
   it("renames the language folder on POSIX-separated paths", () => {
-    expect(getOutputFile("missa/Latin/02-02.txt")).toBe("missa/la/02-02.yml");
+    expect(getOutputFile("missa/Latin/02-02.txt")).toBe("missa/la/02-02.json");
     expect(getOutputFile("horas/Nederlands/01-01.txt")).toBe(
-      "horas/nl/01-01.yml"
+      "horas/nl/01-01.json"
     );
   });
 
   it("passes horas\\Ordinarium through without a language rename", () => {
     expect(getOutputFile("horas\\Ordinarium\\Prima.txt")).toBe(
-      "horas\\Ordinarium\\Prima.yml"
+      "horas\\Ordinarium\\Prima.json"
     );
   });
 
   it("passes horas/Ordinarium (POSIX) through without a language rename", () => {
     expect(getOutputFile("horas/Ordinarium/Prima.txt")).toBe(
-      "horas/Ordinarium/Prima.yml"
+      "horas/Ordinarium/Prima.json"
     );
   });
 

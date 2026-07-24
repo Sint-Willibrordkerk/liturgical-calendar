@@ -1,16 +1,21 @@
-# Pipeline: Divinum Officium → gestructureerde YAML
+# Pipeline: Divinum Officium → gestructureerde data
 
 De scripts in `convert-do/` zetten bronbestanden van het [Divinum
 Officium](https://www.divinumofficium.com)-project stapsgewijs om naar
-genormaliseerde YAML met duidelijke secties, rubriek-varianten en opgeloste
+genormaliseerde data met duidelijke secties, rubriek-varianten en opgeloste
 referenties. Elke stap leest uit de output van de vorige stap onder
 `.divinum-officium/step{N}/` (relatief aan `process.cwd()`).
+
+> **Opslagformaat** — de tussenliggende trees (`step0` … `step10`) staan in
+> **JSON** (`.json`): ze worden alleen door de volgende stap gelezen, en JSON
+> parset ~70x sneller dan YAML. Alleen de output van de laatste stap (`step11`)
+> is **YAML** (`.yml`), want die wordt gepubliceerd en gelezen.
 
 > **Let op — status van deze pipeline**
 > - De actieve implementatie is de **TypeScript**-pipeline in deze map,
 >   aangestuurd door [`index.ts`](index.ts) → [`pipeline.ts`](pipeline.ts).
->   De stappen zijn **0-geïndexeerd** (`step0` … `step9`).
-> - **Step 0 t/m 6** draaien in-memory (streaming); **step 7 t/m 9** zijn
+>   De stappen zijn **0-geïndexeerd** (`step0` … `step11`).
+> - **Step 0 t/m 6** draaien in-memory (streaming); **step 7 t/m 11** zijn
 >   directory-batchstappen (fan-out / cross-file merges) die de
 >   gematerialiseerde `step{N-1}`-map lezen. Zie
 >   [Hoe de runner werkt](#hoe-de-runner-werkt).
@@ -70,7 +75,7 @@ stap een hele map:
    anders alle bestanden onder `.divinum-officium/step{fromStep-1}`.
 2. **Output-pad bepalen** — per invoerbestand wordt het output-pad berekend.
    Daarbij worden padtransformaties toegepast afhankelijk van het stap-bereik:
-   - `getStep0OutputFile` — `.txt` → `.yml` en taalmap → ISO-code
+   - `getStep0OutputFile` — `.txt` → `.json` en taalmap → ISO-code
      (`Latin` → `la`, enz.).
    - `getStep2OutputFile` — strip `\horas\` / `\missa\`, zodat mis en officie op
      **hetzelfde output-pad** uitkomen (combineren).
@@ -127,7 +132,7 @@ relevant. De gedeelde helpers staan in [`lib/batch.ts`](lib/batch.ts).
   `*tts.txt`, `ruler.txt`, `Linguae.txt`, `source.txt`, `Mobile.txt`, enz.).
   Het pad wordt relatief aan de taalroot gecontroleerd (bijv. `Latin/01-01.txt`).
 - **`transform`:** splitst de bestandsinhoud op `\r?\n` naar een `string[]`.
-- **`getOutputFile`:** `.txt` → `.yml` en de taalmap → ISO-code. De volledige
+- **`getOutputFile`:** `.txt` → `.json` en de taalmap → ISO-code. De volledige
   lijst codes staat in `LANGUAGE_CODES` (`Latin` → `la`, `Nederlands` → `nl`,
   `English` → `en`, `Latin-Bea` → `la-bea`, enz.).
 
@@ -216,7 +221,7 @@ zijn transform per variant toe (op `variant.value`) en houdt de `condition`.
   `commemoratio-*`-keys; `commemorations` bevat per heilige de `oratio`/`secreta`/
   `postcommunio` als variant-lijsten.
 - **`run(inputDir, outputDir)`** — schrijf de gestripte main-bestanden plus per
-  heilige `<dir>/<slug>.yml` (`name` uit de `!Pro S. …`-regel). Dezelfde heilige
+  heilige `<dir>/<slug>.json` (`name` uit de `!Pro S. …`-regel). Dezelfde heilige
   uit meerdere bestanden in dezelfde map mergt tot één bestand.
 
 ## Step 9 — Missa-secties structureren *(batch)*

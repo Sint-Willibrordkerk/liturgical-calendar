@@ -8,12 +8,12 @@ import {
 
 describe("isStep3SkippedForPath", () => {
   it("is true when any path segment is Ordo", () => {
-    expect(isStep3SkippedForPath("nl/Ordo/Ordo.yml")).toBe(true);
-    expect(isStep3SkippedForPath("nl\\Ordo\\Communio.yml")).toBe(true);
+    expect(isStep3SkippedForPath("nl/Ordo/Ordo.json")).toBe(true);
+    expect(isStep3SkippedForPath("nl\\Ordo\\Communio.json")).toBe(true);
   });
 
   it("is false for other folders", () => {
-    expect(isStep3SkippedForPath("nl/Sancti/01-01.yml")).toBe(false);
+    expect(isStep3SkippedForPath("nl/Sancti/01-01.json")).toBe(false);
   });
 });
 

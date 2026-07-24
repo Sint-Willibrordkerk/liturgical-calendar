@@ -48,24 +48,39 @@ export type Sanctorum = Record<
   }
 >;
 
+/** An antiphon or verse: a reference and its text. */
+export type RawVerse = { ref?: string; text?: string };
+
+/**
+ * A reading. A biblical one carries `verses`, one per verse; anything else
+ * carries `text`. A reading the pipeline could not structure carries its lines.
+ */
+export type RawReading =
+  | { ref?: string; verses: string[] }
+  | { ref?: string; text: string }
+  | string[];
+
 export type RawMassProper = {
+  /** The formal designation, from the source's officium. */
+  title?: string;
+  /** The short name of the celebration. */
   name?: string;
-  introitus?: {
-    antiphon?: { ref?: string; text?: string };
-    verse?: { ref?: string; text?: string };
-  };
+  prefatio?: string;
+  introitus?: { antiphon?: RawVerse; verse?: RawVerse };
   oratio?: { text?: string; closure?: string };
-  lectio?: { ref?: string; text?: string };
+  lectio?: RawReading;
   graduale?: {
-    antiphon?: { ref?: string; text?: string };
-    verse?: { ref?: string; text?: string };
-    alleluia?: { ref?: string; text?: string };
+    antiphon?: RawVerse;
+    verse?: RawVerse;
+    alleluia?: RawVerse;
   };
-  tractus?: { verses?: string[] };
-  evangelium?: { ref?: string; text?: string };
-  offertorium?: { ref?: string; text?: string };
+  gradualep?: { antiphon?: RawVerse; verse?: RawVerse };
+  tractus?: { antiphon?: RawVerse; verse?: RawVerse };
+  evangelium?: RawReading;
+  "ultima-evangelium"?: RawReading;
+  offertorium?: RawVerse;
   secreta?: { text?: string; closure?: string };
-  communio?: { ref?: string; text?: string };
+  communio?: RawVerse;
   postcommunio?: { text?: string; closure?: string };
 };
 

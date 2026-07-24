@@ -1,6 +1,6 @@
 import { join } from "path";
 import { readFile, writeFile } from "fs/promises";
-import { parse, stringify } from "yaml";
+
 import { consola } from "consola";
 import {
   collectYmlFiles,
@@ -9,6 +9,7 @@ import {
   DEFAULT_CONCURRENCY,
 } from "./lib/batch";
 import { isVariantArray, mapVariants } from "./lib/variants";
+import { STEP_EXT, stripStepExt, parseStep, stringifyStep } from "./lib/serialize.js";
 
 /**
  * Step 9 — structure missa sections (ported from step13).
@@ -43,10 +44,102 @@ const LECTIO_INTRODUCTION = /^\s*(Léctio|Lectio|Sequéntia|Sequentia)\s+.+$/i;
 const ALLELUIA_CUE = /\s*,?\s*Allel[uú]ja\s*,?\s*Allel[uú]ja\.?\s*$/i;
 const PREFATIO_PREFIX = /^Prefatio\s*=\s*(.+)$/i;
 
+/**
+ * The readings of Matins: `lectio1` … `lectio9`, plus the `…-in-N-loco` forms
+ * that place a reading elsewhere in the Office. `lectio` itself (the Mass
+ * reading) is covered by the table above, and `lectio-prima` is not a reading.
+ */
+const MATINS_READING = /^lectio\d+(-in-\d+-loco)?$/;
+
+/** The Mass readings. `offertorium`/`communio` are antiphons, not readings. */
+const MASS_READINGS = new Set(["lectio", "evangelium", "ultima-evangelium"]);
+
+/** True for a section holding a reading, at Mass or at Matins. */
+export function isReadingSection(key: string): boolean {
+  const base = key.split("/")[0]!;
+  return MASS_READINGS.has(base) || MATINS_READING.test(base);
+}
+
 export function getSectionType(
   key: string
 ): "antiphonal" | "prayer" | "verse" | null {
-  return MISSA_SECTION_TYPES[key.split("/")[0]!] ?? null;
+  const base = key.split("/")[0]!;
+  if (MATINS_READING.test(base)) return "verse";
+  return MISSA_SECTION_TYPES[base] ?? null;
+}
+
+/** How many reference markers a reading's lines carry. */
+function countRefMarkers(lines: unknown): number {
+  if (!Array.isArray(lines)) return 0;
+  return lines.filter((l) => typeof l === "string" && l.startsWith("!")).length;
+}
+
+/**
+ * A reference naming a book, chapter and verse (`2 Cor 1:1-5`, `Matt 11:25-30`)
+ * rather than a patristic citation (`Sermo 1 de Nativitate Domini`).
+ */
+const BIBLICAL_REF = /^[1-3]?\s*[A-Za-zÀ-ÿ.]+\.?\s+\d+[:.]\d+/;
+
+/** A line announcing the passage the reference already names. */
+const READING_INTRODUCTION =
+  /^\s*(Léctio|Lectio|Sequéntia|Sequentia|Incipit|De|Ex)\s+\S/i;
+
+/** A body line opening with its verse number. */
+const VERSE_NUMBER = /^\s*\d+\s+(?=\S)/;
+
+export type Reading =
+  | { ref: string; verses: string[] }
+  | { ref: string; text: string }
+  | { text: string };
+
+/**
+ * Structure a reading's lines. A biblical reference drops the introduction and
+ * splits the body into verses; any other reference keeps its introduction, since
+ * there that line names the author; with no reference the lines are kept as
+ * text. A reading carrying several references is left to the caller.
+ */
+export function linesToReading(lines: unknown): Reading {
+  if (!Array.isArray(lines) || lines.length === 0) return { text: "" };
+
+  const markerAt = lines.findIndex(
+    (l) => typeof l === "string" && l.startsWith("!")
+  );
+  const body = (from: number) =>
+    lines
+      .slice(from)
+      .map((l) => (typeof l === "string" ? l : String(l)))
+      .filter((s) => !s.startsWith("$") && !s.startsWith("!"));
+
+  if (markerAt === -1) {
+    return { text: stripLeadingV(body(0).join("\n").trim()) };
+  }
+
+  const ref = String(lines[markerAt]).slice(1).trim();
+  if (!BIBLICAL_REF.test(ref)) {
+    return { ref, text: stripLeadingV(body(0).join("\n").trim()) };
+  }
+
+  // Biblical: the line above the marker only announces the passage.
+  const before = body(0).slice(0, markerAt);
+  const after = body(markerAt + 1);
+  const kept =
+    before.length && READING_INTRODUCTION.test(before[before.length - 1]!)
+      ? before.slice(0, -1)
+      : before;
+
+  const verses = [...kept, ...after]
+    .map((s) => stripLeadingV(s.replace(VERSE_NUMBER, "").trim()))
+    .filter((s) => s !== "");
+  return { ref, verses };
+}
+
+/**
+ * A reading is only structured when it carries at most one reference marker.
+ * With several, structuring it would keep one reference and lose the interior
+ * ones, so it keeps its lines and step 10 leaves it inline.
+ */
+function canStructureReading(lines: unknown): boolean {
+  return countRefMarkers(lines) <= 1;
 }
 
 function stripLeadingV(text: string): string {
@@ -244,18 +337,10 @@ function transformSection(
 ): unknown {
   if (!Array.isArray(value)) return value;
   switch (sectionType) {
-    case "verse": {
-      const out = linesToVerse(value);
-      if (
-        key === "lectio" ||
-        key.startsWith("lectio/") ||
-        key === "evangelium" ||
-        key.startsWith("evangelium/")
-      ) {
-        out.text = stripLectioIntroduction(out.text);
-      }
-      return out;
-    }
+    case "verse":
+      // A reading carries an introduction and, when biblical, numbered verses;
+      // the other verse sections are antiphons and keep `{ ref, text }`.
+      return isReadingSection(key) ? linesToReading(value) : linesToVerse(value);
     case "prayer":
       return linesToPrayer(value);
     case "antiphonal":
@@ -293,9 +378,16 @@ export function transform(obj: Record<string, unknown>): Step9Output {
       continue;
     }
     const sectionType = getSectionType(key);
-    result[key] = sectionType
-      ? mapVariants(value, (v) => transformSection(key, v, sectionType))
-      : value;
+    if (!sectionType) {
+      result[key] = value;
+      continue;
+    }
+    const isReading = isReadingSection(key);
+    result[key] = mapVariants(value, (v) =>
+      isReading && !canStructureReading(v)
+        ? v
+        : transformSection(key, v, sectionType)
+    );
   }
   return result;
 }
@@ -313,13 +405,17 @@ export async function run(
     DEFAULT_CONCURRENCY,
     async (rel) => {
       const raw = await readFile(join(inputDir, rel), "utf-8");
-      const obj = parse(raw);
+      const obj = parseStep(raw);
       if (typeof obj !== "object" || obj === null || Array.isArray(obj)) {
         throw new Error("Expected object");
       }
       const outPath = join(outputDir, rel);
       await ensureDir(outPath, mkdirCache);
-      await writeFile(outPath, stringify(transform(obj)), "utf-8");
+      await writeFile(
+        outPath,
+        stringifyStep(transform(obj as Record<string, unknown>)),
+        "utf-8"
+      );
     }
   );
 

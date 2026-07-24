@@ -3,7 +3,7 @@ import { consola } from "consola";
 import { join, dirname } from "path";
 import { readdir, readFile, writeFile, mkdir, rm, access } from "fs/promises";
 import { constants } from "fs";
-import { parse, stringify } from "yaml";
+
 import { SEP_RE } from "./lib/paths.js";
 
 import {
@@ -34,15 +34,18 @@ import {
 import { run as runStep7 } from "./step7.js";
 import { run as runStep8 } from "./step8.js";
 import { run as runStep9 } from "./step9.js";
+import { run as runStep10 } from "./step10.js";
+import { run as runStep11 } from "./step11.js";
+import { STEP_EXT, parseStep, stringifyStep } from "./lib/serialize.js";
 
 const PROJECT_BASE = process.cwd();
 const STEP_BASE = join(PROJECT_BASE, ".divinum-officium");
 const MISSING_DEPENDENCY_ERROR = "Missing dependency";
 
 /**
- * Highest step handled by the in-memory streaming runner. Later steps (7–9)
- * are directory-level batch operations (fan-out / cross-file merges) and run
- * against materialized `step{N-1}` folders instead.
+ * Highest step handled by the in-memory streaming runner. Later steps (7–11)
+ * are directory-level batch operations (fan-out / cross-file merges / shared
+ * files) and run against materialized `step{N-1}` folders instead.
  */
 const STREAMING_MAX_STEP = 6;
 
@@ -65,6 +68,8 @@ const BATCH_STEPS: Record<
   7: runStep7,
   8: runStep8,
   9: runStep9,
+  10: runStep10,
+  11: runStep11,
 };
 
 export async function getInputFiles(fromStep: number): Promise<{
@@ -183,7 +188,7 @@ async function processInputFiles(
       data = await readFile(
         join(STEP_BASE, "step" + (fromStep - 1), inputFile),
         "utf-8"
-      ).then(parse);
+      ).then((raw) => parseStep(raw) as any);
     }
 
     if (fromStep <= 0 && toStep >= 0) data = step0Transform(data as string);
@@ -201,7 +206,7 @@ async function processInputFiles(
           .split(SEP_RE)
           .slice(3)
           .join("/")
-          .replace(".yml", "")
+          .replace(STEP_EXT, "")
       );
       const dependencies = extractDependencies(data as Step3Output, outputFile);
       for (const dependency of dependencies) {
@@ -257,7 +262,7 @@ async function processInputFiles(
       result = merged;
     }
   }
-  await writeFile(outputFile, stringify(result), "utf-8");
+  await writeFile(outputFile, stringifyStep(result), "utf-8");
   fileCache.add(outputFile);
 }
 

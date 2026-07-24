@@ -12,7 +12,7 @@ describe("pipeline getInputFiles", () => {
   it("fromStep 1 lists files under .divinum-officium/step0 relative to cwd", async () => {
     const tmpRoot = mkdtempSync(join(tmpdir(), "lc-getInputFiles-"));
     vi.spyOn(process, "cwd").mockReturnValue(tmpRoot);
-    const ymlPath = join(tmpRoot, ".divinum-officium", "step0", "la", "01-01.yml");
+    const ymlPath = join(tmpRoot, ".divinum-officium", "step0", "la", "01-01.json");
     await mkdir(join(tmpRoot, ".divinum-officium", "step0", "la"), {
       recursive: true,
     });
@@ -26,6 +26,6 @@ describe("pipeline getInputFiles", () => {
     const normalized = result.files.map((f) =>
       f.replace(/\\/g, "/").replace(/^\/+/, "")
     );
-    expect(normalized).toContain("la/01-01.yml");
+    expect(normalized).toContain("la/01-01.json");
   });
 });

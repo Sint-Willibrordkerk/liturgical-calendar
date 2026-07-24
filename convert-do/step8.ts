@@ -1,6 +1,6 @@
 import { join, dirname } from "path";
 import { readFile, writeFile } from "fs/promises";
-import { parse, stringify } from "yaml";
+
 import { consola } from "consola";
 import {
   collectYmlFiles,
@@ -9,6 +9,7 @@ import {
   DEFAULT_CONCURRENCY,
 } from "./lib/batch";
 import { isVariantArray, type Variant } from "./lib/variants";
+import { STEP_EXT, parseStep, stringifyStep } from "./lib/serialize.js";
 
 /**
  * Step 8 — split commemorations into their own files (ported from step12).
@@ -149,7 +150,7 @@ export async function run(
       const raw = await readFile(join(inputDir, relPath), "utf-8");
       let obj: Record<string, unknown>;
       try {
-        obj = parse(raw);
+        obj = parseStep(raw) as Record<string, unknown>;
       } catch {
         return;
       }
@@ -181,7 +182,7 @@ export async function run(
       }
       toWriteMain.push({
         relPath,
-        content: stringify(withoutCommemoratioKeys(obj)),
+        content: stringifyStep(withoutCommemoratioKeys(obj)),
       });
     }
   );
@@ -197,11 +198,11 @@ export async function run(
   }
   for (const { dir, slug, displayName, oratio, secreta, postcommunio } of byOutputKey.values()) {
     const outRelPath =
-      dir && dir !== "." ? `${dir}/${slug}.yml` : `${slug}.yml`;
+      dir && dir !== "." ? `${dir}/${slug}${STEP_EXT}` : `${slug}${STEP_EXT}`;
     const outPath = join(outputDir, outRelPath);
     const doc = { name: displayName, oratio, secreta, postcommunio };
     await ensureDir(outPath, mkdirCache);
-    await writeFile(outPath, stringify(doc), "utf-8");
+    await writeFile(outPath, stringifyStep(doc), "utf-8");
     written++;
   }
 

@@ -22,7 +22,7 @@ describe("batch steps 7-9 (run)", () => {
   async function listYml(dir: string) {
     const entries = await readdir(dir, { recursive: true });
     return (entries as string[])
-      .filter((e) => e.endsWith(".yml"))
+      .filter((e) => e.endsWith(".json"))
       .map((e) => e.replace(/\\/g, "/"))
       .sort();
   }
@@ -36,8 +36,8 @@ describe("batch steps 7-9 (run)", () => {
     await mkdir(join(step6, "la", "Sancti"), { recursive: true });
 
     await writeFile(
-      join(step6, "la", "Sancti", "01-01.yml"),
-      stringify({
+      join(step6, "la", "Sancti", "01-01.json"),
+      JSON.stringify({
         rank: [v(["In Circumcisione Domini;;6;;x"])],
         oratio: [v(["Deus qui", "$Per Dominum"])],
         "commemoratio-oratio": [v(["!Pro S. Anastasia", "Da quaesumus"])],
@@ -45,8 +45,8 @@ describe("batch steps 7-9 (run)", () => {
       "utf-8"
     );
     await writeFile(
-      join(step6, "la", "Sancti", "01-02.yml"),
-      stringify({
+      join(step6, "la", "Sancti", "01-02.json"),
+      JSON.stringify({
         rank: [v(["Octava Nativitatis;;4"])],
         "commemoratio-secreta": [v(["!Pro S. Anastasia", "Munera nostra"])],
       }),
@@ -59,34 +59,34 @@ describe("batch steps 7-9 (run)", () => {
 
     // Step 7: files renamed from the liturgical name; rank folded into a name variant.
     const s7 = await listYml(step7);
-    expect(s7).toContain("la/Sancti/in-circumcisione-domini.yml");
-    expect(s7).toContain("la/Sancti/octava-nativitatis.yml");
+    expect(s7).toContain("la/Sancti/in-circumcisione-domini.json");
+    expect(s7).toContain("la/Sancti/octava-nativitatis.json");
     const named = parse(
-      await readFile(join(step7, "la", "Sancti", "in-circumcisione-domini.yml"), "utf-8")
+      await readFile(join(step7, "la", "Sancti", "in-circumcisione-domini.json"), "utf-8")
     );
-    expect(named.name).toEqual([v(["In Circumcisione Domini"])]);
+    expect(named.title).toBe("In Circumcisione Domini");
     expect(named.rank).toBeUndefined();
 
     // Step 8: the two files' commemorations of Anastasia merge into one file,
     // keeping the variant shape; the main file drops the commemoratio keys.
     const anastasia = parse(
-      await readFile(join(step8, "la", "Sancti", "anastasia.yml"), "utf-8")
+      await readFile(join(step8, "la", "Sancti", "anastasia.json"), "utf-8")
     );
     expect(anastasia.name).toBe("S. Anastasia");
     expect(anastasia.oratio).toEqual([v(["Da quaesumus"])]);
     expect(anastasia.secreta).toEqual([v(["Munera nostra"])]);
     const main8 = parse(
-      await readFile(join(step8, "la", "Sancti", "in-circumcisione-domini.yml"), "utf-8")
+      await readFile(join(step8, "la", "Sancti", "in-circumcisione-domini.json"), "utf-8")
     );
     expect(main8["commemoratio-oratio"]).toBeUndefined();
 
     // Step 9: each missa section variant is structured into { text, closure }.
     const main9 = parse(
-      await readFile(join(step9, "la", "Sancti", "in-circumcisione-domini.yml"), "utf-8")
+      await readFile(join(step9, "la", "Sancti", "in-circumcisione-domini.json"), "utf-8")
     );
     expect(main9.oratio).toEqual([v({ text: "Deus qui", closure: "Per Dominum" })]);
     const anastasia9 = parse(
-      await readFile(join(step9, "la", "Sancti", "anastasia.yml"), "utf-8")
+      await readFile(join(step9, "la", "Sancti", "anastasia.json"), "utf-8")
     );
     expect(anastasia9.oratio).toEqual([v({ text: "Da quaesumus", closure: "" })]);
   });

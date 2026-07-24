@@ -1,6 +1,6 @@
 import { join, dirname } from "path";
 import { readFile, writeFile } from "fs/promises";
-import { parse, stringify } from "yaml";
+
 import { consola } from "consola";
 import {
   collectYmlFiles,
@@ -9,24 +9,18 @@ import {
   DEFAULT_CONCURRENCY,
 } from "./lib/batch";
 import { Step6Output } from "./step6";
-import { isVariantArray, type Variant } from "./lib/variants";
+import { isVariantArray } from "./lib/variants";
+import { STEP_EXT, stripStepExt, parseStep, stringifyStep } from "./lib/serialize.js";
 
 /**
  * Step 7 — derive filenames from the liturgical name (ported from step11).
  *
- * Content transform: fold `rank`/`officium` into `name` (first `;;`-part for
- * rank), keep everything else. Sections remain rubric-variant lists
- * (`{ value, condition }[]`); the name is derived per variant. Filenames: each
- * document is written once per distinct kebab-cased name found across its
- * `name`/`officium`/`rank` variants; collisions within a directory are
- * disambiguated by original stem.
+ * Each document is written once per distinct kebab-cased name found across its
+ * `name`/`officium`/`rank` variants, and each file is named after the one it was
+ * written for. Other sections keep the rubric-variant shape. Collisions within a
+ * directory are disambiguated by original stem.
  */
 export type Step7Output = { [key: string]: unknown };
-
-/** Order-independent key for a rubric condition set. */
-function conditionKey(condition: string[]): string {
-  return [...condition].sort().join("|");
-}
 
 /** First non-empty line of a variant's value. */
 function nameFromLines(value: unknown): string | null {
@@ -43,15 +37,124 @@ function rankNameFromLines(value: unknown): string | null {
   return part != null && part.trim() !== "" ? part.trim() : null;
 }
 
-/** Invalid filename characters (Windows): replaced with `-`. */
-const INVALID_FILE_CHARS = /[\\/:*?"<>|]/g;
-
+/**
+ * A liturgical name as a filename. Kept in step with the calendar's lookup
+ * (`titleToFileName` in the asset loader) — both must agree or a day fails to
+ * find its file.
+ *
+ * - accents are folded, so `Adriáni` files and looks up as `adriani`;
+ * - dots and commas are dropped, so `S. Adriani, Martyris` → `s-adriani-martyris`;
+ * - a leading honorific segment — `s`, `ss`, `b` or `bb`, being `S.`/`Ss.`/`B.`/
+ *   `Bb.` once their dots are gone — is dropped, so the file is named for the
+ *   saints rather than the honorific: `adriani-martyris`,
+ *   `fabiani-et-sebastiani`.
+ */
 export function toKebabFileName(s: unknown): string | null {
   if (s == null) return null;
-  let t = String(s).trim().toLowerCase().replace(/\s+/g, "-");
-  t = t.replace(INVALID_FILE_CHARS, "-");
-  t = t.replace(/-+/g, "-").replace(/^-|-$/g, "");
+  let t = String(s)
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[.,]/g, "")
+    .replace(/[^a-z0-9æœ]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .replace(/^(ss?|bb?)-/, "");
   return t === "" ? null : t;
+}
+
+/**
+ * A file the document yields: its filename, and how the celebration it holds is
+ * designated — `title` from `officium`, `name` from `name`.
+ */
+export type NameCandidate = {
+  key: string;
+  title: string | null;
+  name: string | null;
+};
+
+/** Order-independent key for a rubric condition set. */
+function conditionKey(condition: string[]): string {
+  return [...condition].sort().join("|");
+}
+
+/** How a celebration is designated under one rubric condition. */
+type Designation = {
+  officium: string | null;
+  name: string | null;
+  rank: string | null;
+};
+
+/** Gather `officium`, `name` and `rank` per rubric condition. */
+function designationsByCondition(obj: unknown): Map<string, Designation> {
+  const byCondition = new Map<string, Designation>();
+  const at = (condition: string[]): Designation => {
+    const k = conditionKey(condition);
+    let d = byCondition.get(k);
+    if (!d) {
+      d = { officium: null, name: null, rank: null };
+      byCondition.set(k, d);
+    }
+    return d;
+  };
+
+  if (obj == null || typeof obj !== "object") return byCondition;
+  for (const [key, value] of Object.entries(obj as Record<string, unknown>)) {
+    if (!isVariantArray(value)) continue;
+    if (key === "officium") {
+      for (const v of value) at(v.condition).officium ??= nameFromLines(v.value);
+    } else if (key === "name") {
+      for (const v of value) at(v.condition).name ??= nameFromLines(v.value);
+    } else if (key === "rank") {
+      for (const v of value) at(v.condition).rank ??= rankNameFromLines(v.value);
+    }
+  }
+  return byCondition;
+}
+
+/**
+ * Every file the document yields.
+ *
+ * A celebration is designated under each of its rubrics, and each designation
+ * becomes a file carrying that one — `S. Adriani, Martyris` in the Cistercian
+ * use, `S. Hadriani Martyris` in the Roman — rather than whichever the rubrics
+ * later leave standing.
+ *
+ * Where a condition has both an `officium` and a `name`, the **officium** names
+ * the file: it is the formal designation, and the `name` is the short form that
+ * belongs inside it. `rank` still names a file of its own, since it often
+ * carries the specific feast where the officium gives only a generic one.
+ *
+ * A file's `title` is the designation it is filed under, so it never contradicts
+ * its own filename.
+ */
+export function collectNames(
+  obj: unknown,
+  originalStem: string
+): NameCandidate[] {
+  const byKey = new Map<string, NameCandidate>();
+
+  for (const { officium, name, rank } of designationsByCondition(obj).values()) {
+    const sources: { text: string | null; title: string | null }[] = [
+      { text: officium, title: officium },
+      { text: rank, title: rank },
+      // The `name` files on its own only where no officium outranks it, and is
+      // titled by the rank if the source gave one.
+      officium ? { text: null, title: null } : { text: name, title: rank },
+    ];
+    for (const { text, title } of sources) {
+      const key = toKebabFileName(text);
+      if (!key || byKey.has(key)) continue;
+      byKey.set(key, { key, title, name });
+    }
+  }
+
+  // With no designation at all the original stem names the file, and the file
+  // designates nothing.
+  if (byKey.size === 0) {
+    return [{ key: originalStem, title: null, name: null }];
+  }
+  return [...byKey.values()];
 }
 
 /** Every distinct kebab filename derivable from the name/officium/rank variants. */
@@ -59,71 +162,40 @@ export function getAllDisplayNames(
   obj: unknown,
   originalStem: string
 ): string[] {
-  const kebabs = new Set<string>();
-  const add = (s: string | null) => {
-    const k = toKebabFileName(s);
-    if (k) kebabs.add(k);
-  };
-  if (obj == null || typeof obj !== "object") return [originalStem];
-  for (const [key, value] of Object.entries(obj as Record<string, unknown>)) {
-    if (!isVariantArray(value)) continue;
-    if (key === "name" || key === "officium") {
-      for (const variant of value) add(nameFromLines(variant.value));
-    } else if (key === "rank") {
-      for (const variant of value) add(rankNameFromLines(variant.value));
-    }
-  }
-  if (kebabs.size === 0) return [originalStem];
-  return [...kebabs];
+  return collectNames(obj, originalStem).map(({ key }) => key);
 }
 
 /**
- * Content transform: fold `rank`/`officium`/`name` into a `name` section (a
- * rubric-variant list of the derived name), dropping the originals. An explicit
- * `name` wins; otherwise the first non-empty of rank/officium per condition.
- * Exported for the streaming/batch runner and for tests.
+ * Content transform: drop `rank`, `officium` and `name`, and designate the
+ * document as the file being written — `title` from the officium, `name` from
+ * the name.
+ *
+ * A document is written under every designation it yields, so these belong to
+ * the file rather than to the document: each file says which celebration it
+ * holds, and the others are files of their own. Only what the source gave is
+ * emitted, so a file with no officium carries no `title`.
+ *
+ * Designating it here also keeps these out of the rubric conditions, where a
+ * name given only under one use — `Adriáni`, in the Cistercian — would later be
+ * dropped along with that use.
  */
-export function transform(obj: Step6Output): Step7Output {
+export function transform(
+  obj: Step6Output,
+  designation?: { title?: string | null; name?: string | null }
+): Step7Output {
   const out: Step7Output = {};
-  const nameByCondition = new Map<string, Variant<string[]>>();
-
-  const addNames = (
-    value: unknown,
-    extract: (lines: unknown) => string | null,
-    override: boolean
-  ) => {
-    if (!isVariantArray(value)) return;
-    for (const variant of value) {
-      const name = extract(variant.value);
-      if (!name) continue;
-      const k = conditionKey(variant.condition);
-      if (override || !nameByCondition.has(k)) {
-        nameByCondition.set(k, { value: [name], condition: variant.condition });
-      }
-    }
-  };
-
-  // Fill from rank/officium (first non-empty per condition), then let an
-  // explicit `name` override.
-  for (const [key, value] of Object.entries(obj)) {
-    if (key === "rank") addNames(value, rankNameFromLines, false);
-    else if (key === "officium") addNames(value, nameFromLines, false);
-  }
-  for (const [key, value] of Object.entries(obj)) {
-    if (key === "name") addNames(value, nameFromLines, true);
-  }
-
   for (const [key, value] of Object.entries(obj)) {
     if (key === "name" || key === "rank" || key === "officium") continue;
     out[key] = value;
   }
-  if (nameByCondition.size) out.name = [...nameByCondition.values()];
+  if (designation?.title) out.title = designation.title;
+  if (designation?.name) out.name = designation.name;
   return out;
 }
 
 function getStem(relPath: string): string {
   const base = relPath.replace(/^.*[/\\]/, "");
-  return base.replace(/\.yml$/i, "") || base;
+  return stripStepExt(base) || base;
 }
 
 type CollisionEntry = {
@@ -182,11 +254,19 @@ export async function run(
     DEFAULT_CONCURRENCY,
     async (relPath) => {
       const raw = await readFile(join(inputDir, relPath), "utf-8");
-      const obj = parse(raw);
+      const obj = parseStep(raw) as Record<string, unknown>;
       const originalStem = getStem(relPath);
       const dir = dirname(relPath);
-      for (const targetBasename of getAllDisplayNames(obj, originalStem)) {
-        shared.push({ relPath, dir, targetBasename, originalStem, content: raw });
+      for (const { key, title, name } of collectNames(obj, originalStem)) {
+        shared.push({
+          relPath,
+          dir,
+          targetBasename: key,
+          originalStem,
+          content: stringifyStep(
+            transform(obj as Step6Output, { title, name })
+          ),
+        });
       }
     }
   );
@@ -209,12 +289,12 @@ export async function run(
       const dir = dirname(relPath);
       const outRelPath =
         dir && dir !== "."
-          ? `${dir}/${finalBasename}.yml`
-          : `${finalBasename}.yml`;
+          ? `${dir}/${finalBasename}${STEP_EXT}`
+          : `${finalBasename}${STEP_EXT}`;
       const outPath = join(outputDir, outRelPath);
-      const transformed = transform(parse(content) as Step6Output);
       await ensureDir(outPath, mkdirCache);
-      await writeFile(outPath, stringify(transformed), "utf-8");
+      // Already selected, folded and serialized when the names were collected.
+      await writeFile(outPath, content, "utf-8");
       written++;
     }
   }
