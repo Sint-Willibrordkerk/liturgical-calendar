@@ -30,7 +30,7 @@ items:
         occurence: { date: easter, difference: 39 }
       - title: In festo Sanctissimæ Trinitatis #17c
         occurence: { date: easter, difference: 56 }
-      - title: In festo Ssm̃i Corporis Christi
+      - title: Festum Sanctissimi Corporis Christi
         occurence: { date: easter, difference: 60 }
       - title: In festo Sacratissimi Cordis Jesu
         occurence: { date: easter, difference: 68 }
@@ -124,8 +124,8 @@ items:
           13-01: in-commemoratione-baptismatis-domini-nostri-jesu-christi
           06-08: in-transfiguratione-domini-nostri-jesu-christi
           14-09: in-exaltatione-sanctæ-crucis
-          09-11: in-dedic-archbasilicæ-ssm̃i-salvatoris
-      - title: Ssm̃i Nominis Jesu #17a
+          09-11: in-dedicatione-archibasilicæ-ss-salvatoris
+      - title: Sanctissimi Nominis Jesu #17a
         occurence: { type: dominica, start: 02-01, end: 05-01, default: 02-01 }
       - title: Dominica I post Epiphaniam, Sanctæ Familiæ Jesu, Mariæ, Joseph #17b
         occurence: { type: dominica, start: 07-01, end: 13-01 }
@@ -366,7 +366,7 @@ items:
         03-09: pii-x-papæ-confessoris
         05-09: laurentii-justiniani-episcopi-et-confessoris
         10-09: nicolai-de-tolentino-confessoris
-        12-09: ssm̃i-nominis-mariæ
+        12-09: nominis-beatæ-mariæ-virginis
         16-09: cornelii-papæ-et-cypriani-episcopi-martyrum
         18-09: josephi-de-cupertino-confessoris
         19-09: januarii-episcopi-et-sociorum-martyrum
