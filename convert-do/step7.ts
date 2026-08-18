@@ -58,7 +58,12 @@ export function toKebabFileName(s: unknown): string | null {
     .normalize("NFD")
     .replace(/[̀-ͯ]/g, "")
     .replace(/[.,]/g, "")
-    .replace(/[^a-z0-9æœ]+/g, "-")
+    // The ligatures are a way of spelling the two letters, not a distinction
+    // between names: the sources write `Paschæ` and `Paschae` for one day, and
+    // a translation need not follow the Latin's choice.
+    .replace(/æ/g, "ae")
+    .replace(/œ/g, "oe")
+    .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "")
     .replace(/^(ss?|bb?)-/, "");
   return t === "" ? null : t;

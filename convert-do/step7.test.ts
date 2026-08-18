@@ -97,7 +97,7 @@ describe("step7 name/filename", () => {
         current: true,
       },
       {
-        key: "in-nativitate-beatæ-mariæ-virginis",
+        key: "in-nativitate-beatae-mariae-virginis",
         title: "In Nativitate Beatæ Mariæ Virginis",
         name: null,
         current: true,
@@ -133,7 +133,7 @@ describe("step7 name/filename", () => {
       collectNames(octaveDay, "09-11").map((n) => [n.key, n.current])
     );
     expect(byKey.get("proti-et-hyacinthi-martyrum")).toBe(true);
-    expect(byKey.get("in-nativitate-beatæ-mariæ-virginis")).toBe(false);
+    expect(byKey.get("in-nativitate-beatae-mariae-virginis")).toBe(false);
     expect(byKey.get("in-festis-beatae-mariae-virginis")).toBe(false);
   });
 
@@ -195,9 +195,14 @@ describe("step7 name/filename (continued)", () => {
     expect(toKebabFileName("Nominis Iesu")).toBe("nominis-iesu");
   });
 
-  it("folds accents", () => {
+  it("folds accents, and writes the ligatures out", () => {
     expect(toKebabFileName("Adriáni")).toBe("adriani");
-    expect(toKebabFileName("Sanctæ Familiæ")).toBe("sanctæ-familiæ");
+    expect(toKebabFileName("Cœna Domini")).toBe("coena-domini");
+    // The sources spell one day both ways; both must reach one file.
+    expect(toKebabFileName("Infra Octavam Paschæ")).toBe(
+      toKebabFileName("Infra Octavam Paschae")
+    );
+    expect(toKebabFileName("Sanctæ Familiæ")).toBe("sanctae-familiae");
   });
 
   it("drops a leading honorific, singular or plural", () => {
@@ -212,7 +217,7 @@ describe("step7 name/filename (continued)", () => {
   });
 
   it("keeps a word that merely starts with those letters", () => {
-    expect(toKebabFileName("Sanctæ Familiæ")).toBe("sanctæ-familiæ");
+    expect(toKebabFileName("Sanctæ Familiæ")).toBe("sanctae-familiae");
     expect(toKebabFileName("Beatae Mariae Virginis")).toBe(
       "beatae-mariae-virginis"
     );

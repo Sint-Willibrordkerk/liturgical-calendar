@@ -370,7 +370,7 @@ describe("keepSeason", () => {
 
 describe("seasonalPublications", () => {
   it("writes a day per season, under Sancti", () => {
-    const out = seasonalPublications("la/Commune/sanctæ-mariæ-sabbato.json");
+    const out = seasonalPublications("la/Commune/sanctae-mariae-sabbato.json");
     expect(out).toHaveLength(5);
     expect(out.map((p) => p.outRelPath)).toEqual([
       "la/Sancti/maria-in-sabbato-in-tempore-adventus.json",
@@ -387,7 +387,7 @@ describe("seasonalPublications", () => {
   it("has nothing to say about an ordinary document", () => {
     expect(seasonalPublications("la/Sancti/01-01.json")).toEqual([]);
     // The same name under another tree is a day in its own right.
-    expect(seasonalPublications("la/Sancti/sanctæ-mariæ-sabbato.json")).toEqual(
+    expect(seasonalPublications("la/Sancti/sanctae-mariae-sabbato.json")).toEqual(
       []
     );
     expect(seasonalPublications("la/Commune/C10.json")).toEqual([]);
@@ -396,6 +396,6 @@ describe("seasonalPublications", () => {
 
 describe("isPublishedTree, for a day that changes with the season", () => {
   it("does not publish the source document as it stands", () => {
-    expect(isPublishedTree("la/Commune/sanctæ-mariæ-sabbato.json")).toBe(false);
+    expect(isPublishedTree("la/Commune/sanctae-mariae-sabbato.json")).toBe(false);
   });
 });

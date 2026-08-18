@@ -201,21 +201,31 @@ async function processInputFiles(
       data = step3Transform(data as Step2Output, inputFile);
     }
     if (fromStep <= 4 && toStep >= 4) {
+      // Keyed by language as well as path. A reference names a file within the
+      // same language, so a document that has been written in one language does
+      // not mean the same document exists in another — and taking it as such
+      // lets a document proceed before the file it borrows from is there,
+      // leaving the borrowed sections quietly absent.
       const cache = [...fileCache].map((item) =>
         item
           .replace(STEP_BASE, "")
           .split(SEP_RE)
-          .slice(3)
+          .slice(2)
           .join("/")
           .replace(STEP_EXT, "")
       );
       if (requireDependencies) {
+        const language = outputFile
+          .replace(STEP_BASE, "")
+          .split(SEP_RE)
+          .slice(2, 3)
+          .join("");
         const dependencies = extractDependencies(
           data as Step3Output,
           outputFile
         );
         for (const dependency of dependencies) {
-          if (!cache.includes(dependency)) {
+          if (!cache.includes(`${language}/${dependency}`)) {
             throw new Error(`${MISSING_DEPENDENCY_ERROR}: ${dependency}`);
           }
         }

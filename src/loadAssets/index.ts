@@ -79,9 +79,9 @@ export const DEFAULT_RUBRICS = new Set(["1962"]);
 /**
  * A liturgical title as the propers are filed under it. This must match, byte
  * for byte, the filename step 7 derives from the same title (`toKebabFileName`),
- * or a day fails to find its file: accents folded, dots and commas dropped, any
- * other run a single hyphen, and a leading `s`/`ss`/`b`/`bb` honorific segment
- * removed.
+ * or a day fails to find its file: accents folded, the ligatures written out,
+ * dots and commas dropped, any other run a single hyphen, and a leading
+ * `s`/`ss`/`b`/`bb` honorific segment removed.
  */
 export function titleToFileName(title: string): string {
   return title
@@ -90,7 +90,9 @@ export function titleToFileName(title: string): string {
     .normalize("NFD")
     .replace(/[̀-ͯ]/g, "")
     .replace(/[.,]/g, "")
-    .replace(/[^a-z0-9æœ]+/g, "-")
+    .replace(/æ/g, "ae")
+    .replace(/œ/g, "oe")
+    .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "")
     .replace(/^(ss?|bb?)-/, "");
 }

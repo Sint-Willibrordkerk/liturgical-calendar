@@ -262,10 +262,10 @@ export function isPublishedTree(relPath: string): boolean {
 type Season = { season?: string; name: string };
 
 const SEASONAL_DAYS: Record<string, Season[]> = {
-  // Named by the path below the language, since another tree holds a document
-  // of the same name — the Saturday of Our Lady in the September octave, which
-  // is one day with one Mass and publishes as itself.
-  "Commune/sanctæ-mariæ-sabbato": [
+  // Named by the path below the language, since another tree holds documents
+  // of the same name — the Saturdays of Our Lady in July and September, each
+  // one day with one Mass, which publish as themselves.
+  "Commune/sanctae-mariae-sabbato": [
     { season: "special-a", name: "maria-in-sabbato-in-tempore-adventus" },
     {
       season: "special-b",

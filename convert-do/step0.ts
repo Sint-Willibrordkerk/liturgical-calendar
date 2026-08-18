@@ -34,6 +34,20 @@ const LANGUAGE_CODES: [string, string][] = [
   ["Vietnamice", "vi"],
 ];
 
+/**
+ * The languages the pipeline ingests, named as the sources spell them.
+ *
+ * Every language is a full copy of the tree, so each one costs its own pass and
+ * its own place in the published assets. Only what the calendar actually ships
+ * is read; `LANGUAGE_CODES` above knows how to name the rest when they are
+ * wanted.
+ *
+ * A translation keeps the Latin name of the day it translates, so its files are
+ * named the same as the Latin ones and a day finds its propers by the same
+ * lookup, whatever language it asks for.
+ */
+const INGESTED_LANGUAGES = ["Latin", "Nederlands"];
+
 function fileFilter(relativePath: string) {
   return (
     relativePath.endsWith(".txt") &&
@@ -51,10 +65,7 @@ function fileFilter(relativePath: string) {
     !relativePath.endsWith("Propaganda.txt") &&
     !relativePath.startsWith("Help/") &&
     !relativePath.startsWith("Latin-gabc/") &&
-    // TEMPORARY: Latin-only gate so the pipeline can be tested on a single
-    // language. The full LANGUAGE_CODES table in getOutputFile is the intended
-    // design; drop this line to ingest all languages.
-    relativePath.startsWith("Latin/")
+    INGESTED_LANGUAGES.some((lang) => relativePath.startsWith(`${lang}/`))
   );
 }
 
