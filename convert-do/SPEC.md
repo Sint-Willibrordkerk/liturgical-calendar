@@ -1273,7 +1273,7 @@ either.
 
 | Kept                                                                       |
 | -------------------------------------------------------------------------- |
-| `introitus`, `oratio`, `lectio`, `graduale`, `gradualep`, `tractus`, `evangelium`, `offertorium`, `secreta`, `communio`, `postcommunio`, `ultima-evangelium` |
+| `introitus`, `oratio`, `lectio`, `graduale`, `alleluia`, `alleluiap`, `tractus`, `evangelium`, `offertorium`, `secreta`, `communio`, `postcommunio`, `ultima-evangelium` |
 | `title`, `name`, `prefatio`                                                 |
 
 Everything else is dropped. A document counts as having Mass content when it
@@ -1285,6 +1285,35 @@ how many lessons, which preface — and the pipeline needs it up to this point:
 [step 9](#step-9--structure-missa-sections-batch) reads it to lift out
 `prefatio`. Once that is done nothing in the propers refers to it again, and it
 is the Office it describes rather than the Mass.
+
+### Days whose Mass changes with the season
+
+A handful of days are not one Mass but several, one per part of the year, and
+the sources hold them as a single document whose sections carry a season token.
+Published as one file, such a day would offer the calendar a choice it has no
+way to make; published as one file per season, each falls out as an ordinary day
+with an ordinary Mass.
+
+Our Lady on Saturday is the case the sources carry. Its five Masses are
+*Rorate coeli* in Advent, *Vultum tuum* from Christmas to the Purification, and
+*Salve sancta parens* three times over — from the Purification to Palm Sunday,
+through paschaltide, and from Trinity to Advent. The last of these is the
+unconditioned one; the other four are marked `special-a`, `special-b`,
+`special-c` and `paschali`.
+
+Each season is written as its own day, under `Sancti` and named for the stretch
+of the year it covers, whatever tree the source document sat in. Narrowing a
+document to a season goes section by section:
+
+- A section that has a variant for the season keeps that variant, and only it.
+- A section that has none keeps the variants naming **no** season — what the day
+  says when no season claims it.
+- The season token is then removed from the conditions that remain, since the
+  file as a whole is now that season. Any other token on a variant survives.
+
+A section left with nothing is dropped, as anywhere else in this step. The
+source document itself is **not** published: it is the five days taken together,
+and no calendar asks for it.
 
 ### Rubric systems not published
 

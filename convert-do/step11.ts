@@ -247,6 +247,119 @@ export function isPublishedTree(relPath: string): boolean {
   return subdirs.length === 0 || KEPT_LOCAL_CALENDARS.has(subdirs[0]!);
 }
 
+/**
+ * A day whose Mass changes with the part of the year.
+ *
+ * The sources hold such a day as one document whose sections carry a season
+ * token; published whole it would offer the calendar a choice it cannot make.
+ * Each season is written instead as its own day under `Sancti`, named for the
+ * stretch of the year it covers.
+ *
+ * Our Lady on Saturday is the case the sources carry. The season with no token
+ * of its own — from Trinity to Advent — is the Mass the document says when no
+ * season claims it.
+ */
+type Season = { season?: string; name: string };
+
+const SEASONAL_DAYS: Record<string, Season[]> = {
+  // Named by the path below the language, since another tree holds a document
+  // of the same name — the Saturday of Our Lady in the September octave, which
+  // is one day with one Mass and publishes as itself.
+  "Commune/sanctæ-mariæ-sabbato": [
+    { season: "special-a", name: "maria-in-sabbato-in-tempore-adventus" },
+    {
+      season: "special-b",
+      name: "maria-in-sabbato-a-nativitate-domini-usque-ad-purificationem",
+    },
+    {
+      season: "special-c",
+      name: "maria-in-sabbato-a-die-3-februari-usque-ad-feriam-iv-hebdomadae-sanctae",
+    },
+    { season: "paschali", name: "maria-in-sabbato-in-tempore-paschali" },
+    {
+      name: "maria-in-sabbato-a-festo-trinitatis-usque-ad-sabbatum-ante-dominicam-i-adventus",
+    },
+  ],
+};
+
+/** The tree a seasonal day is written under, whatever tree its source sat in. */
+const SEASONAL_TREE = "Sancti";
+
+/** Every season token a seasonal day is split on. */
+const SEASON_TOKENS = new Set(
+  Object.values(SEASONAL_DAYS).flatMap((seasons) =>
+    seasons.flatMap(({ season }) => (season === undefined ? [] : [season]))
+  )
+);
+
+export type Publication = {
+  relPath: string;
+  outRelPath: string;
+  season?: string;
+};
+
+/**
+ * The days a document is published as, where it is one that changes with the
+ * season; nothing, where it is an ordinary document published as it stands.
+ *
+ * The source document lives under `Commune`, since that is where the sources
+ * keep it, but the days it yields are days and go under the day tree.
+ */
+export function seasonalPublications(relPath: string): Publication[] {
+  const parts = relPath.split(/[/\\]/);
+  if (parts.length < 2) return [];
+  const base = parts[parts.length - 1] ?? "";
+  const stem = base.replace(/\.[^.]*$/, "");
+  const ext = base.slice(stem.length);
+  const seasons = SEASONAL_DAYS[[...parts.slice(1, -1), stem].join("/")];
+  if (seasons === undefined) return [];
+  const lang = parts[0]!;
+  return seasons.map(({ season, name }) => ({
+    relPath,
+    outRelPath: `${lang}/${SEASONAL_TREE}/${name}${ext}`,
+    season,
+  }));
+}
+
+/**
+ * Narrow a document to one season.
+ *
+ * A section with a variant for the season keeps that variant alone; one with
+ * none keeps the variants naming no season at all. The season token is then
+ * dropped from what remains — the file as a whole is now that season — while
+ * every other token stays. A section left with nothing is dropped.
+ */
+export function keepSeason(
+  obj: Record<string, unknown>,
+  season: string | undefined
+): Step11Output {
+  const out: Step11Output = {};
+  for (const [key, value] of Object.entries(obj)) {
+    if (!isVariantArray(value)) {
+      out[key] = value;
+      continue;
+    }
+    const unseasoned = value.filter(
+      (variant) => !variant.condition.some((token) => SEASON_TOKENS.has(token))
+    );
+    const kept =
+      season === undefined
+        ? unseasoned
+        : (() => {
+            const named = value.filter((variant) =>
+              variant.condition.includes(season)
+            );
+            return named.length > 0 ? named : unseasoned;
+          })();
+    if (kept.length === 0) continue;
+    out[key] = kept.map((variant) => ({
+      value: variant.value,
+      condition: variant.condition.filter((token) => !SEASON_TOKENS.has(token)),
+    }));
+  }
+  return out;
+}
+
 /** The language root a relative path sits under, e.g. `la/Sancti/x.yml` -> `la`. */
 function languageRoot(relPath: string): string {
   const [first] = relPath.split(/[/\\]/);
@@ -265,22 +378,31 @@ export async function run(
   const allRelPaths = await collectYmlFiles(inputDir);
   const mkdirCache = new Set<string>();
 
-  const byLanguage = new Map<string, string[]>();
+  const byLanguage = new Map<string, Publication[]>();
   for (const relPath of [...allRelPaths].sort()) {
     // The stores are read per language and subset, not copied wholesale.
     const base = relPath.replace(/^.*[/\\]/, "");
     if (STORES.some(({ file }) => file + STEP_EXT === base)) continue;
-    if (!isPublishedTree(relPath)) continue;
+    // A day that changes with the season is published as one day per season,
+    // whatever tree its source sits in; every other document stands as it is.
+    const seasonal = seasonalPublications(relPath);
+    const publications =
+      seasonal.length > 0
+        ? seasonal
+        : isPublishedTree(relPath)
+          ? [{ relPath, outRelPath: relPath }]
+          : [];
+    if (publications.length === 0) continue;
     const lang = languageRoot(relPath);
     if (!byLanguage.has(lang)) byLanguage.set(lang, []);
-    byLanguage.get(lang)!.push(relPath);
+    byLanguage.get(lang)!.push(...publications);
   }
 
   let written = 0;
   let skipped = 0;
   let errors = 0;
 
-  for (const [lang, relPaths] of byLanguage) {
+  for (const [lang, publications] of byLanguage) {
     const stores = new Map<string, LectioEntries>();
     const used = new Map<string, Set<string>>();
     for (const { file } of STORES) {
@@ -297,16 +419,20 @@ export async function run(
       }
     }
 
-    for (const relPath of relPaths) {
+    for (const { relPath, outRelPath, season } of publications) {
       try {
         const raw = await readFile(join(inputDir, relPath), "utf-8");
         const obj = parseStep(raw);
         if (typeof obj !== "object" || obj === null || Array.isArray(obj)) {
           throw new Error("Expected object");
         }
-        const mass = keepPublishedRubric(
+        const published = keepPublishedRubric(
           keepMassSections(obj as Record<string, unknown>)
         );
+        // Narrowed after the rubric filter, so a season is decided among the
+        // variants that could actually be chosen.
+        const mass =
+          relPath === outRelPath ? published : keepSeason(published, season);
         if (!hasMassContent(mass)) {
           skipped++;
           continue;
@@ -315,7 +441,7 @@ export async function run(
           for (const key of usedKeys(mass, sections)) used.get(file)!.add(key);
         }
 
-        const outPath = join(outputDir, toOutputPath(relPath));
+        const outPath = join(outputDir, toOutputPath(outRelPath));
         await ensureDir(outPath, mkdirCache);
         await writeFile(outPath, stringifyOutput(sortSections(compactSections(mass))), "utf-8");
         written++;

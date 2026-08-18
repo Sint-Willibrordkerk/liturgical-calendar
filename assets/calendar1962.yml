@@ -427,15 +427,15 @@ items:
     - type: feria #91.27
       commemoration-type: none
       items:
-      - title: sanctæ-mariæ-sabbato
+      - title: maria-in-sabbato-in-tempore-adventus
         occurence: { type: sabbato, start: advent, end: 24-12 }
-      - title: sanctæ-mariæ-sabbato
+      - title: maria-in-sabbato-a-nativitate-domini-usque-ad-purificationem
         occurence: { type: sabbato, start: 01-01, end: 02-02 } # Start at 01-01 for the correct year
-      - title: sanctæ-mariæ-sabbato
+      - title: maria-in-sabbato-a-die-3-februari-usque-ad-feriam-iv-hebdomadae-sanctae
         occurence: { type: sabbato, start: 03-02, end: { date: easter, difference: -4 } }
-      - title: sanctæ-mariæ-sabbato
+      - title: maria-in-sabbato-in-tempore-paschali
         occurence: { type: sabbato, start: easter, end: { date: easter, difference: 49 } }
-      - title: sanctæ-mariæ-sabbato
+      - title: maria-in-sabbato-a-festo-trinitatis-usque-ad-sabbatum-ante-dominicam-i-adventus
         occurence: { type: sabbato, start: { date: easter, difference: 56 }, end: advent }
     - type: feria #91.28 26
       commemoration-type: none #26

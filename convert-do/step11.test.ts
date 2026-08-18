@@ -8,6 +8,8 @@ import {
   compactSections,
   sortSections,
   isPublishedTree,
+  keepSeason,
+  seasonalPublications,
 } from "./step11";
 import { isOtherRubricSystem } from "./lib/rubrics";
 
@@ -316,5 +318,84 @@ describe("step11 — the store subset", () => {
 
   it("skips a key the store does not hold rather than emitting a hole", () => {
     expect(storeSubset({ "rom-1-1": { text: "x" } }, new Set(["nope"]))).toEqual({});
+  });
+});
+
+describe("keepSeason", () => {
+  const v = (value: string, ...condition: string[]) => ({ value, condition });
+
+  it("keeps the variant naming the season, and only it", () => {
+    const out = keepSeason(
+      { introitus: [v("rorate", "special-a"), v("vultum", "special-b"), v("salve")] },
+      "special-a"
+    );
+    expect(out.introitus).toEqual([{ value: "rorate", condition: [] }]);
+  });
+
+  it("falls back to what the day says when no season claims it", () => {
+    const out = keepSeason(
+      { communio: [v("ecce", "special-a"), v("beata")] },
+      "special-c"
+    );
+    expect(out.communio).toEqual([{ value: "beata", condition: [] }]);
+  });
+
+  it("takes the unseasoned variants for the season named by none", () => {
+    const out = keepSeason(
+      { introitus: [v("rorate", "special-a"), v("salve")] },
+      undefined
+    );
+    expect(out.introitus).toEqual([{ value: "salve", condition: [] }]);
+  });
+
+  it("drops a section that only another season has", () => {
+    const out = keepSeason({ alleluiap: [v("num-17-8", "paschali")] }, "special-b");
+    expect(out.alleluiap).toBeUndefined();
+  });
+
+  it("leaves the tokens that say something other than the season", () => {
+    const out = keepSeason(
+      { graduale: [v("a", "special-a", "feria-7"), v("b")] },
+      "special-a"
+    );
+    expect(out.graduale).toEqual([{ value: "a", condition: ["feria-7"] }]);
+  });
+
+  it("leaves what is not a variant list alone", () => {
+    expect(keepSeason({ title: "Sanctæ Mariæ Sabbato" }, "paschali")).toEqual({
+      title: "Sanctæ Mariæ Sabbato",
+    });
+  });
+});
+
+describe("seasonalPublications", () => {
+  it("writes a day per season, under Sancti", () => {
+    const out = seasonalPublications("la/Commune/sanctæ-mariæ-sabbato.json");
+    expect(out).toHaveLength(5);
+    expect(out.map((p) => p.outRelPath)).toEqual([
+      "la/Sancti/maria-in-sabbato-in-tempore-adventus.json",
+      "la/Sancti/maria-in-sabbato-a-nativitate-domini-usque-ad-purificationem.json",
+      "la/Sancti/maria-in-sabbato-a-die-3-februari-usque-ad-feriam-iv-hebdomadae-sanctae.json",
+      "la/Sancti/maria-in-sabbato-in-tempore-paschali.json",
+      "la/Sancti/maria-in-sabbato-a-festo-trinitatis-usque-ad-sabbatum-ante-dominicam-i-adventus.json",
+    ]);
+    // Trinity to Advent is the Mass no season marks.
+    expect(out[4]!.season).toBeUndefined();
+    expect(out[0]!.season).toBe("special-a");
+  });
+
+  it("has nothing to say about an ordinary document", () => {
+    expect(seasonalPublications("la/Sancti/01-01.json")).toEqual([]);
+    // The same name under another tree is a day in its own right.
+    expect(seasonalPublications("la/Sancti/sanctæ-mariæ-sabbato.json")).toEqual(
+      []
+    );
+    expect(seasonalPublications("la/Commune/C10.json")).toEqual([]);
+  });
+});
+
+describe("isPublishedTree, for a day that changes with the season", () => {
+  it("does not publish the source document as it stands", () => {
+    expect(isPublishedTree("la/Commune/sanctæ-mariæ-sabbato.json")).toBe(false);
   });
 });
