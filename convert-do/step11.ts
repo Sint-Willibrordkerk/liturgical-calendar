@@ -10,6 +10,17 @@ import { consola } from "consola";
 import { collectYmlFiles, ensureDir } from "./lib/batch";
 import { isVariantArray } from "./lib/variants";
 import type { LectioEntries } from "./step10";
+import {
+  PUBLISHED_RUBRIC,
+  isOtherRubricSystem,
+} from "./lib/rubrics.js";
+// The calendar library owns which store each section draws on; publishing must
+// use the very same sets, or a section is stored where nothing looks for it.
+import {
+  READING_SECTIONS,
+  PRAYER_SECTIONS,
+  CHANT_SECTIONS,
+} from "../src/massPropers.js";
 
 /**
  * Step 11 — the Mass propers.
@@ -28,7 +39,8 @@ const MASS_SECTIONS = new Set([
   "oratio",
   "lectio",
   "graduale",
-  "gradualep",
+  "alleluia",
+  "alleluiap",
   "tractus",
   "evangelium",
   "offertorium",
@@ -48,54 +60,12 @@ const MASS_SECTIONS = new Set([
  */
 const SUPPORTING_SECTIONS = new Set(["title", "name", "prefatio"]);
 
-/** The sections holding a reading, and so possibly a key into `lectio.yml`. */
-const READING_SECTIONS = new Set(["lectio", "evangelium", "ultima-evangelium"]);
-
-/** The sections holding a prayer, and so possibly a key into `oratio.yml`. */
-const PRAYER_SECTIONS = new Set(["oratio", "secreta", "postcommunio"]);
-
-/** The sections holding a chant, and so possibly a key into `antiphona.yml`. */
-const CHANT_SECTIONS = new Set([
-  "introitus",
-  "graduale",
-  "gradualep",
-  "tractus",
-  "offertorium",
-  "communio",
-]);
-
 /** The stores a language ships, and which sections draw on each. */
 export const STORES = [
   { file: "lectio", sections: READING_SECTIONS },
   { file: "oratio", sections: PRAYER_SECTIONS },
   { file: "antiphona", sections: CHANT_SECTIONS },
 ] as const;
-
-/**
- * The rubric systems a variant can be conditioned on: the editions, the orders
- * and usages, and (matched separately) the local ones. A token outside this set
- * says *when* a text applies rather than under whose rubrics — `octava`,
- * `adventus`, `feria-4`, `commemoratio` — and belongs to every system.
- */
-const RUBRIC_SYSTEMS = new Set([
-  "1570", "1617", "1888", "1906", "1910", "1913", "1930", "1939",
-  "1951", "1955", "1962", "1963", "2020",
-  "monastica", "cisterciensis", "praedicatorum", "altovadensis",
-  "divino", "summorum", "trident", "barroux",
-]);
-
-/** The publishable rubric system: the one the shipped calendar follows. */
-export const PUBLISHED_RUBRIC = "1962";
-
-/** True when `token` names a rubric system other than the one in force. */
-export function isOtherRubricSystem(token: string, inForce: string): boolean {
-  // Sources vary in capitalisation, and a stray `^` survives from the condition
-  // grammar; compare on the bare lowercase word.
-  const bare = token.replace(/^[\^]/, "").trim().toLowerCase();
-  if (bare === inForce.toLowerCase()) return false;
-  if (/^(dioecesis|civitate)\s/.test(bare)) return true;
-  return RUBRIC_SYSTEMS.has(bare) || RUBRIC_SYSTEMS.has(bare.replace(/^rubrica/, ""));
-}
 
 /**
  * Drop the variants that require a rubric system other than the one published.
@@ -132,7 +102,8 @@ const SECTION_ORDER = [
   "oratio",
   "lectio",
   "graduale",
-  "gradualep",
+  "alleluia",
+  "alleluiap",
   "tractus",
   "evangelium",
   "offertorium",
@@ -255,10 +226,25 @@ export function storeSubset(
  */
 const DAY_TREES = new Set(["Sancti", "Tempora"]);
 
-/** True when a document's tree is published. */
+/**
+ * The local calendars kept even though they are nested. `aliquibus locis` — "in
+ * some places" — is a universal option, part of the general calendar; the rest
+ * (`Urbis`, `Bavaria`, `Brasilia`, …) are the propers of a particular place,
+ * outside the calendar being published and shadowing its own days.
+ */
+const KEPT_LOCAL_CALENDARS = new Set(["aliquibus locis"]);
+
+/**
+ * True when a document is published: a day directly under a day tree, or one
+ * under a kept local calendar. A day nested under any other local calendar is a
+ * regional proper, not part of the general calendar, and is dropped.
+ */
 export function isPublishedTree(relPath: string): boolean {
-  const tree = relPath.split(/[/\\]/)[1];
-  return tree !== undefined && DAY_TREES.has(tree);
+  const parts = relPath.split(/[/\\]/);
+  const tree = parts[1];
+  if (tree === undefined || !DAY_TREES.has(tree)) return false;
+  const subdirs = parts.slice(2, -1);
+  return subdirs.length === 0 || KEPT_LOCAL_CALENDARS.has(subdirs[0]!);
 }
 
 /** The language root a relative path sits under, e.g. `la/Sancti/x.yml` -> `la`. */

@@ -239,19 +239,25 @@ export async function transform(
         continue;
       }
 
-      result[key] = [...result[key], ...value].reduce((acc, curr) => {
-        if (
-          acc.some(
-            (item) =>
-              item.condition.length === curr.condition.length &&
-              item.condition.every((condition) =>
-                curr.condition.includes(condition)
-              )
+      // What the day already holds is its own proper text and takes precedence;
+      // an import only fills a gap. So the day's variants are kept as they are,
+      // and an imported one is added only where none of them would already
+      // apply in its place — that is, where no existing variant's condition is
+      // satisfied whenever the import's is.
+      //
+      // Matching whole condition sets is not enough. The Assumption gives its
+      // own Introit unconditionally, while its rank line includes a common under
+      // the 1962 rubric. Imported at `1962` that out-ranks the day's own `[]`
+      // wherever 1962 is in force, and the common is sung in place of
+      // `Signum magnum`.
+      const existing = result[key]!;
+      const gaps = value.filter(
+        (imported) =>
+          !existing.some((own) =>
+            own.condition.every((token) => imported.condition.includes(token))
           )
-        )
-          return acc;
-        return [...acc, curr];
-      }, [] as Step4Output[string]);
+      );
+      result[key] = [...existing, ...gaps];
     }
   }
 

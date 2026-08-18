@@ -1,5 +1,10 @@
 import { loadAsset, tryLoadAsset } from "./assert/utils";
-import { selectMassProper, type Stores } from "../massPropers";
+import {
+  selectMassProper,
+  applySeason,
+  nameSaint,
+  type Stores,
+} from "../massPropers";
 import type { RawMassProper } from "../types";
 
 export type { RawMassProper };
@@ -108,7 +113,8 @@ function loadStores(language: string): Stores {
 export function loadMassPropersByTitle(
   title: string,
   language: string,
-  rubrics: ReadonlySet<string> = DEFAULT_RUBRICS
+  rubrics: ReadonlySet<string> = DEFAULT_RUBRICS,
+  season?: { date: Date; easter: Date }
 ): RawMassProper | undefined {
   const fileName = titleToFileName(title);
   const data =
@@ -119,11 +125,16 @@ export function loadMassPropersByTitle(
     return undefined;
   }
 
-  const proper = selectMassProper(
+  const selected = selectMassProper(
     data as Record<string, unknown>,
     rubrics,
     loadStores(language)
   );
+  const seasonal = season
+    ? applySeason(selected, season.date, season.easter)
+    : selected;
+  // The commons leave the saint's name open; the day supplies it.
+  const proper = nameSaint(seasonal);
 
   return Object.keys(proper).length === 0
     ? undefined

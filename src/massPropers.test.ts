@@ -1,5 +1,16 @@
 import { describe, expect, it } from "vitest";
-import { selectVariant, resolveReading, selectMassProper } from "./massPropers";
+import {
+  selectVariant,
+  resolveReading,
+  selectMassProper,
+  READING_SECTIONS,
+  PRAYER_SECTIONS,
+  CHANT_SECTIONS,
+  isPaschaltide,
+  isBeforeEaster,
+  applySeason,
+  nameSaint,
+} from "./massPropers";
 
 const v = <T>(value: T, condition: string[] = []) => ({ value, condition });
 const rubrics = (...tokens: string[]) => new Set(tokens);
@@ -163,5 +174,208 @@ describe("selectMassProper", () => {
     expect(
       selectMassProper({ lectio: [v(inline)] }, rubrics("1962"), stores)
     ).toEqual({ lectio: inline });
+  });
+});
+
+describe("the store contract", () => {
+  it("resolves every chant section, alleluia included", () => {
+    // Each published chant section must draw on the chant store. Adding one to
+    // the pipeline without adding it here left its key unresolved in the
+    // calendar, so assert the whole set resolves rather than a sample.
+    const stores = { readings: {}, prayers: {}, chants: {} } as never;
+    for (const key of CHANT_SECTIONS) {
+      (stores as { chants: Record<string, unknown> }).chants[`k-${key}`] = {
+        ref: key,
+      };
+    }
+    const document = Object.fromEntries(
+      [...CHANT_SECTIONS].map((key) => [key, [v(`k-${key}`)]])
+    );
+    const out = selectMassProper(document, rubrics("1962"), stores);
+    for (const key of CHANT_SECTIONS) {
+      expect(out[key], `${key} should resolve`).toEqual({ ref: key });
+    }
+  });
+
+  it("resolves every reading and prayer section", () => {
+    const stores = {
+      readings: Object.fromEntries(
+        [...READING_SECTIONS].map((k) => [`k-${k}`, { ref: k, text: k }])
+      ),
+      prayers: Object.fromEntries(
+        [...PRAYER_SECTIONS].map((k) => [`k-${k}`, { text: k }])
+      ),
+      chants: {},
+    } as never;
+    const document = Object.fromEntries(
+      [...READING_SECTIONS, ...PRAYER_SECTIONS].map((k) => [k, [v(`k-${k}`)]])
+    );
+    const out = selectMassProper(document, rubrics("1962"), stores);
+    for (const key of [...READING_SECTIONS, ...PRAYER_SECTIONS]) {
+      expect(out[key], `${key} should resolve`).toBeDefined();
+      expect(typeof out[key], `${key} should not stay a key`).not.toBe("string");
+    }
+  });
+});
+
+describe("the season", () => {
+  // Easter 2026 falls on 5 April; Septuagesima on 1 February.
+  const easter = new Date(Date.UTC(2026, 3, 5));
+  const on = (m: number, d: number) => new Date(2026, m - 1, d);
+
+  it("knows paschaltide, Easter to the Saturday in the octave of Pentecost", () => {
+    expect(isPaschaltide(on(4, 5), easter)).toBe(true); // Easter Sunday
+    expect(isPaschaltide(on(5, 14), easter)).toBe(true); // Ascension
+    expect(isPaschaltide(on(5, 24), easter)).toBe(true); // Pentecost
+    expect(isPaschaltide(on(5, 30), easter)).toBe(true); // Saturday in the octave
+    expect(isPaschaltide(on(4, 4), easter)).toBe(false); // Holy Saturday
+    expect(isPaschaltide(on(5, 31), easter)).toBe(false); // Trinity Sunday
+  });
+
+  it("knows the penitential weeks, Septuagesima up to Easter", () => {
+    expect(isBeforeEaster(on(2, 1), easter)).toBe(true); // Septuagesima
+    expect(isBeforeEaster(on(2, 18), easter)).toBe(true); // Ash Wednesday
+    expect(isBeforeEaster(on(4, 4), easter)).toBe(true); // Holy Saturday
+    expect(isBeforeEaster(on(1, 31), easter)).toBe(false); // the day before
+    expect(isBeforeEaster(on(4, 5), easter)).toBe(false); // Easter itself
+    expect(isBeforeEaster(on(9, 8), easter)).toBe(false);
+  });
+
+  const full = () => ({
+    introitus: { antiphon: "i" },
+    graduale: { antiphon: "g" },
+    alleluia: { ref: "a", text: "a" },
+    alleluiap: { verses: [{ ref: "p", text: "p" }] },
+    tractus: { verses: [{ ref: "t", text: "t" }] },
+  });
+
+  it("sings the tract, not the alleluia, from Septuagesima to Easter", () => {
+    const out = applySeason(full(), on(3, 1), easter);
+    expect(Object.keys(out)).toEqual(["introitus", "graduale", "tractus"]);
+  });
+
+  it("sings the alleluia, not the tract, through the rest of the year", () => {
+    const out = applySeason(full(), on(9, 8), easter);
+    expect(Object.keys(out)).toEqual(["introitus", "graduale", "alleluia"]);
+  });
+
+  it("sings the paschal alleluia alone through paschaltide", () => {
+    const out = applySeason(full(), on(4, 13), easter);
+    expect(Object.keys(out)).toEqual(["introitus", "alleluiap"]);
+  });
+
+  it("leaves the paschal alleluia out of every other season", () => {
+    expect(applySeason(full(), on(9, 8), easter).alleluiap).toBeUndefined();
+    expect(applySeason(full(), on(3, 1), easter).alleluiap).toBeUndefined();
+  });
+
+  it("keeps a day's only chant whatever the season", () => {
+    // The choice is between the two; with one there is nothing to choose.
+    const tractOnly = { tractus: { verses: [] } };
+    expect(applySeason(tractOnly, on(9, 8), easter)).toEqual(tractOnly);
+    const alleluiaOnly = { alleluia: { ref: "a", text: "a" } };
+    expect(applySeason(alleluiaOnly, on(3, 1), easter)).toEqual(alleluiaOnly);
+  });
+
+  it("keeps the gradual where the day has no paschal alleluia", () => {
+    const proper = {
+      graduale: { antiphon: "g" },
+      alleluia: { ref: "a", text: "a" },
+    };
+    expect(applySeason(proper, on(4, 13), easter)).toEqual(proper);
+  });
+
+  it("does not alter the proper it was given", () => {
+    const proper = full();
+    applySeason(proper, on(9, 8), easter);
+    expect(Object.keys(proper)).toHaveLength(5);
+  });
+});
+
+describe("the optional alleluia", () => {
+  const easter = new Date(Date.UTC(2026, 3, 5));
+  const on = (m: number, d: number) => new Date(2026, m - 1, d);
+  const chant = (text: string) => ({ communio: { ref: "", text } });
+
+  it("is said in paschaltide, without its parentheses", () => {
+    expect(
+      applySeason(chant("grátiam inveniámus. (Allelúja.)"), on(4, 13), easter)
+    ).toEqual({ communio: { ref: "", text: "grátiam inveniámus. Allelúja." } });
+  });
+
+  it("keeps a doubled one, with the stop it carries outside", () => {
+    expect(
+      applySeason(chant("sólium glóriæ téneat. (Allelúja, allelúja)."), on(4, 13), easter)
+    ).toEqual({
+      communio: { ref: "", text: "sólium glóriæ téneat. Allelúja, allelúja." },
+    });
+  });
+
+  it("is left unsaid the rest of the year", () => {
+    expect(
+      applySeason(chant("grátiam inveniámus. (Allelúja.)"), on(9, 8), easter)
+    ).toEqual({ communio: { ref: "", text: "grátiam inveniámus." } });
+    expect(
+      applySeason(chant("téneat. (Allelúja, allelúja)."), on(3, 1), easter)
+    ).toEqual({ communio: { ref: "", text: "téneat." } });
+  });
+
+  it("leaves a text that offers none alone", () => {
+    const plain = chant("Signum magnum appáruit in cœlo.");
+    expect(applySeason(plain, on(9, 8), easter)).toEqual(plain);
+  });
+});
+
+describe("nameSaint", () => {
+  it("puts the saint's name where the common left it open", () => {
+    expect(
+      nameSaint({
+        name: "Adriáni",
+        oratio: { text: "ut, qui beáti N. Mártyris tui natalítia cólimus" },
+      })
+    ).toEqual({
+      name: "Adriáni",
+      oratio: { text: "ut, qui beáti Adriáni Mártyris tui natalítia cólimus" },
+    });
+  });
+
+  it("names both saints once where the prayer says N. et N.", () => {
+    expect(
+      nameSaint({
+        name: "Cleti et Marcellíni",
+        oratio: { text: "Beatórum Mártyrum paritérque Pontíficum N. et N. nos" },
+      }).oratio
+    ).toEqual({
+      text: "Beatórum Mártyrum paritérque Pontíficum Cleti et Marcellíni nos",
+    });
+  });
+
+  it("drops the honorific, which the prayer has already said", () => {
+    expect(
+      nameSaint({
+        name: "S. Anastasia",
+        oratio: { text: "beáti N. Mártyris" },
+      }).oratio
+    ).toEqual({ text: "beáti Anastasia Mártyris" });
+  });
+
+  it("reaches every text a proper holds", () => {
+    const out = nameSaint({
+      name: "Aléxii",
+      oratio: { text: "beáti N.", closure: "per N." },
+      tractus: { verses: [{ ref: "", text: "N. orat" }] },
+    });
+    expect(out.oratio).toEqual({ text: "beáti Aléxii", closure: "per Aléxii" });
+    expect(out.tractus).toEqual({ verses: [{ ref: "", text: "Aléxii orat" }] });
+  });
+
+  it("leaves the day's own designation alone", () => {
+    const out = nameSaint({ name: "Aléxii", title: "S. N. Confessoris" });
+    expect(out.title).toBe("S. N. Confessoris");
+  });
+
+  it("does nothing for a day with no name", () => {
+    const proper = { oratio: { text: "beáti N. Mártyris" } };
+    expect(nameSaint(proper)).toEqual(proper);
   });
 });

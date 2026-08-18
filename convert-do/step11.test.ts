@@ -4,12 +4,12 @@ import {
   keepMassSections,
   usedReadingKeys,
   storeSubset,
-  isOtherRubricSystem,
   keepPublishedRubric,
   compactSections,
   sortSections,
   isPublishedTree,
 } from "./step11";
+import { isOtherRubricSystem } from "./lib/rubrics";
 
 const v = <T>(value: T, condition: string[] = []) => ({ value, condition });
 
@@ -54,8 +54,14 @@ describe("step11 — which trees are published", () => {
     expect(isPublishedTree("la/Tempora/dominica-ii.json")).toBe(true);
   });
 
-  it("publishes a day nested deeper in a day tree", () => {
-    expect(isPublishedTree("la/Sancti/Urbis/martinae.json")).toBe(true);
+  it("publishes the kept local calendar, in some places", () => {
+    expect(isPublishedTree("la/Sancti/aliquibus locis/pauli.json")).toBe(true);
+  });
+
+  it("does not publish a regional local calendar", () => {
+    expect(isPublishedTree("la/Sancti/Urbis/martinae.json")).toBe(false);
+    expect(isPublishedTree("la/Sancti/Bavaria/Monacensis/x.json")).toBe(false);
+    expect(isPublishedTree("la/Tempora/Brasilia/x.json")).toBe(false);
   });
 
   it("does not publish the commons, which are a base rather than a day", () => {
@@ -252,14 +258,14 @@ describe("step11 — section order", () => {
   it("orders every section it knows", () => {
     const shuffled = {
       "ultima-evangelium": 1, prefatio: 1, tractus: 1, secreta: 1,
-      gradualep: 1, offertorium: 1, graduale: 1, lectio: 1,
+      alleluiap: 1, offertorium: 1, graduale: 1, lectio: 1, alleluia: 1,
       postcommunio: 1, communio: 1, evangelium: 1, oratio: 1,
       introitus: 1, name: 1,
     };
     expect(Object.keys(sortSections(shuffled))).toEqual([
-      "name", "introitus", "oratio", "lectio", "graduale", "gradualep",
-      "tractus", "evangelium", "offertorium", "secreta", "prefatio",
-      "communio", "postcommunio", "ultima-evangelium",
+      "name", "introitus", "oratio", "lectio", "graduale", "alleluia",
+      "alleluiap", "tractus", "evangelium", "offertorium", "secreta",
+      "prefatio", "communio", "postcommunio", "ultima-evangelium",
     ]);
   });
 

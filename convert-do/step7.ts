@@ -11,6 +11,7 @@ import {
 import { Step6Output } from "./step6";
 import { isVariantArray } from "./lib/variants";
 import { STEP_EXT, stripStepExt, parseStep, stringifyStep } from "./lib/serialize.js";
+import { requiresOtherEdition } from "./lib/rubrics.js";
 
 /**
  * Step 7 — derive filenames from the liturgical name (ported from step11).
@@ -71,6 +72,12 @@ export type NameCandidate = {
   key: string;
   title: string | null;
   name: string | null;
+  /**
+   * True when the designation this file is named after belongs to the edition
+   * being published. A name held only by a superseded edition yields to one that
+   * is current — see `preferCurrentEdition`.
+   */
+  current: boolean;
 };
 
 /** Order-independent key for a rubric condition set. */
@@ -83,6 +90,8 @@ type Designation = {
   officium: string | null;
   name: string | null;
   rank: string | null;
+  /** True when this condition belongs to the edition being published. */
+  current: boolean;
 };
 
 /** Gather `officium`, `name` and `rank` per rubric condition. */
@@ -92,7 +101,12 @@ function designationsByCondition(obj: unknown): Map<string, Designation> {
     const k = conditionKey(condition);
     let d = byCondition.get(k);
     if (!d) {
-      d = { officium: null, name: null, rank: null };
+      d = {
+        officium: null,
+        name: null,
+        rank: null,
+        current: !requiresOtherEdition(condition),
+      };
       byCondition.set(k, d);
     }
     return d;
@@ -101,12 +115,10 @@ function designationsByCondition(obj: unknown): Map<string, Designation> {
   if (obj == null || typeof obj !== "object") return byCondition;
   for (const [key, value] of Object.entries(obj as Record<string, unknown>)) {
     if (!isVariantArray(value)) continue;
-    if (key === "officium") {
-      for (const v of value) at(v.condition).officium ??= nameFromLines(v.value);
-    } else if (key === "name") {
-      for (const v of value) at(v.condition).name ??= nameFromLines(v.value);
-    } else if (key === "rank") {
-      for (const v of value) at(v.condition).rank ??= rankNameFromLines(v.value);
+    for (const v of value) {
+      if (key === "officium") at(v.condition).officium ??= nameFromLines(v.value);
+      else if (key === "name") at(v.condition).name ??= nameFromLines(v.value);
+      else if (key === "rank") at(v.condition).rank ??= rankNameFromLines(v.value);
     }
   }
   return byCondition;
@@ -134,7 +146,9 @@ export function collectNames(
 ): NameCandidate[] {
   const byKey = new Map<string, NameCandidate>();
 
-  for (const { officium, name, rank } of designationsByCondition(obj).values()) {
+  for (const { officium, name, rank, current } of designationsByCondition(
+    obj
+  ).values()) {
     const sources: { text: string | null; title: string | null }[] = [
       { text: officium, title: officium },
       { text: rank, title: rank },
@@ -144,15 +158,18 @@ export function collectNames(
     ];
     for (const { text, title } of sources) {
       const key = toKebabFileName(text);
-      if (!key || byKey.has(key)) continue;
-      byKey.set(key, { key, title, name });
+      if (!key) continue;
+      const held = byKey.get(key);
+      // Within one document, a current designation supersedes a superseded one.
+      if (held && (held.current || !current)) continue;
+      byKey.set(key, { key, title, name, current });
     }
   }
 
   // With no designation at all the original stem names the file, and the file
   // designates nothing.
   if (byKey.size === 0) {
-    return [{ key: originalStem, title: null, name: null }];
+    return [{ key: originalStem, title: null, name: null, current: true }];
   }
   return [...byKey.values()];
 }
@@ -203,12 +220,40 @@ type CollisionEntry = {
   originalStem: string;
   relPath: string;
   content: string;
+  /** Whether the designation this name came from is of the published edition. */
+  current: boolean;
 };
+
+/**
+ * Where several documents claim one name, keep only those claiming it under the
+ * **published edition**.
+ *
+ * A superseded edition often gave a day the name of a celebration it no longer
+ * holds: through the octave of a feast the old books repeated the feast's own
+ * name, so eight days answered to `In Nativitate Beatæ Mariæ Virginis` and each
+ * had to be told apart by its date. Only the feast itself still bears that name,
+ * so only the feast keeps it.
+ *
+ * A name **no** current designation claims is left alone. St Emerentiana is
+ * named only by the old books — the published calendar keeps her as a
+ * commemoration rather than a feast — and dropping her name would leave her
+ * nothing to be found by.
+ */
+export function preferCurrentEdition(
+  entries: CollisionEntry[]
+): CollisionEntry[] {
+  const hasCurrent = new Set<string>();
+  for (const e of entries) if (e.current) hasCurrent.add(e.targetBasename);
+  return entries.filter((e) => e.current || !hasCurrent.has(e.targetBasename));
+}
 
 export function resolveCollisions(
   entries: CollisionEntry[]
 ): { relPath: string; finalBasename: string; content: string }[] {
-  const byBasename = new Map<string, Omit<CollisionEntry, "targetBasename">[]>();
+  const byBasename = new Map<
+    string,
+    { originalStem: string; relPath: string; content: string }[]
+  >();
   for (const { targetBasename, originalStem, relPath, content } of entries) {
     if (!byBasename.has(targetBasename)) byBasename.set(targetBasename, []);
     byBasename.get(targetBasename)!.push({ originalStem, relPath, content });
@@ -257,12 +302,16 @@ export async function run(
       const obj = parseStep(raw) as Record<string, unknown>;
       const originalStem = getStem(relPath);
       const dir = dirname(relPath);
-      for (const { key, title, name } of collectNames(obj, originalStem)) {
+      for (const { key, title, name, current } of collectNames(
+        obj,
+        originalStem
+      )) {
         shared.push({
           relPath,
           dir,
           targetBasename: key,
           originalStem,
+          current,
           content: stringifyStep(
             transform(obj as Step6Output, { title, name })
           ),
@@ -284,7 +333,7 @@ export async function run(
   let written = 0;
   for (const [, entries] of byDir) {
     for (const { relPath, finalBasename, content } of resolveCollisions(
-      entries
+      preferCurrentEdition(entries)
     )) {
       const dir = dirname(relPath);
       const outRelPath =

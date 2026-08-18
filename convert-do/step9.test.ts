@@ -7,6 +7,7 @@ import {
   linesToGraduale,
   transformRule,
   getSectionType,
+  stripTrailingAlleluia,
 } from "./step9";
 
 const v = (value: unknown, condition: string[] = []) => ({ value, condition });
@@ -68,6 +69,271 @@ describe("step9 missa structuring", () => {
     expect(out.antiphon.text).toBe("Beatus vir");
     expect(out.verse.text).toBe("qui timet");
     expect(out.alleluia).toEqual({ ref: "Alleluia", text: "Alleluia text" });
+  });
+
+  it("lifts the gradual's alleluia into a section of its own", () => {
+    const out = transform({
+      graduale: [v(["!Ps 1:1", "Beatus vir", "!Alleluia", "Alleluia text"])],
+    });
+    expect(out.graduale).toEqual([
+      v({
+        antiphon: { ref: "Ps 1:1", text: "Beatus vir" },
+        verse: { ref: "", text: "" },
+      }),
+    ]);
+    expect(out.alleluia).toEqual([
+      v({ ref: "Alleluia", text: "Alleluia text" }),
+    ]);
+  });
+
+  it("publishes the paschal gradual as the extended alleluia it is", () => {
+    // `gradualep` is not a gradual: it is the Alleluia that replaces the
+    // Gradual in paschaltide, and so a list of verses.
+    const out = transform({
+      gradualep: [
+        v([
+          "Allelúja, allelúja.",
+          "!Num 17:8",
+          "v. Virga Jesse flóruit. Allelúja.",
+          "!Luc 1:28",
+          "Ave, María. Allelúja.",
+        ]),
+      ],
+    });
+    expect(out.gradualep).toBeUndefined();
+    expect(out.alleluiap).toEqual([
+      v({
+        verses: [
+          { ref: "Num 17:8", text: "Virga Jesse flóruit." },
+          { ref: "Luc 1:28", text: "Ave, María." },
+        ],
+      }),
+    ]);
+  });
+
+  it("keeps a verse the source gives no reference for", () => {
+    const out = transform({
+      gradualep: [
+        v([
+          "Allelúja, allelúja.",
+          "!Ps 109:4",
+          "Tu es sacérdos. Allelúja.",
+          "V. Hic est sacérdos. Allelúja.",
+        ]),
+      ],
+    });
+    expect(out.alleluiap).toEqual([
+      v({
+        verses: [
+          { ref: "Ps 109:4", text: "Tu es sacérdos." },
+          { ref: "", text: "Hic est sacérdos." },
+        ],
+      }),
+    ]);
+  });
+
+  it("keeps an antiphon and verse given before the reference", () => {
+    // The commons give the gradual's words first and name their source after;
+    // those lines used to be dropped, leaving an antiphon with no text.
+    const out = transform({
+      graduale: [
+        v([
+          "Benedícta et venerábilis es, Virgo María.",
+          "V. Virgo, Dei Génetrix.",
+          "!Luc 1:28",
+          "Ave, María. Allelúja.",
+        ]),
+      ],
+    });
+    expect(out.graduale).toEqual([
+      v({
+        antiphon: { ref: "", text: "Benedícta et venerábilis es, Virgo María." },
+        verse: { ref: "", text: "Virgo, Dei Génetrix." },
+      }),
+    ]);
+    expect(out.alleluia).toEqual([
+      v({ ref: "Luc 1:28", text: "Ave, María." }),
+    ]);
+  });
+
+  it("keeps an introit antiphon given before the reference", () => {
+    const out = transform({
+      introitus: [
+        v(["v. In excélso throno vidi sedére virum.", "!Ps 99:1", "Jubiláte Deo."]),
+      ],
+    });
+    expect(out.introitus).toEqual([
+      v({
+        antiphon: { ref: "", text: "In excélso throno vidi sedére virum." },
+        verse: { ref: "Ps 99:1", text: "Jubiláte Deo." },
+      }),
+    ]);
+  });
+
+  it("still skips a leading cue, which is not antiphon text", () => {
+    const out = transform({
+      graduale: [
+        v([
+          "Allelúja, allelúja.",
+          "!Ps 88:6",
+          "Confitebúntur cœli.",
+          "!Ps 20:4",
+          "Posuísti corónam.",
+        ]),
+      ],
+    });
+    expect(out.graduale).toEqual([
+      v({
+        antiphon: { ref: "Ps 88:6", text: "Confitebúntur cœli." },
+        verse: { ref: "", text: "" },
+      }),
+    ]);
+  });
+
+  it("splits off an alleluia its cue introduces, with no reference of its own", () => {
+    // The Assumption's gradual gives one combined reference and then marks the
+    // Alleluia only by its cue; it used to be swallowed into the verse.
+    const out = transform({
+      graduale: [
+        v([
+          "!Ps 44:11-12; 44:14",
+          "Audi, fília, et vide.",
+          "V. Tota decóra ingréditur fília regis.",
+          "Allelúja, allelúja.",
+          "V. Assumpta est María in cœlum. Allelúja.",
+        ]),
+      ],
+    });
+    expect(out.graduale).toEqual([
+      v({
+        antiphon: { ref: "Ps 44:11-12", text: "Audi, fília, et vide." },
+        verse: { ref: "Ps 44:14", text: "Tota decóra ingréditur fília regis." },
+      }),
+    ]);
+    expect(out.alleluia).toEqual([
+      v({ ref: "", text: "Assumpta est María in cœlum." }),
+    ]);
+  });
+
+  it("prefers an alleluia the source gives a reference for", () => {
+    const out = transform({
+      graduale: [
+        v(["!Ps 1:1", "Beatus vir", "v. qui timet", "!Ps 2:2", "Referenced"]),
+      ],
+    });
+    expect(out.alleluia).toEqual([v({ ref: "Ps 2:2", text: "Referenced" })]);
+  });
+
+  it("strips the alleluia a chant trails off with", () => {
+    // The Alleluia is the response sung after the words, not part of them.
+    expect(stripTrailingAlleluia("Assumpta est María. Allelúja.")).toBe(
+      "Assumpta est María."
+    );
+    expect(stripTrailingAlleluia("sánguinis Dómini, allelúja.")).toBe(
+      "sánguinis Dómini."
+    );
+    expect(
+      stripTrailingAlleluia("lac concupíscite, allelúja, allelúja, allelúja.")
+    ).toBe("lac concupíscite.");
+  });
+
+  it("leaves text that does not end in an alleluia", () => {
+    expect(stripTrailingAlleluia("Signum magnum appáruit in cœlo.")).toBe(
+      "Signum magnum appáruit in cœlo."
+    );
+    expect(stripTrailingAlleluia("")).toBe("");
+  });
+
+  it("empties a text that is only the response", () => {
+    expect(stripTrailingAlleluia("Allelúja.")).toBe("");
+    expect(stripTrailingAlleluia("Allelúja, allelúja.")).toBe("");
+  });
+
+  it("strips it from every chant, not only the alleluia", () => {
+    const out = transform({
+      communio: [v(["!Ps 1:1", "Beátus vir. Allelúja."])],
+      introitus: [v(["!Ps 2:1", "Quare fremuérunt, allelúja.", "!Ps 2:2", "Astitérunt. Allelúja."])],
+    });
+    expect(out.communio).toEqual([v({ ref: "Ps 1:1", text: "Beátus vir." })]);
+    expect(out.introitus).toEqual([
+      v({
+        antiphon: { ref: "Ps 2:1", text: "Quare fremuérunt." },
+        verse: { ref: "Ps 2:2", text: "Astitérunt." },
+      }),
+    ]);
+  });
+
+  it("publishes a tract as the verses it is", () => {
+    const out = transform({
+      tractus: [
+        v([
+          "!Ps 106:32",
+          "Exáltent eum.",
+          "V. Confiteántur Dómino.",
+          "!Ps 39:10",
+          "Annuntiávi justítiam.",
+        ]),
+      ],
+    });
+    expect(out.tractus).toEqual([
+      v({
+        verses: [
+          { ref: "Ps 106:32", text: "Exáltent eum." },
+          { ref: "", text: "Confiteántur Dómino." },
+          { ref: "Ps 39:10", text: "Annuntiávi justítiam." },
+        ],
+      }),
+    ]);
+  });
+
+  it("takes only what follows a !Tractus label, which names the chant", () => {
+    // The source section holds the gradual first, then labels the tract; the
+    // label is not a reference and must not name the tract either.
+    const out = transform({
+      tractus: [
+        v([
+          "Benedícta et venerábilis es.",
+          "V. Virgo, Dei Génetrix.",
+          "_",
+          "!Tractus",
+          "Gaude, María Virgo.",
+        ]),
+      ],
+    });
+    expect(out.tractus).toEqual([
+      v({ verses: [{ ref: "", text: "Gaude, María Virgo." }] }),
+    ]);
+  });
+
+  it("drops the opening cue, which every alleluia repeats", () => {
+    const out = transform({
+      gradualep: [v(["Allelúja, allelúja.", "!Ps 1:1", "Beatus vir. Allelúja."])],
+    });
+    expect(out.alleluiap).toEqual([
+      v({ verses: [{ ref: "Ps 1:1", text: "Beatus vir." }] }),
+    ]);
+  });
+
+  it("keeps each alleluia on the condition of the variant it came from", () => {
+    const out = transform({
+      graduale: [
+        v(["!Ps 1:1", "a", "!All", "first"]),
+        v(["!Ps 2:1", "b", "!All", "second"], ["octava"]),
+      ],
+    });
+    expect(out.alleluia).toEqual([
+      v({ ref: "All", text: "first" }),
+      v({ ref: "All", text: "second" }, ["octava"]),
+    ]);
+  });
+
+  it("emits no alleluia where the gradual has none", () => {
+    // A `!Tractus` second block is a tract, not an alleluia.
+    const out = transform({
+      graduale: [v(["!Ps 1:1", "Beatus vir", "!Tractus", "tract text"])],
+    });
+    expect(out.alleluia).toBeUndefined();
+    expect(out.graduale).toBeDefined();
   });
 
   it("graduale: a !Tractus second block yields no alleluia", () => {

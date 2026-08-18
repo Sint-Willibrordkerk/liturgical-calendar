@@ -114,6 +114,31 @@ describe("step10 — the shared store", () => {
     expect(Object.keys(store.entries())).toHaveLength(1);
   });
 
+  it("keys a chant's verses by their words, not by their shape", () => {
+    // A chant's verses are objects, a reading's are strings; joining the objects
+    // blindly keyed a tract as `object-object-object-…`.
+    const store = createLectioStore();
+    const key = store.intern({
+      verses: [
+        { ref: "", text: "Gaude, María Virgo, cunctas hǽreses" },
+        { ref: "", text: "Quæ Gabriélis Archángeli dictis credidísti." },
+      ],
+    });
+    expect(key).toMatch(/^gaude-maria-virgo-cunctas-[0-9a-f]{8}$/);
+  });
+
+  it("keys a chant by its first verse's reference where it has one", () => {
+    const store = createLectioStore();
+    expect(
+      store.intern({
+        verses: [
+          { ref: "Num 17:8", text: "Virga Jesse flóruit." },
+          { ref: "Luc 1:28", text: "Ave, María." },
+        ],
+      })
+    ).toBe("num-17-8");
+  });
+
   it("stores a verses reading whole", () => {
     const store = createLectioStore();
     const key = store.intern({ ref: "Rom 1:1", verses: ["Paulus", "Grátia"] });
@@ -361,7 +386,7 @@ describe("step10 — chants", () => {
       {
         introitus: [v(chant("Ps 65:4", "Omnis terra"))],
         graduale: [v({ ...chant("Ps 1:1", "Beatus vir"), alleluia: verse("Ps 1:2", "All") })],
-        gradualep: [v(chant("Ps 2:1", "Quare"))],
+        alleluiap: [v({ verses: [verse("Ps 2:1", "Quare")] })],
         tractus: [v(chant("Ps 3:1", "Domine"))],
         offertorium: [v(verse("Ps 4:1", "Cum invocarem"))],
         communio: [v(verse("Ps 5:1", "Verba mea"))],

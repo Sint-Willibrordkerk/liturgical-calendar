@@ -22,11 +22,14 @@ export type Reading =
 /** A prayer as shipped, either whole or referred to by key. */
 export type Prayer = { text: string; closure?: string };
 
-/** A sung proper as shipped: an antiphon and verse, sometimes an alleluia. */
+/**
+ * A sung proper as shipped. Most are an antiphon and a verse; an Alleluia is a
+ * list of verses, and the simplest carry only a reference and text.
+ */
 export type Chant = {
   antiphon?: { ref?: string; text?: string };
   verse?: { ref?: string; text?: string };
-  alleluia?: { ref?: string; text?: string };
+  verses?: { ref?: string; text?: string }[];
   ref?: string;
   text?: string;
 };
@@ -42,12 +45,27 @@ export type Stores = {
   chants: ChantStore;
 };
 
-const READING_SECTIONS = new Set(["lectio", "evangelium", "ultima-evangelium"]);
-const PRAYER_SECTIONS = new Set(["oratio", "secreta", "postcommunio"]);
-const CHANT_SECTIONS = new Set([
+/**
+ * Which store each published section draws on.
+ *
+ * This is the contract between the pipeline and this library: the pipeline puts
+ * a section's content in the named store and leaves a key behind, and the reader
+ * below looks it up in the same one. The pipeline imports these very sets, so a
+ * section can never be stored in one place and looked for in another.
+ */
+export const READING_SECTIONS = new Set([
+  "lectio",
+  "evangelium",
+  "ultima-evangelium",
+]);
+
+export const PRAYER_SECTIONS = new Set(["oratio", "secreta", "postcommunio"]);
+
+export const CHANT_SECTIONS = new Set([
   "introitus",
   "graduale",
-  "gradualep",
+  "alleluia",
+  "alleluiap",
   "tractus",
   "offertorium",
   "communio",
@@ -72,6 +90,150 @@ function isVariantArray(value: unknown): value is Variant[] {
 /** A variant's rubric tokens; absent means unconditional. */
 function conditionOf(variant: Variant): string[] {
   return variant.condition ?? [];
+}
+
+/** Septuagesima Sunday, the ninth Sunday before Easter. */
+const SEPTUAGESIMA = -63;
+
+/** The Saturday in the octave of Pentecost, the last day of paschaltide. */
+const PASCHALTIDE_LAST_DAY = 55;
+
+/** Whole days from Easter to `date`; negative before it. */
+function daysFromEaster(date: Date, easter: Date): number {
+  return Math.round(
+    (Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) -
+      Date.UTC(
+        easter.getUTCFullYear(),
+        easter.getUTCMonth(),
+        easter.getUTCDate()
+      )) /
+      86_400_000
+  );
+}
+
+/**
+ * True on a day of paschaltide: from Easter Sunday to the Saturday in the
+ * octave of Pentecost.
+ */
+export function isPaschaltide(date: Date, easter: Date): boolean {
+  const day = daysFromEaster(date, easter);
+  return day >= 0 && day <= PASCHALTIDE_LAST_DAY;
+}
+
+/**
+ * True from Septuagesima up to Easter — the penitential weeks, when the
+ * Alleluia is not sung.
+ */
+export function isBeforeEaster(date: Date, easter: Date): boolean {
+  const day = daysFromEaster(date, easter);
+  return day >= SEPTUAGESIMA && day < 0;
+}
+
+/** Keys that name the celebration rather than carrying its text. */
+const DESIGNATION_KEYS = new Set(["title", "name", "prefatio"]);
+
+/** Rewrite every text a proper holds, leaving what designates the day alone. */
+function mapTexts(
+  proper: Record<string, unknown>,
+  fn: (text: string) => string
+): Record<string, unknown> {
+  const walk = (value: unknown): unknown => {
+    if (typeof value === "string") return fn(value);
+    if (Array.isArray(value)) return value.map(walk);
+    if (value != null && typeof value === "object") {
+      return Object.fromEntries(
+        Object.entries(value as Record<string, unknown>).map(([k, v]) => [
+          k,
+          walk(v),
+        ])
+      );
+    }
+    return value;
+  };
+
+  const out: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(proper)) {
+    out[key] = DESIGNATION_KEYS.has(key) ? value : walk(value);
+  }
+  return out;
+}
+
+/**
+ * A parenthesised `(Allelúja.)` — said only in paschaltide, and the parentheses
+ * say so. A trailing full stop outside them belongs to it.
+ */
+const OPTIONAL_ALLELUIA = /\s*\(\s*(allel[uú]ja[^)]*?)\s*\)\.?/gi;
+
+/**
+ * Resolve the alleluia a chant offers in parentheses: kept through paschaltide,
+ * without its parentheses, and dropped from every other season.
+ */
+function resolveOptionalAlleluia(text: string, paschaltide: boolean): string {
+  return text.replace(OPTIONAL_ALLELUIA, (_match, inner: string) => {
+    if (!paschaltide) return "";
+    const said = inner.replace(/[\s.]+$/, "");
+    return ` ${said}.`;
+  });
+}
+
+/**
+ * Replace the `N.` a common leaves for the saint's name.
+ *
+ * The commons are written for a class of saint and leave the name open; where
+ * two are kept together the prayer says `N. et N.`, and the day names both at
+ * once, so a whole run of placeholders gives way to the one name. The honorific
+ * is dropped: the prayer has already said `beáti`.
+ */
+export function nameSaint(
+  proper: Record<string, unknown>
+): Record<string, unknown> {
+  const name = typeof proper.name === "string" ? proper.name.trim() : "";
+  if (name === "") return proper;
+  const said = name.replace(/^(S{1,2}|B{1,2})\.\s*/i, "");
+  return mapTexts(proper, (text) =>
+    text.replace(/\bN\.(?:\s+et\s+N\.)*/g, said)
+  );
+}
+
+/**
+ * Reduce a day's chants to the ones its season actually sings.
+ *
+ * A proper carries every chant the year might call for; which of them belongs
+ * to this day is a question of the season:
+ *
+ * - between the Gradual's **Alleluia** and the **Tract**, the penitential weeks
+ *   from Septuagesima to Easter take the Tract, and the rest of the year the
+ *   Alleluia. A day offering only one of them keeps it whatever the season.
+ * - through **paschaltide** the extended Alleluia replaces both the Gradual and
+ *   the Alleluia after it; outside the season it is not sung at all.
+ * - an **`(Allelúja.)`** a chant offers in parentheses is said in paschaltide,
+ *   without them, and left unsaid the rest of the year.
+ */
+export function applySeason(
+  proper: Record<string, unknown>,
+  date: Date,
+  easter: Date
+): Record<string, unknown> {
+  const paschaltide = isPaschaltide(date, easter);
+  const out = { ...proper };
+
+  if (out.alleluia !== undefined && out.tractus !== undefined) {
+    if (isBeforeEaster(date, easter)) delete out.alleluia;
+    else delete out.tractus;
+  }
+
+  if (paschaltide) {
+    if (out.alleluiap !== undefined) {
+      delete out.graduale;
+      delete out.alleluia;
+    }
+  } else {
+    delete out.alleluiap;
+  }
+
+  return mapTexts(out, (text) =>
+    resolveOptionalAlleluia(text, paschaltide).trim()
+  );
 }
 
 /**

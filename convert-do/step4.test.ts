@@ -183,3 +183,93 @@ describe("step4 transform", () => {
   });
 });
 
+
+describe("step4 the day's own text takes precedence", () => {
+  let root: string | undefined;
+  afterEach(() => {
+    if (root) rmSync(root, { recursive: true, force: true });
+    root = undefined;
+  });
+
+  it("does not let an include under a rubric override the day's own section", async () => {
+    // The Assumption gives its own Introit unconditionally, and its 1962 rank
+    // line includes a common. Imported at `1962` the common would out-rank the
+    // day's own whenever that rubric is in force.
+    root = mkdtempSync(join(tmpdir(), "lc-step4-precedence-"));
+    await mkdir(join(root, "la", "Commune"), { recursive: true });
+    await mkdir(join(root, "la", "Sancti"), { recursive: true });
+    await writeFile(
+      join(root, "la", "Commune", "C11.json"),
+      JSON.stringify({
+        introitus: [{ value: ["Salve, sancta parens"], condition: [] }],
+      }),
+      "utf-8"
+    );
+
+    const out = await transform(
+      {
+        rank: [
+          { value: [";;Duplex I classis;;6.5;;ex Commune/C11"], condition: ["1962"] },
+        ],
+        introitus: [{ value: ["Signum magnum"], condition: [] }],
+      } as never,
+      join(root, "la", "Sancti", "08-15.json")
+    );
+
+    expect(out.introitus).toEqual([
+      { value: ["Signum magnum"], condition: [] },
+    ]);
+  });
+
+  it("still imports a section the day does not give at all", async () => {
+    root = mkdtempSync(join(tmpdir(), "lc-step4-fill-"));
+    await mkdir(join(root, "la", "Commune"), { recursive: true });
+    await mkdir(join(root, "la", "Sancti"), { recursive: true });
+    await writeFile(
+      join(root, "la", "Commune", "C11.json"),
+      JSON.stringify({
+        introitus: [{ value: ["from the common"], condition: [] }],
+      }),
+      "utf-8"
+    );
+
+    const out = await transform(
+      {
+        rank: [{ value: [";;Duplex;;3;;ex Commune/C11"], condition: ["1962"] }],
+      } as never,
+      join(root, "la", "Sancti", "08-15.json")
+    );
+
+    expect(out.introitus).toEqual([
+      { value: ["from the common"], condition: ["1962"] },
+    ]);
+  });
+
+  it("still imports where the day covers only another rubric", async () => {
+    // The day's own applies only under `cisterciensis`, so it does not cover the
+    // unconditional case the common supplies.
+    root = mkdtempSync(join(tmpdir(), "lc-step4-partial-"));
+    await mkdir(join(root, "la", "Commune"), { recursive: true });
+    await mkdir(join(root, "la", "Sancti"), { recursive: true });
+    await writeFile(
+      join(root, "la", "Commune", "C11.json"),
+      JSON.stringify({
+        introitus: [{ value: ["from the common"], condition: [] }],
+      }),
+      "utf-8"
+    );
+
+    const out = await transform(
+      {
+        rank: [{ value: [";;Duplex;;3;;ex Commune/C11"], condition: [] }],
+        introitus: [{ value: ["cistercian only"], condition: ["cisterciensis"] }],
+      } as never,
+      join(root, "la", "Sancti", "08-15.json")
+    );
+
+    expect(out.introitus).toEqual([
+      { value: ["cistercian only"], condition: ["cisterciensis"] },
+      { value: ["from the common"], condition: [] },
+    ]);
+  });
+});

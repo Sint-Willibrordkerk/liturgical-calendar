@@ -17,6 +17,17 @@ describe("step8 commemorations", () => {
     expect(commemorationNameToSlug("not a pro line")).toBeNull();
   });
 
+  it("names a commemoration the way every other file is named", () => {
+    // A name ending in a stop used to leave one in the filename, giving
+    // `octava-nativitatis..yml`, which no lookup could reach.
+    expect(commemorationNameToSlug("!Pro Octava Nativitatis.")).toBe(
+      "octava-nativitatis"
+    );
+    expect(commemorationNameToSlug("!Pro S. Hadriáni, Martyris")).toBe(
+      "hadriani-martyris"
+    );
+  });
+
   it("extracts commemoration sections keyed by slug, preserving variants", () => {
     const comms = extractCommemorations({
       "commemoratio-oratio": [v(["!Pro S. Anastasia", "oratio line 1"])],

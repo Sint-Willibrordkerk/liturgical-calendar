@@ -10,6 +10,7 @@ import {
 } from "./lib/batch";
 import { isVariantArray, type Variant } from "./lib/variants";
 import { STEP_EXT, parseStep, stringifyStep } from "./lib/serialize.js";
+import { toKebabFileName } from "./step7";
 
 /**
  * Step 8 — split commemorations into their own files (ported from step12).
@@ -32,23 +33,16 @@ export type Commemoration = {
 const COMMEMORATIO_PREFIX =
   /^commemoratio-(oratio|secreta|postcommunio)(?:\/.*)?$/;
 const PRO_LINE = /^\s*!?\s*Pro\s+(.+)$/i;
-const INVALID_FILE_CHARS = /[\\/:*?"<>|]/g;
 
 export function commemorationNameToSlug(firstLine: unknown): string | null {
   if (!firstLine || typeof firstLine !== "string") return null;
   const m = firstLine.trim().match(PRO_LINE);
   if (!m) return null;
-  let name = m[1]!.trim();
-  if (name.startsWith("S. ")) name = name.slice(3).trim();
-  else if (name.startsWith("Ss. ")) name = name.slice(4).trim();
+  const name = m[1]!.trim();
   if (!name) return null;
-  const slug = name
-    .toLowerCase()
-    .replace(/\s+/g, "-")
-    .replace(INVALID_FILE_CHARS, "-")
-    .replace(/-+/g, "-")
-    .replace(/^-|-$/g, "");
-  return slug || null;
+  // Named the same way every other file is, so a commemoration is found by the
+  // same lookup — and so a name ending in a stop does not leave one behind.
+  return toKebabFileName(name);
 }
 
 function getProDisplayName(firstLine: unknown): string {

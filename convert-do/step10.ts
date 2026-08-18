@@ -8,6 +8,13 @@ import {
 import { consola } from "consola";
 import { collectYmlFiles, ensureDir } from "./lib/batch";
 import { isVariantArray, type Variant } from "./lib/variants";
+// The calendar library owns which store each section draws on; the stores are
+// built from the very same sets, so nothing is filed where no one looks.
+import {
+  READING_SECTIONS,
+  PRAYER_SECTIONS,
+  CHANT_SECTIONS,
+} from "../src/massPropers.js";
 
 /**
  * Step 10 — shared lectio store and variant collapse.
@@ -21,8 +28,6 @@ import { isVariantArray, type Variant } from "./lib/variants";
  */
 export type Step10Output = { [key: string]: unknown };
 
-/** The Mass readings. */
-const MASS_READINGS = new Set(["lectio", "evangelium", "ultima-evangelium"]);
 
 /** The Matins readings, including the forms placing one elsewhere in the Office. */
 const MATINS_READING = /^lectio\d+(-in-\d+-loco)?$/;
@@ -33,33 +38,13 @@ const MATINS_READING = /^lectio\d+(-in-\d+-loco)?$/;
  * another is stored once.
  */
 export function isReadingSection(key: string): boolean {
-  return MASS_READINGS.has(key) || MATINS_READING.test(key);
+  return READING_SECTIONS.has(key) || MATINS_READING.test(key);
 }
-
-/**
- * The prayers. They repeat even harder than the readings: a common supplies one
- * oration for a whole class of saint, with the name left as `N.`, so hundreds of
- * days say the same words.
- */
-const PRAYER_SECTIONS = new Set(["oratio", "secreta", "postcommunio"]);
 
 /** True for a section whose values are lifted into the prayer store. */
 export function isPrayerSection(key: string): boolean {
   return PRAYER_SECTIONS.has(key);
 }
-
-/**
- * The sung propers. Like the prayers, one introit or gradual serves a whole
- * common, so the same chant recurs across hundreds of days.
- */
-const CHANT_SECTIONS = new Set([
-  "introitus",
-  "graduale",
-  "gradualep",
-  "tractus",
-  "offertorium",
-  "communio",
-]);
 
 /** True for a section whose values are lifted into the chant store. */
 export function isChantSection(key: string): boolean {
@@ -90,7 +75,12 @@ function antiphonOf(value: LectioEntry): Part | undefined {
  * value from a real one. A chant speaks through its antiphon.
  */
 function entryText(value: LectioEntry): string {
-  if (Array.isArray(value.verses)) return value.verses.join("\n");
+  if (Array.isArray(value.verses)) {
+    // A reading's verses are plain strings; a chant's carry their own reference.
+    return value.verses
+      .map((v) => (typeof v === "string" ? v : String((v as Part)?.text ?? "")))
+      .join("\n");
+  }
   if (typeof value.text === "string") return value.text;
   const antiphon = antiphonOf(value);
   return antiphon && typeof antiphon.text === "string" ? antiphon.text : "";
@@ -99,6 +89,14 @@ function entryText(value: LectioEntry): string {
 /** The entry's reference, if it has one. A chant borrows its antiphon's. */
 function entryRef(value: LectioEntry): unknown {
   if (value.ref != null && value.ref !== "") return value.ref;
+  // An Alleluia is keyed by its first verse's reference.
+  if (Array.isArray(value.verses)) {
+    const first = value.verses[0];
+    if (first != null && typeof first === "object") {
+      const ref = (first as Part).ref;
+      if (ref != null && ref !== "") return ref;
+    }
+  }
   return antiphonOf(value)?.ref;
 }
 

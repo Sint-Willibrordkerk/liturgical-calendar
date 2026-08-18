@@ -5,6 +5,7 @@ import {
   toKebabFileName,
   resolveCollisions,
   collectNames,
+  preferCurrentEdition,
 } from "./step7";
 
 const v = <T>(value: T, condition: string[] = []) => ({ value, condition });
@@ -49,11 +50,13 @@ describe("step7 name/filename", () => {
         key: "hadriani-martyris",
         title: "S. Hadriani Martyris",
         name: "Hadriáni",
+        current: true,
       },
       {
         key: "adriani-martyris",
         title: "S. Adriani, Martyris",
         name: "Adriáni",
+        current: true,
       },
     ]);
   });
@@ -72,7 +75,9 @@ describe("step7 name/filename", () => {
   it("lets the name file on its own where there is no officium", () => {
     expect(
       collectNames({ name: [v(["Hadriáni"])] }, "09-08cc")
-    ).toEqual([{ key: "hadriani", title: null, name: "Hadriáni" }]);
+    ).toEqual([
+      { key: "hadriani", title: null, name: "Hadriáni", current: true },
+    ]);
   });
 
   it("still files under the rank, which often names the feast the officium generalises", () => {
@@ -89,11 +94,13 @@ describe("step7 name/filename", () => {
         key: "in-festis-beatae-mariae-virginis",
         title: "In Festis Beatae Mariae Virginis",
         name: null,
+        current: true,
       },
       {
         key: "in-nativitate-beatæ-mariæ-virginis",
         title: "In Nativitate Beatæ Mariæ Virginis",
         name: null,
+        current: true,
       },
     ]);
   });
@@ -106,21 +113,64 @@ describe("step7 name/filename", () => {
         key: "in-circumcisione-domini",
         title: "In Circumcisione Domini",
         name: null,
+        current: true,
       },
     ]);
   });
 
+  it("marks a name held only by a superseded edition", () => {
+    // On an octave day only the old 1888 books still called it the feast.
+    const octaveDay = {
+      officium: [
+        v(["Ss. Proti et Hyacinthi Martyrum"]),
+        v(["In Festis Beatae Mariae Virginis"], ["1888"]),
+      ],
+      rank: [
+        v(["In Nativitate Beatæ Mariæ Virginis;;x"], ["1962", "1888"]),
+      ],
+    };
+    const byKey = new Map(
+      collectNames(octaveDay, "09-11").map((n) => [n.key, n.current])
+    );
+    expect(byKey.get("proti-et-hyacinthi-martyrum")).toBe(true);
+    expect(byKey.get("in-nativitate-beatæ-mariæ-virginis")).toBe(false);
+    expect(byKey.get("in-festis-beatae-mariae-virginis")).toBe(false);
+  });
+
+  it("counts a use as current, since it runs in parallel", () => {
+    const names = collectNames(
+      {
+        officium: [
+          v(["S. Hadriani Martyris"], ["commemoratio"]),
+          v(["S. Adriani, Martyris"], ["cisterciensis", "commemoratio"]),
+        ],
+      },
+      "09-08cc"
+    );
+    expect(names.map((n) => n.key)).toEqual([
+      "hadriani-martyris",
+      "adriani-martyris",
+    ]);
+    expect(names.every((n) => n.current)).toBe(true);
+  });
+
   it("designates nothing when nothing is derivable", () => {
     expect(collectNames({ lectio1: [v(["x"])] }, "12-25")).toEqual([
-      { key: "12-25", title: null, name: null },
+      { key: "12-25", title: null, name: null, current: true },
     ]);
   });
 });
 
 describe("step7 name/filename (continued)", () => {
   it("collects distinct kebab display names across name variants", () => {
+    // Both under the published edition — a use, and unconditional — so both file.
     const names = getAllDisplayNames(
-      { name: [v(["Sanctae Mariae"]), v(["Beatae Mariae Virginis"], ["1570"])] },
+      {
+        name: [
+          v(["Sanctae Mariae"]),
+          v(["Beatae Mariae Virginis"], ["cisterciensis"]),
+        ],
+      },
       "01-01"
     );
     expect(names.sort()).toEqual(
@@ -170,8 +220,8 @@ describe("step7 name/filename (continued)", () => {
 
   it("disambiguates same-name different-content by original stem", () => {
     const resolved = resolveCollisions([
-      { targetBasename: "maria", originalStem: "01-01", relPath: "la/01-01.json", content: "a" },
-      { targetBasename: "maria", originalStem: "02-02", relPath: "la/02-02.json", content: "b" },
+      { targetBasename: "maria", originalStem: "01-01", relPath: "la/01-01.json", content: "a", current: true },
+      { targetBasename: "maria", originalStem: "02-02", relPath: "la/02-02.json", content: "b", current: true },
     ]);
     expect(resolved.map((r) => r.finalBasename).sort()).toEqual([
       "maria-01-01",
@@ -181,10 +231,58 @@ describe("step7 name/filename (continued)", () => {
 
   it("collapses same-name same-content into one file", () => {
     const resolved = resolveCollisions([
-      { targetBasename: "maria", originalStem: "01-01", relPath: "la/01-01.json", content: "same" },
-      { targetBasename: "maria", originalStem: "02-02", relPath: "la/02-02.json", content: "same" },
+      { targetBasename: "maria", originalStem: "01-01", relPath: "la/01-01.json", content: "same", current: true },
+      { targetBasename: "maria", originalStem: "02-02", relPath: "la/02-02.json", content: "same", current: true },
     ]);
     expect(resolved).toHaveLength(1);
     expect(resolved[0]!.finalBasename).toBe("maria");
+  });
+});
+
+describe("step7 preferCurrentEdition", () => {
+  const e = (
+    targetBasename: string,
+    originalStem: string,
+    current: boolean
+  ) => ({
+    targetBasename,
+    originalStem,
+    relPath: `la/${originalStem}.json`,
+    content: originalStem,
+    current,
+  });
+
+  it("keeps only the current claim where a name is contested", () => {
+    // The feast holds the name; its octave days held it only in the old books.
+    const kept = preferCurrentEdition([
+      e("in-nativitate-bmv", "09-08", true),
+      e("in-nativitate-bmv", "09-09", false),
+      e("in-nativitate-bmv", "09-11", false),
+    ]);
+    expect(kept.map((k) => k.originalStem)).toEqual(["09-08"]);
+  });
+
+  it("leaves a name no current designation claims", () => {
+    // St Emerentiana is named only by the old books; the published calendar
+    // keeps her as a commemoration, and this is all she can be found by.
+    const kept = preferCurrentEdition([e("emerentianæ", "01-23", false)]);
+    expect(kept.map((k) => k.originalStem)).toEqual(["01-23"]);
+  });
+
+  it("keeps every claim when they are all current", () => {
+    const kept = preferCurrentEdition([
+      e("maria", "01-01", true),
+      e("maria", "02-02", true),
+    ]);
+    expect(kept).toHaveLength(2);
+  });
+
+  it("judges each name on its own", () => {
+    const kept = preferCurrentEdition([
+      e("a", "01-01", true),
+      e("a", "01-02", false),
+      e("b", "02-01", false),
+    ]);
+    expect(kept.map((k) => k.originalStem).sort()).toEqual(["01-01", "02-01"]);
   });
 });

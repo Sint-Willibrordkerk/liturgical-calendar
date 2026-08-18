@@ -176,9 +176,13 @@ export function parseCalendarData(
           ?.replace("$count", latinOrdinal)
           .replace("$day", latinDay);
 
-        // Load mass proper by title and language
+        // Load mass proper by title and language. A proper carries every chant
+        // the year might call for; the season decides which the day sings.
         const mass: RawMassProper | undefined = titleWithSubstitution
-          ? loadMassPropersByTitle(titleWithSubstitution, language)
+          ? loadMassPropersByTitle(titleWithSubstitution, language, undefined, {
+              date,
+              easter,
+            })
           : undefined;
 
         let title = translate(

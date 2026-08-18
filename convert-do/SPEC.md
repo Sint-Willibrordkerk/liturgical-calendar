@@ -919,16 +919,53 @@ one kind of thing wherever it occurs.
 | ------------ | -------------------------------------------------------------- | ----- |
 | `verse`      | `lectio`, `evangelium`, `offertorium`, `communio`, `ultima-evangelium` | `{ ref, text }` |
 | `prayer`     | `oratio`, `secreta`, `postcommunio`                            | `{ text, closure }` |
-| `antiphonal` | `introitus`, `graduale`, `tractus`, `gradualep`                | `{ antiphon: { ref, text }, verse: { ref, text } }` |
+| `antiphonal` | `introitus`, `graduale`                                        | `{ antiphon: { ref, text }, verse: { ref, text } }` |
+| `verses`     | `tractus`, and `gradualep` published as `alleluiap`            | `{ verses: [{ ref, text }] }` |
 
 - **verse** — a `!ref` line becomes `ref`; `$`-lines are dropped; a leading `v.`
   is stripped. For `lectio`/`evangelium`, a leading `Léctio…`/`Sequéntia…`
   introduction line is removed from `text`.
 - **prayer** — a `$`-line becomes `closure`; the rest becomes `text`.
 - **antiphonal** — split into antiphon and verse by `!ref` segments; a verse
-  tail that merely repeats the antiphon is dropped. `graduale` additionally
-  carries an `alleluia { ref, text }`, unless the second block is a `!Tractus`
-  (then no alleluia).
+  tail that merely repeats the antiphon is dropped.
+
+  Every chant's text has its trailing `Allelúja` removed — once, or two and
+  three times over as the sources give it. The Alleluia is the response sung
+  after the words, not part of them; the punctuation that introduced it goes
+  with it, and the sentence is closed off again. A text that is nothing but the
+  response is left empty.
+
+  Text **before** the first reference belongs to the opening block: a chant
+  often gives its antiphon and verse before naming a source, and those lines
+  would otherwise be lost, leaving an antiphon with a reference and no words.
+  The `Allelúja, allelúja.` cue is not such text and is skipped.
+
+### The Alleluia
+
+The Alleluia is a chant in its own right, sung after the Gradual, so it is
+**lifted out of the gradual into its own section** — as `Prefatio=X` is lifted
+out of `rule`:
+
+The Alleluia sung after the Gradual is **lifted out of `graduale` into
+`alleluia`**, keeping the condition of the variant it came from. A gradual whose
+second block is a `!Tractus` has no Alleluia — that block is a tract — and yields
+no section.
+
+**`gradualep` is not a gradual at all.** It is the extended Alleluia that
+replaces the Gradual in paschaltide, so it is structured as one — a list of
+verses rather than an antiphon and a verse — and published under the name
+`alleluiap`:
+
+```yaml
+alleluiap:
+  verses:
+    - { ref: "Num 17:8", text: "Virga Jesse flóruit… Allelúja." }
+    - { ref: "Luc 1:28", text: "Ave, María, grátia plena… Allelúja." }
+```
+
+A verse opens at its `!ref`, or at a `v.` where the source gives none, so a verse
+may carry no reference. The `Allelúja, allelúja.` opening is dropped: it is the
+same words every time, and the section being an Alleluia already says them.
 
 ### Readings
 
@@ -1213,6 +1250,13 @@ is the Divine Office, is not carried into the published assets.
 
 Only the **day trees** — `Sancti` and `Tempora` — are written. A calendar asks
 for the propers of a day, and those are the two trees that hold days.
+
+A day nested in a **local calendar** under those trees is published only when
+that calendar is `aliquibus locis` — "in some places" — which is a universal
+option of the general calendar. The regional ones (`Urbis`, `Bavaria`,
+`Brasilia`, …) are the propers of a particular place, not part of the calendar
+being published; they are dropped, and would otherwise shadow the general day
+they share a date with.
 
 `Commune` is not published. It is a base for other days rather than a day
 itself: the commons supply the texts that a saint's own file borrows, and

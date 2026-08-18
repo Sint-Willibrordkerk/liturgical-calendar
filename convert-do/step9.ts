@@ -17,7 +17,10 @@ import { STEP_EXT, stripStepExt, parseStep, stringifyStep } from "./lib/serializ
  * Converts introit/oratio/lectio/graduale/… line arrays into typed objects:
  * - verse:      `{ ref, text }`
  * - prayer:     `{ text, closure }`
- * - antiphonal: `{ antiphon, verse }` (graduale also carries `alleluia`)
+ * - antiphonal: `{ antiphon, verse }`
+ *
+ * A gradual's Alleluia is lifted into its own section (`alleluia`, and
+ * `alleluiap` for the paschal form), as `Prefatio=X` is lifted out of `rule`.
  *
  * Also cleans the `rule` array (drops Gloria/Credo, lifts `Prefatio=X` into a
  * `prefatio` key). Non-missa keys pass through unchanged.
@@ -159,7 +162,10 @@ export function linesToVerse(lines: unknown): { ref: string; text: string } {
     if (s.startsWith("!")) ref = s.slice(1).trim();
     else if (!s.startsWith("$")) textParts.push(s);
   }
-  return { ref, text: stripLeadingV(textParts.join("\n").trim()) };
+  return {
+    ref,
+    text: stripTrailingAlleluia(stripLeadingV(textParts.join("\n").trim())),
+  };
 }
 
 export function linesToPrayer(lines: unknown): { text: string; closure: string } {
@@ -173,6 +179,95 @@ export function linesToPrayer(lines: unknown): { text: string; closure: string }
     else textParts.push(s);
   }
   return { text: textParts.join("\n").trim(), closure };
+}
+
+/**
+ * Strip the `Allelúja` a chant's text trails off with.
+ *
+ * The Alleluia is the response sung after the words, not part of them, and the
+ * sources append it — once, or two and three times over — to antiphons and
+ * verses throughout paschaltide. The punctuation that introduced it goes with
+ * it, and the sentence is closed off again.
+ */
+export function stripTrailingAlleluia(text: string): string {
+  if (typeof text !== "string" || text === "") return text;
+  let t = text.replace(/(?:\s*\ballel[uú]ja\b[\s,.;]*)+$/i, "");
+  if (t === text) return text;
+  t = t.replace(/[\s,;]+$/, "");
+  return t === "" || /[.!?:]$/.test(t) ? t : `${t}.`;
+}
+
+/** A line that is nothing but the `Allelúja, allelúja.` opening cue. */
+const ALLELUIA_OPENING = /^\s*Allel[uú]ja\s*,?\s*Allel[uú]ja\.?\s*$/i;
+
+export type AlleluiaVerses = { verses: { ref: string; text: string }[] };
+
+/**
+ * A marker naming the chant that follows rather than citing its source. It marks
+ * where that chant begins, and gives its verse no reference of its own.
+ */
+const CHANT_LABEL = /^(Tractus|Allel[uú]ja)\.?$/i;
+
+/**
+ * Structure an extended Alleluia: the `Allelúja, allelúja.` opening followed by
+ * its verses.
+ *
+ * This is the paschal chant that replaces the Gradual — it is an Alleluia rather
+ * than a gradual, so it is a list of verses rather than an antiphon and a verse.
+ * A verse opens at its `!ref`, or at a `v.` where the source gives none.
+ * The opening is dropped: it is the same words every time, and the section
+ * being an Alleluia already says them.
+ */
+export function linesToVerses(lines: unknown): AlleluiaVerses {
+  if (!Array.isArray(lines)) return { verses: [] };
+
+  const verses: { ref: string; text: string[] }[] = [];
+  let current: { ref: string; text: string[] } | undefined;
+  let labelledAt = -1;
+  const open = (ref: string) => {
+    current = { ref, text: [] };
+    verses.push(current);
+  };
+
+  for (const line of lines) {
+    const s = typeof line === "string" ? line : String(line);
+    if (s.startsWith("$")) continue;
+    if (s.startsWith("!")) {
+      const marker = s.slice(1).trim();
+      // A label names the chant that follows; the verses before it belong to
+      // another chant sharing the section.
+      if (CHANT_LABEL.test(marker)) {
+        labelledAt = verses.length;
+        open("");
+      } else open(marker);
+      continue;
+    }
+    if (ALLELUIA_OPENING.test(s)) continue;
+    // A blank line — empty or a lone `_` — separates chants rather than
+    // belonging to one.
+    if (s.trim() === "" || s.trim() === "_") continue;
+    if (V_START.test(s)) {
+      // A `v.` opens a further verse, unless it only marks the first one.
+      if (current && current.text.length) open("");
+      else if (!current) open("");
+      current!.text.push(s.trim().replace(V_START, "").trim());
+      continue;
+    }
+    if (!current) open("");
+    current!.text.push(s);
+  }
+
+  // Where a label named the chant, only what follows it belongs to this
+  // section; the verses before are another chant sharing the source section.
+  const kept = labelledAt >= 0 ? verses.slice(labelledAt) : verses;
+  return {
+    verses: kept
+      .map((v) => ({
+        ref: v.ref,
+        text: stripTrailingAlleluia(v.text.join("\n").trim()),
+      }))
+      .filter((v) => v.text !== ""),
+  };
 }
 
 function splitRefPair(refStr: string): { antiphonRef: string; verseRef: string } {
@@ -193,11 +288,35 @@ function splitRefPair(refStr: string): { antiphonRef: string; verseRef: string }
 
 type RefSegment = { refIndex: number; start: number; end: number };
 
-/** Parse `!ref`-delimited segments from a line array. */
+/**
+ * Parse `!ref`-delimited segments from a line array.
+ *
+ * Text before the first marker forms an opening segment of its own, with no
+ * reference: a chant often gives its antiphon and verse before naming a source,
+ * and dropping those lines left the antiphon with a reference and no words. The
+ * `Allelúja, allelúja.` cue is not such text — it is the same words every time —
+ * and is skipped.
+ */
 function parseRefSegments(lines: unknown[]): { refs: string[]; segments: RefSegment[] } {
   const refs: string[] = [];
   const segments: RefSegment[] = [];
   let i = 0;
+
+  const isMarker = (n: number) => {
+    const l = lines[n];
+    return typeof l === "string" && l.startsWith("!");
+  };
+  while (i < lines.length && !isMarker(i) && ALLELUIA_OPENING.test(String(lines[i]))) {
+    i++;
+  }
+  const opening = i;
+  let firstMarker = opening;
+  while (firstMarker < lines.length && !isMarker(firstMarker)) firstMarker++;
+  if (firstMarker > opening) {
+    refs.push("");
+    segments.push({ refIndex: 0, start: opening, end: firstMarker });
+    i = firstMarker;
+  }
   while (i < lines.length) {
     const s = typeof lines[i] === "string" ? (lines[i] as string) : String(lines[i]);
     if (s.startsWith("!")) {
@@ -251,8 +370,11 @@ export function linesToAntiphonal(lines: unknown): {
   }
   const pair = splitRefPair(refs[0] ?? "");
   return {
-    antiphon: { ref: pair.antiphonRef, text: antiphonText },
-    verse: { ref: refs[1] ?? pair.verseRef, text: stripLeadingV(verseText) },
+    antiphon: { ref: pair.antiphonRef, text: stripTrailingAlleluia(antiphonText) },
+    verse: {
+      ref: refs[1] ?? pair.verseRef,
+      text: stripTrailingAlleluia(stripLeadingV(verseText)),
+    },
   };
 }
 
@@ -270,8 +392,16 @@ export function linesToGraduale(lines: unknown): {
     return { antiphon: { ...empty }, verse: { ...empty }, alleluia: { ...empty } };
   }
   const { refs, segments } = parseRefSegments(lines);
-  const firstBlock = filterGradualeLines(segmentLines(lines, segments[0]));
+  const block = filterGradualeLines(segmentLines(lines, segments[0]));
   const secondBlock = filterGradualeLines(segmentLines(lines, segments[1]));
+
+  // The Alleluia often follows the gradual's verse with no reference of its
+  // own, marked only by its `Allelúja, allelúja.` cue. Everything from that cue
+  // belongs to the Alleluia; without this it is swallowed into the verse.
+  const cueAt = block.findIndex((l) => ALLELUIA_OPENING.test(String(l)));
+  const inlineAlleluia = cueAt >= 0 ? block.slice(cueAt + 1) : [];
+  const firstBlock = cueAt >= 0 ? block.slice(0, cueAt) : block;
+
   const firstText = firstBlock.join("\n").trim();
   const vIdx = firstBlock.findIndex((l) => V_START.test(String(l).trim()));
   let antiphonText = "";
@@ -290,14 +420,20 @@ export function linesToGraduale(lines: unknown): {
   const secondRef = refs[1] ?? "";
   const isTractus = /^Tractus/i.test(secondRef);
   const alleluiaRef = isTractus ? "" : secondRef;
-  const alleluiaText = isTractus
+  const referenced = isTractus
     ? ""
     : stripLeadingV(secondBlock.join("\n").trim());
+  // A referenced Alleluia wins; otherwise take the one the cue introduced.
+  const alleluiaText =
+    referenced || stripLeadingV(inlineAlleluia.join("\n").trim());
   const verseTextClean = stripLeadingV(verseText).replace(ALLELUIA_CUE, "").trim();
   return {
-    antiphon: { ref: pair.antiphonRef, text: stripLeadingV(antiphonText) },
-    verse: { ref: pair.verseRef, text: verseTextClean },
-    alleluia: { ref: alleluiaRef, text: alleluiaText },
+    antiphon: {
+      ref: pair.antiphonRef,
+      text: stripTrailingAlleluia(stripLeadingV(antiphonText)),
+    },
+    verse: { ref: pair.verseRef, text: stripTrailingAlleluia(verseTextClean) },
+    alleluia: { ref: alleluiaRef, text: stripTrailingAlleluia(alleluiaText) },
   };
 }
 
@@ -344,10 +480,43 @@ function transformSection(
     case "prayer":
       return linesToPrayer(value);
     case "antiphonal":
-      if (key === "graduale" || key.startsWith("graduale"))
-        return linesToGraduale(value);
+      if (key === "gradualep" || key === "tractus")
+        return linesToVerses(value);
+      if (key.startsWith("graduale")) return linesToGraduale(value);
       return linesToAntiphonal(value);
   }
+}
+
+/**
+ * Where a gradual's Alleluia is lifted to. The Alleluia is a chant in its own
+ * right, sung after the Gradual; the paschal form (`gradualep`) replaces the
+ * Gradual with two Alleluia verses, and its second one is a different chant
+ * again, so each keeps its own section.
+ */
+const ALLELUIA_OF: Record<string, string> = {
+  graduale: "alleluia",
+};
+
+/**
+ * Sections renamed on the way out. `gradualep` is not a gradual but the extended
+ * Alleluia that replaces the Gradual in paschaltide, so it is published as one.
+ */
+const RENAMED: Record<string, string> = {
+  gradualep: "alleluiap",
+};
+
+/** True when a value carries an Alleluia worth lifting out. */
+function hasAlleluia(value: unknown): boolean {
+  if (value == null || typeof value !== "object") return false;
+  const a = (value as { alleluia?: { ref?: string; text?: string } }).alleluia;
+  return a != null && (Boolean(a.text) || Boolean(a.ref));
+}
+
+/** The value without its `alleluia`, which is now a section of its own. */
+function withoutAlleluia(value: unknown): unknown {
+  if (value == null || typeof value !== "object") return value;
+  const { alleluia, ...rest } = value as Record<string, unknown>;
+  return rest;
 }
 
 /**
@@ -383,11 +552,33 @@ export function transform(obj: Record<string, unknown>): Step9Output {
       continue;
     }
     const isReading = isReadingSection(key);
-    result[key] = mapVariants(value, (v) =>
+    const structured = mapVariants(value, (v) =>
       isReading && !canStructureReading(v)
         ? v
         : transformSection(key, v, sectionType)
     );
+
+    // A gradual carries the Alleluia sung after it; lift it into its own
+    // section, keeping each variant's condition.
+    const alleluiaKey = ALLELUIA_OF[key];
+    if (alleluiaKey && isVariantArray(structured)) {
+      const alleluia: { value: unknown; condition: string[] }[] = [];
+      for (const variant of structured) {
+        if (!hasAlleluia(variant.value)) continue;
+        alleluia.push({
+          value: (variant.value as { alleluia: unknown }).alleluia,
+          condition: variant.condition,
+        });
+      }
+      result[key] = structured.map((variant) => ({
+        value: withoutAlleluia(variant.value),
+        condition: variant.condition,
+      }));
+      if (alleluia.length) result[alleluiaKey] = alleluia;
+      continue;
+    }
+
+    result[RENAMED[key] ?? key] = structured;
   }
   return result;
 }

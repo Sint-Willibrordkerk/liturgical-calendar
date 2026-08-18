@@ -69,13 +69,16 @@ export type RawMassProper = {
   introitus?: { antiphon?: RawVerse; verse?: RawVerse };
   oratio?: { text?: string; closure?: string };
   lectio?: RawReading;
-  graduale?: {
-    antiphon?: RawVerse;
-    verse?: RawVerse;
-    alleluia?: RawVerse;
-  };
-  gradualep?: { antiphon?: RawVerse; verse?: RawVerse };
-  tractus?: { antiphon?: RawVerse; verse?: RawVerse };
+  graduale?: { antiphon?: RawVerse; verse?: RawVerse };
+  /** The Alleluia sung after the Gradual. */
+  alleluia?: RawVerse;
+  /**
+   * The extended Alleluia that replaces the Gradual in paschaltide — the source
+   * calls it a `gradualep`, but it is an Alleluia, and so a list of verses.
+   */
+  alleluiap?: { verses: RawVerse[] };
+  /** A tract is a series of verses, not an antiphon and a verse. */
+  tractus?: { verses: RawVerse[] };
   evangelium?: RawReading;
   "ultima-evangelium"?: RawReading;
   offertorium?: RawVerse;
