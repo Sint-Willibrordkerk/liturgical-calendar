@@ -42,10 +42,15 @@ describe("borrowsItsMass", () => {
     expect(borrowsItsMass(titled)).toBe(false);
   });
 
-  it("is not a day of a higher class", () => {
-    expect(borrowsItsMass(withMass("feria", 3, undefined))).toBe(false);
+  it("is a feria of any class, the ferias of Advent being privileged", () => {
+    expect(borrowsItsMass(withMass("feria", 3, undefined))).toBe(true);
+    expect(borrowsItsMass(withMass("feria", 2, undefined))).toBe(true);
+  });
+
+  it("is not a day that is not a feria", () => {
     expect(borrowsItsMass(withMass("festum", 4, undefined))).toBe(false);
     expect(borrowsItsMass(withMass("dominica", 2, undefined))).toBe(false);
+    expect(borrowsItsMass(withMass("octava", 1, undefined))).toBe(false);
   });
 });
 

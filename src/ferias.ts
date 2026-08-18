@@ -23,23 +23,25 @@ export const SUNDAY_AFTER_EPIPHANY_MASS =
 const EPIPHANY_PREFACE = "epi";
 
 const FERIA = "feria";
-const FOURTH_CLASS = 4;
 const SUNDAY = 0;
 
 /**
- * A day that must borrow: a fourth-class feria with neither a Mass nor a title
- * of its own.
+ * A day that must borrow: a feria with neither a Mass nor a title of its own.
  *
  * A title names the day's own celebration — Our Lady on Saturday, say — and that
  * celebration has a Mass whether or not this build managed to find its file. So
  * a titled day never borrows; where its propers are missing it stays without a
  * Mass rather than saying the wrong one.
+ *
+ * The class is not asked about. Most ferias that lack a Mass are of the fourth
+ * class, but the ferias of Advent are of the second and third and lack one just
+ * the same — Lent, whose ferias are also privileged, gives each of them a Mass
+ * of its own and so never reaches here.
  */
 export function borrowsItsMass(day: LiturgicalDay | undefined): boolean {
   return (
     day != null &&
     day.type === FERIA &&
-    day.liturgicalClass === FOURTH_CLASS &&
     day.mass === undefined &&
     day.title === undefined
   );

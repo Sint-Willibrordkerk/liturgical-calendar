@@ -286,3 +286,26 @@ describe("step7 preferCurrentEdition", () => {
     expect(kept.map((k) => k.originalStem).sort()).toEqual(["01-01", "02-01"]);
   });
 });
+
+describe("resolveCollisions, naming the file after its source", () => {
+  it("names the distinguishing stem the way every other filename is named", () => {
+    const out = resolveCollisions([
+      {
+        targetBasename: "feria-quinta-in-cœna-domini",
+        originalStem: "Quad6-4",
+        relPath: "Tempora/Quad6-4.json",
+        content: "{\"a\":1}",
+      },
+      {
+        targetBasename: "feria-quinta-in-cœna-domini",
+        originalStem: "Quad6-4m2",
+        relPath: "Tempora/Quad6-4m2.json",
+        content: "{\"a\":2}",
+      },
+    ]);
+    expect(out.map((e) => e.finalBasename).sort()).toEqual([
+      "feria-quinta-in-cœna-domini-quad6-4",
+      "feria-quinta-in-cœna-domini-quad6-4m2",
+    ]);
+  });
+});

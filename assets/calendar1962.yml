@@ -17,24 +17,29 @@ items:
       occurence: { date: easter, difference: 49 }
     - type: feria #91.2
       items:
-      - title: Feria V in Cena Domini 
+      - title: feria-quinta-in-cœna-domini-quad6-4 
         occurence: { date: easter, difference: -3 }
-      - title: Feria VI in Passione et Morte Domini
+      - title: feria-sexta-in-passione-et-morte-domini
         occurence: { date: easter, difference: -2 }
       - title: Sabbato sancto
         occurence: { date: easter, difference: -1 }
+      # Monday to Wednesday of Holy Week, named for the week itself.
+      - title: $feria Majoris Hebdomadæ
+        occurence:
+          start: { date: easter, difference: -6 }
+          end: { date: easter, difference: -4 }
     - commemoration-type: domini #91.3 16
       items:
       - calendar: { 06-01: in-epiphania-domini }
-      - title: In Ascensione Domini
+      - title: in-ascensione-domini-pasc5-4
         occurence: { date: easter, difference: 39 }
-      - title: In festo Sanctissimæ Trinitatis #17c
+      - title: festum-sanctissimæ-trinitatis #17c
         occurence: { date: easter, difference: 56 }
       - title: Festum Sanctissimi Corporis Christi
         occurence: { date: easter, difference: 60 }
-      - title: In festo Sacratissimi Cordis Jesu
+      - title: sacratissimi-cordis-domini-nostri-jesu-christi-pent02-5
         occurence: { date: easter, difference: 68 }
-      - title: Domine Nostri Jesu Christi Regis #17d
+      - title: in-festo-domino-nostro-jesu-christi-regis-10-du #17d
         occurence: { type: dominica, start: 25-10, end: 31-10 }
     - calendar: #91.4
         15-08: in-assumptione-beatæ-mariæ-virginis
@@ -59,7 +64,7 @@ items:
           occurence: { date: easter, difference: -14 }
         - title: Dominica II Passionis seu in Palmis #11c
           occurence: { date: easter, difference: -7 }
-        - title: Dominica in albis #11e
+        - title: dominica-in-albis-in-octava-paschæ #11e
           occurence: { date: easter, difference: 7 }
     - type: feria #91.7 23
       items:
@@ -68,7 +73,7 @@ items:
       - occurence: #23b
           start: { date: easter, difference: -6 }
           end: { date: easter, difference: -4 }
-    - title: In Commemoratione Omnium Fidelium Defunctorum #91.8
+    - title: in-commemoratione-omnium-fidelium-defunctorum-11-02 #91.8
       type: feria
       occurence:
         type: "!dominica"
@@ -81,28 +86,40 @@ items:
       occurence: { date: easter, difference: 48 }
     - type: octava #91.10
       items:
-      - title: $day infra octavam Paschæ
-        occurence:
-          start: { date: easter, difference: 1 }
-          end: { date: easter, difference: 6 }
-      - title: Feria IV Quatuor Temporum Pentecostes
+      # The sources name these by the day of the octave, not the weekday, and
+      # the Saturday by the white garments laid aside on it.
+      - title: die-ii-infra-octavam-paschæ
+        occurence: { date: easter, difference: 1 }
+      - title: die-iii-infra-octavam-paschæ
+        occurence: { date: easter, difference: 2 }
+      - title: die-iv-infra-octavam-paschæ
+        occurence: { date: easter, difference: 3 }
+      - title: die-v-infra-octavam-paschæ
+        occurence: { date: easter, difference: 4 }
+      - title: die-vi-infra-octavam-paschæ
+        occurence: { date: easter, difference: 5 }
+      - title: sabbato-in-albis
+        occurence: { date: easter, difference: 6 }
+      - title: feria-quarta-quattuor-temporum-pentecostes
         occurence: { date: easter, difference: 52 }
-      - title: Feria VI Quatuor Temporum Pentecostes
+      - title: feria-sexta-quattuor-temporum-pentecostes
         occurence: { date: easter, difference: 54 }
-      - title: Sabbato Quatuor Temporum Pentecostes
+      - title: sabbato-quattuor-temporum-pentecostes
         occurence: { date: easter, difference: 55 }
-      - title: $day infra octavam Pentecostes
-        occurence:
-          start: { date: easter, difference: 49 }
-          end: { date: easter, difference: 55 }
+      - title: die-ii-infra-octavam-pentecostes
+        occurence: { date: easter, difference: 50 }
+      - title: die-iii-infra-octavam-pentecostes
+        occurence: { date: easter, difference: 51 }
+      - title: die-quinta-infra-octavam-pentecostes
+        occurence: { date: easter, difference: 53 }
     - calendar: #91.11
-        19-03: joseph-sponsi-b-mariæ-v
+        19-03: joseph-sponsi-bmv-confessoris-03-19
         25-03: in-annuntiatione-beate-mariæ-virgine
         01-05: joseph-opificis
         24-06: in-nativitate-s-joannis-baptistæ
         29-06: apostolorum-petri-et-pauli
         01-07: pretiosissimi-sanguinis-domini-nostri-jesu-christi-07-01
-        29-09: in-dedicatione-michælis-archangeli
+        29-09: in-dedicatione-s-michaelis-archangelis
         01-11: omnium-sanctorum
     - slot: nationis-patroni-principalis #91.12 42a
     - slot: regionis-patroni-principalis #91.12 42a
@@ -121,20 +138,29 @@ items:
       accept-commemoration-types: [privileged]
       items:
       - calendar:
-          13-01: in-commemoratione-baptismatis-domini-nostri-jesu-christi
+          13-01: commemoratio-baptismatis-domini-nostri-jesu-christi
           06-08: in-transfiguratione-domini-nostri-jesu-christi
           14-09: in-exaltatione-sanctæ-crucis
           09-11: in-dedicatione-archibasilicæ-ss-salvatoris
       - title: Sanctissimi Nominis Jesu #17a
         occurence: { type: dominica, start: 02-01, end: 05-01, default: 02-01 }
-      - title: Dominica I post Epiphaniam, Sanctæ Familiæ Jesu, Mariæ, Joseph #17b
+      - title: sanctæ-familiæ-jesu-mariæ-joseph #17b
         occurence: { type: dominica, start: 07-01, end: 13-01 }
     - type: dominica #91.15 12
       commemoration-type: domini
       accept-commemoration-types: [privileged]
       items:
-      - title: Dominica infra octavam Nativitatis Domini
+      - title: dominica-infra-octavam-nativitatis
         occurence: { type: dominica, start: 26-12, end: 31-12 }
+      # The fourth Sunday shares its name with a document differing only in
+      # wanting no Preface of the Trinity, so it is named outright rather than
+      # counted. It always falls in this week: the first Sunday after the
+      # Epiphany falls between the 7th and the 13th of January.
+      - title: dominica-iv-post-epiphaniam-epi4-0
+        occurence:
+          type: dominica
+          start: 28-01
+          end: 03-02
       - title: Dominica $count post Epiphaniam
         occurence:
           type: dominica
@@ -160,16 +186,16 @@ items:
           end: { date: easter, difference: 245 }
     - calendar: #91.16
         02-02: in-purificatione-beatæ-mariæ-virginis
-        22-02: in-cathedra-petri-ap
+        22-02: in-cathedra-s-petri-apostoli-antiochiæ
         24-02: matthiæ-apostoli
         25-04: marci-evangelistæ
-        11-05: philippi-et-jacobi
+        11-05: philippi-et-jacobi-apostolorum-05-11
         31-05: beatæ-mariæ-virginis-reginæ
         02-07: in-visitatione-b-mariæ-virginis
         25-07: jacobi-apostoli
         26-07: annæ-matris-bmv
         10-08: laurentii-martyris
-        16-08: joachim-patris-beatæ-mariæ-virginis
+        16-08: joachim-confessoris-patris-b-m-v
         22-08: immaculati-cordis-beatæ-mariæ-virginis
         24-08: bartholomæi-apostoli
         08-09: in-nativitate-beatæ-mariæ-virginis
@@ -185,27 +211,32 @@ items:
         27-12: joannis-apostoli-et-evangelistæ
         28-12: innocentium-12-28
     - type: octava #91.17
-      occurence: { start: 26-12, end: 31-12 }
+      items:
+      - calendar:
+          29-12: die-v-infra-octavam-nativitatis
+          30-12: die-vi-infra-octavam-nativitatis
+          31-12: die-vii-infra-octavam-nativitatis
+      - occurence: { start: 26-12, end: 31-12 }
     - type: feria #91.18 24
       items:
       - occurence: { start: 17-12, end: 23-12 } #24a
-      - title: Feria IV Quatuor Temporum Adventus #24b
+      - title: feria-iv-quattuor-temporum-adventus #24b
         occurence: { date: advent, difference: 17 }
       - title: Feria VI Quatuor Temporum Adventus #24b
         occurence: { date: advent, difference: 19 }
       - title: Sabbato Quatuor Temporum Adventus #24b
         occurence: { date: advent, difference: 20 }
-      - title: Feria IV Quatuor Temporum Quadragesimae #24b
+      - title: feria-quarta-quatuor-temporum-quadragesimæ #24b
         occurence: { date: easter, difference: -39 }
-      - title: Feria VI Quatuor Temporum Quadragesimae #24b
+      - title: feria-sexta-quattuor-temporum #24b
         occurence: { date: easter, difference: -37 }
-      - title: Sabbato Quatuor Temporum Quadragesimae #24b
+      - title: sabbato-quattuor-temporum-quadrageismæ #24b
         occurence: { date: easter, difference: -36 }
-      - title: Feria IV Quatuor Temporum septembris #24b
+      - title: feria-quarta-quattuor-temporum-septembris #24b
         occurence: { type: feriaIV, start: 18-09, end: 24-09 }
-      - title: Feria VI Quatuor Temporum septembris #24b
+      - title: feria-sexta-quattuor-temporum-septembris #24b
         occurence: { type: feriaVI, start: 20-09, end: 26-09 }
-      - title: Sabbato Quatuor Temporum septembris #24b
+      - title: sabbato-quattuor-temporum-septembris #24b
         occurence: { type: sabbato, start: 21-09, end: 27-09 }
     - slot: nationis-patroni-secundarii #91.19.1a 42b
     - slot: regionis-patroni-secundarii #91.19.1b 42b
@@ -222,16 +253,44 @@ items:
         - title: In vigilia Ascensionis #31a
           occurence: { date: easter, difference: 38 }
         - calendar:
-            23-06: in-vigilia-nativitatis-joannis-baptistæ #31c
+            23-06: in-vigilia-s-joannis-baptistæ #31c
             14-08: in-vigilia-assumptionis-bmv #31b
             28-06: in-vigilia-ss-petri-et-pauli-apostolorum #31d
   - liturgical-class: 3
     items:
     - type: feria #25a
       commemoration-type: privileged
-      occurence:
-        start: { date: easter, difference: -46 }
-        end: easter
+      items:
+      # The ferias of Lent have Masses of their own, named for the week they
+      # fall in. The sources spell the weekday's ordinal out — `$feria` — and
+      # count the week in Roman numerals.
+      - title: $day post Cineres
+        occurence:
+          start: { date: easter, difference: -45 }
+          end: { date: easter, difference: -43 }
+      - title: $feria infra Hebdomadam I in Quadragesima
+        occurence:
+          start: { date: easter, difference: -41 }
+          end: { date: easter, difference: -36 }
+      - title: $feria infra Hebdomadam II in Quadragesima
+        occurence:
+          start: { date: easter, difference: -34 }
+          end: { date: easter, difference: -29 }
+      - title: $feria infra Hebdomadam III in Quadragesima
+        occurence:
+          start: { date: easter, difference: -27 }
+          end: { date: easter, difference: -22 }
+      - title: $feria infra Hebdomadam IV in Quadragesima
+        occurence:
+          start: { date: easter, difference: -20 }
+          end: { date: easter, difference: -15 }
+      - title: $feria infra Hebdomadam Passionis
+        occurence:
+          start: { date: easter, difference: -13 }
+          end: { date: easter, difference: -8 }
+      - occurence:
+          start: { date: easter, difference: -46 }
+          end: easter
     - slot: dioecesis-3 #91.23.1
     - slot: ecclesiae-3 #91.23.2
     - slot: congregationis-3 #91.23.3
@@ -239,7 +298,7 @@ items:
     - calendar:
         14-01: hilarii-episcopi-confessoris-ecclesiæ-doctoris
         15-01: pauli-primi-eremitæ-et-confessoris
-        16-01: marcelli-i
+        16-01: marcelli-papæ-et-martyris
         17-01: antonii-abbatis
         20-01: fabiani-et-sebastiani-martyrum
         21-01: agnetis-virginis-et-martyris
@@ -262,7 +321,7 @@ items:
         09-02: cyrilli-episc-alexandrini-confessoris-et-ecclesiæ-doctoris
         10-02: scholasticæ-virginis
         11-02: in-apparitione-beatæ-mariæ-virginis
-        12-02: septem-fundat-ord-servorum-b-mariæ-v
+        12-02: septem-fundatorum-ordinis-servorum-b-m-v
         23-02: petri-damiani-episcopi-confessoris-et-ecclesiæ-doctoris
         27-02: gabrielis-a-virgine-perdolente-confessoris
         04-03: casimiri-confessoris
@@ -283,7 +342,7 @@ items:
         05-04: vincentii-ferrerii-confessoris
         11-04: leonis-i-papæ-confessoris-et-ecclesiæ-doctoris
         13-04: hermenegildi-martyris
-        14-04: justini
+        14-04: justini-martyris
         21-04: anselmi-episcopi-confessoris-et-ecclesiæ-doctoris
         22-04: soteris-et-caji-summorum-pontificum-et-martyrum
         24-04: fidelis-de-sigmaringa-martyris
@@ -315,7 +374,7 @@ items:
         04-06: francisci-caracciolo-confessoris
         05-06: bonifatii-episcopi-et-martyris
         06-06: norberti-episcopi-et-confessoris
-        10-06: margaritæ-scotorum-reginae
+        10-06: margaritæ-reginæ-viduæ
         11-06: barnabæ-apostoli
         12-06: joannis-a-s-facundo-confessoris
         13-06: antonii-de-padua-confessoris
@@ -349,7 +408,7 @@ items:
         04-08: dominici-confessoris
         05-08: mariæ-ad-nives
         07-08: cajetani-confessoris
-        08-08: joannis-mariæ-vianney
+        08-08: joannis-mariæ-vianney-confessoris
         12-08: claræ-virginis
         17-08: hyacinthi-confessoris
         19-08: joannis-eudes-confessoris
@@ -360,7 +419,7 @@ items:
         27-08: josephi-calasanctii-confessoris
         28-08: augustini-episcopi-et-confessoris-et-ecclesiæ-doctoris
         29-08: in-decollatione-s-joannis-baptistæ
-        30-08: rosæ-limanæ
+        30-08: rosæ-a-sancta-maria-limange-virginis
         31-08: raymundi-nonnati-confessoris
         02-09: stephani-regis-hungariæ-et-confessoris
         03-09: pii-x-papæ-confessoris
@@ -380,7 +439,7 @@ items:
         04-10: francisci-confessoris
         06-10: brunonis-confessoris
         08-10: birgittæ-viduæ
-        09-10: joannis-leonardi
+        09-10: joannis-leonardi-confessoris
         10-10: francisci-borgiæ-confessoris
         13-10: eduardi-regis-confessoris
         14-10: callisti-papæ-et-martyris
@@ -394,7 +453,7 @@ items:
         04-11: caroli-episcopi-et-confessoris
         10-11: andreæ-avellini-confessoris
         11-11: martini-episcopi-et-confessoris
-        12-11: martini-i
+        12-11: martini-papæ-et-martyris
         13-11: didaci-confessoris
         14-11: josaphat-episcopi-et-martyris
         15-11: alberti-magni-episcopi-confessoris-et-ecclesiæ-doctoris
@@ -405,10 +464,10 @@ items:
         20-11: felicis-de-valois-confessoris
         21-11: in-presentatione-beatæ-mariæ-virginis
         22-11: cæciliæ-virginis-et-martyris
-        23-11: clementis-i
+        23-11: clementis-papæ-et-martyris
         24-11: joannis-a-cruce-confessoris-et-ecclesiæ-doctoris
         25-11: catharinæ-virginis-et-martyris
-        26-11: silvesteri
+        26-11: silvestri-abbatis
         02-12: bibianæ-virginis-et-martyris
         03-12: francisci-xaverii-confessoris
         04-12: petri-chrysologi-episcopi-confessoris-et-ecclesiæ-doctoris

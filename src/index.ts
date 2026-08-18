@@ -1,8 +1,14 @@
 import { Commemoration, LiturgicalDay } from "./types";
-import { eachDay, calculateEaster } from "./utils";
+import {
+  eachDay,
+  calculateEaster,
+  calculateAdvent,
+  dayNumber,
+} from "./utils";
 import { parseCalendarData } from "./parseCalendarData";
 import { loadTranslations, loadMassPropersByTitle } from "./loadAssets";
 import { applyFerialMass, SUNDAY_AFTER_EPIPHANY_MASS } from "./ferias";
+import { applyResumedSundays } from "./resumedSundays";
 
 function deleteFields(day: Partial<LiturgicalDay | Commemoration>) {
   if ("commemorations" in day && day.commemorations) {
@@ -34,6 +40,26 @@ export default (year: number, propers: string[] = [], lang: string = "la") => {
     })
   );
 
+  // A year with more Sundays after Pentecost than the missal numbers resumes
+  // the Sundays after the Epiphany that Septuagesima cut short. Which of those
+  // were kept decides which are left to resume.
+  const easter = calculateEaster(year);
+  const septuagesima = new Date(easter);
+  septuagesima.setDate(septuagesima.getDate() - 63);
+  const epiphanySundaysKept = countSundays(new Date(year, 0, 6), septuagesima);
+  applyResumedSundays(
+    calendar,
+    year,
+    easter,
+    calculateAdvent(year),
+    epiphanySundaysKept,
+    (title) =>
+      loadMassPropersByTitle(title, lang, undefined, {
+        date: septuagesima,
+        easter,
+      })
+  );
+
   eachDay(year, ({ month, day }) => {
     const dayData = calendar[month]![day]!;
     dayData.commemorations = dayData.commemorations.filter(
@@ -46,3 +72,15 @@ export default (year: number, propers: string[] = [], lang: string = "la") => {
   });
   return calendar;
 };
+
+/** The Sundays falling strictly after `from` and strictly before `until`. */
+function countSundays(from: Date, until: Date): number {
+  let count = 0;
+  const date = new Date(from);
+  date.setDate(date.getDate() + 1);
+  const last = dayNumber(until);
+  for (; dayNumber(date) < last; date.setDate(date.getDate() + 1)) {
+    if (date.getDay() === 0) count++;
+  }
+  return count;
+}

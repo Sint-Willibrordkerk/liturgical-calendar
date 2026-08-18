@@ -274,9 +274,13 @@ export function resolveCollisions(
       });
     } else {
       for (const { originalStem, relPath, content } of uniq) {
+        // The stem is a source filename, and it goes into a filename here, so
+        // it is named the same way every other filename is. Left as it stands
+        // it can carry capitals — `Quad6-4`, `10-DU` — and a lookup that
+        // kebab-cases the title it is searching for would never reach the file.
         result.push({
           relPath,
-          finalBasename: `${base}-${originalStem}`,
+          finalBasename: `${base}-${toKebabFileName(originalStem) ?? originalStem}`,
           content,
         });
       }

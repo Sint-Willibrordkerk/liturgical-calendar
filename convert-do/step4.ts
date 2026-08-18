@@ -194,13 +194,19 @@ async function loadReferenceFiles(
   const fileNames = extractDependencies(obj, inputFile);
 
   for (const fileName of fileNames) {
-    const doc = parseStep(
-      await readFile(
+    // A reference the sources do not carry, or one caught in a cycle the
+    // pipeline could not order, simply yields nothing to borrow. The document
+    // is still the day's own, and is kept rather than lost with the reference.
+    let raw: string;
+    try {
+      raw = await readFile(
         `${join(languageBasePath(inputFile), fileName)}${STEP_EXT}`,
         "utf-8"
-      )
-    );
-    referenceFiles.set(fileName, doc as Step3Output);
+      );
+    } catch {
+      continue;
+    }
+    referenceFiles.set(fileName, parseStep(raw) as Step3Output);
   }
   return referenceFiles;
 }
@@ -219,7 +225,7 @@ export async function transform(
 
   for (const path of [...ex, ...vide]) {
     const file = referenceFiles.get(path.path);
-    if (!file) throw new Error(`Reference file not found: ${path.path}`);
+    if (!file) continue;
 
     for (let [key, value] of Object.entries(file)) {
       if (!ex.includes(path) && !isOfficeBorrow(key)) {

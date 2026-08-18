@@ -14,7 +14,7 @@ import {
   loadMassPropersByTitle,
   type RawMassProper,
 } from "./loadAssets";
-import { ordinals, days } from "./ordinals";
+import { ordinals, days, feriae } from "./ordinals";
 
 type Translations = Record<string, string>;
 
@@ -172,9 +172,14 @@ export function parseCalendarData(
         const latinOrdinal =
           ordinals[(index + 1) as keyof typeof ordinals] || "";
         const latinDay = days[(date.getDay() + 1) as keyof typeof days] || "";
+        // `$feria` spells the weekday's ordinal out, which is how the propers
+        // are filed; `$day` gives the Roman numeral the calendar reads by.
+        const latinFeria =
+          feriae[(date.getDay() + 1) as keyof typeof feriae] || "";
         const titleWithSubstitution = item.title
           ?.replace("$count", latinOrdinal)
-          .replace("$day", latinDay);
+          .replace("$day", latinDay)
+          .replace("$feria", latinFeria);
 
         // Load mass proper by title and language. A proper carries every chant
         // the year might call for; the season decides which the day sings.
@@ -186,7 +191,10 @@ export function parseCalendarData(
           : undefined;
 
         let title = translate(
-          originalTitle?.replace("$count", ordinal!).replace("$day", day!),
+          originalTitle
+            ?.replace("$count", ordinal!)
+            .replace("$day", day!)
+            .replace("$feria", latinFeria),
           translations
         );
 

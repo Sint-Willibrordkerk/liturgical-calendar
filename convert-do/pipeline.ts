@@ -177,7 +177,8 @@ async function processInputFiles(
   inputFiles: string[],
   fromStep: number,
   toStep: number,
-  fileCache: Set<string>
+  fileCache: Set<string>,
+  requireDependencies: boolean
 ) {
   let result;
   for (const inputFile of inputFiles) {
@@ -208,10 +209,15 @@ async function processInputFiles(
           .join("/")
           .replace(STEP_EXT, "")
       );
-      const dependencies = extractDependencies(data as Step3Output, outputFile);
-      for (const dependency of dependencies) {
-        if (!cache.includes(dependency)) {
-          throw new Error(MISSING_DEPENDENCY_ERROR);
+      if (requireDependencies) {
+        const dependencies = extractDependencies(
+          data as Step3Output,
+          outputFile
+        );
+        for (const dependency of dependencies) {
+          if (!cache.includes(dependency)) {
+            throw new Error(`${MISSING_DEPENDENCY_ERROR}: ${dependency}`);
+          }
         }
       }
       data = await step4Transform(data as Step3Output, outputFile);
@@ -280,10 +286,12 @@ async function runWorkers(
   fromStep: number,
   toStep: number,
   fileCache: Set<string>,
-  total: number
+  total: number,
+  requireDependencies = true
 ) {
   let processed = 0;
   const failures = new Set<[string, string[]]>();
+  const missing = new Map<string, string>();
 
   async function worker() {
     while (queue.length > 0) {
@@ -296,11 +304,13 @@ async function runWorkers(
           inputs,
           fromStep,
           toStep,
-          fileCache
+          fileCache,
+          requireDependencies
         );
         processed++;
       } catch (err: unknown) {
-        if (err instanceof Error && err.message === MISSING_DEPENDENCY_ERROR) {
+        if (err instanceof Error && err.message.startsWith(MISSING_DEPENDENCY_ERROR)) {
+          missing.set(outputFile, err.message.split(": ")[1] ?? "");
           failures.add(item);
           continue;
         }
@@ -316,7 +326,7 @@ async function runWorkers(
     }
   }
   await Promise.all(Array(1).fill(0).map(worker));
-  return { processed, failures };
+  return { processed, failures, missing };
 }
 
 async function createDirectories(outputDirectories: Set<string>) {
@@ -347,7 +357,11 @@ async function executePipeline(
 
   const queue = [...byOutput.entries()];
   let processed = 0;
-  let workersResult = { processed: 0, failures: new Set<[string, string[]]>() };
+  let workersResult = {
+    processed: 0,
+    failures: new Set<[string, string[]]>(),
+    missing: new Map<string, string>(),
+  };
 
   do {
     workersResult = await runWorkers(
@@ -361,7 +375,33 @@ async function executePipeline(
     queue.push(...workersResult.failures);
   } while (workersResult.processed > 0);
 
-  return { processed, errors: workersResult.failures.size };
+  // What is left cannot be ordered: either two documents wait on each other —
+  // the Vigil of Pentecost and its rubric file each borrow from the other — or
+  // the reference names a file the sources do not carry. Waiting longer will
+  // not help, and dropping the document loses a day of the calendar, so the
+  // gate comes off and they are written with whatever they could not resolve
+  // left in place. That is what a reference resolves to elsewhere in the
+  // pipeline when it cannot be followed.
+  const stalled = [...workersResult.failures];
+  if (stalled.length > 0) {
+    for (const [outputFile] of stalled) {
+      consola.warn(
+        `Written unresolved, ${workersResult.missing.get(outputFile) ?? "a dependency"} never arrived: ${outputFile}`
+      );
+    }
+    const forced = await runWorkers(
+      stalled,
+      fromStep,
+      toStep,
+      cachedFiles,
+      total,
+      false
+    );
+    processed += forced.processed;
+    return { processed, errors: forced.failures.size };
+  }
+
+  return { processed, errors: 0 };
 }
 
 /** Run one batch step: rebuild `step{step}` from the materialized `step{step-1}`. */

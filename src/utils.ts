@@ -80,3 +80,14 @@ export function matchDateString(
       return new Date(`${year}-${date.split("-")[1]}-${date.split("-")[0]}`);
   }
 }
+
+/**
+ * A date as a plain year-month-day number, so that two dates compare as days.
+ *
+ * The dates here are not all built the same way — Easter and Advent are reckoned
+ * in UTC, while the days of the year are local — and an hour of offset between
+ * two of them is enough to move a day across a boundary.
+ */
+export function dayNumber(date: Date): number {
+  return date.getFullYear() * 10000 + date.getMonth() * 100 + date.getDate();
+}
