@@ -8,7 +8,7 @@ This library generates a complete liturgical calendar for any given year, follow
 
 - **Base calendar**: The universal 1960 liturgical calendar
 - **Local propers**: Add the local propers of your dioces or congregation to this repository; see Ultrajectum as an example. 
-- **Translations**: Multi-language support; see nl_NL as an example.
+- **Translations**: Multi-language support; see nl as an example.
 
 ## Installation
 
@@ -39,13 +39,15 @@ console.log(january1.title); // "In Octava Nativitatis Domini"
 
 - `year` (number): The year for which to generate the calendar
 - `propers` (string[]): Array of proper names to include (e.g., `['ultrajectum', 'fsspx']`)
-- `lang` (string): Language code for translations (e.g., `'en'`, `'nl_NL'`)
+- `lang` (string): Language code (e.g. `'la'`, `'nl'`). It selects both the
+  translations and the Mass propers, so it must name a language the assets
+  carry; `la` is the one they always carry.
 
 ### With Local Propers
 
 ```javascript
 // Generate calendar with local propers (e.g., Utrecht diocese)
-const calendar = generateCalendar(2026, ['ultrajectum'], 'nl_NL');
+const calendar = generateCalendar(2026, ['ultrajectum'], 'nl');
 
 // November 7th will show local feast
 const november7 = calendar[11][7];
