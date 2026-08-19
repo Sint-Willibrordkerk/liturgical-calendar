@@ -43,6 +43,12 @@ const STEP_BASE = join(PROJECT_BASE, ".divinum-officium");
 const MISSING_DEPENDENCY_ERROR = "Missing dependency";
 
 /**
+ * The language the sources are written in, and the one a translation falls back
+ * on for what it does not translate.
+ */
+const BASE_LANGUAGE = "la";
+
+/**
  * Highest step handled by the in-memory streaming runner. Later steps (7–11)
  * are directory-level batch operations (fan-out / cross-file merges / shared
  * files) and run against materialized `step{N-1}` folders instead.
@@ -172,6 +178,50 @@ function mergeVariants(
   return [...byCondition.values()];
 }
 
+/**
+ * The same document in the base language, as step 4 wrote it.
+ *
+ * `undefined` where the document is already in the base language, or already
+ * has a rank of its own.
+ */
+export function baseLanguagePath(
+  outputFile: string,
+  hasRank: boolean
+): string | undefined {
+  if (hasRank) return undefined;
+  const parts = outputFile.replace(STEP_BASE, "").split(SEP_RE);
+  const language = parts[2];
+  if (language === undefined || language === BASE_LANGUAGE) return undefined;
+  parts[2] = BASE_LANGUAGE;
+  return join(STEP_BASE, ...parts.slice(1));
+}
+
+/** The document with the base language's rank, where it has none of its own. */
+async function borrowRank(
+  data: Step3Output,
+  outputFile: string,
+  requireDependencies: boolean
+): Promise<Step3Output | undefined> {
+  const path = baseLanguagePath(
+    outputFile,
+    (data as Record<string, unknown>)["rank"] !== undefined
+  );
+  if (path === undefined) return undefined;
+  let raw: string;
+  try {
+    raw = await readFile(path, "utf-8");
+  } catch {
+    // Not written yet: wait for it, the way any other dependency is waited on.
+    // Once the queue stalls the wait is given up and the day keeps its own.
+    if (requireDependencies) {
+      throw new Error(`${MISSING_DEPENDENCY_ERROR}: ${BASE_LANGUAGE} rank`);
+    }
+    return undefined;
+  }
+  const rank = (parseStep(raw) as Record<string, unknown>)["rank"];
+  return rank === undefined ? undefined : { ...data, rank };
+}
+
 async function processInputFiles(
   outputFile: string,
   inputFiles: string[],
@@ -201,6 +251,18 @@ async function processInputFiles(
       data = step3Transform(data as Step2Output, inputFile);
     }
     if (fromStep <= 4 && toStep >= 4) {
+      // A translation says the texts of a day, not how the day is celebrated:
+      // most translated files carry no rank at all. The rank is where a day
+      // names the common it draws its Mass from, so without it the day borrows
+      // nothing and comes out empty — even where the common itself has been
+      // translated. It is taken from the Latin, which is the one tree that
+      // always has it; the sections it then borrows are the translation's own.
+      const borrowed = await borrowRank(
+        data as Step3Output,
+        outputFile,
+        requireDependencies
+      );
+      if (borrowed !== undefined) data = borrowed;
       // Keyed by language as well as path. A reference names a file within the
       // same language, so a document that has been written in one language does
       // not mean the same document exists in another — and taking it as such

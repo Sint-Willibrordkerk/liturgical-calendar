@@ -254,7 +254,12 @@ export function preferCurrentEdition(
 
 export function resolveCollisions(
   entries: CollisionEntry[]
-): { relPath: string; finalBasename: string; content: string }[] {
+): {
+  relPath: string;
+  targetBasename: string;
+  finalBasename: string;
+  content: string;
+}[] {
   const byBasename = new Map<
     string,
     { originalStem: string; relPath: string; content: string }[]
@@ -263,8 +268,12 @@ export function resolveCollisions(
     if (!byBasename.has(targetBasename)) byBasename.set(targetBasename, []);
     byBasename.get(targetBasename)!.push({ originalStem, relPath, content });
   }
-  const result: { relPath: string; finalBasename: string; content: string }[] =
-    [];
+  const result: {
+    relPath: string;
+    targetBasename: string;
+    finalBasename: string;
+    content: string;
+  }[] = [];
   for (const [base, list] of byBasename) {
     const byContent = new Map<string, (typeof list)[number]>();
     for (const entry of list) {
@@ -274,6 +283,7 @@ export function resolveCollisions(
     if (uniq.length === 1) {
       result.push({
         relPath: uniq[0]!.relPath,
+        targetBasename: base,
         finalBasename: base,
         content: uniq[0]!.content,
       });
@@ -285,6 +295,7 @@ export function resolveCollisions(
         // kebab-cases the title it is searching for would never reach the file.
         result.push({
           relPath,
+          targetBasename: base,
           finalBasename: `${base}-${toKebabFileName(originalStem) ?? originalStem}`,
           content,
         });
@@ -292,6 +303,47 @@ export function resolveCollisions(
     }
   }
   return result;
+}
+
+/**
+ * The language the sources are written in. A translation is filed under the
+ * names this language gives a day, not under its own.
+ */
+export const BASE_LANGUAGE = "la";
+
+/** The tree and source file a path names, without its language: `Sancti/01-27`. */
+export function sourceKey(relPath: string): string {
+  const parts = relPath.split(/[/\\]/);
+  const stem = getStem(relPath);
+  return [...parts.slice(1, -1), stem].join("/");
+}
+
+/**
+ * The names a translation's document is filed under.
+ *
+ * A translation renders the day's texts; what it calls the day is its own
+ * business, and it often differs — an abbreviation, a word more or fewer, a
+ * second name for the same saint. Filed under those, a translated day would sit
+ * beside the Latin one under a name no calendar asks for. So the base language
+ * decides the filenames, and the translation supplies only the content.
+ *
+ * Where the base language files a document under several names, the
+ * translation is filed under each of them, described by its own designations as
+ * far as it has them.
+ */
+export function namesForTranslation(
+  baseNames: NameCandidate[],
+  ownNames: NameCandidate[]
+): NameCandidate[] {
+  return baseNames.map((base, i) => {
+    const own = ownNames[Math.min(i, ownNames.length - 1)];
+    return {
+      key: base.key,
+      title: own?.title ?? base.title,
+      name: own?.name ?? base.name,
+      current: base.current,
+    };
+  });
 }
 
 /** Batch runner: reads all `.yml` under `inputDir`, writes name-based files to `outputDir`. */
@@ -302,6 +354,23 @@ export async function run(
   const allRelPaths = await collectYmlFiles(inputDir);
   const mkdirCache = new Set<string>();
 
+  // The base language is read first and its names recorded, so that a
+  // translation of the same source can be filed under them.
+  const isBase = (relPath: string) =>
+    relPath.split(/[/\\]/)[0] === BASE_LANGUAGE;
+  const baseNames = new Map<string, NameCandidate[]>();
+  await runBatched(
+    allRelPaths.filter(isBase),
+    DEFAULT_CONCURRENCY,
+    async (relPath) => {
+      const raw = await readFile(join(inputDir, relPath), "utf-8");
+      baseNames.set(
+        sourceKey(relPath),
+        collectNames(parseStep(raw), getStem(relPath))
+      );
+    }
+  );
+
   const shared: (CollisionEntry & { dir: string })[] = [];
   const { errors: readErrors } = await runBatched(
     allRelPaths,
@@ -311,10 +380,13 @@ export async function run(
       const obj = parseStep(raw) as Record<string, unknown>;
       const originalStem = getStem(relPath);
       const dir = dirname(relPath);
-      for (const { key, title, name, current } of collectNames(
-        obj,
-        originalStem
-      )) {
+      const own = collectNames(obj, originalStem);
+      // A source the base language does not carry is filed under its own name;
+      // there is nothing else to file it under.
+      const base = isBase(relPath) ? undefined : baseNames.get(sourceKey(relPath));
+      const names =
+        base === undefined ? own : namesForTranslation(base, own);
+      for (const { key, title, name, current } of names) {
         shared.push({
           relPath,
           dir,
@@ -339,11 +411,31 @@ export async function run(
     byDir.get(item.dir)!.push(item);
   }
 
+  // Where a name is claimed twice the loser takes a suffix, and which documents
+  // claim a name differs between languages: one may hold two readings of a day
+  // that another translates as one. The base language settles that too, so a
+  // translation lands on the name the calendar asks for rather than on a
+  // suffixed variant of it.
+  const baseFinal = new Map<string, string>();
+  const suffixKey = (relPath: string, targetBasename: string) =>
+    `${sourceKey(relPath)} ${targetBasename}`;
+  for (const [dir, entries] of byDir) {
+    if (dir.split(/[/\\]/)[0] !== BASE_LANGUAGE) continue;
+    for (const resolved of resolveCollisions(preferCurrentEdition(entries))) {
+      baseFinal.set(
+        suffixKey(resolved.relPath, resolved.targetBasename),
+        resolved.finalBasename
+      );
+    }
+  }
+
   let written = 0;
   for (const [, entries] of byDir) {
-    for (const { relPath, finalBasename, content } of resolveCollisions(
-      preferCurrentEdition(entries)
-    )) {
+    for (const resolved of resolveCollisions(preferCurrentEdition(entries))) {
+      const { relPath, content } = resolved;
+      const finalBasename =
+        baseFinal.get(suffixKey(relPath, resolved.targetBasename)) ??
+        resolved.finalBasename;
       const dir = dirname(relPath);
       const outRelPath =
         dir && dir !== "."

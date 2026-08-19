@@ -506,6 +506,20 @@ so files nested more than one directory below the language (e.g.
 
 ---
 
+### A translation borrows the Latin's rank
+
+Most translated files carry no `[Rank]` at all: it says how a day is celebrated
+rather than what is said on it, and that is not a matter of language. But the
+rank is also where a day names the **common** it draws its Mass from, so a
+translation without one borrows nothing and comes out with no Mass — even where
+the common itself has been translated.
+
+The rank is therefore taken from the base language, which is the one tree that
+always has it. The sections the day then borrows are the translation's own: a
+Dutch day drawing on `C4a` gets the Dutch `C4a`. Where the base language's
+document has not been written yet, the day waits for it as it waits for any
+other dependency.
+
 ## Step 5 — Inline references (`@File:Section:…`)
 
 Replaces a single **reference line** with the lines of a specific section pulled
@@ -820,6 +834,27 @@ With no designation at all, the original filename stem is kept. Within a
 directory, a collision on the same name with **different** content is
 disambiguated by appending the original stem; identical content collapses to a
 single file.
+
+### Translations are filed under the Latin's names
+
+A translation renders the texts of a day; what it *calls* the day is its own
+business, and it often differs — an abbreviation, a word more or fewer, a second
+name for the same saint. The Dutch calls the 27th of January
+`Joannis Chrysostomi Episcopi Confessoris Ecclesiae Doctoris` where the Latin has
+an `et` between the last two, and names the 22nd of July for the Penitent.
+
+Filed under those, a translated day would sit beside the Latin one under a name
+no calendar asks for. So the **base language** — Latin, the one the sources are
+written in — decides the filenames, and the translation supplies only the
+content. Where the base language files a document under several names, the
+translation is written under each of them, described by its own designations as
+far as it has them; a source the base language does not carry keeps its own name,
+there being nothing else to file it under.
+
+The same holds for the suffix that separates two documents claiming one name.
+Which documents claim a name differs between languages — one may hold two
+readings of a day another translates as one — so the base language settles which
+file takes the plain name and which the suffixed one.
 
 ### Content transform
 

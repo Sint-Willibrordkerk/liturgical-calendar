@@ -6,6 +6,8 @@ import {
   resolveCollisions,
   collectNames,
   preferCurrentEdition,
+  namesForTranslation,
+  sourceKey,
 } from "./step7";
 
 const v = <T>(value: T, condition: string[] = []) => ({ value, condition });
@@ -311,6 +313,59 @@ describe("resolveCollisions, naming the file after its source", () => {
     expect(out.map((e) => e.finalBasename).sort()).toEqual([
       "feria-quinta-in-cœna-domini-quad6-4",
       "feria-quinta-in-cœna-domini-quad6-4m2",
+    ]);
+  });
+});
+
+describe("filing a translation", () => {
+  const candidate = (key: string, title: string | null) => ({
+    key,
+    title,
+    name: null,
+    current: true,
+  });
+
+  it("names a source by its tree and file, whatever language it is in", () => {
+    expect(sourceKey("la/Sancti/01-27.json")).toBe("Sancti/01-27");
+    expect(sourceKey("nl/Sancti/01-27.json")).toBe("Sancti/01-27");
+    expect(sourceKey("nl/Sancti/aliquibus locis/01-27.json")).toBe(
+      "Sancti/aliquibus locis/01-27"
+    );
+  });
+
+  it("files it under the base language's name, not its own", () => {
+    // The Dutch drops the `et`; filed under that, the day is unreachable.
+    const out = namesForTranslation(
+      [candidate("joannis-chrysostomi-episcopi-confessoris-et-ecclesiae-doctoris", "S. Joannis Chrysostomi")],
+      [candidate("joannis-chrysostomi-episcopi-confessoris-ecclesiae-doctoris", "H. Johannes Chrysostomus")]
+    );
+    expect(out).toEqual([
+      {
+        key: "joannis-chrysostomi-episcopi-confessoris-et-ecclesiae-doctoris",
+        title: "H. Johannes Chrysostomus",
+        name: null,
+        current: true,
+      },
+    ]);
+  });
+
+  it("files it under each of them where the base language yields several", () => {
+    const out = namesForTranslation(
+      [candidate("in-festis-beatae-mariae-virginis", "a"), candidate("in-nativitate-beatae-mariae-virginis", "b")],
+      [candidate("eigen-naam", "vertaald")]
+    );
+    expect(out.map((n) => n.key)).toEqual([
+      "in-festis-beatae-mariae-virginis",
+      "in-nativitate-beatae-mariae-virginis",
+    ]);
+    // Nothing of its own to say about the second, so it repeats what it has.
+    expect(out.map((n) => n.title)).toEqual(["vertaald", "vertaald"]);
+  });
+
+  it("falls back to the base designation where the translation has none", () => {
+    const out = namesForTranslation([candidate("dies", "Dies Irae")], []);
+    expect(out).toEqual([
+      { key: "dies", title: "Dies Irae", name: null, current: true },
     ]);
   });
 });
