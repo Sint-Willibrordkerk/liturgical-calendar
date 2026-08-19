@@ -1,8 +1,8 @@
-S. Maria in sabbato in tempore Adventus: Onze Lieve Vrouw op zaterdag in de Advent
-S. Maria in sabbato a Nativitate Domini usque ad Purificationem: Onze Lieve Vrouw op zaterdag vanaf Kerstmis tot Maria Lichtmis
-S. Maria in sabbato a die 3 februari usque ad feriam IV Hebdomadae Sanctae: Onze Lieve Vrouw op zaterdag vanaf 3 februari tot woensdag in de Goede Week
-S. Maria in sabbato in tempore Paschali: Onze Lieve Vrouw op zaterdag in de Paastijd
-S. Maria in sabbato a festo SS. Trinitatis usque ad sabbatum ante dominicam I Adventus: Onze Lieve Vrouw op zaterdag vanaf Zondag Trinitate tot de zaterdag voor de eerste zondag van de Advent
+maria-in-sabbato-in-tempore-adventus: Onze Lieve Vrouw op zaterdag in de Advent
+maria-in-sabbato-a-nativitate-domini-usque-ad-purificationem: Onze Lieve Vrouw op zaterdag vanaf Kerstmis tot Maria Lichtmis
+maria-in-sabbato-a-die-3-februari-usque-ad-feriam-iv-hebdomadae-sanctae: Onze Lieve Vrouw op zaterdag vanaf 3 februari tot woensdag in de Goede Week
+maria-in-sabbato-in-tempore-paschali: Onze Lieve Vrouw op zaterdag in de Paastijd
+maria-in-sabbato-a-festo-trinitatis-usque-ad-sabbatum-ante-dominicam-i-adventus: Onze Lieve Vrouw op zaterdag vanaf Zondag Trinitate tot de zaterdag voor de eerste zondag van de Advent
 In vigilia Ascensionis: Vigilie van Hemelvaart
 Feria IV Quatuor Temporum Adventus: Quatertemperwoensdag in de Advent
 Feria VI Quatuor Temporum Adventus: Quatertempervrijdag in de Advent
@@ -33,8 +33,8 @@ Dominica $count Adventus: $count zondag van de Advent
 Dominica $count in Quadragesima: $count zondag van de Vasten
 Dominica I Passionis: Passiezondag
 Dominica II Passionis seu in Palmis: Palmzondag
-Dominica in albis: Beloken Pasen
-In Ascensione Domini: Hemelvaart
+dominica-in-albis-in-octava-paschae: Beloken Pasen
+in-ascensione-domini-pasc5-4: Hemelvaart
 In festo Sanctissimæ Trinitatis: Feest van de H. Drieëenheid
 In festo Ssm̃i Corporis Christi: Feest van het Allerheiligst Sacrament
 In festo Sacratissimi Cordis Jesu: Feest van het Allerheiligst Hart van Jezus

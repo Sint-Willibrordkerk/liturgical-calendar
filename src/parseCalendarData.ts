@@ -190,11 +190,14 @@ export function parseCalendarData(
             })
           : undefined;
 
+        // `$feria` exists so a title can name the file its propers are in; what
+        // the day is *called* is the ordinary weekday name, translated like any
+        // other. Spelling the ordinal out is a filing convention, not a name.
         let title = translate(
           originalTitle
             ?.replace("$count", ordinal!)
             .replace("$day", day!)
-            .replace("$feria", latinFeria),
+            .replace("$feria", day!),
           translations
         );
 
