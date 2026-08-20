@@ -21,10 +21,10 @@
     "access": "public"
   },
   "peerDependencies": {
-    "liturgical-calendar": ">=3"
+    "@sint-willibrordkerk/liturgical-calendar": ">=3"
   },
   "peerDependenciesMeta": {
-    "liturgical-calendar": {
+    "@sint-willibrordkerk/liturgical-calendar": {
       "optional": true
     }
   },

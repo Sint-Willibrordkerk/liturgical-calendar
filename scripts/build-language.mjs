@@ -54,7 +54,7 @@ writeFileSync(
 writeFileSync(
   join(dist, "index.d.mts"),
   [
-    "import type { Language } from \"liturgical-calendar\";",
+    "import type { Language } from \"@sint-willibrordkerk/liturgical-calendar\";",
     "declare const language: Language;",
     "export default language;",
     "",

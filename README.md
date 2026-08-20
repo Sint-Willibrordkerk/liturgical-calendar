@@ -17,9 +17,9 @@ calendar, and each language holds its own Mass propers and translations. Install
 the calendar and the languages you read.
 
 ```bash
-pnpm add liturgical-calendar @sint-willibrordkerk/liturgical-calendar-la
+pnpm add @sint-willibrordkerk/liturgical-calendar @sint-willibrordkerk/liturgical-calendar-la
 # or Dutch, or both
-pnpm add liturgical-calendar @sint-willibrordkerk/liturgical-calendar-nl
+pnpm add @sint-willibrordkerk/liturgical-calendar @sint-willibrordkerk/liturgical-calendar-nl
 ```
 
 The propers run to well over a megabyte per language, so a caller carries only
@@ -30,7 +30,7 @@ the languages they ask for.
 ### Basic Example
 
 ```javascript
-import generateCalendar from 'liturgical-calendar';
+import generateCalendar from '@sint-willibrordkerk/liturgical-calendar';
 import la from '@sint-willibrordkerk/liturgical-calendar-la';
 
 // Generate calendar for 2026

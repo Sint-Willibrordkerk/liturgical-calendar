@@ -1,5 +1,5 @@
 {
-  "name": "liturgical-calendar",
+  "name": "@sint-willibrordkerk/liturgical-calendar",
   "version": "3.0.0",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.mts",
@@ -38,5 +38,8 @@
     "vitest": "^3.2.4",
     "yaml": "^2.6.1"
   },
-  "packageManager": "pnpm@10.9.0"
+  "packageManager": "pnpm@10.9.0",
+  "publishConfig": {
+    "access": "public"
+  }
 }
