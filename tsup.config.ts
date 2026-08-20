@@ -31,9 +31,10 @@ function readAssetsFromFolder(
   return assets;
 }
 
-// The mass propers live under `assets/mass-propers/`, put there by
-// `pnpm copy-mass-propers`, so reading `assets` recursively picks them up with
-// everything else. Nothing is read from the gitignored pipeline output.
+// Only what every language shares: the calendar itself, the sanctoral, and the
+// local propers. The Mass propers and the translations belong to a language and
+// are published as `@liturgical-calendar/<code>`, built from `languages/` by
+// `pnpm build:languages` — so this bundle stays small whatever languages exist.
 const bundledAssets = readAssetsFromFolder("assets");
 
 export default defineConfig({

@@ -1,0 +1,34 @@
+{
+  "name": "@sint-willibrordkerk/liturgical-calendar-la",
+  "version": "3.0.0",
+  "description": "The Latin Mass propers and translations for liturgical-calendar.",
+  "liturgicalLanguage": "la",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": "https://github.com/Sint-Willibrordkerk/liturgical-calendar.git",
+  "author": "Sint Willibrordus Stichting",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "liturgical-calendar": ">=3"
+  },
+  "peerDependenciesMeta": {
+    "liturgical-calendar": {
+      "optional": true
+    }
+  },
+  "scripts": {
+    "build": "node ../../scripts/build-language.mjs ."
+  }
+}

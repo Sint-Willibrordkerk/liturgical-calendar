@@ -218,8 +218,8 @@ async function borrowRank(
     }
     return undefined;
   }
-  const rank = (parseStep(raw) as Record<string, unknown>)["rank"];
-  return rank === undefined ? undefined : { ...data, rank };
+  const rank = (parseStep(raw) as Step3Output)["rank"];
+  return rank === undefined ? undefined : ({ ...data, rank } as Step3Output);
 }
 
 async function processInputFiles(

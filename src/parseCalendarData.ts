@@ -15,6 +15,7 @@ import {
   type RawMassProper,
 } from "./loadAssets";
 import { ordinals, days, feriae } from "./ordinals";
+import type { Language } from "./language";
 
 type Translations = Record<string, string>;
 
@@ -135,7 +136,7 @@ function getDates(
 export function parseCalendarData(
   year: number,
   propers: string[],
-  language: string = "la",
+  language: Language,
   translations?: Translations
 ) {
   const calendarData = loadCalendarData();

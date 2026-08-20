@@ -9,6 +9,8 @@ import { parseCalendarData } from "./parseCalendarData";
 import { loadTranslations, loadMassPropersByTitle } from "./loadAssets";
 import { applyFerialMass, SUNDAY_AFTER_EPIPHANY_MASS } from "./ferias";
 import { applyResumedSundays } from "./resumedSundays";
+import { asLanguage, type Language } from "./language";
+export { type Language } from "./language";
 
 function deleteFields(day: Partial<LiturgicalDay | Commemoration>) {
   if ("commemorations" in day && day.commemorations) {
@@ -23,7 +25,21 @@ function deleteFields(day: Partial<LiturgicalDay | Commemoration>) {
   // Note: mass field is preserved and not deleted
 }
 
-export default (year: number, propers: string[] = [], lang: string = "la") => {
+/**
+ * The liturgical calendar of `year`, in the language given.
+ *
+ * The language is a package of its own —
+ * `@sint-willibrordkerk/liturgical-calendar-la`, `…-nl` — imported and passed
+ * in, so a caller carries only the languages they read. Omit it and the
+ * calendar comes out with the days in place but no propers and no
+ * translations.
+ */
+export default (
+  year: number,
+  propers: string[] = [],
+  language?: Language
+) => {
+  const lang = asLanguage(language);
   const translations = loadTranslations(lang);
   const calendar = parseCalendarData(year, propers, lang, translations);
 

@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync } from "fs";
+import { existsSync, readFileSync, readdirSync } from "fs";
 import { join } from "path";
 import { parse } from "yaml";
 import { describe, expect, it } from "vitest";
@@ -11,7 +11,7 @@ import { describe, expect, it } from "vitest";
  * to match the Mass propers: the table was untouched and still looked right,
  * but almost none of its keys reached a day any more.
  */
-const TRANSLATIONS = join("assets", "translations");
+const LANGUAGES = "languages";
 const CALENDAR = join("assets", "calendar1962.yml");
 
 /** `ordinals.yml` is the vocabulary titles are built from, not days. */
@@ -55,8 +55,13 @@ function keysOf(file: string): string[] {
 
 const calendarNames = new Set(names(parse(readFileSync(CALENDAR, "utf-8"))));
 
-describe.each(readdirSync(TRANSLATIONS))("the %s translations", (language) => {
-  const dir = join(TRANSLATIONS, language);
+/** The languages that carry translations; a language may carry only propers. */
+const translated = readdirSync(LANGUAGES).filter((code) =>
+  existsSync(join(LANGUAGES, code, "assets", "translations", code))
+);
+
+describe.each(translated)("the %s translations", (language) => {
+  const dir = join(LANGUAGES, language, "assets", "translations", language);
   const files = readdirSync(dir);
 
   it("says nothing twice", () => {

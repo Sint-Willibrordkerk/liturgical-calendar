@@ -1,4 +1,5 @@
-import { loadAsset, tryLoadAsset } from "./assert/utils";
+import { loadAsset } from "./assert/utils";
+import type { Language } from "../language";
 import {
   selectMassProper,
   applySeason,
@@ -12,8 +13,18 @@ import { assertSanctorum } from "./assert/sanctorum";
 import { assertCalendarData } from "./assert/calendarData";
 import { assertMassPropers, type MassPropersData } from "./assert/massPropers";
 
-// Access bundled assets from global scope (injected by tsup)
-declare const bundledAssets: Record<string, any>;
+/**
+ * An asset the language carries, or `undefined` where it carries none.
+ *
+ * A language is handed in rather than bundled here, so this is the only way the
+ * calendar reaches anything language-specific. Paths are matched with either
+ * separator, since a packager may have written them in the platform's own.
+ */
+function fromLanguage(language: Language, path: string): unknown {
+  const assets = language.assets;
+  if (assets == null) return undefined;
+  return assets[path] ?? assets[path.replace(/\//g, "\\")];
+}
 
 export function loadCalendarData() {
   const calendarData = loadAsset("calendar1962.yml");
@@ -39,32 +50,18 @@ export function loadMassPropers(): MassPropersData {
   return massPropers;
 }
 
-export function loadTranslations(lang: string): Record<string, string> {
+/** Every translation the language carries, read as one table. */
+export function loadTranslations(language: Language): Record<string, string> {
   const translations: Record<string, string> = {};
+  const prefix = `translations/${language.code}/`;
 
-  // Get all bundled assets that are in the translations/{lang}/ folder
-  const translationPrefix = `translations/${lang}/`;
-
-  // Access bundledAssets from the global scope (injected by tsup)
-  if (typeof bundledAssets !== "undefined") {
-    Object.keys(bundledAssets).forEach((path) => {
-      const normalizedPath = path.replace(/\\/g, "/");
-      if (
-        normalizedPath.startsWith(translationPrefix) &&
-        (normalizedPath.endsWith(".yml") || normalizedPath.endsWith(".yaml"))
-      ) {
-        try {
-          const translationData =
-            bundledAssets[path] || bundledAssets[normalizedPath];
-
-          if (typeof translationData === "object" && translationData !== null) {
-            Object.assign(translations, translationData);
-          }
-        } catch {
-          // Ignore if file can't be processed
-        }
-      }
-    });
+  for (const [path, data] of Object.entries(language.assets ?? {})) {
+    const normalized = path.replace(/\\/g, "/");
+    if (!normalized.startsWith(prefix)) continue;
+    if (!normalized.endsWith(".yml") && !normalized.endsWith(".yaml")) continue;
+    if (typeof data === "object" && data !== null) {
+      Object.assign(translations, data);
+    }
   }
 
   return translations;
@@ -97,14 +94,13 @@ export function titleToFileName(title: string): string {
     .replace(/^(ss?|bb?)-/, "");
 }
 
-function loadStores(language: string): Stores {
+function loadStores(language: Language): Stores {
+  const store = (file: string) =>
+    fromLanguage(language, `mass-propers/${language.code}/${file}.yml`) ?? {};
   return {
-    readings: (tryLoadAsset(`mass-propers/${language}/lectio.yml`) ??
-      {}) as Stores["readings"],
-    prayers: (tryLoadAsset(`mass-propers/${language}/oratio.yml`) ??
-      {}) as Stores["prayers"],
-    chants: (tryLoadAsset(`mass-propers/${language}/antiphona.yml`) ??
-      {}) as Stores["chants"],
+    readings: store("lectio") as Stores["readings"],
+    prayers: store("oratio") as Stores["prayers"],
+    chants: store("antiphona") as Stores["chants"],
   };
 }
 
@@ -114,14 +110,14 @@ function loadStores(language: string): Stores {
  */
 export function loadMassPropersByTitle(
   title: string,
-  language: string,
+  language: Language,
   rubrics: ReadonlySet<string> = DEFAULT_RUBRICS,
   season?: { date: Date; easter: Date }
 ): RawMassProper | undefined {
   const fileName = titleToFileName(title);
-  const data =
-    tryLoadAsset(`mass-propers/${language}/Sancti/${fileName}.yml`) ??
-    tryLoadAsset(`mass-propers/${language}/Tempora/${fileName}.yml`);
+  const at = (tree: string) =>
+    fromLanguage(language, `mass-propers/${language.code}/${tree}/${fileName}.yml`);
+  const data = at("Sancti") ?? at("Tempora");
 
   if (!data || typeof data !== "object") {
     return undefined;

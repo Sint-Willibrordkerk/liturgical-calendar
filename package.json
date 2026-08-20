@@ -1,6 +1,6 @@
 {
   "name": "liturgical-calendar",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.mts",
   "exports": {
@@ -11,14 +11,15 @@
   },
   "repository": "https://github.com/Sint-Willibrordkerk/liturgical-calendar.git",
   "author": "Sint Willibrordus Stichting",
-  "description": "Generate a (local) Catholic liturgical calendar in accordance with the 1960 rubrics.",
+  "description": "Generate a (local) Catholic liturgical calendar in accordance with the 1960 rubrics. Each language of the propers is published separately.",
   "license": "MIT",
   "scripts": {
     "build": "tsup",
-    "start": "pnpm build && node scripts/main.js",
+    "start": "pnpm build && pnpm build:languages && node scripts/main.js",
     "test": "vitest",
     "pipeline": "tsx convert-do/index.ts",
-    "copy-mass-propers": "node scripts/copy-mass-propers.mjs"
+    "copy-mass-propers": "node scripts/copy-mass-propers.mjs",
+    "build:languages": "node scripts/build-language.mjs languages/la && node scripts/build-language.mjs languages/nl"
   },
   "files": [
     "dist"

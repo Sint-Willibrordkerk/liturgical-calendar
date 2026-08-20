@@ -300,12 +300,14 @@ describe("resolveCollisions, naming the file after its source", () => {
       {
         targetBasename: "feria-quinta-in-cœna-domini",
         originalStem: "Quad6-4",
+        current: true,
         relPath: "Tempora/Quad6-4.json",
         content: "{\"a\":1}",
       },
       {
         targetBasename: "feria-quinta-in-cœna-domini",
         originalStem: "Quad6-4m2",
+        current: true,
         relPath: "Tempora/Quad6-4m2.json",
         content: "{\"a\":2}",
       },
