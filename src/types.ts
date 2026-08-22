@@ -1,10 +1,4 @@
-import {
-  liturgicalTypes,
-  sanctorumTypes,
-  weekdays,
-  properTypes,
-  namedDates,
-} from "./constants";
+import { weekdays, namedDates } from "./constants";
 
 export type Digit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 export type LiturgicalClass = 1 | 2 | 3 | 4;
@@ -17,9 +11,6 @@ export type RelativeDate = {
 };
 export type LiturgicalDate = DateString | NamedDate | RelativeDate;
 
-export type SanctorumType = (typeof sanctorumTypes)[number];
-export type LiturgicalType = (typeof liturgicalTypes)[number];
-export type ProperType = (typeof properTypes)[number];
 
 export type Weekday = keyof typeof weekdays;
 export type OccurenceType = Weekday | `!${Weekday}`;
@@ -34,19 +25,6 @@ export type Occurence =
       date?: LiturgicalDate;
       default?: LiturgicalDate;
     };
-
-export type Calendarium = Record<
-  LiturgicalClass,
-  Record<DateString, string | string[]>
->;
-
-export type Sanctorum = Record<
-  string,
-  {
-    titles?: string | string[];
-    type?: SanctorumType;
-  }
->;
 
 /** An antiphon or verse: a reference and its text. */
 export type RawVerse = { ref?: string; text?: string };

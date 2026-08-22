@@ -38,18 +38,6 @@ export function eachDay(
   }
 }
 
-export function eachLiturgicalClass(
-  process: (liturgicalClass: LiturgicalClass) => void
-) {
-  for (
-    let liturgicalClass: LiturgicalClass = 4;
-    liturgicalClass >= 1;
-    liturgicalClass = (liturgicalClass - 1) as LiturgicalClass
-  ) {
-    process(liturgicalClass);
-  }
-}
-
 export function getDate(
   input: LiturgicalDate,
   advent: Date,
@@ -65,7 +53,7 @@ export function getDate(
   }
 }
 
-export function matchDateString(
+function matchDateString(
   date: string,
   advent: Date,
   easter: Date,

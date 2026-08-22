@@ -9,9 +9,7 @@ import {
 import type { RawMassProper } from "../types";
 
 export type { RawMassProper };
-import { assertSanctorum } from "./assert/sanctorum";
 import { assertCalendarData } from "./assert/calendarData";
-import { assertMassPropers, type MassPropersData } from "./assert/massPropers";
 
 /**
  * An asset the language carries, or `undefined` where it carries none.
@@ -32,22 +30,10 @@ export function loadCalendarData() {
   return calendarData;
 }
 
-export function loadSanctorum() {
-  const sanctorum = loadAsset("sanctorum.yml");
-  assertSanctorum(sanctorum);
-  return sanctorum;
-}
-
 export function loadPropers(name: string) {
   const propers = loadAsset(`propers/${name}.yml`);
   assertCalendarData(propers);
   return propers;
-}
-
-export function loadMassPropers(): MassPropersData {
-  const massPropers = loadAsset("mass-propers/index.yml");
-  assertMassPropers(massPropers);
-  return massPropers;
 }
 
 /** Every translation the language carries, read as one table. */

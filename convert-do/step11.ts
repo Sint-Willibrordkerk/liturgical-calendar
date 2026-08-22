@@ -183,7 +183,7 @@ export function hasMassContent(obj: Record<string, unknown>): boolean {
  * The store keys held by the sections in `sections`. A value left inline is
  * content rather than a key and contributes none.
  */
-export function usedKeys(
+function usedKeys(
   obj: Record<string, unknown>,
   sections: ReadonlySet<string>
 ): Set<string> {

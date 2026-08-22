@@ -184,7 +184,7 @@ function mergeVariants(
  * `undefined` where the document is already in the base language, or already
  * has a rank of its own.
  */
-export function baseLanguagePath(
+function baseLanguagePath(
   outputFile: string,
   hasRank: boolean
 ): string | undefined {

@@ -1,4 +1,4 @@
-import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
+import { stringify as stringifyYaml } from "yaml";
 
 /**
  * How the pipeline stores its trees.
@@ -16,7 +16,7 @@ import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
 export const STEP_EXT = ".json";
 
 /** Extension of the published output. */
-export const OUTPUT_EXT = ".yml";
+const OUTPUT_EXT = ".yml";
 
 /** Read an intermediate tree file. */
 export function parseStep(raw: string): unknown {
@@ -26,11 +26,6 @@ export function parseStep(raw: string): unknown {
 /** Write an intermediate tree file. */
 export function stringifyStep(value: unknown): string {
   return JSON.stringify(value);
-}
-
-/** Read a published file. */
-export function parseOutput(raw: string): unknown {
-  return parseYaml(raw);
 }
 
 /** Write a published file. */
