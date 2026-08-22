@@ -494,7 +494,7 @@ describe("step9 readings — no or several references", () => {
       lectio5: [v(["!Isa 1:1", "Vísio Isaíæ…"]), v(several, ["monastica"])],
     });
     expect(out.lectio5).toEqual([
-      v({ ref: "Isa 1:1", verses: ["Vísio Isaíæ…"] }),
+      v({ ref: "Is 1:1", verses: ["Vísio Isaíæ…"] }),
       v(several, ["monastica"]),
     ]);
   });

@@ -9,6 +9,7 @@ import {
   DEFAULT_CONCURRENCY,
 } from "./lib/batch";
 import { isVariantArray, mapVariants } from "./lib/variants";
+import { canonicalizeRef } from "./lib/references.js";
 import { STEP_EXT, stripStepExt, parseStep, stringifyStep } from "./lib/serialize.js";
 
 /**
@@ -117,7 +118,7 @@ export function linesToReading(lines: unknown): Reading {
     return { text: stripLeadingV(body(0).join("\n").trim()) };
   }
 
-  const ref = String(lines[markerAt]).slice(1).trim();
+  const ref = canonicalizeRef(String(lines[markerAt]).slice(1).trim());
   if (!BIBLICAL_REF.test(ref)) {
     return { ref, text: stripLeadingV(body(0).join("\n").trim()) };
   }
@@ -159,7 +160,7 @@ export function linesToVerse(lines: unknown): { ref: string; text: string } {
   const textParts: string[] = [];
   for (const line of lines) {
     const s = typeof line === "string" ? line : String(line);
-    if (s.startsWith("!")) ref = s.slice(1).trim();
+    if (s.startsWith("!")) ref = canonicalizeRef(s.slice(1).trim());
     else if (!s.startsWith("$")) textParts.push(s);
   }
   return {
@@ -320,7 +321,7 @@ function parseRefSegments(lines: unknown[]): { refs: string[]; segments: RefSegm
   while (i < lines.length) {
     const s = typeof lines[i] === "string" ? (lines[i] as string) : String(lines[i]);
     if (s.startsWith("!")) {
-      refs.push(s.slice(1).trim());
+      refs.push(canonicalizeRef(s.slice(1).trim()));
       const seg: RefSegment = { refIndex: refs.length - 1, start: i + 1, end: i + 1 };
       i++;
       while (i < lines.length) {
