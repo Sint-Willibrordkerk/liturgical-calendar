@@ -1,7 +1,8 @@
 .env
 
 node_modules
-dist
+# Build output — the root package and every language package.
+dist/
 .turbo
 .yarn/install-state.gz
 
@@ -12,4 +13,3 @@ test_output.yml
 # output. Megabytes per language, so they are published to npm rather than
 # committed; the translations beside them are hand-maintained and tracked.
 languages/*/assets/mass-propers/
-languages/*/dist/

@@ -8,13 +8,20 @@
 export const PUBLISHED_RUBRIC = "1962";
 
 /**
+ * The language the sources are written in, and the one a translation falls back
+ * on for what it does not translate: for the rank that says which common a day
+ * draws on, and for the name its file is given.
+ */
+export const BASE_LANGUAGE = "la";
+
+/**
  * The **editions** — successive revisions of the same books. Only one is ever in
  * force, so a text belonging to another edition is not part of the published
  * calendar at all.
  */
 const EDITIONS = new Set([
   "1570", "1617", "1888", "1906", "1910", "1913", "1930", "1939",
-  "1951", "1955", "1962", "1963", "2020",
+  "1951", "1954", "1955", "1960", "1962", "1963", "2020",
 ]);
 
 /**

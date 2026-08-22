@@ -1,13 +1,19 @@
 # Liturgical Calendar
 
-Generate a Catholic liturgical calendar in accordance with the 1960 rubrics (Traditional Latin Mass / Extraordinary Form).
+Generate a Catholic liturgical calendar in accordance with the 1960 Code of
+Rubrics, as promulgated in the 1962 Missal (Traditional Latin Mass /
+Extraordinary Form). The rubrics are of 1960 and the books of 1962, which is
+why the calendar data is `calendar1962.yml` and the propers are published
+under the `1962` rubric.
 
 ## Overview
 
-This library generates a complete liturgical calendar for any given year, following the 1960 Roman Catholic liturgical calendar. It supports:
+This library generates a complete liturgical calendar for any given year. It supports:
 
-- **Base calendar**: The universal 1960 liturgical calendar
-- **Local propers**: Add the local propers of your dioces or congregation to this repository; see Ultrajectum as an example. 
+- **Base calendar**: The universal calendar
+- **Local propers**: Add the local propers of your diocese or congregation to this repository; see Ultrajectum as an example.
+- **Mass propers**: The Introit, readings, chants and prayers of each day,
+  generated from Divinum Officium
 - **Translations**: Multi-language support; see nl as an example.
 
 ## Installation
@@ -119,7 +125,6 @@ pnpm start # uses scripts/main.js to generate test_output.yml
 ```
 ├── assets/              # What every language shares
 │   ├── calendar1962.yml # Base calendar
-│   ├── sanctorum.yml
 │   └── propers/         # Local proper calendars
 ├── languages/           # One package per language
 │   ├── la/assets/       #   mass-propers/la/ (generated)

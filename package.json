@@ -11,7 +11,7 @@
   },
   "repository": "https://github.com/Sint-Willibrordkerk/liturgical-calendar.git",
   "author": "Sint Willibrordus Stichting",
-  "description": "Generate a (local) Catholic liturgical calendar in accordance with the 1960 rubrics. Each language of the propers is published separately.",
+  "description": "Generate a (local) Catholic liturgical calendar following the 1960 Code of Rubrics (1962 Missal). Each language of the propers is published separately.",
   "license": "MIT",
   "scripts": {
     "build": "tsup",
@@ -33,7 +33,6 @@
     "dotenv": "^17.2.3",
     "tsup": "^8.5.0",
     "tsx": "^4.20.3",
-    "turbo": "^2.7.6",
     "typescript": "^5.7.2",
     "vitest": "^3.2.4",
     "yaml": "^2.6.1"
@@ -41,5 +40,8 @@
   "packageManager": "pnpm@10.9.0",
   "publishConfig": {
     "access": "public"
+  },
+  "engines": {
+    "node": ">=22.12"
   }
 }

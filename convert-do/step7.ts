@@ -11,7 +11,7 @@ import {
 import { Step6Output } from "./step6";
 import { isVariantArray } from "./lib/variants";
 import { STEP_EXT, stripStepExt, parseStep, stringifyStep } from "./lib/serialize.js";
-import { requiresOtherEdition } from "./lib/rubrics.js";
+import { BASE_LANGUAGE, requiresOtherEdition } from "./lib/rubrics.js";
 
 /**
  * Step 7 — derive filenames from the liturgical name (ported from step11).
@@ -305,12 +305,6 @@ export function resolveCollisions(
   return result;
 }
 
-/**
- * The language the sources are written in. A translation is filed under the
- * names this language gives a day, not under its own.
- */
-export const BASE_LANGUAGE = "la";
-
 /** The tree and source file a path names, without its language: `Sancti/01-27`. */
 export function sourceKey(relPath: string): string {
   const parts = relPath.split(/[/\\]/);
@@ -418,7 +412,7 @@ export async function run(
   // suffixed variant of it.
   const baseFinal = new Map<string, string>();
   const suffixKey = (relPath: string, targetBasename: string) =>
-    `${sourceKey(relPath)} ${targetBasename}`;
+    `${sourceKey(relPath)}\u0000${targetBasename}`;
   for (const [dir, entries] of byDir) {
     if (dir.split(/[/\\]/)[0] !== BASE_LANGUAGE) continue;
     for (const resolved of resolveCollisions(preferCurrentEdition(entries))) {

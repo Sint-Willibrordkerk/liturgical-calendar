@@ -67,8 +67,11 @@ rest of the pipeline.
     `sundaytable.txt`, `Mobile.txt`, `XPRex.txt`, `02-02-quadp.txt`,
     `dom-oct.txt`, `Quad5-5Feriarc.txt`, `Propaganda.txt`.
 
-  Every language folder present in the source is eligible; each maps to an ISO
-  code on output (see [Path mapping](#path-mapping)).
+  Only the **ingested languages** are read — the sources carry fifteen, and
+  each one is a full copy of the tree that costs its own pass and its own
+  published package. The list is named in step 0; every language the sources
+  carry has an ISO code ready for it on output (see
+  [Path mapping](#path-mapping)), so adding one is a single entry.
 
 ### Output
 

@@ -37,16 +37,11 @@ import { run as runStep9 } from "./step9.js";
 import { run as runStep10 } from "./step10.js";
 import { run as runStep11 } from "./step11.js";
 import { STEP_EXT, parseStep, stringifyStep } from "./lib/serialize.js";
+import { BASE_LANGUAGE } from "./lib/rubrics.js";
 
 const PROJECT_BASE = process.cwd();
 const STEP_BASE = join(PROJECT_BASE, ".divinum-officium");
 const MISSING_DEPENDENCY_ERROR = "Missing dependency";
-
-/**
- * The language the sources are written in, and the one a translation falls back
- * on for what it does not translate.
- */
-const BASE_LANGUAGE = "la";
 
 /**
  * Highest step handled by the in-memory streaming runner. Later steps (7–11)
