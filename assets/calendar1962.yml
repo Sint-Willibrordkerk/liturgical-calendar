@@ -10,100 +10,117 @@ items:
     commemoration-type: privileged
     accept-commemoration-types: [privileged, domini]
     items:
-    - calendar: { 25-12: In Nativitate Domini } #91.1
-    - title: Dominica Resurrectionis #91.1 11d
+    - calendar: { 25-12: [in-nativitate-domini-in-nocte, in-nativitate-domini-in-aurora, in-die-nativitatis-domini] } #91.1
+    - title: dominica-resurrectionis #91.1 11d
       occurence: { date: easter }
-    - title: Dominica Pentecostes #91.1 11f
+    - title: dominica-pentecostes #91.1 11f
       occurence: { date: easter, difference: 49 }
     - type: feria #91.2
       items:
-      - title: Feria V in Cena Domini 
+      - title: feria-quinta-in-coena-domini-quad6-4
         occurence: { date: easter, difference: -3 }
-      - title: Feria VI in Passione et Morte Domini
+      - title: feria-sexta-in-passione-et-morte-domini
         occurence: { date: easter, difference: -2 }
       - title: Sabbato sancto
         occurence: { date: easter, difference: -1 }
+      # Monday to Wednesday of Holy Week, named for the week itself.
+      - title: $feria-majoris-hebdomadae
+        occurence:
+          start: { date: easter, difference: -6 }
+          end: { date: easter, difference: -4 }
     - commemoration-type: domini #91.3 16
       items:
-      - calendar: { 06-01: In Epiphania Domini }
-      - title: In Ascensione Domini
+      - calendar: { 06-01: in-epiphania-domini }
+      - title: in-ascensione-domini-pasc5-4
         occurence: { date: easter, difference: 39 }
-      - title: In festo Sanctissimæ Trinitatis #17c
+      - title: festum-sanctissimae-trinitatis #17c
         occurence: { date: easter, difference: 56 }
-      - title: In festo Ssm̃i Corporis Christi
+      - title: festum-sanctissimi-corporis-christi
         occurence: { date: easter, difference: 60 }
-      - title: In festo Sacratissimi Cordis Jesu
+      - title: sacratissimi-cordis-domini-nostri-jesu-christi-pent02-5
         occurence: { date: easter, difference: 68 }
-      - title: Domine Nostri Jesu Christi Regis #17d
+      - title: in-festo-domino-nostro-jesu-christi-regis-10-du #17d
         occurence: { type: dominica, start: 25-10, end: 31-10 }
     - calendar: #91.4
-        15-08: In Assumptione Beatæ Mariæ Virginis
-        08-12: In Conceptione Immaculata Beatæ Mariæ Virginis #15
+        15-08: in-assumptione-beatae-mariae-virginis
+        08-12: in-conceptione-immaculata-beatae-mariae-virginis #15
     - type: vigilia #91.5
       accept-commemoration-types: []
       calendar:
-        24-12: In vigilia Nativitatis Domini #30a
+        24-12: in-vigilia-nativitatis-domini #30a
     - type: octava #91.5
       calendar:
-        01-01: Octava Nativitatis Domini
+        01-01: in-circumcisione-domini
     - type: dominica #91.6 11
       items:
-        - title: Dominica $count Adventus #11a
+        - title: dominica-$count-adventus #11a
           occurence: { type: dominica, start: 27-11, end: 24-12 }
-        - title: Dominica $count in Quadragesima #11b
+        - title: dominica-$count-in-quadragesima #11b
           occurence:
             type: dominica
             start: { date: easter, difference: -42 }
             end: { date: easter, difference: -21 }
-        - title: Dominica I Passionis #11c
+        - title: dominica-i-passionis #11c
           occurence: { date: easter, difference: -14 }
-        - title: Dominica II Passionis seu in Palmis #11c
+        - title: dominica-ii-passionis-seu-in-palmis #11c
           occurence: { date: easter, difference: -7 }
-        - title: Dominica in albis #11e
+        - title: dominica-in-albis-in-octava-paschae #11e
           occurence: { date: easter, difference: 7 }
     - type: feria #91.7 23
       items:
-      - title: Feria IV cinerum #23a
+      - title: feria-iv-cinerum #23a
         occurence: { date: easter, difference: -46 }
       - occurence: #23b
           start: { date: easter, difference: -6 }
           end: { date: easter, difference: -4 }
-    - title: In Commemoratione Omnium Fidelium Defunctorum #91.8
+    - title: in-commemoratione-omnium-fidelium-defunctorum-11-02 #91.8
       type: feria
       occurence:
         type: "!dominica"
         start: 02-11
         end: 02-11
         default: 03-11
-    - title: Sabbato in vigilia Pentecostes #91.9 30b
+    - title: sabbato-in-vigilia-pentecostes #91.9 30b
       type: vigilia
       accept-commemoration-types: [] #30
       occurence: { date: easter, difference: 48 }
     - type: octava #91.10
       items:
-      - title: $day infra octavam Paschæ
-        occurence:
-          start: { date: easter, difference: 1 }
-          end: { date: easter, difference: 6 }
-      - title: Feria IV Quatuor Temporum Pentecostes
+      # The sources name these by the day of the octave, not the weekday, and
+      # the Saturday by the white garments laid aside on it.
+      - title: die-ii-infra-octavam-paschae
+        occurence: { date: easter, difference: 1 }
+      - title: die-iii-infra-octavam-paschae
+        occurence: { date: easter, difference: 2 }
+      - title: die-iv-infra-octavam-paschae
+        occurence: { date: easter, difference: 3 }
+      - title: die-v-infra-octavam-paschae
+        occurence: { date: easter, difference: 4 }
+      - title: die-vi-infra-octavam-paschae
+        occurence: { date: easter, difference: 5 }
+      - title: sabbato-in-albis
+        occurence: { date: easter, difference: 6 }
+      - title: feria-quarta-quattuor-temporum-pentecostes
         occurence: { date: easter, difference: 52 }
-      - title: Feria VI Quatuor Temporum Pentecostes
+      - title: feria-sexta-quattuor-temporum-pentecostes
         occurence: { date: easter, difference: 54 }
-      - title: Sabbato Quatuor Temporum Pentecostes
+      - title: sabbato-quattuor-temporum-pentecostes
         occurence: { date: easter, difference: 55 }
-      - title: $day infra octavam Pentecostes
-        occurence:
-          start: { date: easter, difference: 49 }
-          end: { date: easter, difference: 55 }
+      - title: die-ii-infra-octavam-pentecostes
+        occurence: { date: easter, difference: 50 }
+      - title: die-iii-infra-octavam-pentecostes
+        occurence: { date: easter, difference: 51 }
+      - title: die-quinta-infra-octavam-pentecostes
+        occurence: { date: easter, difference: 53 }
     - calendar: #91.11
-        19-03: S. Joseph Sponsi B. Mariæ V.
-        25-03: In Annuntiatione Beate Mariæ Virgine
-        01-05: S. Joseph Opificis
-        24-06: In Nativitate S. Joannis Baptistæ
-        29-06: Ss. Petri et Pauli
-        01-07: Pretiosissimi Sanguinis D.N.I.C
-        29-09: In Dedicatione S. Michælis Archangeli
-        01-11: In festo Omnium Sanctorum
+        19-03: joseph-sponsi-bmv-confessoris-03-19
+        25-03: in-annuntiatione-beate-mariae-virgine
+        01-05: joseph-opificis
+        24-06: in-nativitate-s-joannis-baptistae
+        29-06: apostolorum-petri-et-pauli
+        01-07: pretiosissimi-sanguinis-domini-nostri-jesu-christi-07-01
+        29-09: in-dedicatione-s-michaelis-archangelis
+        01-11: omnium-sanctorum
     - slot: nationis-patroni-principalis #91.12 42a
     - slot: regionis-patroni-principalis #91.12 42a
     - slot: dioecesis-patroni-principalis #91.12 43a
@@ -121,91 +138,105 @@ items:
       accept-commemoration-types: [privileged]
       items:
       - calendar:
-          13-01: In Commemoratione Baptismatis Domini Nostri Jesu Christi
-          06-08: In Transfiguratione Domini Nostri Jesu Christi
-          14-09: In Exaltatione S. Crucis
-          09-11: In Dedic. Archbasilicæ Ssm̃i. Salvatoris
-      - title: Ssm̃i Nominis Jesu #17a
+          13-01: commemoratio-baptismatis-domini-nostri-jesu-christi
+          06-08: in-transfiguratione-domini-nostri-jesu-christi
+          14-09: in-exaltatione-sanctae-crucis
+          09-11: in-dedicatione-archibasilicae-ss-salvatoris
+      - title: sanctissimi-nominis-jesu #17a
         occurence: { type: dominica, start: 02-01, end: 05-01, default: 02-01 }
-      - title: Dominica I post Epiphaniam, Sanctæ Familiæ Jesu, Mariæ, Joseph #17b
+      - title: sanctae-familiae-jesu-mariae-joseph #17b
         occurence: { type: dominica, start: 07-01, end: 13-01 }
     - type: dominica #91.15 12
       commemoration-type: domini
       accept-commemoration-types: [privileged]
       items:
-      - title: Dominica infra octavam Nativitatis Domini
+      - title: dominica-infra-octavam-nativitatis
         occurence: { type: dominica, start: 26-12, end: 31-12 }
-      - title: Dominica $count post Epiphaniam
+      # The fourth Sunday shares its name with a document differing only in
+      # wanting no Preface of the Trinity, so it is named outright rather than
+      # counted. It always falls in this week: the first Sunday after the
+      # Epiphany falls between the 7th and the 13th of January.
+      - title: dominica-iv-post-epiphaniam-epi4-0
+        occurence:
+          type: dominica
+          start: 28-01
+          end: 03-02
+      - title: dominica-$count-post-epiphaniam
         occurence:
           type: dominica
           start: 07-01
           end: { date: easter, difference: -70 }
-      - title: Dominica in Septuagesima
+      - title: dominica-in-septuagesima
         occurence: { date: easter, difference: -63 }
-      - title: Dominica in Sexagesima
+      - title: dominica-in-sexagesima
         occurence: { date: easter, difference: -56 }
-      - title: Dominica in Quinquagesima
+      - title: dominica-in-quinquagesima
         occurence: { date: easter, difference: -49 }
-      - title: Dominica $count post Pascha
+      - title: dominica-$count-post-pascha
         occurence:
           type: dominica
           start: { date: easter, difference: 7 }
           end: { date: easter, difference: 35 }
-      - title: Dominica post Ascensionem
+      - title: dominica-post-ascensionem
         occurence: { date: easter, difference: 42 }
-      - title: Dominica $count post Pentecosten
+      - title: dominica-$count-post-pentecosten
         occurence:
           type: dominica
           start: { date: easter, difference: 56 }
           end: { date: easter, difference: 245 }
     - calendar: #91.16
-        02-02: In Purificatione Beatæ Mariæ Virginis
-        22-02: In Cathedra S. Petri Ap.
-        24-02: S. Matthiæ
-        25-04: S. Marci
-        11-05: Ss. Philippi et Jacobi
-        31-05: Beatæ Mariæ Virginis Reginæ
-        02-07: In Visitatione B. Mariæ Virginis
-        25-07: S. Jacobi
-        26-07: S. Annæ Matris B.M.V.
-        10-08: S. Laurentii
-        16-08: S. Joachim Patris Beatæ Mariæ Virginis
-        22-08: Immaculati Cordis B. Mariæ Virginis
-        24-08: S. Bartholomæi
-        08-09: In Nativitate Beatæ Mariæ Virginis
-        15-09: Septem Dolorum Beatæ Mariæ Virginis
-        21-09: S. Matthæi
-        07-10: Beatæ Mariæ Virginis a Rosario
-        11-10: Maternitatis Beatæ Mariæ Virginis
-        18-10: S. Lucæ
-        28-10: Ss. Simonis et Judæ
-        30-11: S. Andreæ
-        21-12: S. Thomæ
-        26-12: S. Stephani
-        27-12: S. Joannis
-        28-12: Ss. Innocentium
+        02-02: in-purificatione-beatae-mariae-virginis
+        22-02: in-cathedra-s-petri-apostoli-antiochiae
+        24-02: matthiae-apostoli
+        25-04: marci-evangelistae
+        11-05: philippi-et-jacobi-apostolorum-05-11
+        31-05: beatae-mariae-virginis-reginae
+        02-07: in-visitatione-b-mariae-virginis
+        25-07: jacobi-apostoli
+        26-07: annae-matris-bmv
+        10-08: laurentii-martyris
+        16-08: joachim-confessoris-patris-b-m-v
+        22-08: immaculati-cordis-beatae-mariae-virginis
+        24-08: bartholomaei-apostoli
+        08-09: in-nativitate-beatae-mariae-virginis
+        15-09: septem-dolorum-beatae-mariae-virginis
+        21-09: matthaei-apostoli-et-evangelistae
+        07-10: beatae-mariae-virginis-a-rosario-10-07
+        11-10: maternitatis-beatae-mariae-virginis
+        18-10: lucae-evangelistae
+        28-10: simonis-et-judae-apostolorum
+        30-11: andreae-apostoli
+        21-12: thomae-apostoli
+        26-12: stephani-protomartyris
+        27-12: joannis-apostoli-et-evangelistae
+        28-12: innocentium-12-28
     - type: octava #91.17
-      occurence: { start: 26-12, end: 31-12 }
+      items:
+      - calendar:
+          29-12: die-v-infra-octavam-nativitatis
+          30-12: die-vi-infra-octavam-nativitatis
+          31-12: die-vii-infra-octavam-nativitatis
+      - occurence: { start: 26-12, end: 31-12 }
     - type: feria #91.18 24
       items:
       - occurence: { start: 17-12, end: 23-12 } #24a
-      - title: Feria IV Quatuor Temporum Adventus #24b
+      - title: feria-iv-quattuor-temporum-adventus #24b
         occurence: { date: advent, difference: 17 }
-      - title: Feria VI Quatuor Temporum Adventus #24b
+      - title: feria-vi-quattuor-temporum-adventus #24b
         occurence: { date: advent, difference: 19 }
-      - title: Sabbato Quatuor Temporum Adventus #24b
+      - title: sabbato-quattuor-temporum-adventus #24b
         occurence: { date: advent, difference: 20 }
-      - title: Feria IV Quatuor Temporum Quadragesimae #24b
+      - title: feria-quarta-quatuor-temporum-quadragesimae #24b
         occurence: { date: easter, difference: -39 }
-      - title: Feria VI Quatuor Temporum Quadragesimae #24b
+      - title: feria-sexta-quattuor-temporum #24b
         occurence: { date: easter, difference: -37 }
-      - title: Sabbato Quatuor Temporum Quadragesimae #24b
+      - title: sabbato-quattuor-temporum-quadrageismae #24b
         occurence: { date: easter, difference: -36 }
-      - title: Feria IV Quatuor Temporum septembris #24b
+      - title: feria-quarta-quattuor-temporum-septembris #24b
         occurence: { type: feriaIV, start: 18-09, end: 24-09 }
-      - title: Feria VI Quatuor Temporum septembris #24b
+      - title: feria-sexta-quattuor-temporum-septembris #24b
         occurence: { type: feriaVI, start: 20-09, end: 26-09 }
-      - title: Sabbato Quatuor Temporum septembris #24b
+      - title: sabbato-quattuor-temporum-septembris #24b
         occurence: { type: sabbato, start: 21-09, end: 27-09 }
     - slot: nationis-patroni-secundarii #91.19.1a 42b
     - slot: regionis-patroni-secundarii #91.19.1b 42b
@@ -219,223 +250,251 @@ items:
     - slot: indulta-2 #91.20
     - type: vigilia #91.21 31
       items:
-        - title: In vigilia Ascensionis #31a
+        - title: in-vigilia-ascensionis #31a
           occurence: { date: easter, difference: 38 }
         - calendar:
-            23-06: In vigilia Nativitatis S. Joannis Baptistæ #31c
-            14-08: In vigilia Assumptionis B. Mariæ Virg. #31b
-            28-06: In vigilia Ss. Petri et Pauli #31d
+            23-06: in-vigilia-s-joannis-baptistae #31c
+            14-08: in-vigilia-assumptionis-bmv #31b
+            28-06: in-vigilia-ss-petri-et-pauli-apostolorum #31d
   - liturgical-class: 3
     items:
     - type: feria #25a
       commemoration-type: privileged
-      occurence:
-        start: { date: easter, difference: -46 }
-        end: easter
+      items:
+      # The ferias of Lent have Masses of their own, named for the week they
+      # fall in. The sources spell the weekday's ordinal out — `$feria` — and
+      # count the week in Roman numerals.
+      - title: $day-post-cineres
+        occurence:
+          start: { date: easter, difference: -45 }
+          end: { date: easter, difference: -43 }
+      - title: $feria-infra-hebdomadam-i-in-quadragesima
+        occurence:
+          start: { date: easter, difference: -41 }
+          end: { date: easter, difference: -36 }
+      - title: $feria-infra-hebdomadam-ii-in-quadragesima
+        occurence:
+          start: { date: easter, difference: -34 }
+          end: { date: easter, difference: -29 }
+      - title: $feria-infra-hebdomadam-iii-in-quadragesima
+        occurence:
+          start: { date: easter, difference: -27 }
+          end: { date: easter, difference: -22 }
+      - title: $feria-infra-hebdomadam-iv-in-quadragesima
+        occurence:
+          start: { date: easter, difference: -20 }
+          end: { date: easter, difference: -15 }
+      - title: $feria-infra-hebdomadam-passionis
+        occurence:
+          start: { date: easter, difference: -13 }
+          end: { date: easter, difference: -8 }
+      - occurence:
+          start: { date: easter, difference: -46 }
+          end: easter
     - slot: dioecesis-3 #91.23.1
     - slot: ecclesiae-3 #91.23.2
     - slot: congregationis-3 #91.23.3
     - slot: indulta-3 #91.23.3
     - calendar:
-        14-01: S. Hilarii
-        15-01: S. Pauli
-        16-01: S. Marcelli I
-        17-01: S. Antonii
-        20-01: Ss. Fabiani et Sebastiani
-        21-01: S. Agnetis
-        22-01: Ss. Vincentii et Anastasii
-        23-01: S. Raymundi de Peñafort
-        24-01: S. Timothei
-        25-01: In Conversione S. Pauli Apostoli
-        26-01: S. Polycarpi
-        27-01: S. Joannis Chrysostomi
-        28-01: S. Petri Nolasci
-        29-01: S. Francisci Salesii
-        30-01: S. Martinæ
-        31-01: S. Joannis Bosco
-        01-02: S. Ignatii
-        04-02: S. Andreæ Corsini
-        05-02: S. Agathæ
-        06-02: S. Titi
-        07-02: S. Romualdi
-        08-02: S. Joannis de Matha
-        09-02: S. Cyrilli Ep. Alexandrini Conf. et  Eccl. Doct.
-        10-02: S. Scholasticæ
-        11-02: In Apparitione B. Mariæ V.
-        12-02: Ss. Septem Fundat. Ord. Servorum B. Mariæ V.
-        23-02: S. Petri Damiani
-        27-02: S. Gabrielis a Virgine Perdolente
-        04-03: S. Casimiri
-        06-03: Ss. Perpetuæ et Felicitatis
-        07-03: S. Thomæ de Aquino
-        08-03: S. Joannis de Deo
-        09-03: S. Franciscæ Romanæ
-        10-03: Ss. Quadraginta Martyrum
-        12-03: S. Gregorii I
-        17-03: S. Patricii
-        18-03: S. Cyrilli Hierosolymitani
-        21-03: S. Benedicti
-        24-03: S. Gabrielis
-        27-03: S. Joannis Damasceni
-        28-03: S. Joannis a Capistrano
-        02-04: S. Francisci de Paula
-        04-04: S. Isidori
-        05-04: S. Vincentii Ferrerii
-        11-04: S. Leonis I
-        13-04: S. Hermenegildi
-        14-04: S. Justini
-        21-04: S. Anselmi
-        22-04: Ss. Soteris et Caji
-        24-04: S. Fidelis de Sigmaringa
-        26-04: Ss. Cleti et Marcellini
-        27-04: S. Petri Canisii
-        28-04: S. Pauli a Cruce
-        29-04: S. Petri Martyris
-        30-04: S. Catharina Senensis
-        02-05: S. Athanasii
-        04-05: S. Monicæ
-        05-05: S. Pii V
-        07-05: S. Stanislai
-        09-05: S. Gregorii Nazianzeni
-        10-05: S. Antonini
-        12-05: Ss. Nerei, Achillei et Domitillæ Virg. atque Pancratii Mm.
-        13-05: S. Roberti Bellarmino
-        15-05: S. Joannis Baptistæ de la Salle
-        16-05: S. Ubaldi
-        17-05: S. Paschalis Baylon
-        18-05: S. Venantii
-        19-05: S. Petri Celestini
-        20-05: S. Bernardini Senensis
-        25-05: S. Gregorii VII
-        26-05: S. Philippi Neri
-        27-05: S. Bedæ Venerabilis
-        28-05: S. Augustini
-        29-05: S. Mariæ Magdalenæ de Pazzis
-        01-06: S. Angelæ Mericiæ
-        04-06: S. Francisci Caracciolo
-        05-06: S. Bonifatii
-        06-06: S. Norberti
-        10-06: S. Margaritæ Scotorum Reginae
-        11-06: S. Barnabæ
-        12-06: S. Joannis de S. Facundo
-        13-06: S. Antonii de Padua
-        14-06: S. Basilii Magni
-        17-06: S. Gregorii Barbadici
-        18-06: S. Ephræm Syri
-        19-06: S. Julianæ de Falconeriis
-        21-06: S. Aloisii Gonzagæ
-        22-06: S. Paulini
-        25-06: S. Gulielmi
-        26-06: Ss. Joannis et Pauli
-        30-06: In Commemoratione Sancti Pauli Apostoli
-        03-07: S. Irenæi
-        05-07: S. Antonii Mariæ Zaccaria
-        07-07: Ss. Cyrilli et Methodii
-        08-07: S. Elisabeth Reginæ Portugaliæ
-        10-07: Ss. Septem Fratrum Mm., ac Rufinæ et Secundæ Vv. et Mm.
-        12-07: S. Joannis Gualberti
-        14-07: S. Bonaventuræ
-        15-07: S. Henrici
-        18-07: S. Camilli de Lellis
-        19-07: S. Vincentii a Paulo
-        20-07: S. Hieronymi Emiliani
-        21-07: S. Laurentii a Brundusio
-        22-07: S. Mariæ Magdalenæ
-        23-07: S. Apollinaris
-        28-07: Ss. Nazarii et Celsi Mm., Victoris I Papæ et Mart. ac Innocentii I Papæ et Conf.
-        29-07: S. Marthæ
-        31-07: S. Ignatii Confessoris
-        02-08: S. Alfonsi Mariæ de Ligorio
-        04-08: S. Dominici
-        05-08: In Dedicatione S. Mariæ ad Nives
-        07-08: S. Cajetani
-        08-08: S. Joannis Mariæ Vianney
-        12-08: S. Claræ
-        17-08: S. Hyacinthi
-        19-08: S. Joannis Eudes
-        20-08: S. Bernardi
-        21-08: S. Joannæ Franciscæ Frémiot de Chantal
-        23-08: S. Philippi Benitii
-        25-08: S. Ludovici
-        27-08: S. Josephi Calasanctii
-        28-08: S. Augustini Hipponensis
-        29-08: In Decollatione S. Joannis Baptistæ
-        30-08: S. Rosæ Limanæ
-        31-08: S. Raymundi Nonnati
-        02-09: S. Stephani Regis Hungariæ
-        03-09: S. Pii X
-        05-09: S. Laurentii Justiniani
-        10-09: S. Nicolai de Tolentino
-        12-09: Ssm̃i. Nominis Mariæ
-        16-09: Ss. Cornelii Papæ et Cypriani Ep.
-        18-09: S. Josephi de Cupertino
-        19-09: Ss. Januarii Ep. et Sociorum
-        22-09: S. Thomæ de Villanova
-        23-09: S. Lini
-        27-09: S. Cosmæ et Damiani
-        28-09: S. Wenceslai
-        30-09: S. Hieronymi
-        02-10: Ss. Angelorum Custodum
-        03-10: S. Theresiæ a Jesu Infante
-        04-10: S. Francisci
-        06-10: S. Brunonis
-        08-10: S. Birgittæ
-        09-10: S. Joannis Leonardi
-        10-10: S. Francisci Borgiæ
-        13-10: S. Eduardi
-        14-10: S. Callisti
-        15-10: S. Teresiæ
-        16-10: S. Hedwigis
-        17-10: S. Margaritæ Mariæ Alaquoque
-        19-10: S. Petri de Alcantara
-        20-10: S. Joannis Cantii
-        23-10: S. Antonii Mariæ Claret
-        24-10: S. Raphælis Archangeli
-        04-11: S. Caroli
-        10-11: S. Andreæ Avellini
-        11-11: S. Martini
-        12-11: S. Martini I
-        13-11: S. Didaci
-        14-11: S. Josaphat
-        15-11: S. Alberti Magni
-        16-11: S. Gertrudis
-        17-11: S. Gregorii Thaumaturgi
-        18-11: In Dedicatione Basilicarum Ss. Petri et Pauli App.
-        19-11: S. Elisabeth
-        20-11: S. Felicis de Valois
-        21-11: In Presentatione Beatæ Mariæ Virginis
-        22-11: S. Cæciliæ
-        23-11: S. Clementis I
-        24-11: S. Joannis a Cruce
-        25-11: S. Catharinæ
-        26-11: S. Silvesteri
-        02-12: S. Bibianæ
-        03-12: S. Francisci Xaverii
-        04-12: S. Petri Chrysologi
-        06-12: S. Nicolai
-        07-12: S. Ambrosii
-        11-12: S. Damasi
-        13-12: S. Luciæ
-        16-12: S. Eusebii
+        14-01: hilarii-episcopi-confessoris-ecclesiae-doctoris
+        15-01: pauli-primi-eremitae-et-confessoris
+        16-01: marcelli-papae-et-martyris
+        17-01: antonii-abbatis
+        20-01: fabiani-et-sebastiani-martyrum
+        21-01: agnetis-virginis-et-martyris
+        22-01: vincentii-et-anastasii-martyrum
+        23-01: raymundi-de-penafort-confessoris
+        24-01: timothei-episcopi-et-martyris
+        25-01: in-conversione-s-pauli-apostoli
+        26-01: polycarpi-episcopi-et-martyris
+        27-01: joannis-chrysostomi-episcopi-confessoris-et-ecclesiae-doctoris
+        28-01: petri-nolasci-confessoris
+        29-01: francisci-salesii-episcopi-confessoris-et-ecclesiae-doctoris
+        30-01: martinae-virginis-et-martyris
+        31-01: joannis-bosco-confessoris
+        01-02: ignatii-episcopi-et-martyris
+        04-02: andreae-corsini-episcopi-et-confessoris
+        05-02: agathae-virginis-et-martyris
+        06-02: titi-episcopi-et-confessoris
+        07-02: romualdi-abbatis
+        08-02: joannis-de-matha-confessoris
+        09-02: cyrilli-episc-alexandrini-confessoris-et-ecclesiae-doctoris
+        10-02: scholasticae-virginis
+        11-02: in-apparitione-beatae-mariae-virginis
+        12-02: septem-fundatorum-ordinis-servorum-b-m-v
+        23-02: petri-damiani-episcopi-confessoris-et-ecclesiae-doctoris
+        27-02: gabrielis-a-virgine-perdolente-confessoris
+        04-03: casimiri-confessoris
+        06-03: perpetuae-et-felicitatis-martyrum
+        07-03: thomae-de-aquino-confessoris-et-ecclesiae-doctoris
+        08-03: joannis-de-deo-confessoris
+        09-03: franciscae-romanae-viduae
+        10-03: quadraginta-martyrum-03-10
+        12-03: gregorii-i-magni-i-papae-confessoris-et-ecclesiae-doctoris
+        17-03: patricii-episcopi-et-confessoris
+        18-03: cyrilli-episcopi-hierosolymitani-confessoris-et-ecclesiae-doctoris
+        21-03: benedicti-abbatis
+        24-03: gabrielis-archangeli
+        27-03: joannis-damasceni-confessoris-et-ecclesiae-doctoris
+        28-03: joannis-a-capistrano-confessoris
+        02-04: francisci-de-paula-confessoris
+        04-04: isidori-episcopi-confessoris-et-ecclesiae-doctoris
+        05-04: vincentii-ferrerii-confessoris
+        11-04: leonis-i-papae-confessoris-et-ecclesiae-doctoris
+        13-04: hermenegildi-martyris
+        14-04: justini-martyris
+        21-04: anselmi-episcopi-confessoris-et-ecclesiae-doctoris
+        22-04: soteris-et-caji-summorum-pontificum-et-martyrum
+        24-04: fidelis-de-sigmaringa-martyris
+        26-04: cleti-et-marcellini-summorum-pontificum-et-martyrum
+        27-04: petri-canisii-confessoris-et-ecclesiae-doctoris
+        28-04: pauli-a-cruce-confessoris
+        29-04: petri-martyris
+        30-04: catharinae-senensis-virginis
+        02-05: athanasii-episcopi-confessoris-et-ecclesiae-doctoris-05-02
+        04-05: monicae-viduae
+        05-05: pii-v-papae-et-confessoris
+        07-05: stanislai-episcopi-et-martyris
+        09-05: gregorii-nazianzeni-episcopi-confessoris
+        10-05: antonini-episcopi-et-confessoris
+        12-05: nerei-achillei-et-domitillae-virg-atque-pancratii-martyrum
+        13-05: roberti-bellarmino-episcopi-confessoris-et-ecclesiae-doctoris
+        15-05: joannis-baptistae-de-la-salle-confessoris
+        16-05: ubaldi-episcopi-et-confessoris
+        17-05: paschalis-baylon-confessoris
+        18-05: venantii-martyris
+        19-05: petri-celestini-papae-et-confessoris
+        20-05: bernardini-senensis-confessoris
+        25-05: gregorii-vii-papae-et-confessoris
+        26-05: philippi-neri-confessoris
+        27-05: bedae-venerabilis-confessoris-et-ecclesiae-doctoris
+        28-05: augustini-episcopi-et-confessoris
+        29-05: mariae-magdalenae-de-pazzis-virginis
+        01-06: angelae-mericiae-virginis
+        04-06: francisci-caracciolo-confessoris
+        05-06: bonifatii-episcopi-et-martyris
+        06-06: norberti-episcopi-et-confessoris
+        10-06: margaritae-reginae-viduae
+        11-06: barnabae-apostoli
+        12-06: joannis-a-s-facundo-confessoris
+        13-06: antonii-de-padua-confessoris
+        14-06: basilii-magni-confessoris-et-ecclesiae-doctoris
+        17-06: gregorii-barbadici-episcopi-et-confessoris
+        18-06: ephraem-syri-confessoris-et-ecclesiae-doctoris
+        19-06: julianae-de-falconeriis-virginis
+        21-06: aloisii-gonzagae-confessoris
+        22-06: paulini-episcopi-et-confessoris
+        25-06: gulielmi
+        26-06: joannis-et-pauli-martyrum
+        30-06: in-commemoratione-s-pauli-apostoli
+        03-07: irenaei-episcopi-et-martyris-07-03
+        05-07: antonii-mariae-zaccaria-confessoris
+        07-07: cyrilli-et-methodii-pont-et-conf-07-07
+        08-07: elisabeth-reg-portugaliae-viduae
+        10-07: septem-fratrum-martyrum-ac-rufinae-et-secundae-virginum-et-martyrum
+        12-07: joannis-gualberti-abbatis
+        14-07: bonaventurae-episcopi-confessoris-et-ecclesiae-doctoris
+        15-07: henrici-imperatoris-confessoris
+        18-07: camilli-de-lellis-confessoris
+        19-07: vincentii-a-paulo-confessoris
+        20-07: hieronymi-aemiliani-confessoris
+        21-07: laurentii-a-brundusio-confessoris-et-ecclesiae-doctoris
+        22-07: mariae-magdalenae
+        23-07: apollinaris-episcopi-et-martyris
+        28-07: nazarii-et-celsi-martyrum-victoris-i-papae-et-martyris-ac-innocentii-i-papae-et-confessoris
+        29-07: marthae-virginis
+        31-07: ignatii-confessoris
+        02-08: alfonsi-mariae-de-ligorio-episc-conf-et-eccles-doct
+        04-08: dominici-confessoris
+        05-08: mariae-ad-nives
+        07-08: cajetani-confessoris
+        08-08: joannis-mariae-vianney-confessoris
+        12-08: clarae-virginis
+        17-08: hyacinthi-confessoris
+        19-08: joannis-eudes-confessoris
+        20-08: bernardi-abbatis-et-ecclesiae-doctoris
+        21-08: joannae-franciscae-fremiot-de-chantal-viduae
+        23-08: philippi-benitii-confessoris
+        25-08: ludovici-regis-franciae-confessoris
+        27-08: josephi-calasanctii-confessoris
+        28-08: augustini-episcopi-et-confessoris-et-ecclesiae-doctoris
+        29-08: in-decollatione-s-joannis-baptistae
+        30-08: rosae-a-sancta-maria-limange-virginis
+        31-08: raymundi-nonnati-confessoris
+        02-09: stephani-regis-hungariae-et-confessoris
+        03-09: pii-x-papae-confessoris
+        05-09: laurentii-justiniani-episcopi-et-confessoris
+        10-09: nicolai-de-tolentino-confessoris
+        12-09: nominis-beatae-mariae-virginis
+        16-09: cornelii-papae-et-cypriani-episcopi-martyrum
+        18-09: josephi-de-cupertino-confessoris
+        19-09: januarii-episcopi-et-sociorum-martyrum
+        22-09: thomae-de-villanova-episcopi-et-confessoris
+        23-09: lini-papae-et-martyris
+        27-09: cosmae-et-damiani-martyrum
+        28-09: wenceslai-ducis-et-martyris
+        30-09: hieronymi-presbyteris-confessoris-et-ecclesiae-doctoris
+        02-10: angelorum-custodum
+        03-10: theresiae-a-jesu-infante-virginis
+        04-10: francisci-confessoris
+        06-10: brunonis-confessoris
+        08-10: birgittae-viduae
+        09-10: joannis-leonardi-confessoris
+        10-10: francisci-borgiae-confessoris
+        13-10: eduardi-regis-confessoris
+        14-10: callisti-papae-et-martyris
+        15-10: teresiae-virginis
+        16-10: hedwigis-viduae
+        17-10: margaritae-mariae-alaquoque-virginis
+        19-10: petri-de-alcantara-confessoris
+        20-10: joannis-cantii-confessoris
+        23-10: antonii-mariae-claret-episcopi-et-confessoris
+        24-10: raphaelis-archangeli
+        04-11: caroli-episcopi-et-confessoris
+        10-11: andreae-avellini-confessoris
+        11-11: martini-episcopi-et-confessoris
+        12-11: martini-papae-et-martyris
+        13-11: didaci-confessoris
+        14-11: josaphat-episcopi-et-martyris
+        15-11: alberti-magni-episcopi-confessoris-et-ecclesiae-doctoris
+        16-11: gertrudis-virginis
+        17-11: gregorii-thaumaturgi-episcopi-et-confessoris
+        18-11: in-dedicatione-basilicarum-ss-apostolorum-petri-et-pauli
+        19-11: elisabeth-viduae
+        20-11: felicis-de-valois-confessoris
+        21-11: in-presentatione-beatae-mariae-virginis
+        22-11: caeciliae-virginis-et-martyris
+        23-11: clementis-papae-et-martyris
+        24-11: joannis-a-cruce-confessoris-et-ecclesiae-doctoris
+        25-11: catharinae-virginis-et-martyris
+        26-11: silvestri-abbatis
+        02-12: bibianae-virginis-et-martyris
+        03-12: francisci-xaverii-confessoris
+        04-12: petri-chrysologi-episcopi-confessoris-et-ecclesiae-doctoris
+        06-12: nicolai-episcopi-et-confessoris
+        07-12: ambrosii-episcopi-confessoris-et-ecclesiae-doctoris
+        11-12: damasi-papae-et-confessoris
+        13-12: luciae-virginis-et-martyris
+        16-12: eusebii-episcopi-et-martyris
     - type: feria #91.25 25b
       occurence: { start: advent, end: 25-12 }
     - type: vigilia #91.26 32
       calendar: 
-        09-08: In vigilia S. Laurentii
+        09-08: in-vigilia-s-laurentii-mart
   - liturgical-class: 4
     items:
     - type: feria #91.27
       commemoration-type: none
       items:
-      - title: S. Maria in sabbato in tempore Adventus
+      - title: maria-in-sabbato-in-tempore-adventus
         occurence: { type: sabbato, start: advent, end: 24-12 }
-      - title: S. Maria in sabbato a Nativitate Domini usque ad Purificationem
+      - title: maria-in-sabbato-a-nativitate-domini-usque-ad-purificationem
         occurence: { type: sabbato, start: 01-01, end: 02-02 } # Start at 01-01 for the correct year
-      - title: S. Maria in sabbato a die 3 februari usque ad feriam IV Hebdomadae Sanctae
+      - title: maria-in-sabbato-a-die-3-februari-usque-ad-feriam-iv-hebdomadae-sanctae
         occurence: { type: sabbato, start: 03-02, end: { date: easter, difference: -4 } }
-      - title: S. Maria in sabbato in tempore Paschali
+      - title: maria-in-sabbato-in-tempore-paschali
         occurence: { type: sabbato, start: easter, end: { date: easter, difference: 49 } }
-      - title: S. Maria in sabbato a festo SS. Trinitatis usque ad sabbatum ante dominicam I Adventus
+      - title: maria-in-sabbato-a-festo-trinitatis-usque-ad-sabbatum-ante-dominicam-i-adventus
         occurence: { type: sabbato, start: { date: easter, difference: 56 }, end: advent }
     - type: feria #91.28 26
       commemoration-type: none #26
@@ -444,110 +503,110 @@ items:
     - slot: ecclesiae-4
     - slot: congregationis-4
     - calendar:
-        05-01: S. Telesphori
-        11-01: S. Hygini
-        14-01: S. Felicis
-        15-01: S. Mauri
-        18-01: S. Priscæ
+        05-01: telesphori-papae-et-martyris
+        11-01: hygini-papae-et-martyris
+        14-01: felicis-presbyteri-et-martyris
+        15-01: mauri-abbatis-01-15
+        18-01: priscae-virginis
         19-01:
-          - Ss. Marii, Marthæ, Audifacis et Abachum
-          - S. Canuti
-        23-01: S. Emerentianæ
-        25-01: S. Petri
-        28-01: S. Agnetis secundo
-        03-02: S. Blasii
-        06-02: S. Dorotheæ
-        09-02: S. Apolloniæ
-        14-02: S. Valentini
-        15-02: Ss. Faustini et Jovitæ
-        18-02: S. Simeonis
-        04-03: S. Lucii I
-        14-04: Ss. Tiburtii, Valeriani et Maximi
-        17-04: S. Aniceti
-        23-04: S. Georgii
-        03-05: Ss. Alexandri, Eventii et Theoduli Mm. ac Iuvenalis Ep. et Conf.
-        10-05: Ss. Gordiani et Epimachi
-        14-05: S. Bonifacii Martyris
-        19-05: S. Pudentianæ
-        25-05: S. Urbanis I
-        26-05: S. Eleutherii
-        27-05: S. Joannis I
-        30-05: S. Felicis I
-        31-05: S. Petronillæ
-        02-06: Ss. Marcellini, Petri, atque Erasmi
-        09-06: Ss. Primi et Feliciani
-        12-06: Ss. Basilidis, Cyrini, Naboris and Nazarii
-        15-06: Ss. Viti, Modesti atque Crescentiæ
-        18-06: Ss. Marci et Marcelliani
-        19-06: Ss. Gervasii et Protasii
-        20-06: S. Silverii
-        30-06: S. Petri
-        02-07: Ss. Processi et Martiniani
-        11-07: S. Pii I
-        12-07: Ss. Naboris and Felicis
-        16-07: Beatæ Mariæ Virginis de Monte Carmelo
-        17-07: S. Alexii
-        18-07: Ss. Symphorosæ et Septem Filiorum
-        20-07: S. Margaritæ
-        21-07: S. Praxedis
-        23-07: S. Liborii
-        24-07: S. Christinæ
-        25-07: S. Christophori
-        27-07: S. Pantaleonis
-        29-07: Ss. Felicis, Simplicii, Faustini et Beatricis
-        30-07: S. Abdon et Sennen
-        01-08: Ss. Machabæorum
-        02-08: S. Stephani I
-        06-08: Ss. Xysti II Papæ, Felicissimi et Agapiti Mm.
-        07-08: S. Donati
-        08-08: Ss. Cyriaci, Largi et Smaragdi
-        09-08: S. Romani
-        11-08: Ss. Tiburtii et Susannæ
-        13-08: Ss. Hippolyti et Cassiani
-        14-08: S. Eusebii Confessoris
-        18-08: S. Agapiti
-        22-08: Ss. Timothei, Hippolyti et Symphoriani
-        26-08: S. Zephirini
-        28-08: S. Hermetis
-        29-08: S. Sabina
-        30-08: Ss. Felicis et Adaucti
+          - marii-marthae-audifacis-et-abachum
+          - canuti
+        23-01: emerentianae-virgini-et-martyris
+        25-01: petri
+        28-01: agnetis-virginis-et-martyris-secundo
+        03-02: blasii-episcopi-et-martyris
+        06-02: dorotheae
+        09-02: apolloniae
+        14-02: valentini-presbyteri-et-martyris
+        15-02: faustini-et-jovitae
+        18-02: simeonis-episcopi-et-martyris
+        04-03: lucii-i-papae-et-martyris
+        14-04: tiburtii-valeriani-et-maximi-martyrum
+        17-04: aniceti-papae-et-martyris
+        23-04: georgii
+        03-05: alexandri-i-papae-eventii-et-theoduli-mm-ac-juvenalis-ep-et-conf
+        10-05: gordiani-et-epimachi-martyrum
+        14-05: bonifatii-martyris
+        19-05: pudentianae-virginis
+        25-05: urbanis-i
+        26-05: eleutherii-papae-et-martyris
+        27-05: joannis-i
+        30-05: felicis-i-papae-et-martyris
+        31-05: petronillae-virginis
+        02-06: marcellini-petri-atque-erasmi-episcopi-martyrum
+        09-06: primi-et-feliciani-martyrum
+        12-06: basilidis-cyrini-naboris-and-nazarii-martyrum
+        15-06: viti-modesti-atque-crescentiae-martyrum
+        18-06: marci-et-marcelliani-martyrum
+        19-06: gervasii-et-protasii-martyrum
+        20-06: silverii-papae-et-martyris
+        30-06: petri
+        02-07: processi-et-martiniani-martyrum
+        11-07: pii-i-papae-et-martyris
+        12-07: naboris-et-felicis-martyrum
+        16-07: beatae-mariae-virginis-de-monte-carmelo
+        17-07: alexii-confessoris
+        18-07: symphorosae-et-septem-filiorum-martyrum
+        20-07: margaritae-virg-et-mart
+        21-07: praxedis-virginis
+        23-07: liborii
+        24-07: christinae-virginis-et-martyris
+        25-07: christophori-martyris
+        27-07: pantaleonis-martyris
+        29-07: felicis-simplicii-faustini-et-beatricis-martyrum
+        30-07: abdon-et-sennen-martyrum
+        01-08: martyrum-machabaeorum
+        02-08: stephani-i
+        06-08: xysti-ii-papae-felicissimi-et-agapiti-martyrum
+        07-08: donati-episcopi-et-martyris
+        08-08: cyriaci-largi-et-smaragdi-martyrum-08-08
+        09-08: romani-martyris-08-09
+        11-08: tiburtii-et-susannae-virginis-martyrum
+        13-08: hippolyti-et-cassiani-martyrum
+        14-08: eusebii-confessoris
+        18-08: agapiti-martyris
+        22-08: timothei-hippolyti-et-symphoriani
+        26-08: zephirini
+        28-08: hermetis-martyris
+        29-08: sabina
+        30-08: felicis-et-adaucti-martyrum
         01-09:
-          - S. Ægidii
-          - Ss. duodecim Fratrum Martyrum
-        08-09: S. Adriani
-        09-09: S. Gorgonii
-        11-09: Ss. Proti et Hyacinthi
-        15-09: S. Nicomedis
-        16-09: Ss. Euphemiæ Virg., Luciæ et Geminiani Mm.
-        17-09: Impressionis Ss. Stigmatum S. Francisci
-        20-09: Ss. Eustachii et Sociorum
-        22-09: Ss. Mauritii et Sociorum
-        23-09: S. Theclæ
-        24-09: Beatæ Mariæ Virginis a Mercede
-        26-09: Ss. Cypriani et Justinæ Virg.
-        01-10: S. Remigii
-        05-10: Ss. Placidi et Sociorum
-        07-10: S. Marci I
-        08-10: Ss. Sergii, Bacchi, Marcelli et Apuleji
-        09-10: Ss. Dionysii Ep., Rustici et Eleutherii, Mm.
+          - aegidii
+          - duodecim-fratrum-martyrum
+        08-09: adriani-martyris
+        09-09: gorgonii-martyris
+        11-09: proti-et-hyacinthi-martyrum
+        15-09: nicomedis-martyris
+        16-09: euphemiae-luciae-et-geminiani-martyrum
+        17-09: impressionis-stigmatum-s-francisci
+        20-09: eustachii-et-sociorum-martyrum
+        22-09: mauritii-et-sociorum-martyrum
+        23-09: theclae-virginis-et-martyris
+        24-09: beatae-mariae-virginis-de-mercede
+        26-09: cypriani-et-justinae-virginis-martyrum
+        01-10: remigii-episcopi-et-confessoris
+        05-10: placidi-et-sociorum-martyrum
+        07-10: marci-i
+        08-10: sergii-bacchi-marcelli-et-apuleji-martyrum
+        09-10: dionysii-episcopi-rustici-et-eleutherii-martyrum
         21-10:
-          - S. Hilarionis
-          - Ss. Ursulæ et Sociarum Vv. et Mm.
-        25-10: Ss. Chrysanthi et Dariæ
-        26-10: S. Evaristi
-        04-11: Ss. Vitalis et Agricola
-        08-11: Ss. Quatuor Coronatorum
-        09-11: S. Theodori
-        10-11: Ss. Tryphone, Respicio et Nympha Virg.
-        11-11: S. Mennæ
-        19-11: S. Pontiani
-        23-11: S. Felicitatis
-        24-11: S. Chrysogoni
-        26-11: S. Petri Alexandrini
-        29-11: S. Saturnini
-        04-12: S. Barbaræ
-        05-12: S. Sabbæ
-        10-12: S. Melchiadis
-        25-12: S. Anastasiæ
-        29-12: S. Thomæ de Cantuariae
-        31-12: S. Silvestri
+          - hilarionis
+          - ursulae-et-sociarum-vv-et-mm
+        25-10: chrysanthi-et-dariae-martyrum
+        26-10: evaristi-papae-et-martyris
+        04-11: vitalis-et-agricola
+        08-11: quatuor-coronatorum-martyrum
+        09-11: theodori-martyris
+        10-11: tryphone-respicio-et-nympha-virg
+        11-11: mennae-martyris
+        19-11: pontiani-papae-et-martyris
+        23-11: felicitatis-martyris
+        24-11: chrysogoni-martyris
+        26-11: petri-alexandrini-martyris
+        29-11: saturnini-martyris
+        04-12: barbarae-virginis-et-martyris
+        05-12: sabbae-abbatis
+        10-12: melchiadis-papae-et-martyris
+        25-12: anastasiae
+        29-12: thomae-de-cantuariae
+        31-12: silvestri-papae-et-confessoris

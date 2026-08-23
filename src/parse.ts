@@ -14,6 +14,7 @@ export class CalendarBuilder {
       liturgicalClass: liturgicalDayProp.liturgicalClass,
       commemorationType: liturgicalDayProp.commemorationType,
       acceptCommemorationTypes: liturgicalDayProp.acceptCommemorationTypes,
+      mass: liturgicalDayProp.mass,
     };
     this.result[month] ??= {};
 

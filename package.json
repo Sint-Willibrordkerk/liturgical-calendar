@@ -1,37 +1,47 @@
 {
-  "name": "liturgical-calendar",
-  "version": "2.1.0",
-  "main": "./dist/index.js",
+  "name": "@sint-willibrordkerk/liturgical-calendar",
+  "version": "3.0.0",
   "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/index.d.mts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "require": "./dist/index.js",
+      "types": "./dist/index.d.mts",
       "import": "./dist/index.mjs"
     }
   },
-  "browser": "./dist/index.js",
   "repository": "https://github.com/Sint-Willibrordkerk/liturgical-calendar.git",
   "author": "Sint Willibrordus Stichting",
-  "description": "Generate a (local) Catholic liturgical calendar in accordance with the 1960 rubrics.",
+  "description": "Generate a (local) Catholic liturgical calendar following the 1960 Code of Rubrics (1962 Missal). Each language of the propers is published separately.",
   "license": "MIT",
   "scripts": {
     "build": "tsup",
-    "start": "pnpm build && node scripts/main.js",
-    "test": "vitest"
+    "start": "pnpm build && pnpm build:languages && node scripts/main.js",
+    "test": "vitest",
+    "pipeline": "tsx convert-do/index.ts",
+    "copy-mass-propers": "node scripts/copy-mass-propers.mjs",
+    "build:languages": "node scripts/build-language.mjs languages/la && node scripts/build-language.mjs languages/nl"
   },
   "files": [
     "dist"
   ],
   "dependencies": {
+    "consola": "^3.4.2",
     "zod": "^4.1.13"
   },
   "devDependencies": {
     "@types/node": "^22.9.4",
+    "dotenv": "^17.2.3",
     "tsup": "^8.5.0",
+    "tsx": "^4.20.3",
     "typescript": "^5.7.2",
     "vitest": "^3.2.4",
     "yaml": "^2.6.1"
+  },
+  "packageManager": "pnpm@10.9.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=22.12"
   }
 }

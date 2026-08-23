@@ -1,10 +1,4 @@
-import {
-  liturgicalTypes,
-  sanctorumTypes,
-  weekdays,
-  properTypes,
-  namedDates,
-} from "./constants";
+import { weekdays, namedDates } from "./constants";
 
 export type Digit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 export type LiturgicalClass = 1 | 2 | 3 | 4;
@@ -17,9 +11,6 @@ export type RelativeDate = {
 };
 export type LiturgicalDate = DateString | NamedDate | RelativeDate;
 
-export type SanctorumType = (typeof sanctorumTypes)[number];
-export type LiturgicalType = (typeof liturgicalTypes)[number];
-export type ProperType = (typeof properTypes)[number];
 
 export type Weekday = keyof typeof weekdays;
 export type OccurenceType = Weekday | `!${Weekday}`;
@@ -35,18 +26,44 @@ export type Occurence =
       default?: LiturgicalDate;
     };
 
-export type Calendarium = Record<
-  LiturgicalClass,
-  Record<DateString, string | string[]>
->;
+/** An antiphon or verse: a reference and its text. */
+export type RawVerse = { ref?: string; text?: string };
 
-export type Sanctorum = Record<
-  string,
-  {
-    titles?: string | string[];
-    type?: SanctorumType;
-  }
->;
+/**
+ * A reading. A biblical one carries `verses`, one per verse; anything else
+ * carries `text`. A reading the pipeline could not structure carries its lines.
+ */
+export type RawReading =
+  | { ref?: string; verses: string[] }
+  | { ref?: string; text: string }
+  | string[];
+
+export type RawMassProper = {
+  /** The formal designation, from the source's officium. */
+  title?: string;
+  /** The short name of the celebration. */
+  name?: string;
+  prefatio?: string;
+  introitus?: { antiphon?: RawVerse; verse?: RawVerse };
+  oratio?: { text?: string; closure?: string };
+  lectio?: RawReading;
+  graduale?: { antiphon?: RawVerse; verse?: RawVerse };
+  /** The Alleluia sung after the Gradual. */
+  alleluia?: RawVerse;
+  /**
+   * The extended Alleluia that replaces the Gradual in paschaltide — the source
+   * calls it a `gradualep`, but it is an Alleluia, and so a list of verses.
+   */
+  alleluiap?: { verses: RawVerse[] };
+  /** A tract is a series of verses, not an antiphon and a verse. */
+  tractus?: { verses: RawVerse[] };
+  evangelium?: RawReading;
+  "ultima-evangelium"?: RawReading;
+  offertorium?: RawVerse;
+  secreta?: { text?: string; closure?: string };
+  communio?: RawVerse;
+  postcommunio?: { text?: string; closure?: string };
+};
 
 export type Commemoration = {
   title?: string;
@@ -54,10 +71,71 @@ export type Commemoration = {
   liturgicalClass: number;
   commemorationType?: string;
   acceptCommemorationTypes?: string[];
+  mass?: MassProper | MassProper[] | RawMassProper;
 };
 
 export type LiturgicalDay = Commemoration & {
   commemorations: Commemoration[];
+};
+
+// Mass Proper Types
+
+export type VerseText = {
+  references?: string | string[]; // Single reference or array of references (e.g., "Ps 90:1" or ["Ps 90:15-16", "Ps 90:1"])
+  text: string;
+};
+
+export type IntroitProper = {
+  antiphon: VerseText;
+  verse: VerseText;
+};
+
+export type CollectProper = {
+  text: string;
+  ending: string;
+};
+
+export type EpistleProper = VerseText;
+
+export type GradualProper = {
+  antiphon: VerseText;
+  verse: VerseText;
+};
+
+export type AlleluiaProper = VerseText;
+
+export type TractProper = {
+  verses: string[];
+};
+
+export type GospelProper = VerseText;
+
+export type OffertoryProper = VerseText;
+
+export type SecretProper = {
+  text: string;
+  ending: string;
+};
+
+export type CommunionProper = VerseText;
+
+export type PostcommunionProper = {
+  text: string;
+  ending: string;
+};
+
+export type MassProper = {
+  introit?: IntroitProper;
+  collect?: CollectProper;
+  epistle?: EpistleProper;
+  gradual?: GradualProper;
+  alleluia?: AlleluiaProper;
+  tract?: TractProper;
+  gospel?: GospelProper;
+  offertory?: OffertoryProper;
+  secret?: SecretProper;
+  communion?: CommunionProper;
+  postcommunion?: PostcommunionProper;
 };
 
 export type Calendar = Record<

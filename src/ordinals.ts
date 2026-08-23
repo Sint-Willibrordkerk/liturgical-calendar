@@ -37,3 +37,18 @@ export const days = {
   6: "Feria VI",
   7: "Sabbato",
 };
+
+/**
+ * The weekday as the propers name it — by its ordinal spelled out, rather than
+ * the Roman numeral of `days`. The Sunday is not a feria, and the Saturday is
+ * named for the day rather than counted, which is how the sources have them.
+ */
+export const feriae = {
+  1: "Dominica",
+  2: "Feria Secunda",
+  3: "Feria Tertia",
+  4: "Feria Quarta",
+  5: "Feria Quinta",
+  6: "Feria Sexta",
+  7: "Sabbato",
+};
