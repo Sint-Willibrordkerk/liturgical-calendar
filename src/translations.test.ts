@@ -13,16 +13,17 @@ import { describe, expect, it } from "vitest";
  */
 const LANGUAGES = "languages";
 const CALENDAR = join("assets", "calendar1962.yml");
+const PROPERS = join("assets", "propers");
 
 /** `ordinals.yml` is the vocabulary titles are built from, not days. */
 const VOCABULARY = "ordinals.yml";
 
 /**
- * Keys that name a day the calendar no longer carries. Left in place rather
- * than deleted — a day may come back, and the Dutch is worth keeping — but
- * pinned here so the list cannot grow unnoticed.
+ * Keys that name a day no calendar carries. Left in place rather than deleted —
+ * a day may come back, and the Dutch is worth keeping — but pinned here so the
+ * list cannot grow unnoticed.
  */
-const UNREACHABLE = 69;
+const UNREACHABLE = 0;
 
 function names(node: unknown, out: string[] = []): string[] {
   if (node == null) return out;
@@ -53,7 +54,16 @@ function keysOf(file: string): string[] {
   return keys;
 }
 
+// A day is named by the base calendar or by a local propers calendar, so a
+// key that reaches either is reachable — the Utrecht propers name their own
+// days by title, and the Dutch keys on those titles.
 const calendarNames = new Set(names(parse(readFileSync(CALENDAR, "utf-8"))));
+for (const file of readdirSync(PROPERS)) {
+  if (!file.endsWith(".yml")) continue;
+  for (const name of names(parse(readFileSync(join(PROPERS, file), "utf-8")))) {
+    calendarNames.add(name);
+  }
+}
 
 /** The languages that carry translations; a language may carry only propers. */
 const translated = readdirSync(LANGUAGES).filter((code) =>
