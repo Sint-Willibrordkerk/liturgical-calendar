@@ -8,6 +8,7 @@ import {
   preferCurrentEdition,
   namesForTranslation,
   sourceKey,
+  normalizeTitle,
 } from "./step7";
 
 const v = <T>(value: T, condition: string[] = []) => ({ value, condition });
@@ -369,5 +370,29 @@ describe("filing a translation", () => {
     expect(out).toEqual([
       { key: "dies", title: "Dies Irae", name: null, current: true },
     ]);
+  });
+});
+
+describe("normalizeTitle", () => {
+  it("lowercases a function word mid-title", () => {
+    expect(normalizeTitle("Dominica III Post Epiphaniam")).toBe(
+      "Dominica III post Epiphaniam"
+    );
+    expect(normalizeTitle("De Dominica Infra Octavam Nativitatis")).toBe(
+      "De Dominica infra Octavam Nativitatis"
+    );
+  });
+
+  it("keeps a function word that opens the title", () => {
+    expect(normalizeTitle("In Festo Sanctissimæ Trinitatis")).toBe(
+      "In Festo Sanctissimæ Trinitatis"
+    );
+    expect(normalizeTitle("Ad Romános, cap. 12")).toBe("Ad Romános, cap. 12");
+  });
+
+  it("leaves an already-settled title untouched", () => {
+    expect(normalizeTitle("Dominica II post Epiphaniam")).toBe(
+      "Dominica II post Epiphaniam"
+    );
   });
 });

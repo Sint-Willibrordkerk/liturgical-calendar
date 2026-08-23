@@ -201,6 +201,32 @@ export function getAllDisplayNames(
  * name given only under one use — `Adriáni`, in the Cistercian — would later be
  * dropped along with that use.
  */
+/**
+ * Latin function words — prepositions and conjunctions — lowercased wherever
+ * they fall mid-title. The sources capitalize them unevenly: `Dominica III Post
+ * Epiphaniam` beside `Dominica II post Epiphaniam`.
+ */
+const TITLE_FUNCTION_WORDS = new Set([
+  "post", "in", "infra", "ad", "de", "ante", "sub", "super", "ex", "per",
+  "pro", "cum", "sine", "seu", "et", "ac", "a", "usque", "contra", "inter",
+  "apud", "circa",
+]);
+
+/**
+ * Settle a title's casing. The first word may be capitalized — `In`, `De` and
+ * `Ad` legitimately open a title — but a function word anywhere after it is
+ * lowercased, so a day reads one way however its source happened to spell it.
+ */
+export function normalizeTitle(title: string): string {
+  let wordIndex = 0;
+  return title.replace(/\S+/g, (word) => {
+    wordIndex++;
+    return wordIndex > 1 && TITLE_FUNCTION_WORDS.has(word.toLowerCase())
+      ? word.toLowerCase()
+      : word;
+  });
+}
+
 export function transform(
   obj: Step6Output,
   designation?: { title?: string | null; name?: string | null }
@@ -210,7 +236,7 @@ export function transform(
     if (key === "name" || key === "rank" || key === "officium") continue;
     out[key] = value;
   }
-  if (designation?.title) out.title = designation.title;
+  if (designation?.title) out.title = normalizeTitle(designation.title);
   if (designation?.name) out.name = designation.name;
   return out;
 }
