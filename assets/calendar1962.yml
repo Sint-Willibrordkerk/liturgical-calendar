@@ -11,20 +11,20 @@ items:
     accept-commemoration-types: [privileged, domini]
     items:
     - calendar: { 25-12: [in-nativitate-domini-in-nocte, in-nativitate-domini-in-aurora, in-die-nativitatis-domini] } #91.1
-    - title: Dominica Resurrectionis #91.1 11d
+    - title: dominica-resurrectionis #91.1 11d
       occurence: { date: easter }
-    - title: Dominica Pentecostes #91.1 11f
+    - title: dominica-pentecostes #91.1 11f
       occurence: { date: easter, difference: 49 }
     - type: feria #91.2
       items:
-      - title: feria-quinta-in-coena-domini-quad6-4 
+      - title: feria-quinta-in-coena-domini-quad6-4
         occurence: { date: easter, difference: -3 }
       - title: feria-sexta-in-passione-et-morte-domini
         occurence: { date: easter, difference: -2 }
       - title: Sabbato sancto
         occurence: { date: easter, difference: -1 }
       # Monday to Wednesday of Holy Week, named for the week itself.
-      - title: $feria Majoris Hebdomadæ
+      - title: $feria-majoris-hebdomadae
         occurence:
           start: { date: easter, difference: -6 }
           end: { date: easter, difference: -4 }
@@ -35,7 +35,7 @@ items:
         occurence: { date: easter, difference: 39 }
       - title: festum-sanctissimae-trinitatis #17c
         occurence: { date: easter, difference: 56 }
-      - title: Festum Sanctissimi Corporis Christi
+      - title: festum-sanctissimi-corporis-christi
         occurence: { date: easter, difference: 60 }
       - title: sacratissimi-cordis-domini-nostri-jesu-christi-pent02-5
         occurence: { date: easter, difference: 68 }
@@ -53,22 +53,22 @@ items:
         01-01: in-circumcisione-domini
     - type: dominica #91.6 11
       items:
-        - title: Dominica $count Adventus #11a
+        - title: dominica-$count-adventus #11a
           occurence: { type: dominica, start: 27-11, end: 24-12 }
-        - title: Dominica $count in Quadragesima #11b
+        - title: dominica-$count-in-quadragesima #11b
           occurence:
             type: dominica
             start: { date: easter, difference: -42 }
             end: { date: easter, difference: -21 }
-        - title: Dominica I Passionis #11c
+        - title: dominica-i-passionis #11c
           occurence: { date: easter, difference: -14 }
-        - title: Dominica II Passionis seu in Palmis #11c
+        - title: dominica-ii-passionis-seu-in-palmis #11c
           occurence: { date: easter, difference: -7 }
         - title: dominica-in-albis-in-octava-paschae #11e
           occurence: { date: easter, difference: 7 }
     - type: feria #91.7 23
       items:
-      - title: Feria IV cinerum #23a
+      - title: feria-iv-cinerum #23a
         occurence: { date: easter, difference: -46 }
       - occurence: #23b
           start: { date: easter, difference: -6 }
@@ -80,7 +80,7 @@ items:
         start: 02-11
         end: 02-11
         default: 03-11
-    - title: Sabbato in vigilia Pentecostes #91.9 30b
+    - title: sabbato-in-vigilia-pentecostes #91.9 30b
       type: vigilia
       accept-commemoration-types: [] #30
       occurence: { date: easter, difference: 48 }
@@ -142,7 +142,7 @@ items:
           06-08: in-transfiguratione-domini-nostri-jesu-christi
           14-09: in-exaltatione-sanctae-crucis
           09-11: in-dedicatione-archibasilicae-ss-salvatoris
-      - title: Sanctissimi Nominis Jesu #17a
+      - title: sanctissimi-nominis-jesu #17a
         occurence: { type: dominica, start: 02-01, end: 05-01, default: 02-01 }
       - title: sanctae-familiae-jesu-mariae-joseph #17b
         occurence: { type: dominica, start: 07-01, end: 13-01 }
@@ -161,25 +161,25 @@ items:
           type: dominica
           start: 28-01
           end: 03-02
-      - title: Dominica $count post Epiphaniam
+      - title: dominica-$count-post-epiphaniam
         occurence:
           type: dominica
           start: 07-01
           end: { date: easter, difference: -70 }
-      - title: Dominica in Septuagesima
+      - title: dominica-in-septuagesima
         occurence: { date: easter, difference: -63 }
-      - title: Dominica in Sexagesima
+      - title: dominica-in-sexagesima
         occurence: { date: easter, difference: -56 }
-      - title: Dominica in Quinquagesima
+      - title: dominica-in-quinquagesima
         occurence: { date: easter, difference: -49 }
-      - title: Dominica $count post Pascha
+      - title: dominica-$count-post-pascha
         occurence:
           type: dominica
           start: { date: easter, difference: 7 }
           end: { date: easter, difference: 35 }
-      - title: Dominica post Ascensionem
+      - title: dominica-post-ascensionem
         occurence: { date: easter, difference: 42 }
-      - title: Dominica $count post Pentecosten
+      - title: dominica-$count-post-pentecosten
         occurence:
           type: dominica
           start: { date: easter, difference: 56 }
@@ -222,9 +222,9 @@ items:
       - occurence: { start: 17-12, end: 23-12 } #24a
       - title: feria-iv-quattuor-temporum-adventus #24b
         occurence: { date: advent, difference: 17 }
-      - title: Feria VI Quatuor Temporum Adventus #24b
+      - title: feria-vi-quattuor-temporum-adventus #24b
         occurence: { date: advent, difference: 19 }
-      - title: Sabbato Quatuor Temporum Adventus #24b
+      - title: sabbato-quattuor-temporum-adventus #24b
         occurence: { date: advent, difference: 20 }
       - title: feria-quarta-quatuor-temporum-quadragesimae #24b
         occurence: { date: easter, difference: -39 }
@@ -250,7 +250,7 @@ items:
     - slot: indulta-2 #91.20
     - type: vigilia #91.21 31
       items:
-        - title: In vigilia Ascensionis #31a
+        - title: in-vigilia-ascensionis #31a
           occurence: { date: easter, difference: 38 }
         - calendar:
             23-06: in-vigilia-s-joannis-baptistae #31c
@@ -264,27 +264,27 @@ items:
       # The ferias of Lent have Masses of their own, named for the week they
       # fall in. The sources spell the weekday's ordinal out — `$feria` — and
       # count the week in Roman numerals.
-      - title: $day post Cineres
+      - title: $day-post-cineres
         occurence:
           start: { date: easter, difference: -45 }
           end: { date: easter, difference: -43 }
-      - title: $feria infra Hebdomadam I in Quadragesima
+      - title: $feria-infra-hebdomadam-i-in-quadragesima
         occurence:
           start: { date: easter, difference: -41 }
           end: { date: easter, difference: -36 }
-      - title: $feria infra Hebdomadam II in Quadragesima
+      - title: $feria-infra-hebdomadam-ii-in-quadragesima
         occurence:
           start: { date: easter, difference: -34 }
           end: { date: easter, difference: -29 }
-      - title: $feria infra Hebdomadam III in Quadragesima
+      - title: $feria-infra-hebdomadam-iii-in-quadragesima
         occurence:
           start: { date: easter, difference: -27 }
           end: { date: easter, difference: -22 }
-      - title: $feria infra Hebdomadam IV in Quadragesima
+      - title: $feria-infra-hebdomadam-iv-in-quadragesima
         occurence:
           start: { date: easter, difference: -20 }
           end: { date: easter, difference: -15 }
-      - title: $feria infra Hebdomadam Passionis
+      - title: $feria-infra-hebdomadam-passionis
         occurence:
           start: { date: easter, difference: -13 }
           end: { date: easter, difference: -8 }

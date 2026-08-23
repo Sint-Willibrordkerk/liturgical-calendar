@@ -18,6 +18,16 @@ import { ordinals, days, feriae } from "./ordinals";
 import type { Language } from "./language";
 
 type Translations = Record<string, string>;
+/** A filing slug — all lowercase, digits and hyphens — not a name to show. */
+const IS_SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+/** A slug, or a slug with `$count`/`$day`/`$feria` still to be filled in. */
+const IS_SLUG_TEMPLATE = /^[a-z0-9$]+(?:-[a-z0-9$]+)*$/;
+
+/** A value spliced into a slug, kept lowercase and hyphenated so it stays one. */
+function slugPart(value: string): string {
+  return value.toLowerCase().replace(/\s+/g, "-");
+}
 
 function translate(
   str: string | undefined,
@@ -191,16 +201,32 @@ export function parseCalendarData(
             })
           : undefined;
 
-        // `$feria` exists so a title can name the file its propers are in; what
-        // the day is *called* is the ordinary weekday name, translated like any
-        // other. Spelling the ordinal out is a filing convention, not a name.
+        // Fill the parametric parts to build the name shown. A slug stays a
+        // slug — `$count` spliced in lowercase so `dominica-$count-adventus`
+        // becomes `dominica-i-adventus`, still a lookup key; a translated or
+        // written title takes the ordinary weekday name and numeral. `$feria`
+        // exists only to file the propers, so it is never shown: the day is
+        // called by its weekday like any other.
+        const intoSlug =
+          originalTitle != null && IS_SLUG_TEMPLATE.test(originalTitle);
         let title = translate(
           originalTitle
-            ?.replace("$count", ordinal!)
-            .replace("$day", day!)
-            .replace("$feria", day!),
+            ?.replace("$count", intoSlug ? slugPart(latinOrdinal) : ordinal!)
+            .replace("$day", intoSlug ? slugPart(latinDay) : day!)
+            .replace("$feria", intoSlug ? slugPart(latinFeria) : day!),
           translations
         );
+
+        // A slug is a lookup key, not a name. Where the day resolved a proper,
+        // that proper carries the real Latin title (from its officium), so the
+        // reader sees `Festum Sanctissimæ Trinitatis` rather than
+        // `festum-sanctissimae-trinitatis`. A translated title has already
+        // become a name and is left alone; so is a day with no proper to draw
+        // on, such as Holy Saturday, and a written title like a numbered Sunday
+        // the calendar spells out rather than files under a slug.
+        if (title && mass?.title && IS_SLUG.test(title)) {
+          title = mass.title;
+        }
 
         calendarBuilder.add(date.getMonth() + 1, date.getDate(), {
           ...item,

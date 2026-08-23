@@ -3,10 +3,10 @@ maria-in-sabbato-a-nativitate-domini-usque-ad-purificationem: Onze Lieve Vrouw o
 maria-in-sabbato-a-die-3-februari-usque-ad-feriam-iv-hebdomadae-sanctae: Onze Lieve Vrouw op zaterdag vanaf 3 februari tot woensdag in de Goede Week
 maria-in-sabbato-in-tempore-paschali: Onze Lieve Vrouw op zaterdag in de Paastijd
 maria-in-sabbato-a-festo-trinitatis-usque-ad-sabbatum-ante-dominicam-i-adventus: Onze Lieve Vrouw op zaterdag vanaf Zondag Trinitate tot de zaterdag voor de eerste zondag van de Advent
-In vigilia Ascensionis: Vigilie van Hemelvaart
+in-vigilia-ascensionis: Vigilie van Hemelvaart
 Feria IV Quatuor Temporum Adventus: Quatertemperwoensdag in de Advent
-Feria VI Quatuor Temporum Adventus: Quatertempervrijdag in de Advent
-Sabbato Quatuor Temporum Adventus: Quatertemperzaterdag in de Advent
+feria-vi-quattuor-temporum-adventus: Quatertempervrijdag in de Advent
+sabbato-quattuor-temporum-adventus: Quatertemperzaterdag in de Advent
 Feria IV Quatuor Temporum Quadragesimae: Quatertemperwoensdag in de Vasten
 Feria VI Quatuor Temporum Quadragesimae: Quatertempervrijdag in de Vasten
 Sabbato Quatuor Temporum Quadragesimae: Quatertemperzaterdag in de Vasten
@@ -14,25 +14,25 @@ Feria IV Quatuor Temporum septembris: Quatertemperwoensdag in september
 Feria VI Quatuor Temporum septembris: Quatertempervrijdag in september
 Sabbato Quatuor Temporum septembris: Quatertemperzaterdag in september
 Dominica infra octavam Nativitatis Domini: Zondag onder het octaaf van Kerstmis
-Dominica $count post Epiphaniam: $count zondag na Driekoningen
-Dominica in Septuagesima: Zondag Septuagesima
-Dominica in Sexagesima: Zondag Sexagesima
-Dominica in Quinquagesima: Zondag Quinquagesima
-Dominica $count post Pascha: $count zondag na Pasen
+dominica-$count-post-epiphaniam: $count zondag na Driekoningen
+dominica-in-septuagesima: Zondag Septuagesima
+dominica-in-sexagesima: Zondag Sexagesima
+dominica-in-quinquagesima: Zondag Quinquagesima
+dominica-$count-post-pascha: $count zondag na Pasen
 Dominica II post Pascha: Tweede zondag na Pasen, Zondag Goede herder
-Dominica post Ascensionem: Zondag na Hemelvaart
-Dominica $count post Pentecosten: $count zondag na Pinksteren
+dominica-post-ascensionem: Zondag na Hemelvaart
+dominica-$count-post-pentecosten: $count zondag na Pinksteren
 Ssm̃i Nominis Jesu: Feest van de H. Naam Jezus
 Dominica I post Epiphaniam, Sanctæ Familiæ Jesu, Mariæ, Joseph: Eerste zondag na Driekoningen, Feest van de H. Familie
 Dominica II post Pentecosten: Sacramentsdag, Tweede zondag na Pinksteren
 Feria II infra octavam Paschæ: Tweede Paasdag
 Feria II infra octavam Pentecostes: Tweede Pinksterdag
-Sabbato in vigilia Pentecostes: Vigilie van Pinksteren
-Feria IV cinerum: Aswoensdag
-Dominica $count Adventus: $count zondag van de Advent
-Dominica $count in Quadragesima: $count zondag van de Vasten
-Dominica I Passionis: Passiezondag
-Dominica II Passionis seu in Palmis: Palmzondag
+sabbato-in-vigilia-pentecostes: Vigilie van Pinksteren
+feria-iv-cinerum: Aswoensdag
+dominica-$count-adventus: $count zondag van de Advent
+dominica-$count-in-quadragesima: $count zondag van de Vasten
+dominica-i-passionis: Passiezondag
+dominica-ii-passionis-seu-in-palmis: Palmzondag
 dominica-in-albis-in-octava-paschae: Beloken Pasen
 in-ascensione-domini-pasc5-4: Hemelvaart
 In festo Sanctissimæ Trinitatis: Feest van de H. Drieëenheid
@@ -43,8 +43,12 @@ Feria IV Quatuor Temporum Pentecostes: Quatertemperwoensdag in het octaaf van Pi
 Feria VI Quatuor Temporum Pentecostes: Quatertempervrijdag in het octaaf van Pinksteren
 Sabbato Quatuor Temporum Pentecostes: Quatertemperzaterdag in het octaaf van Pinksteren
 $day infra octavam Paschæ: $day in het octaaf van Pasen
-Feria V in Cena Domini: Witte Donderdag
-Feria VI in Passione et Morte Domini: Goede Vrijdag
+feria-quinta-in-coena-domini-quad6-4: Witte Donderdag
+feria-sexta-in-passione-et-morte-domini: Goede Vrijdag
 Sabbato sancto: Paaszaterdag
-Dominica Resurrectionis: Hoogfeest van Pasen
-Dominica Pentecostes: Hoogfeest van Pinksteren
+dominica-resurrectionis: Hoogfeest van Pasen
+dominica-pentecostes: Hoogfeest van Pinksteren
+$feria-infra-hebdomadam-$count-in-quadragesima: $feria in de $count week van de Vasten
+$feria-infra-hebdomadam-passionis: $feria in de Passieweek
+$feria-majoris-hebdomadae: $feria in de Goede Week
+$day-post-cineres: $day na Aswoensdag
