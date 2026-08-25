@@ -30,5 +30,8 @@
   },
   "scripts": {
     "build": "node ../../scripts/build-language.mjs ."
+  },
+  "devDependencies": {
+    "@sint-willibrordkerk/liturgical-calendar": "workspace:*"
   }
 }
