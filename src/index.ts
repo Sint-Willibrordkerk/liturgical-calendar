@@ -6,7 +6,7 @@ import {
   dayNumber,
 } from "./utils";
 import { parseCalendarData } from "./parseCalendarData";
-import { loadTranslations, loadMassPropersByTitle } from "./loadAssets";
+import { loadTranslations, loadMassPropersByTitle, loadVotiveMasses } from "./loadAssets";
 import { applyFerialMass, SUNDAY_AFTER_EPIPHANY_MASS } from "./ferias";
 import { applyResumedSundays } from "./resumedSundays";
 import { applyVotiveMasses, type VotiveMassId } from "./votive";
@@ -97,6 +97,7 @@ export default (
     applyVotiveMasses(
       calendar,
       year,
+      loadVotiveMasses(),
       options.votiveMasses,
       (slug, date) =>
         loadMassPropersByTitle(slug, lang, undefined, { date, easter })

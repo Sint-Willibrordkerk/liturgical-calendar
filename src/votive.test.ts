@@ -1,11 +1,16 @@
+import { readFileSync } from "fs";
+import { join } from "path";
+import { parse } from "yaml";
 import { describe, expect, it } from "vitest";
-import {
-  admitsVotive,
-  applyVotiveMasses,
-  VOTIVE_MASSES,
-  type VotiveMassId,
-} from "./votive";
-import type { Calendar, LiturgicalDay, RawMassProper } from "./types";
+import { admitsVotive, applyVotiveMasses } from "./votive";
+import { assertVotiveData } from "./loadAssets/assert/votiveData";
+import type {
+  Calendar,
+  LiturgicalDay,
+  RawMassProper,
+  VotiveCatalog,
+  VotiveMassId,
+} from "./types";
 
 const feria = (): LiturgicalDay =>
   ({ type: "feria", liturgicalClass: 4, commemorations: [] }) as LiturgicalDay;
@@ -32,18 +37,60 @@ const SACRED_HEART = "sacratissimi-cordis-domini-nostri-jesu-christi";
 const IMMACULATE_HEART = "immaculati-cordis-beatae-mariae-virginis";
 const HIGH_PRIEST = "domini-nostri-jesu-christi-summi-et-aeterni-sacerdotis";
 const HOLY_ANGELS = "sanctorum-angelorum";
+const HOLY_SPIRIT = "spiritus-sancti";
+const SACRED_HEART_SLUG = "sacratissimi-cordis-domini-nostri-jesu-christi-pent02-5";
+
+/** A small catalog standing in for what `votive.yml` loads to. */
+const catalog: VotiveCatalog = {
+  [SACRED_HEART]: {
+    id: SACRED_HEART,
+    category: "mysteries-of-the-lord",
+    liturgicalClass: 3,
+    rubric: "385b",
+    slug: SACRED_HEART_SLUG,
+    occurrence: { cadence: "monthly", weekday: 5 },
+  },
+  [IMMACULATE_HEART]: {
+    id: IMMACULATE_HEART,
+    category: "blessed-virgin-mary",
+    liturgicalClass: 3,
+    rubric: "385c",
+    slug: IMMACULATE_HEART,
+    occurrence: { cadence: "monthly", weekday: 6 },
+  },
+  [HIGH_PRIEST]: {
+    id: HIGH_PRIEST,
+    category: "mysteries-of-the-lord",
+    liturgicalClass: 3,
+    rubric: "385a",
+    occurrence: { cadence: "monthly", weekday: 4 },
+  },
+  [HOLY_ANGELS]: {
+    id: HOLY_ANGELS,
+    category: "angels",
+    liturgicalClass: 4,
+    rubric: "310b",
+    occurrence: { cadence: "weekly", weekday: 2 },
+  },
+  [HOLY_SPIRIT]: {
+    id: HOLY_SPIRIT,
+    category: "mysteries-of-the-lord",
+    liturgicalClass: 4,
+    rubric: "308a-11",
+  },
+};
 
 /** A stub that gives the Sacred Heart its Mass and knows no other. */
 const heartMass = { title: "Ssmi Cordis Iesu" } as RawMassProper;
 const loadProper = (slug: string): RawMassProper | undefined =>
-  slug === VOTIVE_MASSES[SACRED_HEART].slug ? heartMass : undefined;
+  slug === SACRED_HEART_SLUG ? heartMass : undefined;
 
 const apply = (
   calendar: Calendar,
   year: number,
   enabled: VotiveMassId[],
   load = loadProper
-) => applyVotiveMasses(calendar, year, enabled, load);
+) => applyVotiveMasses(calendar, year, catalog, enabled, load);
 
 describe("admitsVotive", () => {
   it("is a fourth-class feria, for a votive of either class", () => {
@@ -159,30 +206,43 @@ describe("applyVotiveMasses", () => {
 
   it("ignores an unknown id", () => {
     const calendar = calendarOf({ "2-6": feria() });
-    apply(calendar, 2026, ["nonesuch" as VotiveMassId]);
+    apply(calendar, 2026, ["nonesuch"]);
     expect(calendar[2]![6]!.title).toBeUndefined();
   });
 
   it("does not place a votive the rubrics give no day", () => {
     // The Holy Spirit is a votive Mass of the Lord (§308) but has no fixed day.
     const calendar = calendarOf({ "2-2": feria(), "2-6": feria() });
-    apply(calendar, 2026, ["spiritus-sancti"]);
+    apply(calendar, 2026, [HOLY_SPIRIT]);
     expect(calendar[2]![2]!.title).toBeUndefined();
     expect(calendar[2]![6]!.title).toBeUndefined();
   });
 });
 
-describe("VOTIVE_MASSES catalog", () => {
-  it("names every dated votive and only those with an occurrence are placed", () => {
-    const dated = Object.values(VOTIVE_MASSES).filter((v) => v.occurrence);
-    expect(dated.map((v) => v.id).sort()).toEqual(
+describe("votive.yml", () => {
+  const raw = parse(
+    readFileSync(join(process.cwd(), "assets/votive.yml"), "utf-8")
+  );
+
+  it("is valid votive data", () => {
+    expect(() => assertVotiveData(raw)).not.toThrow();
+  });
+
+  it("dates exactly the four the rubrics give a day", () => {
+    assertVotiveData(raw);
+    const dated = Object.entries(raw.items)
+      .filter(([, v]) => (v as { occurrence?: unknown }).occurrence)
+      .map(([id]) => id)
+      .sort();
+    expect(dated).toEqual(
       [SACRED_HEART, IMMACULATE_HEART, HIGH_PRIEST, HOLY_ANGELS].sort()
     );
   });
 
   it("catalogues the mysteries of the Lord, Our Lady, and the angels", () => {
+    assertVotiveData(raw);
     const categories = new Set(
-      Object.values(VOTIVE_MASSES).map((v) => v.category)
+      Object.values(raw.items).map((v) => (v as { category: string }).category)
     );
     expect(categories).toEqual(
       new Set(["mysteries-of-the-lord", "blessed-virgin-mary", "angels"])
