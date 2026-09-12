@@ -80,7 +80,7 @@ describe("step0 getInputFiles", () => {
 
     process.env.DIVINUM_OFFICIUM_BASE = fixtureRoot;
     vi.resetModules();
-    const { getInputFiles } = await import("./step0");
+    const { getInputFiles } = await import("./step0.js");
 
     const { files, directories } = await getInputFiles();
 

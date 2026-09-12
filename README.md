@@ -59,6 +59,8 @@ they fall — but no day carries a Mass and nothing is translated.
   `@sint-willibrordkerk/liturgical-calendar-la`, `…-nl` — imported and passed
   in. It supplies both the Mass propers and the translations. Optional; omit it
   for the bare calendar.
+- `options` (object): Further options. Optional. Currently:
+  - `votiveMasses` (string[]): Votive Masses to observe (see below).
 
 ### With Local Propers
 
@@ -72,6 +74,62 @@ const calendar = generateCalendar(2026, ['ultrajectum'], nl);
 const november7 = calendar[11][7];
 console.log(november7.title); // "H. Willibrordus" (in Dutch)
 ```
+
+### Votive Masses
+
+A votive Mass is said outside the order of the office, as a matter of local
+devotion. They are opt-in: name the ones observed in the fourth argument, each by
+its Latin slug (like the calendar's other titles).
+
+```javascript
+const calendar = generateCalendar(2026, [], la, {
+  votiveMasses: [
+    'sacratissimi-cordis-domini-nostri-jesu-christi',
+    'immaculati-cordis-beatae-mariae-virginis',
+  ],
+});
+```
+
+The catalogue (`VotiveMassId`) covers the votive Masses the general rubrics name
+— of the mysteries of the Lord (§308), of the Blessed Virgin (§309), and of the
+angels (§310). But the rubrics fix a recurring **day** for only these, so only
+these are placed on the calendar:
+
+| id (slug) | Day | Class | Rubric |
+| --- | --- | --- | --- |
+| `sacratissimi-cordis-domini-nostri-jesu-christi` | first Friday of the month | 3rd | §385b |
+| `immaculati-cordis-beatae-mariae-virginis` | first Saturday of the month | 3rd | §385c |
+| `domini-nostri-jesu-christi-summi-et-aeterni-sacerdotis` | first Thursday of the month | 3rd | §385a |
+| `sanctorum-angelorum` | every Tuesday | 4th | §310b, §389 |
+
+The rest of the catalogue — the Holy Trinity, the Holy Name, the Precious Blood,
+Christ the King, the Blessed Sacrament, the Holy Cross, the Passion, the Holy
+Family, the Holy Spirit, and the Saturday Office of Our Lady (already in the base
+calendar) — may be enabled, but the rubrics give them no day, so the calendar
+places them nowhere: they are said for an occasion the priest chooses, not on a
+date. The same holds for the votive Masses the rubrics tie to an occasion rather
+than a day (§329, §342: dedications, the rogations, the Forty Hours, weddings, and
+the like) and for the open categories of any saint (§311) and the Masses "for
+various occasions" (§313); these are not part of the calendar's placement.
+
+A votive Mass is said on a day open to its class (§317, §384): a third-class
+votive — the Sacred Heart, the Immaculate Heart, the Eternal High Priest — on a
+day of the third or fourth class, and a fourth-class votive — the Holy Angels —
+only on a fourth-class day. Where it is admitted it takes the day's place, with
+no commemoration of what it displaced. So on the first Saturday the Immaculate
+Heart is shown even over a third-class feast, and over the Saturday Office of the
+Blessed Virgin. It still yields to any day of the first or second class, to a
+vigil, and to the privileged ferias of Advent and Lent, which are no free day.
+
+The Eternal High Priest is granted the first Thursday *or* the first Saturday
+(§385a); the Thursday is taken, leaving the first Saturday to the Immaculate
+Heart.
+
+The Sacred Heart and the Immaculate Heart borrow the Mass of their own feast, so
+they carry full propers wherever the language provides them. The Eternal High
+Priest and the votive of the Holy Angels have no feast in the universal calendar
+to draw on; until their propers are added to the language packages, those days
+carry the votive's name but no Mass.
 
 ### Calendar Structure
 

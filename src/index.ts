@@ -9,8 +9,22 @@ import { parseCalendarData } from "./parseCalendarData";
 import { loadTranslations, loadMassPropersByTitle } from "./loadAssets";
 import { applyFerialMass, SUNDAY_AFTER_EPIPHANY_MASS } from "./ferias";
 import { applyResumedSundays } from "./resumedSundays";
+import { applyVotiveMasses, type VotiveMassId } from "./votive";
 import { asLanguage, type Language } from "./language";
 export { type Language } from "./language";
+export { type VotiveMassId } from "./votive";
+
+/** Options that shape the calendar beyond the days themselves. */
+export type Options = {
+  /**
+   * Votive Masses to observe, each named by its Latin slug (see `VotiveMassId`
+   * for the catalogue). A votive Mass is a matter of local devotion, so none is
+   * placed unless it is named here. Only those the rubrics give a recurring day
+   * are placed; a votive named for an occasion rather than a date is recognized
+   * but placed nowhere.
+   */
+  votiveMasses?: VotiveMassId[];
+};
 
 function deleteFields(day: Partial<LiturgicalDay | Commemoration>) {
   if ("commemorations" in day && day.commemorations) {
@@ -37,7 +51,8 @@ function deleteFields(day: Partial<LiturgicalDay | Commemoration>) {
 export default (
   year: number,
   propers: string[] = [],
-  language?: Language
+  language?: Language,
+  options: Options = {}
 ) => {
   const lang = asLanguage(language);
   const translations = loadTranslations(lang);
@@ -75,6 +90,18 @@ export default (
         easter,
       })
   );
+
+  // Votive Masses take the free ferias last of all, once every feast and feria
+  // has settled: only a day still of the fourth class is theirs to take.
+  if (options.votiveMasses?.length) {
+    applyVotiveMasses(
+      calendar,
+      year,
+      options.votiveMasses,
+      (slug, date) =>
+        loadMassPropersByTitle(slug, lang, undefined, { date, easter })
+    );
+  }
 
   eachDay(year, ({ month, day }) => {
     const dayData = calendar[month]![day]!;

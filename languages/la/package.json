@@ -1,6 +1,6 @@
 {
   "name": "@sint-willibrordkerk/liturgical-calendar-la",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "The Latin Mass propers and translations for liturgical-calendar.",
   "liturgicalLanguage": "la",
   "module": "./dist/index.mjs",

@@ -45,7 +45,7 @@ items:
         15-08: in-assumptione-beatae-mariae-virginis
         08-12: in-conceptione-immaculata-beatae-mariae-virginis #15
     - type: vigilia #91.5
-      accept-commemoration-types: []
+      accept-commemoration-types: [] #30
       calendar:
         24-12: in-vigilia-nativitatis-domini #30a
     - type: octava #91.5
@@ -258,8 +258,8 @@ items:
             28-06: in-vigilia-ss-petri-et-pauli-apostolorum #31d
   - liturgical-class: 3
     items:
-    - type: feria #25a
-      commemoration-type: privileged
+    - type: feria #91.22 25a
+      commemoration-type: privileged #108e
       items:
       # The ferias of Lent have Masses of their own, named for the week they
       # fall in. The sources spell the weekday's ordinal out — `$feria` — and
@@ -295,7 +295,7 @@ items:
     - slot: ecclesiae-3 #91.23.2
     - slot: congregationis-3 #91.23.3
     - slot: indulta-3 #91.23.3
-    - calendar:
+    - calendar: #91.24
         14-01: hilarii-episcopi-confessoris-ecclesiae-doctoris
         15-01: pauli-primi-eremitae-et-confessoris
         16-01: marcelli-papae-et-martyris
@@ -483,7 +483,7 @@ items:
         09-08: in-vigilia-s-laurentii-mart
   - liturgical-class: 4
     items:
-    - type: feria #91.27
+    - type: feria #91.27 78
       commemoration-type: none
       items:
       - title: maria-in-sabbato-in-tempore-adventus
