@@ -1,0 +1,84 @@
+# Votive Masses named in the general rubrics of the 1960 Missal (§307-389),
+# grouped by what each is of (§307): a mystery of the Lord (§308), the Blessed
+# Virgin (§309), or the angels (§310). A votive Mass is a matter of local
+# devotion, so a caller enables the ones observed by their key here.
+#
+# Only those the rubrics give a recurring day carry an `occurrence` and are placed
+# on the calendar, on the free ferias they keep. The rest are named here but the
+# rubrics fix them no day, so they are placed nowhere: they are said for an
+# occasion the priest chooses, not on a date.
+#
+# `slug` is the propers' lookup key — a feast's own, where the votive keeps one.
+# `occurrence.weekday` is a weekday name (dominica … sabbato); `cadence` is
+# `monthly` (the first such weekday of the month) or `weekly` (every one).
+valid-categories: [mysteries-of-the-lord, blessed-virgin-mary, angels]
+valid-liturgical-classes: [3, 4]
+
+items:
+  # Mysteries of the Lord (§308)
+  sanctissimae-trinitatis:
+    category: mysteries-of-the-lord
+    liturgical-class: 4
+    rubric: 308a-1
+  sanctissimi-nominis-jesu:
+    category: mysteries-of-the-lord
+    liturgical-class: 4
+    rubric: 308a-2
+  sacratissimi-cordis-domini-nostri-jesu-christi:
+    category: mysteries-of-the-lord
+    liturgical-class: 3
+    rubric: 385b
+    slug: sacratissimi-cordis-domini-nostri-jesu-christi-pent02-5
+    occurrence: { cadence: monthly, weekday: feriaVI }
+  pretiosissimi-sanguinis-domini-nostri-jesu-christi:
+    category: mysteries-of-the-lord
+    liturgical-class: 4
+    rubric: 308a-4
+  domini-nostri-jesu-christi-regis:
+    category: mysteries-of-the-lord
+    liturgical-class: 4
+    rubric: 308a-5
+  sanctissimi-sacramenti:
+    category: mysteries-of-the-lord
+    liturgical-class: 4
+    rubric: 308a-6
+  domini-nostri-jesu-christi-summi-et-aeterni-sacerdotis:
+    category: mysteries-of-the-lord
+    liturgical-class: 3
+    rubric: 385a
+    occurrence: { cadence: monthly, weekday: feriaV }
+  sanctae-crucis:
+    category: mysteries-of-the-lord
+    liturgical-class: 4
+    rubric: 308a-8
+  passionis-domini-nostri-jesu-christi:
+    category: mysteries-of-the-lord
+    liturgical-class: 4
+    rubric: 308a-9
+  sanctae-familiae-jesu-mariae-joseph:
+    category: mysteries-of-the-lord
+    liturgical-class: 4
+    rubric: 308a-10
+  spiritus-sancti:
+    category: mysteries-of-the-lord
+    liturgical-class: 4
+    rubric: 308a-11
+  # Blessed Virgin Mary (§309)
+  immaculati-cordis-beatae-mariae-virginis:
+    category: blessed-virgin-mary
+    liturgical-class: 3
+    rubric: 385c
+    slug: immaculati-cordis-beatae-mariae-virginis
+    occurrence: { cadence: monthly, weekday: sabbato }
+  # The Saturday Office of Our Lady (§309a) already fills the free Saturdays in
+  # the base calendar, so this entry keeps no occurrence of its own.
+  beatae-mariae-virginis-in-sabbato:
+    category: blessed-virgin-mary
+    liturgical-class: 4
+    rubric: 309a
+  # Angels (§310)
+  sanctorum-angelorum:
+    category: angels
+    liturgical-class: 4
+    rubric: 310b
+    occurrence: { cadence: weekly, weekday: feriaIII }
