@@ -601,3 +601,65 @@ describe("step10 — transform", () => {
     });
   });
 });
+
+describe("step10 — acute-accent reconciliation on a key collision", () => {
+  it("merges two entries that differ only by an acute, keeping the accented one", () => {
+    const store = createLectioStore();
+    const a = store.intern(reading("Luc 1:76", "Tu, puer, Propheta vocáberis."));
+    const b = store.intern(reading("Luc 1:76", "Tu, puer, Prophéta vocáberis."));
+
+    expect(a).toBe("luc-1-76");
+    expect(b).toBe("luc-1-76"); // same key, not luc-1-76-2
+    expect(Object.keys(store.entries())).toEqual(["luc-1-76"]);
+    // The more-accented spelling is the one kept.
+    expect(store.entries()["luc-1-76"]).toMatchObject({
+      text: "Tu, puer, Prophéta vocáberis.",
+    });
+  });
+
+  it("upgrades the stored spelling when the accented one arrives second", () => {
+    const store = createLectioStore();
+    store.intern(reading("Luc 1:76", "puer Propheta"));
+    store.intern(reading("Luc 1:76", "puer Prophéta"));
+    expect(store.entries()["luc-1-76"]).toMatchObject({ text: "puer Prophéta" });
+  });
+
+  it("keeps the accented one even when the plain spelling arrives second", () => {
+    const store = createLectioStore();
+    store.intern(reading("Luc 1:76", "puer Prophéta"));
+    const b = store.intern(reading("Luc 1:76", "puer Propheta"));
+    expect(b).toBe("luc-1-76");
+    expect(store.entries()["luc-1-76"]).toMatchObject({ text: "puer Prophéta" });
+  });
+
+  it("does not reconcile a difference that is not an acute", () => {
+    // A ligature is a different spelling, not an accent: both are kept.
+    const store = createLectioStore();
+    expect(store.intern(reading("Matt 1:1", "Dómine coeli"))).toBe("matt-1-1");
+    expect(store.intern(reading("Matt 1:1", "Dómine cœli"))).toBe("matt-1-1-2");
+  });
+
+  it("does not reconcile a difference in words", () => {
+    const store = createLectioStore();
+    expect(store.intern(reading("Luc 1:76", "ante Dóminum"))).toBe("luc-1-76");
+    expect(store.intern(reading("Luc 1:76", "ante fáciem Dómini"))).toBe(
+      "luc-1-76-2"
+    );
+  });
+
+  it("leaves an ambiguous accent apart, where placement differs at equal count", () => {
+    const store = createLectioStore();
+    expect(store.intern(reading("Ps 1:1", "pópuli"))).toBe("ps-1-1");
+    expect(store.intern(reading("Ps 1:1", "populí"))).toBe("ps-1-1-2");
+  });
+
+  it("only reconciles within the same key, not across the corpus", () => {
+    // The common word `et` never becomes `ét`: reconciliation compares whole
+    // entries under one key, so a stray accent cannot propagate corpus-wide.
+    const store = createLectioStore();
+    store.intern(reading("Luc 1:1", "et Dóminus"));
+    store.intern(reading("Luc 2:2", "ét Dóminus"));
+    expect(store.entries()["luc-1-1"]).toMatchObject({ text: "et Dóminus" });
+    expect(store.entries()["luc-2-2"]).toMatchObject({ text: "ét Dóminus" });
+  });
+});

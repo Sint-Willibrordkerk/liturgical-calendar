@@ -192,7 +192,11 @@ export function linesToPrayer(lines: unknown): { text: string; closure: string }
  */
 export function stripTrailingAlleluia(text: string): string {
   if (typeof text !== "string" || text === "") return text;
-  let t = text.replace(/(?:\s*\ballel[uú][ji]a\b[\s,.;]*)+$/i, "");
+  // The response comes either plain — `… manet. Allelúja.` — or parenthesized as
+  // a paschaltide-only cue — `… manet. (Allelúja, allelúja).`; both are removed.
+  let t = text
+    .replace(/\s*\(\s*(?:allel[uú][ji]a\b[\s,.;]*)+\)\.?\s*$/i, "")
+    .replace(/(?:\s*\ballel[uú][ji]a\b[\s,.;]*)+$/i, "");
   if (t === text) return text;
   t = t.replace(/[\s,;]+$/, "");
   return t === "" || /[.!?:]$/.test(t) ? t : `${t}.`;
@@ -384,22 +388,24 @@ function filterGradualeLines(lines: string[]): string[] {
 }
 
 /**
- * The `Allelúja, allelúja.` cue that marks the boundary from Gradual to Alleluia:
- * the first such line that follows some gradual content. A cue opening the whole
- * section is not a boundary — it is skipped, as `parseRefSegments` skips it.
- * Returns -1 when there is none.
+ * The `Allelúja, allelúja.` cue that marks the boundary from Gradual to Alleluia.
+ * It may be a line of its own, or trail the end of the Gradual's last line —
+ * `…manet. Allelúja, allelúja.` — in which case the text before it is the last of
+ * the Gradual (`inline`). A cue opening the whole section is not a boundary; it is
+ * skipped, as `parseRefSegments` skips it. `index` is -1 when there is none.
  */
-function boundaryCueIndex(lines: unknown[]): number {
+function boundaryCue(lines: unknown[]): { index: number; inline: boolean } {
   let sawContent = false;
   for (let i = 0; i < lines.length; i++) {
     const s = String(lines[i]).trim();
     if (ALLELUIA_OPENING.test(s)) {
-      if (sawContent) return i;
+      if (sawContent) return { index: i, inline: false };
       continue;
     }
+    if (ALLELUIA_CUE.test(s)) return { index: i, inline: true };
     if (s !== "" && s !== "_") sawContent = true;
   }
-  return -1;
+  return { index: -1, inline: false };
 }
 
 /** Split a single gradual block into antiphon and verse at its `v.` marker. */
@@ -447,26 +453,28 @@ function linesToGradual(gradualLines: string[]): {
   const isVerseBlock = (b: { lines: string[] }) =>
     b.lines.length > 0 && V_START.test(String(b.lines[0]).trim());
 
-  // Antiphon and verse under separate references: pair the verse block (the one
-  // the `v.` marks) with the unmarked antiphon block, each keeping its reference.
-  if (blocks.length >= 2) {
+  const asPart = (block: { ref: string; lines: string[] }) => ({
+    ref: block.ref,
+    text: stripTrailingAlleluia(stripLeadingV(block.lines.join("\n").trim())),
+  });
+
+  // Antiphon and verse under separate references. Where one block is marked with
+  // `v.`, that block is the verse and the unmarked one the antiphon, whatever
+  // their order. Where neither is marked, they are read in order — antiphon then
+  // verse — each keeping its own reference.
+  const nonEmpty = blocks.filter((b) => b.lines.length);
+  if (nonEmpty.length >= 2) {
     const verseAt = blocks.findIndex(isVerseBlock);
-    const antiphonAt = blocks.findIndex((b, i) => i !== verseAt && b.lines.length);
-    if (verseAt >= 0 && antiphonAt >= 0 && !isVerseBlock(blocks[antiphonAt]!)) {
-      const verseBlock = blocks[verseAt]!;
-      const antiphonBlock = blocks[antiphonAt]!;
-      return {
-        antiphon: {
-          ref: antiphonBlock.ref,
-          text: stripTrailingAlleluia(antiphonBlock.lines.join("\n").trim()),
-        },
-        verse: {
-          ref: verseBlock.ref,
-          text: stripTrailingAlleluia(
-            stripLeadingV(verseBlock.lines.join("\n").trim())
-          ),
-        },
-      };
+    if (verseAt >= 0) {
+      const antiphonAt = blocks.findIndex((b, i) => i !== verseAt && b.lines.length);
+      if (antiphonAt >= 0 && !isVerseBlock(blocks[antiphonAt]!)) {
+        return {
+          antiphon: asPart(blocks[antiphonAt]!),
+          verse: asPart(blocks[verseAt]!),
+        };
+      }
+    } else {
+      return { antiphon: asPart(nonEmpty[0]!), verse: asPart(nonEmpty[1]!) };
     }
   }
 
@@ -484,11 +492,19 @@ export function linesToGraduale(lines: unknown): {
   }
 
   // Where a cue marks the boundary, the Gradual is everything before it and the
-  // Alleluia everything after — even across references. The Alleluia's verse that
-  // merely repeats the Gradual verse is dropped for the distinctive one.
-  const cueAt = boundaryCueIndex(lines);
+  // Alleluia everything after — even across references. An inline cue keeps the
+  // text before it as the Gradual's last line. The Alleluia's verse that merely
+  // repeats the Gradual verse is dropped for the distinctive one.
+  const { index: cueAt, inline } = boundaryCue(lines);
   if (cueAt >= 0) {
-    const gradual = linesToGradual(lines.slice(0, cueAt) as string[]);
+    const preCue = inline
+      ? String(lines[cueAt]).replace(ALLELUIA_CUE, "").trim()
+      : "";
+    const gradualLines = [
+      ...lines.slice(0, cueAt).map(String),
+      ...(preCue ? [preCue] : []),
+    ];
+    const gradual = linesToGradual(gradualLines);
     const verses = linesToVerses(lines.slice(cueAt + 1)).verses;
     const distinct = verses.filter(
       (v) => v.text.trim() !== gradual.verse.text.trim()
