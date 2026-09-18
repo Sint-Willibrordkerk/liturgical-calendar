@@ -224,6 +224,42 @@ describe("step9 missa structuring", () => {
     expect(out.alleluia).toEqual([v({ ref: "Ps 2:2", text: "Referenced" })]);
   });
 
+  it("splits at the cue when the gradual spans two references (St Justin)", () => {
+    // The gradual's antiphon and verse are given under separate references, in
+    // verse-first order; the cue then opens the Alleluia. The `v.` marker, not
+    // position, tells antiphon from verse, and the Alleluia verse that merely
+    // repeats the gradual verse is dropped in favour of the distinctive one.
+    const out = transform({
+      graduale: [
+        v([
+          "!1 Cor 3:19; 3:20",
+          "v. Sapiéntia hujus mundi stultítia est apud Deum.",
+          "!1 Cor 1:19",
+          "Perdam sapiéntiam sapiéntium et prudentiam prudéntium reprobábo.",
+          "Alleluja, alleluja.",
+          "v. Sapiéntia hujus mundi stultítia est apud Deum, alleluia",
+          "!Phil 3:8",
+          "Verúmtamen exístimo ómnia detriméntum esse. Allelúja.",
+        ]),
+      ],
+    });
+    expect(out.graduale).toEqual([
+      v({
+        antiphon: {
+          ref: "1 Cor 1:19",
+          text: "Perdam sapiéntiam sapiéntium et prudentiam prudéntium reprobábo.",
+        },
+        verse: {
+          ref: "1 Cor 3:19; 3:20",
+          text: "Sapiéntia hujus mundi stultítia est apud Deum.",
+        },
+      }),
+    ]);
+    expect(out.alleluia).toEqual([
+      v({ ref: "Phil 3:8", text: "Verúmtamen exístimo ómnia detriméntum esse." }),
+    ]);
+  });
+
   it("strips the alleluia a chant trails off with", () => {
     // The Alleluia is the response sung after the words, not part of them.
     expect(stripTrailingAlleluia("Assumpta est María. Allelúja.")).toBe(
