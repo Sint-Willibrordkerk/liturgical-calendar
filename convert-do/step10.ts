@@ -8,7 +8,6 @@ import {
 import { consola } from "consola";
 import { collectYmlFiles, ensureDir } from "./lib/batch";
 import { isVariantArray, type Variant } from "./lib/variants";
-import { foldAcute, acuteCount } from "./lib/accents.js";
 // The calendar library owns which store each section draws on; the stores are
 // built from the very same sets, so nothing is filed where no one looks.
 import {
@@ -177,28 +176,11 @@ export type LectioStore = {
   entries(): LectioEntries;
 };
 
-/** A copy of the entry with every text's acute accents folded away. */
-function foldValueAcute(value: LectioEntry): LectioEntry {
-  return mapTexts(structuredClone(value), foldAcute) as LectioEntry;
-}
-
-/** The total number of acute accents across all of an entry's texts. */
-function acuteCountOf(value: LectioEntry): number {
-  let total = 0;
-  mapTexts(value, (text) => {
-    total += acuteCount(text);
-    return text;
-  });
-  return total;
-}
-
 /**
  * A store accumulating readings across every document of one language root.
  * Two readings sharing a reference but differing in text are both kept: the
  * first takes the plain key, each further one a counter suffix. Interning the
- * same text again returns the key it was first given. Two that would take the
- * same key and differ only by acute accents are one entry, the accented spelling
- * kept.
+ * same text again returns the key it was first given.
  */
 export function createLectioStore(): LectioStore {
   const entries: LectioEntries = {};
@@ -227,25 +209,7 @@ export function createLectioStore(): LectioStore {
       const seen = seenHere.get(identity);
       if (seen != null) return seen;
 
-      // Two entries that would take this same key and differ only by acute
-      // accents are one entry: the acute marks stress, not a different word. Keep
-      // the more-accented spelling. An accent that differs only in *placement*
-      // (same count, folded alike) is left alone, so those entries stay apart.
-      const foldedIdentity = identityOf(foldValueAcute(value));
-      for (const existingKey of new Set(seenHere.values())) {
-        const existing = entries[existingKey];
-        if (existing === undefined) continue;
-        if (identityOf(foldValueAcute(existing)) !== foldedIdentity) continue;
-        const here = acuteCountOf(value);
-        const there = acuteCountOf(existing);
-        if (here === there) continue;
-        if (here > there) entries[existingKey] = value;
-        seenHere.set(identity, existingKey);
-        return existingKey;
-      }
-
-      const keyCount = new Set(seenHere.values()).size;
-      const key = keyCount === 0 ? base : `${base}-${keyCount + 1}`;
+      const key = seenHere.size === 0 ? base : `${base}-${seenHere.size + 1}`;
       seenHere.set(identity, key);
       entries[key] = value;
       return key;
@@ -351,49 +315,6 @@ export function transform(
   );
 }
 
-/**
- * The keys whose string values are not liturgical text and must not be touched:
- * a reference, a prayer's closure, a rubric condition, the rule directives, the
- * preface name.
- */
-const NON_TEXT_KEYS = new Set([
-  "ref",
-  "closure",
-  "condition",
-  "rule",
-  "prefatio",
-]);
-
-/**
- * Apply `fn` to every liturgical-text string in a document — the `text` of a
- * verse, prayer, antiphon or reading, and the string verses of a tract or
- * extended Alleluia — leaving references, closures, conditions and rule
- * directives untouched. Used both to gather a language's spellings and to rewrite
- * them.
- */
-export function mapTexts(node: unknown, fn: (text: string) => string): unknown {
-  if (Array.isArray(node)) {
-    return node.map((item) => mapTexts(item, fn));
-  }
-  if (node !== null && typeof node === "object") {
-    const obj = node as Record<string, unknown>;
-    for (const key of Object.keys(obj)) {
-      if (NON_TEXT_KEYS.has(key)) continue;
-      const value = obj[key];
-      if (key === "text" && typeof value === "string") {
-        obj[key] = fn(value);
-      } else if (key === "verses" && Array.isArray(value)) {
-        obj[key] = value.map((el) =>
-          typeof el === "string" ? fn(el) : mapTexts(el, fn)
-        );
-      } else {
-        obj[key] = mapTexts(value, fn);
-      }
-    }
-    return obj;
-  }
-  return node;
-}
 
 /** The language root a relative path sits under, e.g. `la/Sancti/x.yml` -> `la`. */
 function languageRoot(relPath: string): string {

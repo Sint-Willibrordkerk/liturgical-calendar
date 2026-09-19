@@ -1226,30 +1226,10 @@ counter. Two identical readings produce the same key, so they still share one
 entry.
 
 In practice these collisions are spelling differences for the same pericope —
-`coeli` against `cœli`, `ejus` against `eius`. Apart from the acute accent (see
-below), they are preserved rather than reconciled: the step does not normalize
-the orthography of a liturgical text, and each day keeps the exact wording its
+`coeli` against `cœli`, `ejus` against `eius`, `Judæam` against `Judǽam`. They
+are preserved rather than reconciled: the step does not normalize the
+orthography of a liturgical text, and each day keeps the exact wording its
 source carried.
-
-#### Acute-accent reconciliation
-
-The one exception is the acute accent, which marks the stressed syllable and does
-not change the word. The sources write the same word now with it and now without
-— `Prophéta` here, `Propheta` there — and, left alone, the two would take a key
-and its `-2` twin. So, **only when a new entry would collide with one already
-under the same key**, the two are compared with their acute accents folded away:
-
-- **Fold alike, one more accented than the other** — they are the same entry. It
-  keeps the plain key rather than a counter, and the **more-accented** spelling
-  is the one stored; a plainer spelling arriving later does not displace it.
-- **Fold alike, equally accented but not identical** — the accent differs in
-  *placement*, and neither is obviously right, so they are kept apart as before.
-- **Fold differently** — a different word, or a difference that is not an acute
-  (a ligature `cœli`/`coeli`, a letter `ejus`/`eius`); kept apart as before.
-
-Because the comparison is between whole entries under one key, a stray accent
-cannot spread: a lone `ét` in one reading never makes `et` accented everywhere,
-the way a corpus-wide rewrite would.
 
 ### Edge cases
 
