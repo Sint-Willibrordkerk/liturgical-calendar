@@ -1,4 +1,8 @@
 packages:
   - "languages/*"
+# esbuild (used by tsup) ships a build script; pnpm blocks these by default.
+# Approve it so the build runs and pnpm stops flagging it as ignored.
 allowBuilds:
-  esbuild: set this to true or false
+  esbuild: true
+onlyBuiltDependencies:
+  - esbuild
