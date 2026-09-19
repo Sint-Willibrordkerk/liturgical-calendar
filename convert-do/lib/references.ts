@@ -93,8 +93,10 @@ export function canonicalizeRef(ref: string): string {
   const trimmed = ref.trim();
   if (!BIBLICAL.test(trimmed)) return trimmed;
 
-  // A trailing stop is never part of a scripture citation.
-  let s = trimmed.replace(/\.+$/, "").trim();
+  // Trailing punctuation is never part of a scripture citation: a source may end
+  // the reference with a stray `.` or `;` (`1 Cor 2:2;`). An internal `;`, which
+  // joins the parts of a compound reference, is left alone.
+  let s = trimmed.replace(/[.;,\s]+$/, "").trim();
 
   const m = s.match(REFERENCE);
   if (m) {

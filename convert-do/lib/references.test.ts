@@ -22,6 +22,11 @@ describe("canonicalizeRef", () => {
     expect(canonicalizeRef("1 Petri 1:1-7")).toBe("1 Pet 1:1-7");
   });
 
+  it("drops a trailing semicolon but keeps an internal one", () => {
+    expect(canonicalizeRef("1 Cor 2:2;")).toBe("1 Cor 2:2");
+    expect(canonicalizeRef("1 Cor 2:2; 2:7-8")).toBe("1 Cor 2:2; 2:7-8");
+  });
+
   it("corrects a genuine error once the spelling is settled", () => {
     expect(canonicalizeRef("Joannes 21:15-10")).toBe("Joann 21:15-19");
     expect(canonicalizeRef("Dan 5:58")).toBe("Dan 3:58");
