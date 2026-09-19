@@ -163,3 +163,52 @@ export type CalendarData = {
 
   items?: CalendarData[];
 };
+
+// Votive Masses
+
+/** What a votive Mass is of (§307). */
+export type VotiveCategory =
+  | "mysteries-of-the-lord"
+  | "blessed-virgin-mary"
+  | "angels";
+
+/** A votive Mass named by its Latin slug — a key into the catalog. */
+export type VotiveMassId = string;
+
+/**
+ * Where the rubrics fix a recurring day: the first such weekday, or every one.
+ * The weekday is a number (Sunday 0 … Saturday 6); `votive.yml` names it, and
+ * the loader resolves the name to this number.
+ */
+export type VotiveOccurrence = { cadence: "monthly" | "weekly"; weekday: number };
+
+/** One votive Mass, as read from `votive.yml` and keyed by its id. */
+export type VotiveMass = {
+  id: VotiveMassId;
+  category: VotiveCategory;
+  liturgicalClass: 3 | 4;
+  rubric: string;
+  /** The propers' lookup slug, where a proper is filed for it. */
+  slug?: string;
+  /** Present only where the rubrics fix a day; absent votives are not placed. */
+  occurrence?: VotiveOccurrence;
+};
+
+/** The whole catalog, keyed by id. */
+export type VotiveCatalog = Record<VotiveMassId, VotiveMass>;
+
+/** The raw shape of `votive.yml`, before it is keyed into a catalog. */
+export type VotiveData = {
+  "valid-categories"?: string[];
+  "valid-liturgical-classes"?: number[];
+  items: Record<
+    string,
+    {
+      category: VotiveCategory;
+      "liturgical-class": 3 | 4;
+      rubric: string;
+      slug?: string;
+      occurrence?: { cadence: "monthly" | "weekly"; weekday: Weekday };
+    }
+  >;
+};
