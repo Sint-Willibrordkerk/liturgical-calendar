@@ -19,7 +19,7 @@ describe("pipeline getInputFiles", () => {
     await writeFile(ymlPath, "k: v\n", "utf-8");
 
     vi.resetModules();
-    const { getInputFiles } = await import("./pipeline");
+    const { getInputFiles } = await import("./pipeline.js");
 
     const result = await getInputFiles(1);
 
