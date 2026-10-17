@@ -11,6 +11,13 @@ import { applyFerialMass, SUNDAY_AFTER_EPIPHANY_MASS } from "./ferias";
 import { applyResumedSundays } from "./resumedSundays";
 import { asLanguage, type Language } from "./language";
 export { type Language } from "./language";
+export type {
+  Calendar,
+  Color,
+  Commemoration,
+  LiturgicalDay,
+  Season,
+} from "./types";
 
 function deleteFields(day: Partial<LiturgicalDay | Commemoration>) {
   if ("commemorations" in day && day.commemorations) {
@@ -76,8 +83,21 @@ export default (
       })
   );
 
+  // A season and a color are identifiers; the language gives each its name,
+  // where it carries one, beside it.
+  const nameOf = (key: string | undefined): string | undefined =>
+    key === undefined ? undefined : translations[key];
+
   eachDay(year, ({ month, day }) => {
     const dayData = calendar[month]![day]!;
+    const seasonName = nameOf(dayData.season);
+    const colorName = nameOf(dayData.color);
+    const alternativeColorName = nameOf(dayData.alternativeColor);
+    if (seasonName !== undefined) dayData.seasonName = seasonName;
+    if (colorName !== undefined) dayData.colorName = colorName;
+    if (alternativeColorName !== undefined) {
+      dayData.alternativeColorName = alternativeColorName;
+    }
     dayData.commemorations = dayData.commemorations.filter(
       (commemoration: Commemoration) =>
         dayData.acceptCommemorationTypes?.includes(

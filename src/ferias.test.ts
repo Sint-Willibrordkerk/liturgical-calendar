@@ -7,7 +7,13 @@ import {
 import type { Calendar, LiturgicalDay } from "./types";
 
 const feria = (): LiturgicalDay =>
-  ({ type: "feria", liturgicalClass: 4, commemorations: [] }) as LiturgicalDay;
+  ({
+    type: "feria",
+    liturgicalClass: 4,
+    commemorations: [],
+    season: "per-annum",
+    color: "green",
+  }) as LiturgicalDay;
 
 const withMass = (
   type: string,
