@@ -4,7 +4,7 @@ items:
 - slot-name: cathedralis-dedicationis
   calendar: { 23-08: In dedicatione Ecclesiae Metropolitanae }
 - slot-name: dioecesis-2
-  calendar: { 05-06: SS. Bonifatii Episcopi et sociorum Martyres }
+  calendar: { 05-06: { title: SS. Bonifatii Episcopi et sociorum Martyres, color: red } }
 - slot-name: dioecesis-3
   calendar:
     01-03: S. Switberti
@@ -16,10 +16,10 @@ items:
     12-05: S. Aufridi
     12-06: S. Odulphi
     25-06: S. Adelberti
-    09-07: SS. Martyrum Gorcomiensium
+    09-07: { title: SS. Martyrum Gorcomiensium, color: red }
     14-07: S. Marcellini
     15-07: S. Plechelmi
-    18-07: S. Frederici
+    18-07: { title: S. Frederici, color: red }
     19-07: S. Bernulphi
     18-08: S. Werenfridi
     25-08: S. Gregorii
