@@ -4,7 +4,7 @@ import type {
   CalendarEntry,
   Occurence,
   OccurenceType,
-} from "src/types";
+} from "../../types";
 import { weekdays } from "../../constants";
 import {
   dateStringSchema,
