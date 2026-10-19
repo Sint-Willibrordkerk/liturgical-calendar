@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { CalendarData, Occurence, OccurenceType } from "src/types";
+import type { CalendarData, Occurence, OccurenceType } from "../../types";
 import { weekdays } from "../../constants";
 import {
   dateStringSchema,
