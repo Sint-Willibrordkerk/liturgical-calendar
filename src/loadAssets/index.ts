@@ -6,7 +6,7 @@ import {
   nameSaint,
   type Stores,
 } from "../massPropers";
-import type { RawMassProper } from "../types";
+import type { CalendarData, RawMassProper } from "../types";
 
 export type { RawMassProper };
 import { assertCalendarData } from "./assert/calendarData";
@@ -30,9 +30,25 @@ export function loadCalendarData() {
   return calendarData;
 }
 
+/**
+ * What a local proper may say — the types, classes, commemoration types and
+ * colors the base calendar declares valid. A proper is read on its own, so it
+ * is checked against the calendar it will be merged into rather than against
+ * nothing.
+ */
+function validity(): Partial<CalendarData> {
+  const base = loadCalendarData();
+  return {
+    "valid-types": base["valid-types"],
+    "valid-liturgical-classes": base["valid-liturgical-classes"],
+    "valid-commemoration-types": base["valid-commemoration-types"],
+    "valid-colors": base["valid-colors"],
+  };
+}
+
 export function loadPropers(name: string) {
   const propers = loadAsset(`propers/${name}.yml`);
-  assertCalendarData(propers);
+  assertCalendarData(propers, validity());
   return propers;
 }
 

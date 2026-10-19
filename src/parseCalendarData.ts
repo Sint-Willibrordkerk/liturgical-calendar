@@ -1,5 +1,7 @@
 import type {
   CalendarData,
+  CalendarEntry,
+  Color,
   DateString,
   Occurence,
   RelativeDate,
@@ -16,6 +18,7 @@ import {
 } from "./loadAssets";
 import { ordinals, days, feriae } from "./ordinals";
 import type { Language } from "./language";
+import { defaultColor, mayWearRose, seasonOf } from "./seasons";
 
 type Translations = Record<string, string>;
 /** A filing slug — all lowercase, digits and hyphens — not a name to show. */
@@ -43,8 +46,9 @@ type ParsedCalendarData = {
   liturgicalClass: number;
   commemorationType: string;
   acceptCommemorationTypes: string[];
+  color?: string;
   occurence?: Occurence;
-  calendar?: Record<DateString, string[] | string | undefined>;
+  calendar?: Record<DateString, CalendarEntry[] | CalendarEntry | undefined>;
   slot?: string;
   slotName?: string;
 };
@@ -62,6 +66,7 @@ function flattenCalendarData(
     commemorationType: item["commemoration-type"] ?? parent.commemorationType,
     acceptCommemorationTypes:
       item["accept-commemoration-types"] ?? parent.acceptCommemorationTypes,
+    color: item.color ?? parent.color,
     occurence: item.occurence ?? parent.occurence,
     slotName: item["slot-name"] ?? parent.slotName,
   };
@@ -83,11 +88,17 @@ function flattenCalendarData(
     );
   else if (Object.keys(item.calendar ?? {}).length) {
     Object.entries(item.calendar!).forEach(([date, value]) => {
-      const titles = Array.isArray(value) ? value : [value];
-      titles.reverse().forEach((title) => {
+      if (value === undefined) return;
+      // Copied before reversing: the data is shared by every calendar built
+      // from it, and reversing it in place would flip the order each time.
+      const entries = Array.isArray(value) ? [...value] : [value];
+      entries.reverse().forEach((entry) => {
+        const { title, color } =
+          typeof entry === "string" ? { title: entry, color: undefined } : entry;
         list.push({
           ...(merged as ParsedCalendarData),
           title,
+          color: color ?? merged.color,
           occurence: { date: date as DateString },
         });
       });
@@ -228,10 +239,23 @@ export function parseCalendarData(
           title = mass.title;
         }
 
+        // The season belongs to the date; the color to the day's own Mass,
+        // where the calendar names one, and to the season otherwise.
+        const season = seasonOf(date, easter, advent);
+        const color =
+          (item.color as Color | undefined) ?? defaultColor(item.type, season);
+        const alternativeColor =
+          item.type === "dominica" && mayWearRose(date, easter, advent)
+            ? ("rose" as const)
+            : undefined;
+
         calendarBuilder.add(date.getMonth() + 1, date.getDate(), {
           ...item,
           title,
           mass,
+          color,
+          season,
+          alternativeColor,
         });
       });
     }
