@@ -14,22 +14,30 @@ export class CalendarBuilder {
       liturgicalClass: liturgicalDayProp.liturgicalClass,
       commemorationType: liturgicalDayProp.commemorationType,
       acceptCommemorationTypes: liturgicalDayProp.acceptCommemorationTypes,
+      color: liturgicalDayProp.color,
       mass: liturgicalDayProp.mass,
+      season: liturgicalDayProp.season,
+      alternativeColor: liturgicalDayProp.alternativeColor,
     };
     this.result[month] ??= {};
 
-    if (!this.result[month][day]) {
+    const existing = this.result[month][day];
+    if (!existing) {
       this.result[month][day] = { commemorations: [], ...liturgicalDay };
     } else {
+      // The day gives way and is commemorated. The season belongs to the date
+      // and the color to the Mass that is said, so neither follows it down: a
+      // commemoration is a collect added to that Mass, not a Mass of its own.
+      const {
+        commemorations,
+        season: _season,
+        color: _color,
+        alternativeColor: _alternativeColor,
+        ...commemorated
+      } = existing;
       this.result[month][day] = {
         ...liturgicalDay,
-        commemorations: [
-          {
-            ...this.result[month][day],
-            commemorations: undefined,
-          } as Commemoration,
-          ...this.result[month][day]!.commemorations,
-        ],
+        commemorations: [commemorated as Commemoration, ...commemorations],
       };
     }
   }
