@@ -482,6 +482,38 @@ The Alleluia sung after the Gradual is **lifted out of `graduale` into
 `Prefatio=X` is lifted out of `rule` below. A gradual whose second block is a
 `!Tractus` has no Alleluia — that block is a tract — and yields no section.
 
+**The boundary is the `Allelúja, allelúja.` cue, not the first reference.** Where
+that cue appears after some gradual content, everything before it is the Gradual
+and everything after it is the Alleluia — even when the cue falls inside a
+referenced block, and even when the Gradual's own antiphon and verse are given
+under two separate references. A cue that opens the whole section is not a
+boundary; it is skipped as before.
+
+Within the Gradual, antiphon and verse are told apart by the `v.` marker, not by
+their order: the marked lines are the verse and the unmarked lines the antiphon,
+each keeping the reference of the block it came from, even where the source lists
+the verse first. After the cue, a verse that merely repeats the Gradual's verse
+is dropped, and the Alleluia takes the remaining, distinctive verse.
+
+For example, a `[Graduale]` that reads (antiphon and verse under separate
+references, then the Alleluia after the cue):
+
+```
+!1 Cor 3:19; 3:20
+v. Sapiéntia hujus mundi… vanæ sunt.
+!1 Cor 1:19
+Perdam sapiéntiam… reprobábo.
+Alleluja, alleluja.
+v. Sapiéntia hujus mundi… vanæ sunt, alleluia
+!Phil 3:8
+Verúmtamen exístimo… Dómini mei. Allelúja.
+```
+
+yields the Gradual antiphon `Perdam sapiéntiam… reprobábo.` (1 Cor 1:19) and
+verse `Sapiéntia hujus mundi… vanæ sunt.` (1 Cor 3:19-20), and the Alleluia
+`Verúmtamen exístimo… Dómini mei.` (Phil 3:8) — the repeated `Sapiéntia…` verse
+after the cue being dropped.
+
 **`gradualep` is not a gradual at all.** It is the extended Alleluia that
 replaces the Gradual in paschaltide, so it is structured as one — a list of
 verses rather than an antiphon and a verse — and published under the name

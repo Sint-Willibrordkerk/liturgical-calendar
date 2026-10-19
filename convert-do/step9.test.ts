@@ -224,6 +224,95 @@ describe("step9 missa structuring", () => {
     expect(out.alleluia).toEqual([v({ ref: "Ps 2:2", text: "Referenced" })]);
   });
 
+  it("splits at the cue when the gradual spans two references (St Justin)", () => {
+    // The gradual's antiphon and verse are given under separate references, in
+    // verse-first order; the cue then opens the Alleluia. The `v.` marker, not
+    // position, tells antiphon from verse, and the Alleluia verse that merely
+    // repeats the gradual verse is dropped in favour of the distinctive one.
+    const out = transform({
+      graduale: [
+        v([
+          "!1 Cor 3:19; 3:20",
+          "v. Sapiéntia hujus mundi stultítia est apud Deum.",
+          "!1 Cor 1:19",
+          "Perdam sapiéntiam sapiéntium et prudentiam prudéntium reprobábo.",
+          "Alleluja, alleluja.",
+          "v. Sapiéntia hujus mundi stultítia est apud Deum, alleluia",
+          "!Phil 3:8",
+          "Verúmtamen exístimo ómnia detriméntum esse. Allelúja.",
+        ]),
+      ],
+    });
+    expect(out.graduale).toEqual([
+      v({
+        antiphon: {
+          ref: "1 Cor 1:19",
+          text: "Perdam sapiéntiam sapiéntium et prudentiam prudéntium reprobábo.",
+        },
+        verse: {
+          ref: "1 Cor 3:19; 3:20",
+          text: "Sapiéntia hujus mundi stultítia est apud Deum.",
+        },
+      }),
+    ]);
+    expect(out.alleluia).toEqual([
+      v({ ref: "Phil 3:8", text: "Verúmtamen exístimo ómnia detriméntum esse." }),
+    ]);
+  });
+
+  it("splits an inline cue and reads two unmarked gradual blocks in order (St Paul)", () => {
+    // The cue trails the Gradual verse's line, and the antiphon and verse are
+    // given under two references with no `v.` marker.
+    const out = transform({
+      graduale: [
+        v([
+          "!Gal 2:8-9",
+          "Qui operátus est Petro in apostolátum.",
+          "!1 Cor 15:10",
+          "Grátia Dei in me vácua non fuit. Allelúja, allelúja.",
+          "V. Sancte Paule Apóstole, intercéde pro nobis. Allelúja.",
+        ]),
+      ],
+    });
+    expect(out.graduale).toEqual([
+      v({
+        antiphon: {
+          ref: "Gal 2:8-9",
+          text: "Qui operátus est Petro in apostolátum.",
+        },
+        verse: { ref: "1 Cor 15:10", text: "Grátia Dei in me vácua non fuit." },
+      }),
+    ]);
+    expect(out.alleluia).toEqual([
+      v({ ref: "", text: "Sancte Paule Apóstole, intercéde pro nobis." }),
+    ]);
+  });
+
+  it("reads two unmarked gradual blocks in order under a standalone cue (Agnes)", () => {
+    const out = transform({
+      graduale: [
+        v([
+          "!Ps 44:3",
+          "Diffúsa est grátia in lábiis tuis.",
+          "!Ps 44:5",
+          "Propter veritátem et mansuetúdinem.",
+          "Allelúja, allelúja.",
+          "!Matt 25:6",
+          "Quinque prudéntes vírgines. Allelúja.",
+        ]),
+      ],
+    });
+    expect(out.graduale).toEqual([
+      v({
+        antiphon: { ref: "Ps 44:3", text: "Diffúsa est grátia in lábiis tuis." },
+        verse: { ref: "Ps 44:5", text: "Propter veritátem et mansuetúdinem." },
+      }),
+    ]);
+    expect(out.alleluia).toEqual([
+      v({ ref: "Matt 25:6", text: "Quinque prudéntes vírgines." }),
+    ]);
+  });
+
   it("strips the alleluia a chant trails off with", () => {
     // The Alleluia is the response sung after the words, not part of them.
     expect(stripTrailingAlleluia("Assumpta est María. Allelúja.")).toBe(
@@ -235,6 +324,24 @@ describe("step9 missa structuring", () => {
     expect(
       stripTrailingAlleluia("lac concupíscite, allelúja, allelúja, allelúja.")
     ).toBe("lac concupíscite.");
+  });
+
+  it("strips a parenthesized alleluia, the paschaltide-only cue", () => {
+    expect(
+      stripTrailingAlleluia("nisi Jesum Christum, et hunc crucifíxum. (Alleluia.)")
+    ).toBe("nisi Jesum Christum, et hunc crucifíxum.");
+    expect(
+      stripTrailingAlleluia("ut sédeat cum princípibus. (Allelúja, allelúja).")
+    ).toBe("ut sédeat cum princípibus.");
+    expect(stripTrailingAlleluia("quam reddet mihi Dóminus. (Alleluia)")).toBe(
+      "quam reddet mihi Dóminus."
+    );
+  });
+
+  it("leaves a parenthetical that is not an alleluia alone", () => {
+    expect(stripTrailingAlleluia("Dóminus (Deus noster).")).toBe(
+      "Dóminus (Deus noster)."
+    );
   });
 
   it("leaves text that does not end in an alleluia", () => {
