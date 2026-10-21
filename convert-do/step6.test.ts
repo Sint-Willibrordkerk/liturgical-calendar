@@ -101,3 +101,22 @@ describe("step6 commemorations stand alone", () => {
     expect(isCommemorationFile("09-08t")).toBe(false);
   });
 });
+
+describe("step6 the Martyrology's movable days", () => {
+  it("keeps the name of a file that is no date", () => {
+    expect(getOutputFile("la\\Martyrologium\\Mobile.json")).toBe(
+      "la\\Martyrologium\\Mobile.json"
+    );
+  });
+
+  it("adds no condition for it", () => {
+    expect(
+      transform(
+        { "adv1-0": [{ value: ["Dominica prima Adventus."], condition: [] }] },
+        "la\\Martyrologium\\Mobile.json"
+      )
+    ).toEqual({
+      "adv1-0": [{ value: ["Dominica prima Adventus."], condition: [] }],
+    });
+  });
+});

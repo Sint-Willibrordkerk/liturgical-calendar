@@ -18,9 +18,15 @@ const PROPERS = join("assets", "propers");
 
 /**
  * The vocabulary files name no days: the ordinals titles are built from, and
- * the names of the seasons and the colors, keyed by their identifiers.
+ * the names of the seasons and the colors, keyed by their identifiers, and the
+ * age of the moon the Martyrology announces.
  */
-const VOCABULARY = new Set(["ordinals.yml", "seasons.yml", "colors.yml"]);
+const VOCABULARY = new Set([
+  "ordinals.yml",
+  "seasons.yml",
+  "colors.yml",
+  "luna.yml",
+]);
 
 /**
  * Keys that name a day no calendar carries. Left in place rather than deleted —

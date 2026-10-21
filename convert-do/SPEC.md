@@ -102,8 +102,12 @@ rest of the pipeline.
   - it is not one of the excluded auxiliary files. Excluded are the
     per-language phonetic and tooling files and a small set of named sources:
     `*pl.txt`, `*tts.txt`, `ruler.txt`, `Linguae.txt`, `source.txt`,
-    `sundaytable.txt`, `Mobile.txt`, `XPRex.txt`, `02-02-quadp.txt`,
-    `dom-oct.txt`, `Quad5-5Feriarc.txt`, `Propaganda.txt`.
+    `sundaytable.txt`, `XPRex.txt`, `02-02-quadp.txt`, `dom-oct.txt`,
+    `Quad5-5Feriarc.txt`, `Propaganda.txt`.
+
+    `Martyrologium/Mobile.txt` is read: it holds the Martyrology's
+    announcements of the movable days (see [The
+    Martyrology](#the-martyrology)).
 
   Only the **ingested languages** are read — the sources carry fifteen, and
   each one is a full copy of the tree that costs its own pass and its own
@@ -345,7 +349,13 @@ Two line-level details apply to ordinary (non-conditional) lines too:
 ### Strength and scope
 
 Each conditional carries a **strength** and a **back-scope** / **forward-scope**,
-derived from its stopword and scope phrase:
+derived from its stopword, its scope phrase and its instruction. They close the
+conditional, in this order: an optional scope phrase (`loco hujus versus`,
+`loco horum versuum`, `hic versus`, `hi versus`, `hoc versus`, `hæc versus`,
+`haec versus`), an optional instruction (`dicitur`, `dicuntur`, `omittitur`,
+`omittuntur`), and an optional `semper`. What remains before them is the rubric
+condition: `(rubrica 1955 aut rubrica 1960 omittitur)` is the condition
+`rubrica 1955 aut rubrica 1960` with the instruction `omittitur`.
 
 - **Strength** (how wide a nesting the conditional governs) comes from the
   stopword: `si` → 0; `deinde` → 1; `sed` → 1; `vero` → 1; `atque` → 2;
@@ -354,14 +364,16 @@ derived from its stopword and scope phrase:
   claims:
   - *line* — the single immediately preceding line (the default for the
     back-referencing stopwords `sed`/`vero`/`atque`/`attamen`);
-  - *chunk* — the preceding run of non-blank lines, back to a blank line
-    (scope phrase `hic versus` / `hi versus`, or the `omittitur` instruction);
-  - *nest* — everything back to the current nesting fence (scope phrase
-    `loco hujus versus` / `loco horum versuum`, or `omittuntur`);
+  - *chunk* — the preceding run of non-blank lines, back to a blank line (a
+    scope phrase naming `versus`, or the `omittitur` instruction);
+  - *nest* — everything back to the current nesting fence (a scope phrase
+    naming `versuum`, or the `omittuntur` instruction);
   - *none* — no backward effect (plain `si`, or a `semper` conditional).
-- **Forward-scope** — how many *following* lines it governs, derived similarly
-  (an `omittitur`/`omittuntur` instruction suppresses forward; otherwise the
-  forward reach mirrors the back-scope, defaulting to *line*).
+- **Forward-scope** — how many *following* lines it governs: none after
+  `omittitur`/`omittuntur`, which only take lines away; after `dicuntur`, the
+  following chunk where the back-scope is a chunk and the whole nesting
+  otherwise; and in every other case the following chunk where the back-scope
+  is a chunk or a nest, and the following line where it is not.
 
 A conditional describes an alternative to the surrounding default text. In the
 branch that **assumes the rubric holds**, the backward-governed preceding lines
@@ -869,7 +881,7 @@ Resolution turns on whether the reference is **plain** or **modified**:
 
 - **A plain reference** — no line range, no substitution — resolves to the
   **key the target section already holds** for the current rubric condition
-  (an exact condition match, else the default, else the first variant). The
+  (see the rubric variants below). The
   borrowing section comes to hold that same key; nothing new is stored, and the
   text stays single. Where the target section is one the store does not cover,
   its value — the lines it holds — is copied instead, exactly as the broad
@@ -888,6 +900,45 @@ Resolution turns on whether the reference is **plain** or **modified**:
 
 - If a plain reference's resolved value is **itself a reference**, it is
   resolved transitively, up to a depth of **5**.
+
+**Rubric variants.** Each variant of the borrowing section resolves its
+references under its own condition: to the target variant with that exact
+condition, else to the most specific target variant whose condition it already
+includes, else to the default.
+
+**In the Martyrology, a reference also brings its target's rubric variants with
+it.** A day of the Martyrology lists its entries by reference, and an entry
+often has a wording of its own for a rubric the list does not vary by. Where a
+target varies by a rubric the borrowing variant does not name, the borrowing
+variant is written once more for each such target variant — labelled with both
+conditions, and resolved under the combined one — so that the entry's wording
+for that rubric is not lost behind its default. A variant the list gives of its
+own takes precedence: no copy is written where the list already has a variant
+at least as specific for that rubric.
+
+This is not done for the Mass and Office. There a day's Mass and Office share a
+file (step 2), so a target section can hold the Mass's wording beside a variant
+that is the Office's, and bringing variants along would carry the Office into
+the Mass.
+
+For example, a day lists its entries with no condition, and the entry it names
+has a default wording and one for the 1960 rubrics:
+
+```yaml
+martyrologium:
+  - { condition: [], value: ["@:Octava"] }
+octava:
+  - { condition: [], value: ["Octava Epiphaniæ Domini."] }
+  - { condition: ["1962"], value: ["Commemoratio Baptismatis Domini."] }
+```
+
+The list then resolves to both:
+
+```yaml
+martyrologium:
+  - { condition: [], value: ["Octava Epiphaniæ Domini."] }
+  - { condition: ["1962"], value: ["Commemoratio Baptismatis Domini."] }
+```
 
 A reference that cannot be resolved — a missing file, or a missing section — is
 **left in place** as its `@…` line, exactly as it stood. Step 11 then leaves it
@@ -1007,7 +1058,8 @@ The directory and filename are read as follows:
    | `1960`           | `1962`          |
 
 4. **Excluded files.** For a fixed set of filenames — `Coronatio`, `10-DU`,
-   `10-DP`, `07-DP`, `11-03sec`, `00-VB`, `00-VE`, `09-DP`, `09-DT` — filename
+   `10-DP`, `07-DP`, `11-03sec`, `00-VB`, `00-VE`, `09-DP`, `09-DT`, and the
+   Martyrology's `Mobile` — filename
    suffix parsing is skipped (a directory-variant token, if any, is still
    applied).
 5. **Feria.** If the filename contains `Feria`, the number *n* immediately
@@ -1348,6 +1400,8 @@ is the Divine Office, is not carried into the published assets.
 - A `lectio.yml`, `oratio.yml` and `antiphona.yml` at each language root, holding
   **only** the store entries those sections refer to.
 - A document with no Mass content is **not written** at all.
+- The Martyrology, for each language that has one (see [The
+  Martyrology](#the-martyrology)).
 
 ### Which trees are published
 
@@ -1496,6 +1550,76 @@ between runs.
 Only the entries the kept sections name are carried over. The Office readings
 share the step 5 store but are not published, so most of its entries do not
 travel with the propers; neither do entries only a dropped variant named.
+
+### The Martyrology
+
+The Martyrology is published beside the Mass propers, as
+`Martyrologium/<MM-DD>.yml` for each date, `Martyrologium/mobile.yml` for the
+movable days and `Martyrologium/conclusio.yml` for the versicle that closes
+every reading, under each language whose sources carry a Martyrology. Its text is read at
+Prime, and nothing about it varies with the day it falls on beyond what these
+files say, so it is published already reduced to the rubric in force: a section
+takes its variant for that rubric, or its default where it has none. A variant
+for any other rubric is dropped. No condition survives into the published
+files.
+
+A date's file holds:
+
+- `titulus` — the line that opens the day's reading, its date in the Roman
+  reckoning: *Duodécimo Kaléndas Februárii*;
+- `elogia` — the day's entries, in the order the day lists them, one text each.
+
+```yaml
+titulus: Duodécimo Kaléndas Februárii
+elogia:
+  - Romæ pássio sanctæ Agnétis, Vírginis et Mártyris; …
+  - Athénis natális sancti Públii Epíscopi, …
+```
+
+The list of entries is taken as the references step 6 resolved it to, with:
+
+- **an entry the language has no words for left out.** The sources list an
+  entry another book carries; where its section is empty here, the reference
+  stays as it stood, and Divinum Officium prints nothing for it. Neither does
+  this.
+- **blank lines left out.** They only keep the conditionals in the list apart.
+- **the rubrics within the text left out.** A passage between `/:` and `:/` is
+  a direction to the reader — *Hic vox elevatur, et omnes genua flectunt* — not
+  part of what is read. A line that is nothing else is dropped, and a direction
+  within a line is removed from it.
+
+A date whose entries are all left out keeps its `titulus` and has no `elogia`.
+
+`mobile.yml` maps the day each announcement belongs to — as the sources key
+it, by week of the year and weekday (`adv1-0`, `pasc0-1`, `pent02-5`), or
+`10-du` for the last Sunday of October, in the lowercase step 1 gives every
+section name — to the lines of the announcement read before the entries of
+that day. An announcement that is empty under the rubric in force is not
+published. Nor are the three the sources key to something other than a date:
+`defuncti` and `defunctim`, which Divinum Officium attaches to the office of
+the day it is read on (and the commemoration of the faithful departed is in the
+entries of 2 November already), and `nativity`, which nothing reads (the
+announcement of the Nativity is in the entries of 25 December).
+
+```yaml
+quad6-0:
+  - Domínica secúnda Passiónis, seu in palmis, …
+pasc5-3:
+  - Vigília Ascensiónis Dómini nostri Jesu Christi.
+  - Romæ Litaníæ minóres ad sanctum Petrum.
+```
+
+`conclusio.yml` holds the versicle and its response, from the Office's common
+prayers (`Conclmart`), with their `V.` and `R.` marks taken off:
+
+```yaml
+versus: Et álibi aliórum plurimórum sanctórum Mártyrum et Confessórum, atque sanctárum Vírginum.
+responsum: Deo grátias.
+```
+
+The response is the prayer the versicle's `$Deo gratias` line names. A language
+carrying the common prayers but no Martyrology of its own publishes no
+conclusion either: there is no reading for it to close.
 
 ### Edge cases
 
