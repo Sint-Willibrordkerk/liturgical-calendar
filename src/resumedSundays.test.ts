@@ -1,10 +1,67 @@
 import { describe, expect, it } from "vitest";
 import {
+  applyResumedSundays,
   LAST_SUNDAY_MASS,
   NUMBERED_SUNDAYS,
   resumedSundayMass,
   sundayMasses,
 } from "./resumedSundays";
+import type { Calendar, LiturgicalDay } from "./types";
+import { calculateAdvent, calculateEaster } from "./utils";
+
+describe("applyResumedSundays", () => {
+  // 2027: the Trinity is the 23rd of May, Advent begins the 28th of November;
+  // 27 Sundays after Pentecost, two kept after the Epiphany, so IV, V and VI
+  // are resumed on the 31st of October, the 7th and the 14th of November.
+  const year = 2027;
+  const sundayOf = (title: string): LiturgicalDay =>
+    ({ type: "dominica", title, mass: { title }, commemorations: [] }) as never;
+
+  /** Every Sunday after Pentecost of 2027, Christ the King on the 31st. */
+  function calendar2027(): Calendar {
+    const out: Calendar = {} as Calendar;
+    const date = new Date(year, 4, 23);
+    for (; date < new Date(year, 10, 28); date.setDate(date.getDate() + 7)) {
+      const [m, d] = [date.getMonth() + 1, date.getDate()];
+      out[m] ??= {};
+      out[m]![d] = sundayOf(`numbered ${m}-${d}`);
+    }
+    out[10]![31] = {
+      type: "festum",
+      title: "Christ the King",
+      mass: { title: "Christ the King" },
+      commemorations: [sundayOf("numbered 10-31")],
+    } as never;
+    return out;
+  }
+
+  const apply = (calendar: Calendar) =>
+    applyResumedSundays(
+      calendar,
+      year,
+      calculateEaster(year),
+      calculateAdvent(year),
+      2,
+      (title) => ({ title })
+    );
+
+  it("gives a Sunday beyond the count its resumed Mass", () => {
+    const calendar = calendar2027();
+    apply(calendar);
+    expect(calendar[11]![7]!.mass).toEqual({ title: resumedSundayMass(5) });
+    expect(calendar[11]![21]!.mass).toEqual({ title: LAST_SUNDAY_MASS });
+  });
+
+  it("gives a Sunday kept as a feast its Mass in the commemoration", () => {
+    const calendar = calendar2027();
+    apply(calendar);
+    const kept = calendar[10]![31]!;
+    expect(kept.mass).toEqual({ title: "Christ the King" });
+    expect(kept.title).toBe("Christ the King");
+    expect(kept.commemorations[0]!.title).toBe(resumedSundayMass(4));
+    expect(kept.commemorations[0]!.mass).toEqual({ title: resumedSundayMass(4) });
+  });
+});
 
 describe("sundayMasses", () => {
   it("leaves the numbered Sundays to say their own Mass", () => {

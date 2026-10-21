@@ -3,10 +3,11 @@
  *
  * A fourth-class feria has no Mass of its own. The rubrics say which it takes:
  * in the days after the Circumcision and after the Epiphany it repeats those
- * feasts, and the rest of the year it keeps the Sunday just past.
+ * feasts, and the rest of the year it keeps the Sunday just past — the Sunday
+ * as such, even where a feast was kept on it in its place.
  */
 import type { Calendar, LiturgicalDay } from "./types";
-import { eachDay } from "./utils";
+import { calculateEaster, dayNumber, eachDay } from "./utils";
 
 /**
  * The Mass of the First Sunday after the Epiphany, *In excelso throno*, said on
@@ -19,10 +20,24 @@ import { eachDay } from "./utils";
 export const SUNDAY_AFTER_EPIPHANY_MASS =
   "Feria II infra Hebdomadam I post Epiphaniam";
 
+/**
+ * The Mass of the First Sunday after Pentecost, *Domine, in tua misericordia*,
+ * said on the ferias that follow that Sunday.
+ *
+ * The Sunday itself is kept as the Holy Trinity, and its file gives the Trinity
+ * texts unless asked for the Sunday's own: they are filed as its variant
+ * {@link SUNDAY_AFTER_PENTECOST_VARIANT}.
+ */
+export const SUNDAY_AFTER_PENTECOST_MASS = "Dominica I post Pentecosten";
+
+/** The variant of that Sunday's file that holds the Sunday's own texts. */
+export const SUNDAY_AFTER_PENTECOST_VARIANT = "special-a";
+
 /** The Preface of the Epiphany, which those ferias say. */
 const EPIPHANY_PREFACE = "epi";
 
 const FERIA = "feria";
+const SUNDAY_TYPE = "dominica";
 const SUNDAY = 0;
 
 /**
@@ -66,15 +81,27 @@ export function firstSundayAfterEpiphany(year: number): Date {
  *   *In excelso throno*, with the Preface of the Epiphany.
  * - **otherwise** — the Mass of the Sunday just past.
  *
+ * The Sunday's Mass is the Sunday's own, not that of a feast kept on it. Where
+ * a feast took the Sunday — the Holy Trinity, Christ the King, All Saints — the
+ * Sunday gave way and is carried as a commemoration, and the ferias of its week
+ * say the Mass of that Sunday: Dominica XXII post Pentecosten in the week of
+ * Christ the King in 2026, not the Mass of Christ the King. The First Sunday
+ * after Pentecost is filed with the Trinity, so its Mass is handed in, as the
+ * First Sunday after the Epiphany's is. A feast on a Sunday that commemorates
+ * no Sunday — Easter, Pentecost — is the Sunday's Mass itself.
+ *
  * A feria that already has a Mass, and any day of a higher class, is left as it
  * is. Where the day it would borrow from has no Mass either, it keeps none.
  */
 export function applyFerialMass(
   calendar: Calendar,
   year: number,
-  sundayAfterEpiphany?: LiturgicalDay["mass"]
+  sundayAfterEpiphany?: LiturgicalDay["mass"],
+  sundayAfterPentecost?: LiturgicalDay["mass"]
 ): void {
   const epiphanySunday = firstSundayAfterEpiphany(year);
+  const trinity = calculateEaster(year);
+  trinity.setDate(trinity.getDate() + 56);
   const massOn = (month: number, day: number) => calendar[month]?.[day]?.mass;
 
   // Those ferias say the Preface of the Epiphany, whatever the Mass itself
@@ -109,8 +136,25 @@ export function applyFerialMass(
 
     // Recorded after the day is settled, so a Sunday never takes its own Mass
     // from the week before it.
-    if (date.getDay() === SUNDAY && entry.mass !== undefined) {
-      precedingSunday = entry.mass;
+    if (date.getDay() === SUNDAY) {
+      const sunday =
+        dayNumber(date) === dayNumber(trinity) && sundayAfterPentecost
+          ? sundayAfterPentecost
+          : sundayAsSuch(entry);
+      if (sunday !== undefined) precedingSunday = sunday;
     }
   });
+}
+
+/**
+ * The Mass of a Sunday as such: its own, or, where a feast was kept on it, that
+ * of the Sunday it commemorates. A feast that commemorates no Sunday stands for
+ * the Sunday itself.
+ */
+function sundayAsSuch(entry: LiturgicalDay): LiturgicalDay["mass"] {
+  if (entry.type === SUNDAY_TYPE) return entry.mass;
+  const commemorated = entry.commemorations?.find(
+    (commemoration) => commemoration.type === SUNDAY_TYPE
+  );
+  return commemorated === undefined ? entry.mass : commemorated.mass;
 }
