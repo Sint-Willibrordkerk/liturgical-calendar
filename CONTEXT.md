@@ -70,6 +70,11 @@ _Avoid_: diocesan calendar, supplement
   Mass of its own. Only when a rubric lets a commemorated celebration be taken
   as the Mass — a votive Mass, say — does it have a color, and that is the color
   of that Mass, not of the commemoration.
+- A feast of the Lord kept on a Sunday by its own date (n. 17: the Holy Name,
+  the Holy Family, the Trinity, Christ the King) takes the place of the Sunday
+  and commemorates no Sunday. A feast that merely falls on a Sunday, such as
+  All Saints, commemorates it. Either way, the ferias of that week say the
+  Sunday's own Mass.
 - A **Color** comes from the day's entry in the calendar data where that names
   one, and otherwise from the rubrics' rule: a feast is white, a vigil outside
   paschaltide is violet, any other day wears its **Season**'s. The data names

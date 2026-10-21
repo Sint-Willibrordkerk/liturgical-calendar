@@ -62,6 +62,11 @@ export function sundayMasses(
 /**
  * Give the Sundays after Pentecost that outrun the count the Mass they say.
  *
+ * A Sunday kept as a feast — Christ the King, say — celebrates the feast, and
+ * the Sunday gives way to a commemoration of itself. It is that commemoration
+ * that takes the Mass named here: it is the Sunday as such, whose Mass the
+ * ferias of its week say.
+ *
  * `massFor` reads a Mass by title, so this stays a question of which Mass a day
  * says rather than of how one is loaded.
  */
@@ -91,15 +96,21 @@ export function applyResumedSundays(
   });
 
   sundayMasses(sundays.length, epiphanySundaysKept).forEach((title, i) => {
-    const entry = sundays[i]!;
     // The count runs over every Sunday, but a Sunday kept as a feast — Christ
-    // the King, say — celebrates the feast; only a Sunday still observed as one
-    // takes the Mass named here.
-    if (title === undefined || entry.type !== "dominica") return;
+    // the King, say — celebrates the feast; the Sunday it commemorates takes
+    // the Mass named here instead.
+    const entry = sundays[i]!;
+    const sunday =
+      entry.type === "dominica"
+        ? entry
+        : entry.commemorations?.find(
+            (commemoration) => commemoration.type === "dominica"
+          );
+    if (title === undefined || sunday === undefined) return;
     const mass = massFor(title);
     if (mass !== undefined) {
-      entry.title = title;
-      entry.mass = mass;
+      sunday.title = title;
+      sunday.mass = mass;
     }
   });
 }
