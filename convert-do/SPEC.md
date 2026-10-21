@@ -345,7 +345,13 @@ Two line-level details apply to ordinary (non-conditional) lines too:
 ### Strength and scope
 
 Each conditional carries a **strength** and a **back-scope** / **forward-scope**,
-derived from its stopword and scope phrase:
+derived from its stopword, its scope phrase and its instruction. They close the
+conditional, in this order: an optional scope phrase (`loco hujus versus`,
+`loco horum versuum`, `hic versus`, `hi versus`, `hoc versus`, `hæc versus`,
+`haec versus`), an optional instruction (`dicitur`, `dicuntur`, `omittitur`,
+`omittuntur`), and an optional `semper`. What remains before them is the rubric
+condition: `(rubrica 1955 aut rubrica 1960 omittitur)` is the condition
+`rubrica 1955 aut rubrica 1960` with the instruction `omittitur`.
 
 - **Strength** (how wide a nesting the conditional governs) comes from the
   stopword: `si` → 0; `deinde` → 1; `sed` → 1; `vero` → 1; `atque` → 2;
@@ -354,14 +360,16 @@ derived from its stopword and scope phrase:
   claims:
   - *line* — the single immediately preceding line (the default for the
     back-referencing stopwords `sed`/`vero`/`atque`/`attamen`);
-  - *chunk* — the preceding run of non-blank lines, back to a blank line
-    (scope phrase `hic versus` / `hi versus`, or the `omittitur` instruction);
-  - *nest* — everything back to the current nesting fence (scope phrase
-    `loco hujus versus` / `loco horum versuum`, or `omittuntur`);
+  - *chunk* — the preceding run of non-blank lines, back to a blank line (a
+    scope phrase naming `versus`, or the `omittitur` instruction);
+  - *nest* — everything back to the current nesting fence (a scope phrase
+    naming `versuum`, or the `omittuntur` instruction);
   - *none* — no backward effect (plain `si`, or a `semper` conditional).
-- **Forward-scope** — how many *following* lines it governs, derived similarly
-  (an `omittitur`/`omittuntur` instruction suppresses forward; otherwise the
-  forward reach mirrors the back-scope, defaulting to *line*).
+- **Forward-scope** — how many *following* lines it governs: none after
+  `omittitur`/`omittuntur`, which only take lines away; after `dicuntur`, the
+  following chunk where the back-scope is a chunk and the whole nesting
+  otherwise; and in every other case the following chunk where the back-scope
+  is a chunk or a nest, and the following line where it is not.
 
 A conditional describes an alternative to the surrounding default text. In the
 branch that **assumes the rubric holds**, the backward-governed preceding lines

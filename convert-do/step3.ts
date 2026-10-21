@@ -147,29 +147,34 @@ function applyConditionalToFork(
         newValue.length = fence < 0 ? 0 : fence + 1;
       }
 
-      const lastOut = newValue.length - 1;
-      while (newConditionalOffsets.length <= strength) {
-        newConditionalOffsets.push(-1);
-      }
-      for (let s = 0; s <= strength; s++) {
-        newConditionalOffsets[s] = lastOut;
-      }
-      while (
-        strength <
-        newConditionalOffsets.length - newConditionalStack.length - 1
-      ) {
-        newConditionalStack.push(["dummy-frame", effectiveForward]);
-      }
-      newConditionalStack.push(["affirmative", effectiveForward]);
-
       return {
         includes: branch.includes,
         excludes: branch.excludes,
         value: newValue,
-        conditionalOffsets: newConditionalOffsets,
-        conditionalStack: newConditionalStack,
+        ...affirm(newValue, newConditionalOffsets, newConditionalStack),
         decided,
       };
+    };
+
+    // Record the conditional as satisfied at the end of `value`: it fences off
+    // what came before it, and the lines it governs are said.
+    const affirm = (
+      value: string[],
+      offsets: number[],
+      stack: [ConditionalState, Scope][]
+    ) => {
+      const lastOut = value.length - 1;
+      while (offsets.length <= strength) {
+        offsets.push(-1);
+      }
+      for (let s = 0; s <= strength; s++) {
+        offsets[s] = lastOut;
+      }
+      while (strength < offsets.length - stack.length - 1) {
+        stack.push(["dummy-frame", effectiveForward]);
+      }
+      stack.push(["affirmative", effectiveForward]);
+      return { conditionalOffsets: offsets, conditionalStack: stack };
     };
 
     // Classify each branch against what this fork already decided, so a
@@ -214,19 +219,32 @@ function applyConditionalToFork(
     if (branches.some(hasTokens)) {
       // Non-firing base: suppress forward scope, and record cleanly-negatable
       // single-token branches as absent so later conditionals can prune them.
-      result[0] = {
-        ...fork,
-        decided: commit(
-          fork.decided,
-          kept
-            .filter((b) => b.includes.length === 1 && b.excludes.length === 0)
-            .map((b) => [b.includes[0]!, false] as [string, boolean])
-        ),
-        conditionalStack: [
-          ...fork.conditionalStack,
-          ["not-yet-affirmative", effectiveForward],
-        ],
-      };
+      // A conditional with no forward scope (`omittitur`) only ever takes lines
+      // away, so where it does not hold what follows it is said as though it
+      // were not there.
+      const decided = commit(
+        fork.decided,
+        kept
+          .filter((b) => b.includes.length === 1 && b.excludes.length === 0)
+          .map((b) => [b.includes[0]!, false] as [string, boolean])
+      );
+      result[0] =
+        forwardScope === "scope-null"
+          ? {
+              ...fork,
+              decided,
+              ...affirm(fork.value, [...conditionalOffsets], [
+                ...conditionalStack,
+              ]),
+            }
+          : {
+              ...fork,
+              decided,
+              conditionalStack: [
+                ...fork.conditionalStack,
+                ["not-yet-affirmative", effectiveForward],
+              ],
+            };
     }
   }
 

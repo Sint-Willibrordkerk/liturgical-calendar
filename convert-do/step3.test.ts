@@ -153,6 +153,60 @@ describe("processConditionalLines (per-rubric surviving lines)", () => {
     });
   });
 
+  describe("omittitur (back-scope chunk, no forward scope)", () => {
+    // 2 January in the Martyrology: the octave of St Stephen is not announced
+    // under the 1955 and 1960 rubrics.
+    const lines = [
+      "@:Adalardi",
+      "",
+      "@:Stephani",
+      "(rubrica 1955 aut rubrica 1960 omittitur)",
+      "",
+      "@:Plurimorum",
+    ];
+
+    it("removes the preceding chunk when the rubric matches", () => {
+      expect(linesForRubric(lines, RUBRIC_1962)).toEqual([
+        "@:Adalardi",
+        "",
+        "@:Plurimorum",
+      ]);
+    });
+
+    it("keeps it, and everything after, otherwise", () => {
+      expect(linesForRubric(lines, [])).toEqual([
+        "@:Adalardi",
+        "",
+        "@:Stephani",
+        "",
+        "@:Plurimorum",
+      ]);
+    });
+  });
+
+  describe("dicitur (forward scope line)", () => {
+    // 1 January in the Martyrology: the octave of the Nativity is announced
+    // only under the 1960 rubrics.
+    const lines = [
+      "(rubrica 1960 dicitur)",
+      "@:Octava",
+      "",
+      "@:Circumcisio",
+    ];
+
+    it("keeps the following line when the rubric matches", () => {
+      expect(linesForRubric(lines, RUBRIC_1962)).toEqual([
+        "@:Octava",
+        "",
+        "@:Circumcisio",
+      ]);
+    });
+
+    it("suppresses it otherwise", () => {
+      expect(linesForRubric(lines, [])).toEqual(["", "@:Circumcisio"]);
+    });
+  });
+
   describe("higher stopword strength (attamen)", () => {
     it("accepts attamen conditionals without throwing (strength 3)", () => {
       expect(
