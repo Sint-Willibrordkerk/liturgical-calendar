@@ -7,6 +7,7 @@ import {
   type Stores,
 } from "../massPropers";
 import type { CalendarData, RawMassProper } from "../types";
+import type { Martyrology, MartyrologyDay } from "../martyrology";
 
 export type { RawMassProper };
 import { assertCalendarData } from "./assert/calendarData";
@@ -94,6 +95,31 @@ export function titleToFileName(title: string): string {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "")
     .replace(/^(ss?|bb?)-/, "");
+}
+
+/**
+ * The language's Martyrology, or undefined where it carries none: the dates it
+ * prints, the movable days' announcements and the conclusion.
+ */
+export function loadMartyrology(language: Language): Martyrology | undefined {
+  const prefix = `martyrologium/${language.code}/`;
+  const days: Martyrology["days"] = {};
+  let mobile: Martyrology["mobile"] = {};
+  let conclusio: Martyrology["conclusio"];
+
+  for (const [path, data] of Object.entries(language.assets ?? {})) {
+    const normalized = path.replace(/\\/g, "/");
+    if (!normalized.startsWith(prefix) || typeof data !== "object" || data === null) {
+      continue;
+    }
+    const name = normalized.slice(prefix.length).replace(/\.ya?ml$/, "");
+    if (/^\d\d-\d\d$/.test(name)) days[name] = data as MartyrologyDay;
+    else if (name === "mobile") mobile = data as Martyrology["mobile"];
+    else if (name === "conclusio") conclusio = data as Martyrology["conclusio"];
+  }
+
+  if (Object.keys(days).length === 0) return undefined;
+  return conclusio === undefined ? { days, mobile } : { days, mobile, conclusio };
 }
 
 function loadStores(language: Language): Stores {

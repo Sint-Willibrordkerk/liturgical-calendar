@@ -148,7 +148,7 @@ apply to them. Shared helpers live in [`lib/batch.ts`](lib/batch.ts).
   named by `INGESTED_LANGUAGES` — every language is a full copy of the tree and
   costs its own pass and its own published package — and excludes a set of
   auxiliary files (`*pl.txt`, `*tts.txt`, `ruler.txt`, `Linguae.txt`,
-  `source.txt`, `Mobile.txt`, and others), plus `Help/` and `Latin-gabc/`.
+  `source.txt`, and others), plus `Help/` and `Latin-gabc/`.
 - **`transform`:** splits the file on `\r?\n` into a `string[]`.
 - **`getOutputFile`:** `.txt` → `.json`, and the language folder → its ISO code.
   The full table is `LANGUAGE_CODES` (`Latin` → `la`, `Nederlands` → `nl`,
@@ -284,6 +284,10 @@ per variant (to `variant.value`) and keeps the `condition`.
   `aliquibus locis`. Variants requiring a rubric system other than the one in
   force are dropped, since they could never be chosen.
 - A day whose Mass changes with the season is written as one day per season.
+- The **Martyrology** is written beside the propers, for each language that has
+  one (`publishMartyrology`): `Martyrologium/<MM-DD>.yml` (`titulus`, `elogia`),
+  `mobile.yml` (the movable days' announcements) and `conclusio.yml`. It is
+  reduced to the rubric in force here, so no conditions survive into it.
 
 ---
 

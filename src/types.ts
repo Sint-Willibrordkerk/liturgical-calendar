@@ -101,6 +101,32 @@ export type LiturgicalDay = Commemoration & {
   seasonName?: string;
   colorName?: string;
   alternativeColorName?: string;
+  /**
+   * The Martyrology printed under the day's date — read at Prime on the day
+   * before it. Present only when asked for, and only in a language that has a
+   * Martyrology.
+   */
+  martyrologium?: Martyrologium;
+};
+
+/**
+ * A day's reading of the Roman Martyrology, in the order it is read: the date
+ * and the moon, the announcement of a movable day, the entries, the
+ * conclusion.
+ */
+export type Martyrologium = {
+  /** The date in the Roman reckoning: "Duodécimo Kaléndas Februárii". */
+  titulus: string;
+  /** The age of the moon, 1–30, as the Martyrology's tables reckon it. */
+  luna?: number;
+  /** The age of the moon as the language says it: "Luna secúnda". */
+  lunaName?: string;
+  /** The announcement of the movable day it is, read before the entries. */
+  mobile?: string[];
+  /** The entries — the elogia of the saints — in the order they are read. */
+  elogia: string[];
+  /** The versicle that closes every reading, and its response. */
+  conclusio?: { versus: string; responsum: string };
 };
 
 // Mass Proper Types

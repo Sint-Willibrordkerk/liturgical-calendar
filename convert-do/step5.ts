@@ -134,8 +134,63 @@ function pickVariantLines(
     (item) => conditionKey(item.condition) === conditionKey(currentCondition)
   );
   if (exact) return exact.value;
+  // The most specific variant the current condition already includes: under
+  // `1962` and `monastica`, the target's `1962` wording.
+  const included = section
+    .filter(
+      (item) =>
+        item.condition.length > 0 &&
+        includesAll(currentCondition, item.condition)
+    )
+    .sort((a, b) => b.condition.length - a.condition.length)[0];
+  if (included) return included.value;
   const fallback = section.find((item) => item.condition.length === 0);
   return (fallback ?? section[0]!).value;
+}
+
+/** True for a day of the Martyrology, whose sections are its entries. */
+function isMartyrology(path: string) {
+  return path.startsWith("Martyrologium/");
+}
+
+function includesAll(condition: string[], tokens: string[]) {
+  return tokens.every((token) => condition.includes(token));
+}
+
+/**
+ * The conditions a reference's target varies by, as far as that target can be
+ * read: those of the section it names, and of what that section in turn refers
+ * to, where it is itself no more than a reference.
+ */
+async function targetConditions(
+  parsedRef: NonNullable<ReturnType<typeof parseReference>>,
+  basePath: string,
+  currentSectionKey: string,
+  depth = 0
+): Promise<string[][]> {
+  if (depth >= MAX_RESOLVE_DEPTH || !parsedRef.filePath) return [];
+  const doc = await getFileContent(basePath, parsedRef.filePath);
+  if (!doc) return [];
+  const section = findSectionContent(
+    doc,
+    getBaseSectionName(parsedRef.section || currentSectionKey)
+  );
+  if (!section) return [];
+  const conditions = section.map((item) => item.condition);
+  for (const item of section) {
+    if (item.value.length !== 1) continue;
+    const nested = parseReference(item.value[0]!);
+    if (!nested) continue;
+    conditions.push(
+      ...(await targetConditions(
+        nested,
+        basePath,
+        parsedRef.section || currentSectionKey,
+        depth + 1
+      ))
+    );
+  }
+  return conditions;
 }
 
 function applySubstitutions(
@@ -254,29 +309,74 @@ export async function transform(
     }
 
     const baseSection = getBaseSectionName(key);
+    const references = (lines: string[]) =>
+      lines.flatMap((line) => {
+        const parsedRef = parseReference(line);
+        if (!parsedRef) return [];
+        return [parsedRef.filePath ? parsedRef : { ...parsedRef, filePath: selfPath }];
+      });
 
-    result[key] = await Promise.all(
-      value.map(async (item) => {
-        const out: string[] = [];
-        for (const line of item.value) {
-          const parsedRef = parseReference(line);
-          if (!parsedRef) {
-            out.push(line);
-            continue;
-          }
-
-          const resolved = await resolveReference(
-            parsedRef.filePath ? parsedRef : { ...parsedRef, filePath: selfPath },
-            basePath,
-            baseSection,
-            item.condition
-          );
-          if (resolved) out.push(...resolved);
-          else out.push(line);
+    const resolveUnder = async (lines: string[], condition: string[]) => {
+      const out: string[] = [];
+      for (const line of lines) {
+        const parsedRef = parseReference(line);
+        if (!parsedRef) {
+          out.push(line);
+          continue;
         }
-        return { ...item, value: out };
-      })
+
+        const resolved = await resolveReference(
+          parsedRef.filePath ? parsedRef : { ...parsedRef, filePath: selfPath },
+          basePath,
+          baseSection,
+          condition
+        );
+        if (resolved) out.push(...resolved);
+        else out.push(line);
+      }
+      return out;
+    };
+
+    const resolvedItems = await Promise.all(
+      value.map(async (item) => ({
+        ...item,
+        value: await resolveUnder(item.value, item.condition),
+      }))
     );
+
+    // In the Martyrology, the rubrics the entries vary by and a variant of the
+    // list does not name: each gets a copy of that variant, resolved under both
+    // conditions, unless the list already has a variant at least as specific
+    // for it. Elsewhere a day's Mass and Office share a file, so a target's
+    // variant may be the Office's wording rather than another rubric's.
+    const written = new Set(value.map((item) => conditionKey(item.condition)));
+    const extra: typeof resolvedItems = [];
+    for (const item of isMartyrology(selfPath) ? value : []) {
+      for (const ref of references(item.value)) {
+        for (const target of await targetConditions(ref, basePath, baseSection)) {
+          if (target.length === 0 || includesAll(item.condition, target)) continue;
+          const combined = [...new Set([...item.condition, ...target])].sort();
+          const label = conditionKey(combined);
+          if (written.has(label)) continue;
+          const ownVariant = value.some(
+            (other) =>
+              other !== item &&
+              includesAll(other.condition, item.condition) &&
+              other.condition.length > item.condition.length &&
+              includesAll(combined, other.condition)
+          );
+          if (ownVariant) continue;
+          written.add(label);
+          extra.push({
+            ...item,
+            value: await resolveUnder(item.value, combined),
+            condition: combined,
+          });
+        }
+      }
+    }
+
+    result[key] = [...resolvedItems, ...extra];
   }
 
   return result;

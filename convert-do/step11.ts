@@ -366,6 +366,176 @@ function languageRoot(relPath: string): string {
   return first ?? "";
 }
 
+// --- The Martyrology ---------------------------------------------------------
+
+/** The tree the Martyrology sits in, and is published under. */
+export const MARTYROLOGY_TREE = "Martyrologium";
+
+/** The date a path is the Martyrology of (`01-21`), or undefined. */
+export function martyrologyDate(relPath: string): string | undefined {
+  const parts = relPath.split(/[/\\]/);
+  if (parts.length !== 3 || parts[1] !== MARTYROLOGY_TREE) return undefined;
+  return /^(\d\d-\d\d)\.[^.]+$/.exec(parts[2]!)?.[1];
+}
+
+/** A day of the Martyrology as published: its date line and its entries. */
+export type MartyrologyDay = { titulus?: string; elogia?: string[] };
+
+/**
+ * A section's lines under the rubric in force: its variant for that rubric, or
+ * its default. A variant assuming any other rubric, alone or besides, is never
+ * the one read.
+ */
+function linesInForce(
+  section: unknown,
+  inForce: string
+): string[] | undefined {
+  if (!isVariantArray(section)) return undefined;
+  const own = section.find(
+    (variant) =>
+      variant.condition.length === 1 && variant.condition[0] === inForce
+  );
+  const chosen = own ?? section.find((variant) => variant.condition.length === 0);
+  return Array.isArray(chosen?.value) ? (chosen.value as string[]) : undefined;
+}
+
+/** A direction to the reader, between `/:` and `:/`. */
+const DIRECTION = /\s*\/:[\s\S]*?:\/\s*/g;
+
+/** A line without its directions, or empty where it was nothing else. */
+function withoutDirections(line: string): string {
+  return line
+    .replace(DIRECTION, " ")
+    .replace(/\s+([,.;:])/g, "$1")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/** What is read of a section's lines: no blanks, directions or bare references. */
+function readLines(lines: string[]): string[] {
+  return lines
+    .map(withoutDirections)
+    .filter((line) => line !== "" && line !== "_" && !/^@\S*$/.test(line));
+}
+
+/** A date of the Martyrology, reduced to what is read under the rubric in force. */
+export function martyrologyDay(
+  obj: Record<string, unknown>,
+  inForce: string = PUBLISHED_RUBRIC
+): MartyrologyDay {
+  const out: MartyrologyDay = {};
+  const [titulus] = readLines(linesInForce(obj.titulus, inForce) ?? []);
+  if (titulus !== undefined) out.titulus = titulus;
+  const elogia = readLines(linesInForce(obj.martyrologium, inForce) ?? []);
+  if (elogia.length > 0) out.elogia = elogia;
+  return out;
+}
+
+/**
+ * The announcements keyed to no date: two Divinum Officium attaches to the
+ * office of the day it is read on, and one nothing reads.
+ */
+const UNDATED_ANNOUNCEMENTS = new Set(["defuncti", "defunctim", "nativity"]);
+
+/** The movable days' announcements under the rubric in force, keyed by day. */
+export function martyrologyMobile(
+  obj: Record<string, unknown>,
+  inForce: string = PUBLISHED_RUBRIC
+): Record<string, string[]> {
+  const out: Record<string, string[]> = {};
+  for (const [key, section] of Object.entries(obj)) {
+    if (UNDATED_ANNOUNCEMENTS.has(key)) continue;
+    const lines = readLines(linesInForce(section, inForce) ?? []);
+    if (lines.length > 0) out[key] = lines;
+  }
+  return out;
+}
+
+/** The versicle that closes the reading, and its response. */
+export type MartyrologyConclusion = { versus: string; responsum: string };
+
+/** A line without its `V.` or `R.` mark. */
+function unmarked(line: string): string {
+  return line.replace(/^[VR]\.\s*/, "");
+}
+
+/**
+ * The conclusion, from the Office's common prayers: the versicle `Conclmart`
+ * gives, and the response its `$` line names.
+ */
+export function martyrologyConclusion(
+  prayers: Record<string, unknown>,
+  inForce: string = PUBLISHED_RUBRIC
+): MartyrologyConclusion | undefined {
+  const lines = linesInForce(prayers.conclmart, inForce) ?? [];
+  const versus = lines.find((line) => /^V\./.test(line));
+  const macro = lines.find((line) => line.startsWith("$"));
+  if (versus === undefined || macro === undefined) return undefined;
+  const named = macro.slice(1).trim().toLowerCase().replace(/\s+/g, "-");
+  const [responsum] = linesInForce(prayers[named], inForce) ?? [];
+  if (responsum === undefined) return undefined;
+  return { versus: unmarked(versus), responsum: unmarked(responsum) };
+}
+
+/** The prayers the conclusion is taken from, under a language root. */
+const COMMON_PRAYERS = join("Psalterium", "Common", "Prayers");
+
+/**
+ * Publish the Martyrology of each language that has one: a file per date, the
+ * movable days and the conclusion. Returns how many files were written.
+ */
+async function publishMartyrology(
+  inputDir: string,
+  outputDir: string,
+  relPaths: string[],
+  mkdirCache: Set<string>
+): Promise<number> {
+  const read = async (relPath: string) => {
+    try {
+      const obj = parseStep(await readFile(join(inputDir, relPath), "utf-8"));
+      return typeof obj === "object" && obj !== null && !Array.isArray(obj)
+        ? (obj as Record<string, unknown>)
+        : undefined;
+    } catch {
+      return undefined;
+    }
+  };
+  const write = async (relPath: string, value: unknown) => {
+    const outPath = join(outputDir, relPath);
+    await ensureDir(outPath, mkdirCache);
+    await writeFile(outPath, stringifyOutput(value), "utf-8");
+  };
+
+  let written = 0;
+  const languages = new Set<string>();
+  for (const relPath of relPaths) {
+    const date = martyrologyDate(relPath);
+    if (date === undefined) continue;
+    const obj = await read(relPath);
+    if (obj === undefined) continue;
+    const lang = languageRoot(relPath);
+    languages.add(lang);
+    await write(join(lang, MARTYROLOGY_TREE, `${date}.yml`), martyrologyDay(obj));
+    written++;
+  }
+
+  // The movable days and the conclusion go with a Martyrology, and only there.
+  for (const lang of languages) {
+    const mobile = await read(join(lang, MARTYROLOGY_TREE, `Mobile${STEP_EXT}`));
+    if (mobile !== undefined) {
+      await write(join(lang, MARTYROLOGY_TREE, "mobile.yml"), martyrologyMobile(mobile));
+      written++;
+    }
+    const prayers = await read(join(lang, COMMON_PRAYERS + STEP_EXT));
+    const conclusio = prayers && martyrologyConclusion(prayers);
+    if (conclusio !== undefined) {
+      await write(join(lang, MARTYROLOGY_TREE, "conclusio.yml"), conclusio);
+      written++;
+    }
+  }
+  return written;
+}
+
 /**
  * Batch runner: reads the step 10 tree under `inputDir` and writes the Mass
  * propers to `outputDir`, with a `lectio.yml` per language holding only the
@@ -462,8 +632,18 @@ export async function run(
     }
   }
 
-  consola.info(`Step 11: ${written} written, ${skipped} without mass content`);
+  const martyrology = await publishMartyrology(
+    inputDir,
+    outputDir,
+    [...allRelPaths].sort(),
+    mkdirCache
+  );
+
+  consola.info(
+    `Step 11: ${written} written, ${skipped} without mass content, ` +
+      `${martyrology} of the Martyrology`
+  );
   if (errors > 0) consola.error(`Step 11 errors: ${errors}`);
 
-  return { written };
+  return { written: written + martyrology };
 }

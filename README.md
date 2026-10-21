@@ -59,6 +59,9 @@ they fall — but no day carries a Mass and nothing is translated.
   `@sint-willibrordkerk/liturgical-calendar-la`, `…-nl` — imported and passed
   in. It supplies both the Mass propers and the translations. Optional; omit it
   for the bare calendar.
+- `options` (Options): Optional.
+  - `martyrologium` (boolean): give each day the Roman Martyrology; see
+    [The Martyrology](#the-martyrology).
 
 ### With Local Propers
 
@@ -97,6 +100,7 @@ type LiturgicalDay = {
   colorName?: string;
   alternativeColorName?: string;
   commemorations: Commemoration[];
+  martyrologium?: Martyrologium;
 };
 ```
 
@@ -149,6 +153,48 @@ Pentecost `red`; the September Ember days `violet`.
 Holy Saturday is given to Passiontide and wears violet; the Mass of the Easter
 Vigil, celebrated that night, is white.
 
+### The Martyrology
+
+Ask for it and each day carries the Roman Martyrology printed under its date,
+as the 1960 rubrics have it:
+
+```javascript
+const calendar = generateCalendar(2026, [], la, { martyrologium: true });
+const reading = calendar[1][21].martyrologium;
+console.log(reading.titulus); // "Duodécimo Kaléndas Februárii"
+console.log(reading.lunaName); // "Luna secúnda"
+console.log(reading.elogia[0]); // "Romæ pássio sanctæ Agnétis, …"
+```
+
+```typescript
+type Martyrologium = {
+  titulus: string; // the date in the Roman reckoning
+  luna?: number; // the age of the moon, 1–30
+  lunaName?: string; // as the language says it
+  mobile?: string[]; // the announcement of a movable day, read first
+  elogia: string[]; // the entries, in the order they are read
+  conclusio?: { versus: string; responsum: string };
+};
+```
+
+The Martyrology of a date is **read the day before**, at Prime: the reading on
+the 21st of January above is the one said on the 20th. A day carries the
+reading of its own date so that the entries stay with the saints' day; whoever
+reads it, reads it a day early. So Easter's *Hac die quam fecit Dóminus*, said on
+Easter Sunday before the Martyrology of the Monday, is in the Monday's
+`mobile`.
+
+The text is Divinum Officium's. The age of the moon is reckoned from the
+Martyrology's own tables, for the years they cover (1582–2299); in a leap year
+the 24th and 25th of February are both *Sexto Kaléndas Mártii*, with the same
+moon. Rubrics addressed to the reader — *Hic vox elevatur…* — are left out of
+the text.
+
+The Martyrology is in Latin only: Divinum Officium has no Dutch one, so a Dutch
+calendar asked for it carries none. It adds about half a megabyte to the Latin
+package and a few kilobytes to each day, which is why it is left out unless
+asked for.
+
 ### Colors in Local Propers
 
 A day in a local proper is white unless it says otherwise. Give a martyr's day
@@ -194,7 +240,7 @@ pnpm start # uses scripts/main.js to generate test_output.yml
 │   ├── calendar1962.yml # Base calendar
 │   └── propers/         # Local proper calendars
 ├── languages/           # One package per language
-│   ├── la/assets/       #   mass-propers/la/ (generated)
+│   ├── la/assets/       #   mass-propers/la/, martyrologium/la/ (generated)
 │   └── nl/assets/       #   mass-propers/nl/ (generated), translations/nl/
 ├── convert-do/          # The pipeline that generates the Mass propers
 ├── src/                 # TypeScript source

@@ -1,11 +1,14 @@
 const backscopedStopwords = { sed: 1, vero: 1, atque: 2, attamen: 3 };
 const stopwords = { ...backscopedStopwords, si: 0, deinde: 1 };
-const instructions = ["dicitur, dicuntur", "omittitur, omittuntur"];
+const instructions = ["dicitur", "dicuntur", "omittitur", "omittuntur"];
 const scopes = [
   "loco hujus versus",
   "loco horum versuum",
   "hic versus",
   "hi versus",
+  "hoc versus",
+  "hæc versus",
+  "haec versus",
 ];
 
 const subjects = [
@@ -167,18 +170,22 @@ export function parseConditional(conditional: string) {
   let strength = 0;
   strength += stopwords[stopword as keyof typeof stopwords] ?? 0;
 
+  // The scope phrase and the instruction decide the scope together, as the one
+  // trailing phrase they make up does in Divinum Officium.
+  const phrase = [scope, instruction].filter(Boolean).join(" ");
+
   let backScope: "scope-null" | "scope-line" | "scope-chunk" | "scope-nest" =
     stopword && stopword in backscopedStopwords ? "scope-line" : "scope-null";
-  if (scope?.includes("versuum") || scope?.includes("omittuntur"))
+  if (phrase.includes("versuum") || phrase.includes("omittuntur"))
     backScope = "scope-nest";
-  else if (scope?.includes("versus") || scope?.includes("omittitur"))
+  else if (phrase.includes("versus") || phrase.includes("omittitur"))
     backScope = "scope-chunk";
   else if (semper) backScope = "scope-null";
 
   let forwardScope: "scope-null" | "scope-line" | "scope-chunk" | "scope-nest";
-  if (scope?.includes("omittitur") || scope?.includes("omittuntur")) {
+  if (phrase.includes("omittitur") || phrase.includes("omittuntur")) {
     forwardScope = "scope-null";
-  } else if (scope?.includes("dicuntur")) {
+  } else if (phrase.includes("dicuntur")) {
     forwardScope = backScope == "scope-chunk" ? "scope-chunk" : "scope-nest";
   } else {
     forwardScope =
