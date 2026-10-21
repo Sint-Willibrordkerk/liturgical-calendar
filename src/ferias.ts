@@ -36,6 +36,9 @@ export const SUNDAY_AFTER_PENTECOST_VARIANT = "special-a";
 /** The Preface of the Epiphany, which those ferias say. */
 const EPIPHANY_PREFACE = "epi";
 
+/** The common Preface, which a feria says in place of its Sunday's own. */
+const COMMON_PREFACE = "communis";
+
 const FERIA = "feria";
 const SUNDAY_TYPE = "dominica";
 const SUNDAY = 0;
@@ -79,7 +82,8 @@ export function firstSundayAfterEpiphany(year: number): Date {
  * - **7 to 12 January**, falling before the First Sunday after the Epiphany —
  *   the Mass of the Epiphany; falling after it, the Mass of that Sunday,
  *   *In excelso throno*, with the Preface of the Epiphany.
- * - **otherwise** — the Mass of the Sunday just past.
+ * - **otherwise** — the Mass of the Sunday just past, with the common Preface
+ *   where that Sunday names a Preface of its own.
  *
  * The Sunday's Mass is the Sunday's own, not that of a feast kept on it. Where
  * a feast took the Sunday — the Holy Trinity, Christ the King, All Saints — the
@@ -89,6 +93,13 @@ export function firstSundayAfterEpiphany(year: number): Date {
  * after Pentecost is filed with the Trinity, so its Mass is handed in, as the
  * First Sunday after the Epiphany's is. A feast on a Sunday that commemorates
  * no Sunday — Easter, Pentecost — is the Sunday's Mass itself.
+ *
+ * The Preface a Sunday names is the Sunday's alone. The Sundays after the
+ * Epiphany and after Pentecost, and those from Septuagesima to Lent, name the
+ * Preface of the Holy Trinity, and the ferias of their weeks say the common
+ * Preface instead. A Sunday that names none says the Preface of its season —
+ * of Advent, of Easter, of the Ascension — and its ferias, being of the same
+ * season, say the same and name none either.
  *
  * A feria that already has a Mass, and any day of a higher class, is left as it
  * is. Where the day it would borrow from has no Mass either, it keeps none.
@@ -141,9 +152,23 @@ export function applyFerialMass(
         dayNumber(date) === dayNumber(trinity) && sundayAfterPentecost
           ? sundayAfterPentecost
           : sundayAsSuch(entry);
-      if (sunday !== undefined) precedingSunday = sunday;
+      if (sunday !== undefined) precedingSunday = asSaidOnItsFerias(sunday);
     }
   });
+}
+
+/**
+ * A Sunday's Mass as its ferias say it: with the common Preface where the
+ * Sunday names one of its own. Copied rather than set in place, since the Mass
+ * is shared with the Sunday.
+ */
+function asSaidOnItsFerias(
+  sunday: NonNullable<LiturgicalDay["mass"]>
+): LiturgicalDay["mass"] {
+  const { prefatio } = sunday as { prefatio?: string };
+  return prefatio === undefined
+    ? sunday
+    : ({ ...sunday, prefatio: COMMON_PREFACE } as LiturgicalDay["mass"]);
 }
 
 /**
