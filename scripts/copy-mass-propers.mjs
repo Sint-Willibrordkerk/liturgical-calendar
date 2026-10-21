@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /**
- * Copy the pipeline's last step — the Mass propers — into the language package
- * for each language it produced.
+ * Copy the pipeline's last step — the Mass propers, and the Martyrology where a
+ * language has one — into the language package for each language it produced:
+ * `assets/mass-propers/<code>/` and `assets/martyrologium/<code>/`.
  *
  * The pipeline writes to `.divinum-officium/`, which is not committed, and the
  * propers run to megabytes per language, so they are not committed either. This
@@ -12,7 +13,7 @@
  * than dropped: it needs a `languages/<code>/package.json` before it can ship.
  */
 import { cp, rm, readdir, stat, mkdir } from "fs/promises";
-import { join } from "path";
+import { join, resolve } from "path";
 import { consola } from "consola";
 
 const SOURCE = ".divinum-officium/step11";
@@ -41,6 +42,20 @@ async function exists(path) {
   }
 }
 
+/** The tree the pipeline writes the Martyrology to, under each language. */
+const MARTYROLOGY = "Martyrologium";
+
+function isMartyrology(path, code) {
+  return resolve(path).startsWith(resolve(join(SOURCE, code, MARTYROLOGY)));
+}
+
+async function report(code, target) {
+  const { bytes, files } = await directorySize(target);
+  consola.success(
+    `${code}: ${files} files (${(bytes / 1048576).toFixed(1)} MB) → ${target}`
+  );
+}
+
 async function main() {
   if (!(await exists(SOURCE))) {
     consola.error(
@@ -59,17 +74,25 @@ async function main() {
       continue;
     }
 
-    // Replace the generated propers only. Anything else in the package's assets
-    // — the translations — is hand-maintained and left alone.
+    // Replace the generated propers and Martyrology only. Anything else in the
+    // package's assets — the translations — is hand-maintained and left alone.
     const target = join(pkg, "assets", "mass-propers", code);
     await rm(target, { recursive: true, force: true });
     await mkdir(join(pkg, "assets", "mass-propers"), { recursive: true });
-    await cp(join(SOURCE, code), target, { recursive: true });
+    await cp(join(SOURCE, code), target, {
+      recursive: true,
+      filter: (src) => !isMartyrology(src, code),
+    });
+    await report(code, target);
 
-    const { bytes, files } = await directorySize(target);
-    consola.success(
-      `${code}: ${files} files (${(bytes / 1048576).toFixed(1)} MB) → ${target}`
-    );
+    // The Martyrology is not a Mass proper, and is filed under its own name.
+    const martyrology = join(pkg, "assets", "martyrologium", code);
+    await rm(martyrology, { recursive: true, force: true });
+    if (await exists(join(SOURCE, code, MARTYROLOGY))) {
+      await mkdir(join(pkg, "assets", "martyrologium"), { recursive: true });
+      await cp(join(SOURCE, code, MARTYROLOGY), martyrology, { recursive: true });
+      await report(code, martyrology);
+    }
   }
 
   if (unpackaged.length > 0) {

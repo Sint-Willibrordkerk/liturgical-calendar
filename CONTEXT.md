@@ -34,6 +34,21 @@ the season `adventus`, "paars" for the color `violet`, a translated title for a
 slug. A language supplies names; it never changes an identifier.
 _Avoid_: label, translation (of an identifier)
 
+**Martyrology**:
+The *Martyrologium Romanum*, read at Prime: for each date its date line in the
+Roman reckoning, the age of the moon, and the **Elogia**. The Martyrology of a
+date is read on the day before it; a day carries the reading of its own date.
+_Avoid_: martyrologium as an English word, saints of the day
+
+**Elogium**:
+One entry of the Martyrology: where, and how, a saint was born into heaven.
+_Avoid_: entry (in prose about the rite), notice, bio
+
+**Movable Announcement**:
+What the Martyrology reads before the elogia on a movable day — Septuagesima,
+Easter, Christ the King — keyed to the date it is read before.
+_Avoid_: movable feast (the announcement is of a day, not always a feast)
+
 **Local Proper**:
 The calendar of a diocese, region, church or congregation, filling the slots
 the base calendar leaves for it; it names the color of its own days and is

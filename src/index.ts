@@ -6,9 +6,14 @@ import {
   dayNumber,
 } from "./utils";
 import { parseCalendarData } from "./parseCalendarData";
-import { loadTranslations, loadMassPropersByTitle } from "./loadAssets";
+import {
+  loadTranslations,
+  loadMassPropersByTitle,
+  loadMartyrology,
+} from "./loadAssets";
 import { applyFerialMass, SUNDAY_AFTER_EPIPHANY_MASS } from "./ferias";
 import { applyResumedSundays } from "./resumedSundays";
+import { applyMartyrology } from "./martyrology";
 import { asLanguage, type Language } from "./language";
 export { type Language } from "./language";
 export type {
@@ -16,8 +21,20 @@ export type {
   Color,
   Commemoration,
   LiturgicalDay,
+  Martyrologium,
   Season,
 } from "./types";
+
+/** Options that shape the calendar beyond the days themselves. */
+export type Options = {
+  /**
+   * Give each day the Roman Martyrology printed under its date, in the
+   * language passed in where it has one. It is read at Prime on the day
+   * before, and runs to a few kilobytes a day, so it is left out unless asked
+   * for.
+   */
+  martyrologium?: boolean;
+};
 
 function deleteFields(day: Partial<LiturgicalDay | Commemoration>) {
   if ("commemorations" in day && day.commemorations) {
@@ -44,7 +61,8 @@ function deleteFields(day: Partial<LiturgicalDay | Commemoration>) {
 export default (
   year: number,
   propers: string[] = [],
-  language?: Language
+  language?: Language,
+  options: Options = {}
 ) => {
   const lang = asLanguage(language);
   const translations = loadTranslations(lang);
@@ -82,6 +100,13 @@ export default (
         easter,
       })
   );
+
+  // The Martyrology follows the date, not the celebration, so it can be laid
+  // on once the days are in place.
+  if (options.martyrologium) {
+    const martyrology = loadMartyrology(lang);
+    if (martyrology) applyMartyrology(calendar, year, martyrology, translations);
+  }
 
   // A season and a color are identifiers; the language gives each its name,
   // where it carries one, beside it.
