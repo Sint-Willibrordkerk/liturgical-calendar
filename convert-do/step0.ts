@@ -57,7 +57,6 @@ function fileFilter(relativePath: string) {
     !relativePath.endsWith("Linguae.txt") &&
     !relativePath.endsWith("source.txt") &&
     !relativePath.endsWith("sundaytable.txt") &&
-    !relativePath.endsWith("Mobile.txt") &&
     !relativePath.endsWith("XPRex.txt") &&
     !relativePath.endsWith("02-02-quadp.txt") &&
     !relativePath.endsWith("dom-oct.txt") &&

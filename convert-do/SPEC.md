@@ -102,8 +102,12 @@ rest of the pipeline.
   - it is not one of the excluded auxiliary files. Excluded are the
     per-language phonetic and tooling files and a small set of named sources:
     `*pl.txt`, `*tts.txt`, `ruler.txt`, `Linguae.txt`, `source.txt`,
-    `sundaytable.txt`, `Mobile.txt`, `XPRex.txt`, `02-02-quadp.txt`,
-    `dom-oct.txt`, `Quad5-5Feriarc.txt`, `Propaganda.txt`.
+    `sundaytable.txt`, `XPRex.txt`, `02-02-quadp.txt`, `dom-oct.txt`,
+    `Quad5-5Feriarc.txt`, `Propaganda.txt`.
+
+    `Martyrologium/Mobile.txt` is read: it holds the Martyrology's
+    announcements of the movable days (see [The
+    Martyrology](#the-martyrology)).
 
   Only the **ingested languages** are read — the sources carry fifteen, and
   each one is a full copy of the tree that costs its own pass and its own
@@ -1054,7 +1058,8 @@ The directory and filename are read as follows:
    | `1960`           | `1962`          |
 
 4. **Excluded files.** For a fixed set of filenames — `Coronatio`, `10-DU`,
-   `10-DP`, `07-DP`, `11-03sec`, `00-VB`, `00-VE`, `09-DP`, `09-DT` — filename
+   `10-DP`, `07-DP`, `11-03sec`, `00-VB`, `00-VE`, `09-DP`, `09-DT`, and the
+   Martyrology's `Mobile` — filename
    suffix parsing is skipped (a directory-variant token, if any, is still
    applied).
 5. **Feria.** If the filename contains `Feria`, the number *n* immediately
@@ -1395,6 +1400,8 @@ is the Divine Office, is not carried into the published assets.
 - A `lectio.yml`, `oratio.yml` and `antiphona.yml` at each language root, holding
   **only** the store entries those sections refer to.
 - A document with no Mass content is **not written** at all.
+- The Martyrology, for each language that has one (see [The
+  Martyrology](#the-martyrology)).
 
 ### Which trees are published
 
@@ -1543,6 +1550,76 @@ between runs.
 Only the entries the kept sections name are carried over. The Office readings
 share the step 5 store but are not published, so most of its entries do not
 travel with the propers; neither do entries only a dropped variant named.
+
+### The Martyrology
+
+The Martyrology is published beside the Mass propers, as
+`Martyrologium/<MM-DD>.yml` for each date, `Martyrologium/mobile.yml` for the
+movable days and `Martyrologium/conclusio.yml` for the versicle that closes
+every reading, under each language whose sources carry a Martyrology. Its text is read at
+Prime, and nothing about it varies with the day it falls on beyond what these
+files say, so it is published already reduced to the rubric in force: a section
+takes its variant for that rubric, or its default where it has none. A variant
+for any other rubric is dropped. No condition survives into the published
+files.
+
+A date's file holds:
+
+- `titulus` — the line that opens the day's reading, its date in the Roman
+  reckoning: *Duodécimo Kaléndas Februárii*;
+- `elogia` — the day's entries, in the order the day lists them, one text each.
+
+```yaml
+titulus: Duodécimo Kaléndas Februárii
+elogia:
+  - Romæ pássio sanctæ Agnétis, Vírginis et Mártyris; …
+  - Athénis natális sancti Públii Epíscopi, …
+```
+
+The list of entries is taken as the references step 6 resolved it to, with:
+
+- **an entry the language has no words for left out.** The sources list an
+  entry another book carries; where its section is empty here, the reference
+  stays as it stood, and Divinum Officium prints nothing for it. Neither does
+  this.
+- **blank lines left out.** They only keep the conditionals in the list apart.
+- **the rubrics within the text left out.** A passage between `/:` and `:/` is
+  a direction to the reader — *Hic vox elevatur, et omnes genua flectunt* — not
+  part of what is read. A line that is nothing else is dropped, and a direction
+  within a line is removed from it.
+
+A date whose entries are all left out keeps its `titulus` and has no `elogia`.
+
+`mobile.yml` maps the day each announcement belongs to — as the sources key
+it, by week of the year and weekday (`adv1-0`, `pasc0-1`, `pent02-5`), or
+`10-du` for the last Sunday of October, in the lowercase step 1 gives every
+section name — to the lines of the announcement read before the entries of
+that day. An announcement that is empty under the rubric in force is not
+published. Nor are the three the sources key to something other than a date:
+`defuncti` and `defunctim`, which Divinum Officium attaches to the office of
+the day it is read on (and the commemoration of the faithful departed is in the
+entries of 2 November already), and `nativity`, which nothing reads (the
+announcement of the Nativity is in the entries of 25 December).
+
+```yaml
+quad6-0:
+  - Domínica secúnda Passiónis, seu in palmis, …
+pasc5-3:
+  - Vigília Ascensiónis Dómini nostri Jesu Christi.
+  - Romæ Litaníæ minóres ad sanctum Petrum.
+```
+
+`conclusio.yml` holds the versicle and its response, from the Office's common
+prayers (`Conclmart`), with their `V.` and `R.` marks taken off:
+
+```yaml
+versus: Et álibi aliórum plurimórum sanctórum Mártyrum et Confessórum, atque sanctárum Vírginum.
+responsum: Deo grátias.
+```
+
+The response is the prayer the versicle's `$Deo gratias` line names. A language
+carrying the common prayers but no Martyrology of its own publishes no
+conclusion either: there is no reading for it to close.
 
 ### Edge cases
 

@@ -89,4 +89,23 @@ describe("step0 getInputFiles", () => {
     expect(normalized).toContain("missa/Latin/02-02.txt");
     expect(directories.length).toBeGreaterThan(0);
   });
+
+  it("reads the Martyrology's movable days", async () => {
+    fixtureRoot = mkdtempSync(join(tmpdir(), "lc-step0-gif-"));
+    const www = join(fixtureRoot, "web", "www");
+    const martyrologium = join(www, "horas", "Latin", "Martyrologium");
+    await mkdir(martyrologium, { recursive: true });
+    await mkdir(join(www, "missa", "Latin"), { recursive: true });
+    await writeFile(join(martyrologium, "Mobile.txt"), "a\n", "utf-8");
+    await writeFile(join(martyrologium, "01-21.txt"), "b\n", "utf-8");
+
+    process.env.DIVINUM_OFFICIUM_BASE = fixtureRoot;
+    vi.resetModules();
+    const { getInputFiles } = await import("./step0.js");
+
+    const { files } = await getInputFiles();
+    const normalized = files.map((f) => f.replace(/\\/g, "/"));
+    expect(normalized).toContain("horas/Latin/Martyrologium/Mobile.txt");
+    expect(normalized).toContain("horas/Latin/Martyrologium/01-21.txt");
+  });
 });
