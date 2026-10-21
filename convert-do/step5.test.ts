@@ -64,4 +64,66 @@ describe("step5 transform", () => {
 
     expect(out.intro).toEqual([{ value: ["self oratio"], condition: [] }]);
   });
+
+  describe("a reference brings its target's rubric variants with it", () => {
+    // 13 January in the Martyrology: the octave is a commemoration of the
+    // Baptism under the 1960 rubrics.
+    const day = {
+      octava: [
+        { value: ["Octava Epiphaniæ Domini."], condition: [] },
+        { value: ["Commemoratio Baptismatis Domini."], condition: ["1962"] },
+      ],
+      hilarii: [{ value: ["Pictavis sancti Hilarii."], condition: [] }],
+    };
+
+    async function resolve(martyrologium: { value: string[]; condition: string[] }[]) {
+      root = mkdtempSync(join(tmpdir(), "lc-step5-variants-"));
+      const base = join(root, "step4");
+      await mkdir(join(base, "la", "Martyrologium"), { recursive: true });
+      const file = join(base, "la", "Martyrologium", "01-13.json");
+      await writeFile(file, JSON.stringify({ ...day, martyrologium }), "utf-8");
+      return (await transform({ martyrologium } as never, file)).martyrologium;
+    }
+
+    it("writes the borrowing variant once more for the target's rubric", async () => {
+      expect(
+        await resolve([{ value: ["@:Octava", "@:Hilarii"], condition: [] }])
+      ).toEqual([
+        {
+          value: ["Octava Epiphaniæ Domini.", "Pictavis sancti Hilarii."],
+          condition: [],
+        },
+        {
+          value: ["Commemoratio Baptismatis Domini.", "Pictavis sancti Hilarii."],
+          condition: ["1962"],
+        },
+      ]);
+    });
+
+    it("leaves a rubric to the borrowing section's own variant for it", async () => {
+      expect(
+        await resolve([
+          { value: ["@:Octava", "@:Hilarii"], condition: [] },
+          { value: ["@:Octava"], condition: ["1962"] },
+        ])
+      ).toEqual([
+        {
+          value: ["Octava Epiphaniæ Domini.", "Pictavis sancti Hilarii."],
+          condition: [],
+        },
+        { value: ["Commemoratio Baptismatis Domini."], condition: ["1962"] },
+      ]);
+    });
+
+    it("resolves under the most specific target condition it includes", async () => {
+      expect(
+        await resolve([{ value: ["@:Octava"], condition: ["1962", "monastica"] }])
+      ).toEqual([
+        {
+          value: ["Commemoratio Baptismatis Domini."],
+          condition: ["1962", "monastica"],
+        },
+      ]);
+    });
+  });
 });

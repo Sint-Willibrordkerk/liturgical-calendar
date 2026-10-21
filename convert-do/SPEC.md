@@ -877,7 +877,7 @@ Resolution turns on whether the reference is **plain** or **modified**:
 
 - **A plain reference** — no line range, no substitution — resolves to the
   **key the target section already holds** for the current rubric condition
-  (an exact condition match, else the default, else the first variant). The
+  (see the rubric variants below). The
   borrowing section comes to hold that same key; nothing new is stored, and the
   text stays single. Where the target section is one the store does not cover,
   its value — the lines it holds — is copied instead, exactly as the broad
@@ -896,6 +896,45 @@ Resolution turns on whether the reference is **plain** or **modified**:
 
 - If a plain reference's resolved value is **itself a reference**, it is
   resolved transitively, up to a depth of **5**.
+
+**Rubric variants.** Each variant of the borrowing section resolves its
+references under its own condition: to the target variant with that exact
+condition, else to the most specific target variant whose condition it already
+includes, else to the default.
+
+**In the Martyrology, a reference also brings its target's rubric variants with
+it.** A day of the Martyrology lists its entries by reference, and an entry
+often has a wording of its own for a rubric the list does not vary by. Where a
+target varies by a rubric the borrowing variant does not name, the borrowing
+variant is written once more for each such target variant — labelled with both
+conditions, and resolved under the combined one — so that the entry's wording
+for that rubric is not lost behind its default. A variant the list gives of its
+own takes precedence: no copy is written where the list already has a variant
+at least as specific for that rubric.
+
+This is not done for the Mass and Office. There a day's Mass and Office share a
+file (step 2), so a target section can hold the Mass's wording beside a variant
+that is the Office's, and bringing variants along would carry the Office into
+the Mass.
+
+For example, a day lists its entries with no condition, and the entry it names
+has a default wording and one for the 1960 rubrics:
+
+```yaml
+martyrologium:
+  - { condition: [], value: ["@:Octava"] }
+octava:
+  - { condition: [], value: ["Octava Epiphaniæ Domini."] }
+  - { condition: ["1962"], value: ["Commemoratio Baptismatis Domini."] }
+```
+
+The list then resolves to both:
+
+```yaml
+martyrologium:
+  - { condition: [], value: ["Octava Epiphaniæ Domini."] }
+  - { condition: ["1962"], value: ["Commemoratio Baptismatis Domini."] }
+```
 
 A reference that cannot be resolved — a missing file, or a missing section — is
 **left in place** as its `@…` line, exactly as it stood. Step 11 then leaves it
