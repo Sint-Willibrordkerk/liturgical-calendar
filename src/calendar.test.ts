@@ -171,6 +171,29 @@ describe("the days the rubrics single out", () => {
   });
 });
 
+describe("the Sunday a feast takes", () => {
+  const commemorated = (cal: Calendar, month: number, date: number) =>
+    (cal[month]![date]!.commemorations ?? []).map((c) => c.type);
+
+  it("is not commemorated on the feasts of the Lord kept on a Sunday", () => {
+    // Trinity on Dominica I post Pentecosten, Christ the King on Dominica XXII.
+    for (const cal of [
+      calendar,
+      generateCalendar(2026, [], language("la")),
+      generateCalendar(2026, [], language("nl")),
+    ]) {
+      expect(commemorated(cal, 5, 31)).not.toContain("dominica");
+      expect(commemorated(cal, 10, 25)).not.toContain("dominica");
+    }
+  });
+
+  it("is commemorated on All Saints", () => {
+    expect(day(11, 1).commemorations).toContainEqual(
+      expect.objectContaining({ type: "dominica" })
+    );
+  });
+});
+
 describe("the saints", () => {
   it("wear red for the martyrs, the apostles and the Precious Blood", () => {
     expect(day(12, 26).color).toBe("red");
