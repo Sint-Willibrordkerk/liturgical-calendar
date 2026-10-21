@@ -6,8 +6,17 @@ import {
   dayNumber,
 } from "./utils";
 import { parseCalendarData } from "./parseCalendarData";
-import { loadTranslations, loadMassPropersByTitle } from "./loadAssets";
-import { applyFerialMass, SUNDAY_AFTER_EPIPHANY_MASS } from "./ferias";
+import {
+  DEFAULT_RUBRICS,
+  loadTranslations,
+  loadMassPropersByTitle,
+} from "./loadAssets";
+import {
+  applyFerialMass,
+  SUNDAY_AFTER_EPIPHANY_MASS,
+  SUNDAY_AFTER_PENTECOST_MASS,
+  SUNDAY_AFTER_PENTECOST_VARIANT,
+} from "./ferias";
 import { applyResumedSundays } from "./resumedSundays";
 import { asLanguage, type Language } from "./language";
 export { type Language } from "./language";
@@ -50,19 +59,6 @@ export default (
   const translations = loadTranslations(lang);
   const calendar = parseCalendarData(year, propers, lang, translations);
 
-  // A fourth-class feria has no Mass of its own; it takes one from the day the
-  // rubrics point at, which needs the whole year built first. The ferias after
-  // the First Sunday after the Epiphany take that Sunday's own Mass, which no
-  // day of the calendar carries — the Sunday itself is kept as the Holy Family.
-  applyFerialMass(
-    calendar,
-    year,
-    loadMassPropersByTitle(SUNDAY_AFTER_EPIPHANY_MASS, lang, undefined, {
-      date: new Date(year, 0, 12),
-      easter: calculateEaster(year),
-    })
-  );
-
   // A year with more Sundays after Pentecost than the missal numbers resumes
   // the Sundays after the Epiphany that Septuagesima cut short. Which of those
   // were kept decides which are left to resume.
@@ -81,6 +77,29 @@ export default (
         date: septuagesima,
         easter,
       })
+  );
+
+  // A fourth-class feria has no Mass of its own; it takes one from the day the
+  // rubrics point at, which needs the whole year built first, the resumed
+  // Sundays included. The ferias after the First Sundays after the Epiphany and
+  // after Pentecost take those Sundays' own Masses, which no day of the calendar
+  // carries — the Sundays themselves are kept as the Holy Family and the Holy
+  // Trinity.
+  const afterTrinity = new Date(easter);
+  afterTrinity.setDate(afterTrinity.getDate() + 57);
+  applyFerialMass(
+    calendar,
+    year,
+    loadMassPropersByTitle(SUNDAY_AFTER_EPIPHANY_MASS, lang, undefined, {
+      date: new Date(year, 0, 12),
+      easter,
+    }),
+    loadMassPropersByTitle(
+      SUNDAY_AFTER_PENTECOST_MASS,
+      lang,
+      new Set([...DEFAULT_RUBRICS, SUNDAY_AFTER_PENTECOST_VARIANT]),
+      { date: afterTrinity, easter }
+    )
   );
 
   // A season and a color are identifiers; the language gives each its name,
