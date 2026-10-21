@@ -41,13 +41,19 @@ items:
       - calendar: { 06-01: in-epiphania-domini }
       - title: in-ascensione-domini-pasc5-4
         occurence: { date: easter, difference: 39 }
+      # The Trinity and Christ the King, kept on a Sunday by their own date, take
+      # the Sunday's place and commemorate no Sunday (n. 17), as the Holy Name and
+      # the Holy Family do. The Sunday is still built under them: the ferias of
+      # its week say its Mass.
       - title: festum-sanctissimae-trinitatis #17c
+        accept-commemoration-types: [privileged]
         occurence: { date: easter, difference: 56 }
       - title: festum-sanctissimi-corporis-christi
         occurence: { date: easter, difference: 60 }
       - title: sacratissimi-cordis-domini-nostri-jesu-christi-pent02-5
         occurence: { date: easter, difference: 68 }
-      - title: in-festo-domino-nostro-jesu-christi-regis-10-du #17d
+      - title: in-festo-domini-nostri-jesu-christi-regis-10-du #17d
+        accept-commemoration-types: [privileged]
         occurence: { type: dominica, start: 25-10, end: 31-10 }
     - calendar: #91.4
         15-08: in-assumptione-beatae-mariae-virginis
@@ -124,7 +130,7 @@ items:
         occurence: { date: easter, difference: 53 }
     - calendar: #91.11
         19-03: joseph-sponsi-bmv-confessoris-03-19
-        25-03: in-annuntiatione-beate-mariae-virgine
+        25-03: in-annuntiatione-beatae-mariae-virginis
         01-05: joseph-opificis
         24-06: in-nativitate-s-joannis-baptistae
         29-06: { title: apostolorum-petri-et-pauli, color: red }
