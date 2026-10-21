@@ -147,9 +147,12 @@ function applyConditionalToFork(
         newValue.length = fence < 0 ? 0 : fence + 1;
       }
 
+      // A branch keeps what its fork already assumed: a fork that took the
+      // 1570 rubric and now takes the 1960 one assumes both, and is labelled
+      // so, rather than passing for the 1960 branch that assumed only that.
       return {
-        includes: branch.includes,
-        excludes: branch.excludes,
+        includes: normalizeCondition([...fork.includes, ...branch.includes]),
+        excludes: normalizeCondition([...fork.excludes, ...branch.excludes]),
         value: newValue,
         ...affirm(newValue, newConditionalOffsets, newConditionalStack),
         decided,

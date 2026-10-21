@@ -182,6 +182,43 @@ describe("processConditionalLines (per-rubric surviving lines)", () => {
         "@:Plurimorum",
       ]);
     });
+
+    // 28 April: St Paul of the Cross is omitted under the 1570 rubrics only,
+    // St Vitalis under the 1960 rubrics only. The first conditional fences off
+    // St Paul, so the second cannot reach back past it.
+    const twoOmissions = [
+      "",
+      "@:Pauli",
+      "(rubrica 1570 omittitur)",
+      "",
+      "@:Vitalis",
+      "(rubrica 1960 aut rubrica Newcal omittitur)",
+      "",
+      "@:Marci",
+    ];
+
+    it("stops at the fence an earlier conditional set", () => {
+      expect(linesForRubric(twoOmissions, RUBRIC_1962)).toEqual([
+        "",
+        "@:Pauli",
+        "",
+        "@:Marci",
+      ]);
+      expect(linesForRubric(twoOmissions, RUBRIC_1570)).toEqual([
+        "",
+        "@:Vitalis",
+        "",
+        "@:Marci",
+      ]);
+    });
+
+    it("labels a branch with every rubric it assumed", () => {
+      const conditions = processConditionalLines(twoOmissions, []).map((v) =>
+        v.condition.join(" ")
+      );
+      expect(conditions.filter((c) => c === "1962")).toHaveLength(1);
+      expect(conditions).toContain("1570 1962");
+    });
   });
 
   describe("dicitur (forward scope line)", () => {
@@ -230,12 +267,12 @@ describe("processConditionalLines (variant structure)", () => {
       ["(si innovata) line1", "(si rubrica tridentina) line2"],
       []
     );
-    expect(variants.find((v) => v.condition.includes("2020"))?.value).toEqual([
-      "line1",
-    ]);
-    expect(
-      variants.find((v) => v.condition.includes("1570"))?.value
-    ).toEqual(["line1", "line2"]);
+    const under = (...rubrics: string[]) =>
+      variants.find((v) => v.condition.join(" ") === rubrics.join(" "))?.value;
+    expect(under("2020")).toEqual(["line1"]);
+    expect(under("1570")).toEqual(["line2"]);
+    // A branch that assumed both says both, and is labelled with both.
+    expect(under("1570", "2020")).toEqual(["line1", "line2"]);
   });
 
   it("deduplicates when the passed base condition already matches", () => {
