@@ -6,12 +6,12 @@ import {
   nameSaint,
   type Stores,
 } from "../massPropers";
-import type { RawMassProper } from "../types";
+import type { CalendarData, RawMassProper, VotiveCatalog } from "../types";
+import type { Martyrology, MartyrologyDay } from "../martyrology";
 
 export type { RawMassProper };
 import { assertCalendarData } from "./assert/calendarData";
 import { assertVotiveData } from "./assert/votiveData";
-import type { VotiveCatalog } from "../types";
 import { weekdays } from "../constants";
 
 /**
@@ -31,6 +31,22 @@ export function loadCalendarData() {
   const calendarData = loadAsset("calendar1962.yml");
   assertCalendarData(calendarData);
   return calendarData;
+}
+
+/**
+ * What a local proper may say — the types, classes, commemoration types and
+ * colors the base calendar declares valid. A proper is read on its own, so it
+ * is checked against the calendar it will be merged into rather than against
+ * nothing.
+ */
+function validity(): Partial<CalendarData> {
+  const base = loadCalendarData();
+  return {
+    "valid-types": base["valid-types"],
+    "valid-liturgical-classes": base["valid-liturgical-classes"],
+    "valid-commemoration-types": base["valid-commemoration-types"],
+    "valid-colors": base["valid-colors"],
+  };
 }
 
 /**
@@ -60,7 +76,7 @@ export function loadVotiveMasses(): VotiveCatalog {
 
 export function loadPropers(name: string) {
   const propers = loadAsset(`propers/${name}.yml`);
-  assertCalendarData(propers);
+  assertCalendarData(propers, validity());
   return propers;
 }
 
@@ -106,6 +122,31 @@ export function titleToFileName(title: string): string {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "")
     .replace(/^(ss?|bb?)-/, "");
+}
+
+/**
+ * The language's Martyrology, or undefined where it carries none: the dates it
+ * prints, the movable days' announcements and the conclusion.
+ */
+export function loadMartyrology(language: Language): Martyrology | undefined {
+  const prefix = `martyrologium/${language.code}/`;
+  const days: Martyrology["days"] = {};
+  let mobile: Martyrology["mobile"] = {};
+  let conclusio: Martyrology["conclusio"];
+
+  for (const [path, data] of Object.entries(language.assets ?? {})) {
+    const normalized = path.replace(/\\/g, "/");
+    if (!normalized.startsWith(prefix) || typeof data !== "object" || data === null) {
+      continue;
+    }
+    const name = normalized.slice(prefix.length).replace(/\.ya?ml$/, "");
+    if (/^\d\d-\d\d$/.test(name)) days[name] = data as MartyrologyDay;
+    else if (name === "mobile") mobile = data as Martyrology["mobile"];
+    else if (name === "conclusio") conclusio = data as Martyrology["conclusio"];
+  }
+
+  if (Object.keys(days).length === 0) return undefined;
+  return conclusio === undefined ? { days, mobile } : { days, mobile, conclusio };
 }
 
 function loadStores(language: Language): Stores {

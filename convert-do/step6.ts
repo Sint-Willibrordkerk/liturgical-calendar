@@ -51,6 +51,8 @@ const excludedFiles = [
   "00-VE",
   "09-DP",
   "09-DT",
+  // The Martyrology's movable days, named for no date.
+  "Mobile",
 ];
 
 export function getOutputFile(input: string) {

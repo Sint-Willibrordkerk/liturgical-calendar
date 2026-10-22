@@ -1,4 +1,4 @@
-import { weekdays, namedDates } from "./constants";
+import { weekdays, namedDates, colors, seasons } from "./constants";
 
 export type Digit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 export type LiturgicalClass = 1 | 2 | 3 | 4;
@@ -10,6 +10,11 @@ export type RelativeDate = {
   difference: number;
 };
 export type LiturgicalDate = DateString | NamedDate | RelativeDate;
+
+/** A color of the vestments: `white`, `red`, `green`, `violet`, `rose` or `black`. */
+export type Color = (typeof colors)[number];
+/** A season of the year, as the rubrics name it: `adventus`, `paschatis`, … */
+export type Season = (typeof seasons)[number];
 
 
 export type Weekday = keyof typeof weekdays;
@@ -76,6 +81,52 @@ export type Commemoration = {
 
 export type LiturgicalDay = Commemoration & {
   commemorations: Commemoration[];
+  /** The season the day falls in. */
+  season: Season;
+  /**
+   * The color of the Mass said. A commemoration carries none: it is a collect
+   * added to the day's Mass, not a Mass of its own.
+   */
+  color: Color;
+  /**
+   * A color that may be worn in place of `color`: rose on Gaudete and Laetare
+   * Sunday. Absent on every other day.
+   */
+  alternativeColor?: Color;
+  /**
+   * The season, the color and the alternative color as the language names
+   * them — "Advent", "paars". Present only where a language supplies them; the
+   * identifiers above are what to compare against.
+   */
+  seasonName?: string;
+  colorName?: string;
+  alternativeColorName?: string;
+  /**
+   * The Martyrology printed under the day's date — read at Prime on the day
+   * before it. Present only when asked for, and only in a language that has a
+   * Martyrology.
+   */
+  martyrologium?: Martyrologium;
+};
+
+/**
+ * A day's reading of the Roman Martyrology, in the order it is read: the date
+ * and the moon, the announcement of a movable day, the entries, the
+ * conclusion.
+ */
+export type Martyrologium = {
+  /** The date in the Roman reckoning: "Duodécimo Kaléndas Februárii". */
+  titulus: string;
+  /** The age of the moon, 1–30, as the Martyrology's tables reckon it. */
+  luna?: number;
+  /** The age of the moon as the language says it: "Luna secúnda". */
+  lunaName?: string;
+  /** The announcement of the movable day it is, read before the entries. */
+  mobile?: string[];
+  /** The entries — the elogia of the saints — in the order they are read. */
+  elogia: string[];
+  /** The versicle that closes every reading, and its response. */
+  conclusio?: { versus: string; responsum: string };
 };
 
 // Mass Proper Types
@@ -143,21 +194,29 @@ export type Calendar = Record<
   Record<number, LiturgicalDay | undefined> | undefined
 >;
 
+/**
+ * A day of a `calendar` map: its title, or the title with the color its Mass
+ * wears where that is not the default.
+ */
+export type CalendarEntry = string | { title: string; color?: string };
+
 export type CalendarData = {
   "valid-types"?: string[];
   "valid-liturgical-classes"?: number[];
   "valid-commemoration-types"?: string[];
+  "valid-colors"?: string[];
 
   title?: string;
   type?: string;
   "liturgical-class"?: number;
   "commemoration-type"?: string;
+  color?: string;
 
   "accept-commemoration-types"?: string[];
 
   occurence?: Occurence;
 
-  calendar?: Record<DateString, string[] | string | undefined>;
+  calendar?: Record<DateString, CalendarEntry[] | CalendarEntry | undefined>;
   slot?: string;
   "slot-name"?: string;
 

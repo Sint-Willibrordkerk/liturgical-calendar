@@ -59,13 +59,11 @@ describe("applyCondition", () => {
 
 describe("parseConditional", () => {
   it("extracts stopword and scope from condition", () => {
-    const parsed = parseConditional(
-      "si tempore post septuagesimam dicitur, dicuntur hi versus"
-    );
+    const parsed = parseConditional("si rubrica tridentina hi versus");
 
     expect(parsed).toEqual({
       stopword: "si",
-      condition: "tempore post septuagesimam dicitur, dicuntur",
+      condition: "rubrica tridentina",
       scope: "hi versus",
       instruction: undefined,
       semper: false,
@@ -75,18 +73,74 @@ describe("parseConditional", () => {
     });
   });
 
-  it("extracts trailing instruction when it is the terminal segment", () => {
-    const parsed = parseConditional("si innovata dicitur, dicuntur");
+  it("separates an omittitur instruction from the condition", () => {
+    const parsed = parseConditional(
+      "rubrica 1955 aut rubrica 1960 aut rubrica Newcal omittitur"
+    );
 
     expect(parsed).toEqual({
-      stopword: "si",
-      condition: "innovata",
+      stopword: undefined,
+      condition: "rubrica 1955 aut rubrica 1960 aut rubrica Newcal",
       scope: undefined,
-      instruction: "dicitur, dicuntur",
+      instruction: "omittitur",
+      semper: false,
+      strength: 0,
+      backScope: "scope-chunk",
+      forwardScope: "scope-null",
+    });
+  });
+
+  it("gives omittuntur the nesting as its back-scope", () => {
+    const parsed = parseConditional("sed rubrica 1960 omittuntur");
+
+    expect(parsed).toMatchObject({
+      stopword: "sed",
+      condition: "rubrica 1960",
+      instruction: "omittuntur",
+      backScope: "scope-nest",
+      forwardScope: "scope-null",
+    });
+  });
+
+  it("reads a scope phrase before the instruction", () => {
+    const parsed = parseConditional(
+      "sed rubrica 1955 aut rubrica 1960 hæc versus omittuntur"
+    );
+
+    expect(parsed).toMatchObject({
+      condition: "rubrica 1955 aut rubrica 1960",
+      scope: "hæc versus",
+      instruction: "omittuntur",
+      backScope: "scope-nest",
+      forwardScope: "scope-null",
+    });
+  });
+
+  it("separates a dicitur instruction from the condition", () => {
+    const parsed = parseConditional("rubrica 1960 aut rubrica Newcal dicitur");
+
+    expect(parsed).toEqual({
+      stopword: undefined,
+      condition: "rubrica 1960 aut rubrica Newcal",
+      scope: undefined,
+      instruction: "dicitur",
       semper: false,
       strength: 0,
       backScope: "scope-null",
       forwardScope: "scope-line",
+    });
+  });
+
+  it("gives dicuntur the nesting as its forward scope", () => {
+    const parsed = parseConditional("deinde dicuntur semper");
+
+    expect(parsed).toMatchObject({
+      stopword: "deinde",
+      condition: "",
+      instruction: "dicuntur",
+      semper: true,
+      backScope: "scope-null",
+      forwardScope: "scope-nest",
     });
   });
 

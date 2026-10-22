@@ -10,6 +10,10 @@ import {
   isPublishedTree,
   keepSeason,
   seasonalPublications,
+  martyrologyDate,
+  martyrologyDay,
+  martyrologyMobile,
+  martyrologyConclusion,
 } from "./step11";
 import { isOtherRubricSystem } from "./lib/rubrics";
 
@@ -397,5 +401,138 @@ describe("seasonalPublications", () => {
 describe("isPublishedTree, for a day that changes with the season", () => {
   it("does not publish the source document as it stands", () => {
     expect(isPublishedTree("la/Commune/sanctae-mariae-sabbato.json")).toBe(false);
+  });
+});
+
+describe("the Martyrology", () => {
+  it("knows a date of it from the rest of the tree", () => {
+    expect(martyrologyDate("la/Martyrologium/01-21.json")).toBe("01-21");
+    expect(martyrologyDate("la\\Martyrologium\\02-29.json")).toBe("02-29");
+    expect(martyrologyDate("la/Martyrologium/Mobile.json")).toBeUndefined();
+    expect(martyrologyDate("la/Sancti/01-21.json")).toBeUndefined();
+  });
+
+  describe("a date", () => {
+    it("takes the wording for the rubric in force, or the default", () => {
+      expect(
+        martyrologyDay({
+          titulus: [v(["Idibus Januárii"])],
+          martyrologium: [
+            v(["", "Octáva Epiphániæ Dómini.", "", "Pictávis sancti Hilárii."]),
+            v(["", "Commemorátio Baptismátis Dómini.", "", "Pictávis sancti Hilárii."], ["1962"]),
+            v(["", "Octava Epiphaniae Domini."], ["1570"]),
+          ],
+        })
+      ).toEqual({
+        titulus: "Idibus Januárii",
+        elogia: ["Commemorátio Baptismátis Dómini.", "Pictávis sancti Hilárii."],
+      });
+    });
+
+    it("ignores a variant that assumes another rubric besides", () => {
+      expect(
+        martyrologyDay({
+          titulus: [v(["Kaléndis Januárii"])],
+          martyrologium: [v(["a"]), v(["b"], ["1570", "1962"])],
+        }).elogia
+      ).toEqual(["a"]);
+    });
+
+    it("leaves out an entry the language has no words for", () => {
+      expect(
+        martyrologyDay({
+          titulus: [v(["Quarto Nonas Januárii"])],
+          martyrologium: [v(["@:Adalardi-Corbeiensis", "", "Octáva sancti Stéphani."])],
+        }).elogia
+      ).toEqual(["Octáva sancti Stéphani."]);
+    });
+
+    it("leaves out the directions to the reader", () => {
+      expect(
+        martyrologyDay({
+          titulus: [v(["Octávo Kaléndas Januárii"])],
+          martyrologium: [
+            v([
+              "Jesus Christus … decúrsis ménsibus /:Hic vox elevatur, et omnes genua flectunt:/, in Béthlehem Judæ náscitur. /:Hic autem in priori voce dicitur::/ Natívitas Dómini nostri Jesu Christi secúndum carnem.",
+              "/:Quod sequitur, legitur in tono Lectionis consueto; et surgunt omnes.:/",
+              "Eódem die natális sanctæ Anastásiæ.",
+            ]),
+          ],
+        }).elogia
+      ).toEqual([
+        "Jesus Christus … decúrsis ménsibus, in Béthlehem Judæ náscitur. Natívitas Dómini nostri Jesu Christi secúndum carnem.",
+        "Eódem die natális sanctæ Anastásiæ.",
+      ]);
+    });
+
+    it("keeps its title when it has no entries", () => {
+      expect(
+        martyrologyDay({
+          titulus: [v(["Sexto Kaléndas Mártii"])],
+          martyrologium: [v(["", "@:Antoniae"])],
+        })
+      ).toEqual({ titulus: "Sexto Kaléndas Mártii" });
+    });
+  });
+
+  describe("the movable days", () => {
+    it("maps each day to its announcement under the rubric in force", () => {
+      expect(
+        martyrologyMobile({
+          "quad6-0": [
+            v(["Domínica Palmárum."]),
+            v(["Domínica secúnda Passiónis, seu in palmis."], ["1962"]),
+          ],
+          "pasc5-3": [
+            v(["Vigília Ascensiónis Dómini nostri Jesu Christi.", "Romæ Litaníæ minóres ad sanctum Petrum."]),
+          ],
+        })
+      ).toEqual({
+        "quad6-0": ["Domínica secúnda Passiónis, seu in palmis."],
+        "pasc5-3": [
+          "Vigília Ascensiónis Dómini nostri Jesu Christi.",
+          "Romæ Litaníæ minóres ad sanctum Petrum.",
+        ],
+      });
+    });
+
+    it("leaves out an announcement the rubric in force empties", () => {
+      expect(
+        martyrologyMobile({
+          "pasc2-3": [v(["Solémnitas sancti Joseph."]), v([], ["1962"])],
+        })
+      ).toEqual({});
+    });
+
+    it("leaves out what is keyed to no date", () => {
+      expect(
+        martyrologyMobile({
+          defuncti: [v(["Hac die Commemorátio ómnium Fidélium Defunctórum."])],
+          defunctim: [v(["…"])],
+          nativity: [v(["Anno a creatióne mundi …"])],
+          "10-du": [v(["Festum Dómini nostri Jesu Christi Regis."])],
+        })
+      ).toEqual({ "10-du": ["Festum Dómini nostri Jesu Christi Regis."] });
+    });
+  });
+
+  describe("the conclusion", () => {
+    it("is the versicle and the response its macro names", () => {
+      expect(
+        martyrologyConclusion({
+          conclmart: [
+            v(["V. Et álibi aliórum plurimórum sanctórum Mártyrum.", "$Deo gratias"]),
+          ],
+          "deo-gratias": [v(["R. Deo grátias."])],
+        })
+      ).toEqual({
+        versus: "Et álibi aliórum plurimórum sanctórum Mártyrum.",
+        responsum: "Deo grátias.",
+      });
+    });
+
+    it("is absent where the prayers do not carry it", () => {
+      expect(martyrologyConclusion({})).toBeUndefined();
+    });
   });
 });

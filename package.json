@@ -1,6 +1,6 @@
 {
   "name": "@sint-willibrordkerk/liturgical-calendar",
-  "version": "3.0.0",
+  "version": "3.2.0",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.mts",
   "exports": {
@@ -34,7 +34,7 @@
     "tsup": "^8.5.0",
     "tsx": "^4.20.3",
     "typescript": "^5.7.2",
-    "vitest": "^3.2.4",
+    "vitest": "^5.0.5",
     "yaml": "^2.6.1"
   },
   "packageManager": "pnpm@11.23.0+sha512.f00082e5b283a199b74e079da28d155c008fe232f44c8a06ea7ddfa014ecf719fc362f790ecc67b28106ddac2afb24c49a9a079159da560b2ce7d1e98efd11af",

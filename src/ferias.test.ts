@@ -7,7 +7,13 @@ import {
 import type { Calendar, LiturgicalDay } from "./types";
 
 const feria = (): LiturgicalDay =>
-  ({ type: "feria", liturgicalClass: 4, commemorations: [] }) as LiturgicalDay;
+  ({
+    type: "feria",
+    liturgicalClass: 4,
+    commemorations: [],
+    season: "per-annum",
+    color: "green",
+  }) as LiturgicalDay;
 
 const withMass = (
   type: string,
@@ -160,6 +166,203 @@ describe("applyFerialMass", () => {
     expect(calendar[8]![30]!.mass).toBeUndefined();
     // The Sunday had none to give, so the feria keeps the one before it.
     expect(calendar[8]![31]!.mass).toBe(sunday);
+  });
+});
+
+describe("the ferias of a week whose Sunday a feast took", () => {
+  /** A feast kept on a Sunday, the Sunday giving way to a commemoration. */
+  const keptOnSunday = (feast: unknown, sunday: unknown): LiturgicalDay =>
+    ({
+      type: "festum",
+      liturgicalClass: 1,
+      mass: feast,
+      commemorations: [
+        { type: "dominica", liturgicalClass: 2, mass: sunday },
+        { type: "feria", liturgicalClass: 4 },
+      ],
+    }) as never;
+
+  const christTheKing = { title: "In festo Domini Nostri Jesu Christi Regis" };
+  const dominicaXXII = { title: "Dominica XXII post Pentecosten" };
+
+  it("say the Mass of the Sunday, not of the feast", () => {
+    // In 2026 Christ the King takes the twenty-fifth of October, the Twenty-
+    // second Sunday after Pentecost.
+    const calendar = calendarOf({
+      "10-25": keptOnSunday(christTheKing, dominicaXXII),
+      "10-26": feria(),
+      "10-30": feria(),
+    });
+    applyFerialMass(calendar, 2026);
+    expect(calendar[10]![25]!.mass).toBe(christTheKing);
+    expect(calendar[10]![26]!.mass).toBe(dominicaXXII);
+    expect(calendar[10]![30]!.mass).toBe(dominicaXXII);
+  });
+
+  it("say it whatever feast it was, a saint's as well", () => {
+    // All Saints falls on a Sunday in 2026, the Twenty-third after Pentecost.
+    const allSaints = { title: "Omnium Sanctorum" };
+    const dominicaXXIII = { title: "Dominica XXIII post Pentecosten" };
+    const calendar = calendarOf({
+      "11-1": keptOnSunday(allSaints, dominicaXXIII),
+      "11-3": feria(),
+    });
+    applyFerialMass(calendar, 2026);
+    expect(calendar[11]![3]!.mass).toBe(dominicaXXIII);
+  });
+
+  it("say the Mass of the First Sunday after Pentecost after the Trinity", () => {
+    // The Trinity is the thirty-first of May in 2026. That Sunday's file gives
+    // the Trinity texts, as the commemoration carries them; its own are handed
+    // in.
+    const trinity = { title: "Festum Sanctissimæ Trinitatis" };
+    const asTrinity = { title: "Dominica I post Pentecosten", prefatio: "trinitate" };
+    const dominicaI = { title: "Dominica I post Pentecosten" };
+    const calendar = calendarOf({
+      "5-31": keptOnSunday(trinity, asTrinity),
+      "6-3": feria(),
+    });
+    applyFerialMass(calendar, 2026, undefined, dominicaI);
+    expect(calendar[5]![31]!.mass).toBe(trinity);
+    expect(calendar[6]![3]!.mass).toBe(dominicaI);
+  });
+
+  it("keep the Mass handed in for the Trinity to that week alone", () => {
+    const dominicaI = { title: "Dominica I post Pentecosten" };
+    const calendar = calendarOf({
+      "10-25": keptOnSunday(christTheKing, dominicaXXII),
+      "10-26": feria(),
+    });
+    applyFerialMass(calendar, 2026, undefined, dominicaI);
+    expect(calendar[10]![26]!.mass).toBe(dominicaXXII);
+  });
+
+  it("say the feast's Mass where it commemorates no Sunday", () => {
+    // Easter is kept as a feast and stands for its Sunday.
+    const easter = { title: "Dominica Resurrectionis" };
+    const calendar = calendarOf({
+      "4-5": withMass("festum", 1, easter),
+      "4-13": feria(),
+    });
+    applyFerialMass(calendar, 2026);
+    expect(calendar[4]![13]!.mass).toBe(easter);
+  });
+
+  it("keep the Mass before it where the Sunday has none to give", () => {
+    const dominicaXXI = { title: "Dominica XXI post Pentecosten" };
+    const calendar = calendarOf({
+      "10-18": withMass("dominica", 2, dominicaXXI),
+      "10-25": keptOnSunday(christTheKing, undefined),
+      "10-26": feria(),
+    });
+    applyFerialMass(calendar, 2026);
+    expect(calendar[10]![26]!.mass).toBe(dominicaXXI);
+  });
+});
+
+describe("the Preface of a feria that says its Sunday's Mass", () => {
+  const prefatioOf = (day: LiturgicalDay | undefined) =>
+    (day?.mass as { prefatio?: string } | undefined)?.prefatio;
+
+  const dominicaXIII = {
+    title: "Dominica XIII post Pentecosten",
+    prefatio: "trinitate",
+  };
+
+  it("is the common Preface where the Sunday says the Trinity's", () => {
+    // 26 August 2026 falls in the week of the Thirteenth Sunday after
+    // Pentecost; Divinum Officium says the common Preface on it.
+    const calendar = calendarOf({
+      "8-23": withMass("dominica", 2, dominicaXIII),
+      "8-26": feria(),
+    });
+    applyFerialMass(calendar, 2026);
+    expect(prefatioOf(calendar[8]![26])).toBe("communis");
+    expect(calendar[8]![26]!.mass).toMatchObject({
+      title: "Dominica XIII post Pentecosten",
+    });
+  });
+
+  it("is the common Preface whatever Preface the Sunday names", () => {
+    // The Second Sunday after Pentecost, filed with a Preface of the
+    // Nativity, is said with the common one on its ferias.
+    const dominicaII = { title: "Dominica II post Pentecosten", prefatio: "nat" };
+    const calendar = calendarOf({
+      "6-7": withMass("dominica", 2, dominicaII),
+      "6-9": feria(),
+    });
+    applyFerialMass(calendar, 2026);
+    expect(prefatioOf(calendar[6]![9])).toBe("communis");
+  });
+
+  it("is the common Preface where a feast took the Sunday", () => {
+    const christTheKing = {
+      title: "In festo Domini Nostri Jesu Christi Regis",
+      prefatio: "regis",
+    };
+    const dominicaXXII = {
+      title: "Dominica XXII post Pentecosten",
+      prefatio: "trinitate",
+    };
+    const calendar = calendarOf({
+      "10-25": {
+        type: "festum",
+        liturgicalClass: 1,
+        mass: christTheKing,
+        commemorations: [
+          { type: "dominica", liturgicalClass: 2, mass: dominicaXXII },
+        ],
+      } as never,
+      "10-27": feria(),
+    });
+    applyFerialMass(calendar, 2026);
+    expect(prefatioOf(calendar[10]![27])).toBe("communis");
+    expect(prefatioOf(calendar[10]![25])).toBe("regis");
+  });
+
+  it("is the common Preface after the Trinity", () => {
+    const dominicaI = {
+      title: "Dominica I post Pentecosten",
+      prefatio: "trinitate",
+    };
+    const calendar = calendarOf({
+      "5-31": withMass("festum", 1, { title: "Festum Sanctissimæ Trinitatis" }),
+      "6-3": feria(),
+    });
+    applyFerialMass(calendar, 2026, undefined, dominicaI);
+    expect(prefatioOf(calendar[6]![3])).toBe("communis");
+  });
+
+  it("names none where the Sunday names none, saying that of the season", () => {
+    // The Sundays of Advent and of paschaltide name no Preface; theirs is
+    // the season's, and so is that of their ferias.
+    const adventI = { title: "Dominica I Adventus" };
+    const calendar = calendarOf({
+      "11-29": withMass("dominica", 1, adventI),
+      "12-1": feria(),
+    });
+    applyFerialMass(calendar, 2026);
+    expect(calendar[12]![1]!.mass).toBe(adventI);
+  });
+
+  it("leaves the Sunday its own Preface", () => {
+    const calendar = calendarOf({
+      "8-23": withMass("dominica", 2, dominicaXIII),
+      "8-26": feria(),
+    });
+    applyFerialMass(calendar, 2026);
+    expect(prefatioOf(calendar[8]![23])).toBe("trinitate");
+    expect(dominicaXIII.prefatio).toBe("trinitate");
+  });
+
+  it("is one Mass for all the ferias of the week", () => {
+    const calendar = calendarOf({
+      "8-23": withMass("dominica", 2, dominicaXIII),
+      "8-24": feria(),
+      "8-28": feria(),
+    });
+    applyFerialMass(calendar, 2026);
+    expect(calendar[8]![24]!.mass).toBe(calendar[8]![28]!.mass);
   });
 });
 

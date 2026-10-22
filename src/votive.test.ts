@@ -13,14 +13,27 @@ import type {
 } from "./types";
 
 const feria = (): LiturgicalDay =>
-  ({ type: "feria", liturgicalClass: 4, commemorations: [] }) as LiturgicalDay;
+  ({
+    type: "feria",
+    liturgicalClass: 4,
+    commemorations: [],
+    season: "per-annum",
+    color: "green",
+  }) as LiturgicalDay;
 
 const day = (
   type: string,
   liturgicalClass: number,
   extra: Partial<LiturgicalDay> = {}
 ): LiturgicalDay =>
-  ({ type, liturgicalClass, commemorations: [], ...extra }) as LiturgicalDay;
+  ({
+    type,
+    liturgicalClass,
+    commemorations: [],
+    season: "per-annum",
+    color: "green",
+    ...extra,
+  }) as LiturgicalDay;
 
 /** A calendar holding only the days named, so a rule is easy to read. */
 function calendarOf(days: Record<string, LiturgicalDay>): Calendar {

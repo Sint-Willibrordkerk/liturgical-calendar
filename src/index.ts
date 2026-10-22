@@ -6,16 +6,43 @@ import {
   dayNumber,
 } from "./utils";
 import { parseCalendarData } from "./parseCalendarData";
-import { loadTranslations, loadMassPropersByTitle, loadVotiveMasses } from "./loadAssets";
-import { applyFerialMass, SUNDAY_AFTER_EPIPHANY_MASS } from "./ferias";
+import {
+  DEFAULT_RUBRICS,
+  loadTranslations,
+  loadMassPropersByTitle,
+  loadMartyrology,
+  loadVotiveMasses,
+} from "./loadAssets";
+import {
+  applyFerialMass,
+  SUNDAY_AFTER_EPIPHANY_MASS,
+  SUNDAY_AFTER_PENTECOST_MASS,
+  SUNDAY_AFTER_PENTECOST_VARIANT,
+} from "./ferias";
 import { applyResumedSundays } from "./resumedSundays";
+import { applyMartyrology } from "./martyrology";
 import { applyVotiveMasses, type VotiveMassId } from "./votive";
 import { asLanguage, type Language } from "./language";
 export { type Language } from "./language";
 export { type VotiveMassId } from "./votive";
+export type {
+  Calendar,
+  Color,
+  Commemoration,
+  LiturgicalDay,
+  Martyrologium,
+  Season,
+} from "./types";
 
 /** Options that shape the calendar beyond the days themselves. */
 export type Options = {
+  /**
+   * Give each day the Roman Martyrology printed under its date, in the
+   * language passed in where it has one. It is read at Prime on the day
+   * before, and runs to a few kilobytes a day, so it is left out unless asked
+   * for.
+   */
+  martyrologium?: boolean;
   /**
    * Votive Masses to observe, each named by its Latin slug (see `VotiveMassId`
    * for the catalogue). A votive Mass is a matter of local devotion, so none is
@@ -58,19 +85,6 @@ export default (
   const translations = loadTranslations(lang);
   const calendar = parseCalendarData(year, propers, lang, translations);
 
-  // A fourth-class feria has no Mass of its own; it takes one from the day the
-  // rubrics point at, which needs the whole year built first. The ferias after
-  // the First Sunday after the Epiphany take that Sunday's own Mass, which no
-  // day of the calendar carries — the Sunday itself is kept as the Holy Family.
-  applyFerialMass(
-    calendar,
-    year,
-    loadMassPropersByTitle(SUNDAY_AFTER_EPIPHANY_MASS, lang, undefined, {
-      date: new Date(year, 0, 12),
-      easter: calculateEaster(year),
-    })
-  );
-
   // A year with more Sundays after Pentecost than the missal numbers resumes
   // the Sundays after the Epiphany that Septuagesima cut short. Which of those
   // were kept decides which are left to resume.
@@ -91,8 +105,32 @@ export default (
       })
   );
 
+  // A fourth-class feria has no Mass of its own; it takes one from the day the
+  // rubrics point at, which needs the whole year built first, the resumed
+  // Sundays included. The ferias after the First Sundays after the Epiphany and
+  // after Pentecost take those Sundays' own Masses, which no day of the calendar
+  // carries — the Sundays themselves are kept as the Holy Family and the Holy
+  // Trinity.
+  const afterTrinity = new Date(easter);
+  afterTrinity.setDate(afterTrinity.getDate() + 57);
+  applyFerialMass(
+    calendar,
+    year,
+    loadMassPropersByTitle(SUNDAY_AFTER_EPIPHANY_MASS, lang, undefined, {
+      date: new Date(year, 0, 12),
+      easter,
+    }),
+    loadMassPropersByTitle(
+      SUNDAY_AFTER_PENTECOST_MASS,
+      lang,
+      new Set([...DEFAULT_RUBRICS, SUNDAY_AFTER_PENTECOST_VARIANT]),
+      { date: afterTrinity, easter }
+    )
+  );
+
   // Votive Masses take the free ferias last of all, once every feast and feria
-  // has settled: only a day still of the fourth class is theirs to take.
+  // has settled — the ferias' borrowed Masses included: only a day still of the
+  // fourth class is theirs to take.
   if (options.votiveMasses?.length) {
     applyVotiveMasses(
       calendar,
@@ -104,8 +142,28 @@ export default (
     );
   }
 
+  // The Martyrology follows the date, not the celebration, so it can be laid
+  // on once the days are in place.
+  if (options.martyrologium) {
+    const martyrology = loadMartyrology(lang);
+    if (martyrology) applyMartyrology(calendar, year, martyrology, translations);
+  }
+
+  // A season and a color are identifiers; the language gives each its name,
+  // where it carries one, beside it.
+  const nameOf = (key: string | undefined): string | undefined =>
+    key === undefined ? undefined : translations[key];
+
   eachDay(year, ({ month, day }) => {
     const dayData = calendar[month]![day]!;
+    const seasonName = nameOf(dayData.season);
+    const colorName = nameOf(dayData.color);
+    const alternativeColorName = nameOf(dayData.alternativeColor);
+    if (seasonName !== undefined) dayData.seasonName = seasonName;
+    if (colorName !== undefined) dayData.colorName = colorName;
+    if (alternativeColorName !== undefined) {
+      dayData.alternativeColorName = alternativeColorName;
+    }
     dayData.commemorations = dayData.commemorations.filter(
       (commemoration: Commemoration) =>
         dayData.acceptCommemorationTypes?.includes(

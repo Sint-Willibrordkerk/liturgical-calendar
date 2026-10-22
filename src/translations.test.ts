@@ -2,6 +2,7 @@ import { existsSync, readFileSync, readdirSync } from "fs";
 import { join } from "path";
 import { parse } from "yaml";
 import { describe, expect, it } from "vitest";
+import { colors, seasons } from "./constants";
 
 /**
  * The translations are keyed by the name the calendar files a day under, so a
@@ -15,8 +16,17 @@ const LANGUAGES = "languages";
 const CALENDAR = join("assets", "calendar1962.yml");
 const PROPERS = join("assets", "propers");
 
-/** `ordinals.yml` is the vocabulary titles are built from, not days. */
-const VOCABULARY = "ordinals.yml";
+/**
+ * The vocabulary files name no days: the ordinals titles are built from, and
+ * the names of the seasons and the colors, keyed by their identifiers, and the
+ * age of the moon the Martyrology announces.
+ */
+const VOCABULARY = new Set([
+  "ordinals.yml",
+  "seasons.yml",
+  "colors.yml",
+  "luna.yml",
+]);
 
 /**
  * Keys that name a day no calendar carries. Left in place rather than deleted —
@@ -36,9 +46,11 @@ function names(node: unknown, out: string[] = []): string[] {
     if (key === "title" && typeof value === "string") out.push(value);
     else if (key === "calendar" && value && typeof value === "object") {
       for (const day of Object.values(value)) {
-        if (typeof day === "string") out.push(day);
-        else if (Array.isArray(day))
-          for (const s of day) if (typeof s === "string") out.push(s);
+        for (const entry of Array.isArray(day) ? day : [day]) {
+          if (typeof entry === "string") out.push(entry);
+          else if (entry && typeof entry === "object" && "title" in entry)
+            out.push(String(entry.title));
+        }
       }
     } else names(value, out);
   }
@@ -81,10 +93,19 @@ describe.each(translated)("the %s translations", (language) => {
     }
   });
 
+  it("names every season and every color, by its identifier", () => {
+    const read = (file: string) =>
+      existsSync(join(dir, file)) ? keysOf(join(dir, file)) : [];
+    expect(read("seasons.yml").sort()).toEqual([...seasons].sort());
+    expect(read("colors.yml").sort()).toEqual([...colors].sort());
+  });
+
   it("keys its days by the name the calendar files them under", () => {
-    const vocabulary = new Set(keysOf(join(dir, VOCABULARY)));
+    const vocabulary = new Set(
+      files.filter((file) => VOCABULARY.has(file)).flatMap((file) => keysOf(join(dir, file)))
+    );
     const unreachable = files
-      .filter((file) => file !== VOCABULARY)
+      .filter((file) => !VOCABULARY.has(file))
       .flatMap((file) => keysOf(join(dir, file)))
       .filter(
         (key) =>
