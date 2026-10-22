@@ -6,11 +6,13 @@ import {
   nameSaint,
   type Stores,
 } from "../massPropers";
-import type { CalendarData, RawMassProper } from "../types";
+import type { CalendarData, RawMassProper, VotiveCatalog } from "../types";
 import type { Martyrology, MartyrologyDay } from "../martyrology";
 
 export type { RawMassProper };
 import { assertCalendarData } from "./assert/calendarData";
+import { assertVotiveData } from "./assert/votiveData";
+import { weekdays } from "../constants";
 
 /**
  * An asset the language carries, or `undefined` where it carries none.
@@ -45,6 +47,32 @@ function validity(): Partial<CalendarData> {
     "valid-commemoration-types": base["valid-commemoration-types"],
     "valid-colors": base["valid-colors"],
   };
+}
+
+/**
+ * The votive Mass catalog from `votive.yml`, keyed by id, with each weekday
+ * resolved to its number. The Mass propers themselves are loaded later, by slug.
+ */
+export function loadVotiveMasses(): VotiveCatalog {
+  const data = loadAsset("votive.yml");
+  assertVotiveData(data);
+  return Object.fromEntries(
+    Object.entries(data.items).map(([id, item]) => [
+      id,
+      {
+        id,
+        category: item.category,
+        liturgicalClass: item["liturgical-class"],
+        rubric: item.rubric,
+        color: item.color,
+        slug: item.slug,
+        occurrence: item.occurrence && {
+          cadence: item.occurrence.cadence,
+          weekday: weekdays[item.occurrence.weekday],
+        },
+      },
+    ])
+  );
 }
 
 export function loadPropers(name: string) {

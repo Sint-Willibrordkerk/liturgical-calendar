@@ -11,6 +11,7 @@ import {
   loadTranslations,
   loadMassPropersByTitle,
   loadMartyrology,
+  loadVotiveMasses,
 } from "./loadAssets";
 import {
   applyFerialMass,
@@ -20,8 +21,10 @@ import {
 } from "./ferias";
 import { applyResumedSundays } from "./resumedSundays";
 import { applyMartyrology } from "./martyrology";
+import { applyVotiveMasses, type VotiveMassId } from "./votive";
 import { asLanguage, type Language } from "./language";
 export { type Language } from "./language";
+export { type VotiveMassId } from "./votive";
 export type {
   Calendar,
   Color,
@@ -40,6 +43,14 @@ export type Options = {
    * for.
    */
   martyrologium?: boolean;
+  /**
+   * Votive Masses to observe, each named by its Latin slug (see `VotiveMassId`
+   * for the catalogue). A votive Mass is a matter of local devotion, so none is
+   * placed unless it is named here. Only those the rubrics give a recurring day
+   * are placed; a votive named for an occasion rather than a date is recognized
+   * but placed nowhere.
+   */
+  votiveMasses?: VotiveMassId[];
 };
 
 function deleteFields(day: Partial<LiturgicalDay | Commemoration>) {
@@ -116,6 +127,20 @@ export default (
       { date: afterTrinity, easter }
     )
   );
+
+  // Votive Masses take the free ferias last of all, once every feast and feria
+  // has settled — the ferias' borrowed Masses included: only a day still of the
+  // fourth class is theirs to take.
+  if (options.votiveMasses?.length) {
+    applyVotiveMasses(
+      calendar,
+      year,
+      loadVotiveMasses(),
+      options.votiveMasses,
+      (slug, date) =>
+        loadMassPropersByTitle(slug, lang, undefined, { date, easter })
+    );
+  }
 
   // The Martyrology follows the date, not the celebration, so it can be laid
   // on once the days are in place.
