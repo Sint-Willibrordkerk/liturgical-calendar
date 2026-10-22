@@ -8,40 +8,54 @@ Where [AGENTS.md](AGENTS.md) explains *how to run* the pipeline, this document
 specifies *what each step guarantees*: its inputs, its outputs, the
 transformation it performs, the resulting data shape, and its handling of
 boundary cases. It describes observable behavior, not implementation. Section
-numbering follows the step numbers (step 0 … step 11).
+numbering follows the step numbers (step 0 … step 12).
 
-## The governing strategy: a text has one home, and references point at it
+## The governing strategy: a text has one home, and borrowings point at it
 
 A liturgical text — a reading, a prayer, a chant — is said on many days and
 under many rubrics. The commons exist precisely so that a class of saint shares
 one set of texts, and a day borrows them rather than restating them.
 
 The pipeline is built around that fact. Every reading, prayer and chant is
-**structured and filed into a per-language store as early as it is final**, and
-what remains in a day file is a **key** into that store. A borrowing — a common
-a day draws its Mass from, a section pulled from another file — is then resolved
-by **copying the key**, not the text. The text is never duplicated, so it never
-has to be de-duplicated: the store *is* the single home, established before the
-first borrowing is resolved.
+**structured and filed into a per-language store as soon as its wording is
+final**, and what remains in a day file is a **key** into that store. A day that
+draws its Mass from a common, or includes another file whole, then comes to hold
+the **same keys** the common holds — the text is not copied, so it never has to
+be found again and de-duplicated. The store is the single home, and it exists
+before the first borrowing is resolved.
 
-This is the ordering that follows from it, and the reason the steps sit where
-they do:
+The sources carry two kinds of reference, and they are different in kind:
 
-1. A store key is derived from a text's **structured** content (its canonical
-   scripture reference, or its opening words), so a section must be **structured**
-   (step 4) before it can be **filed** (step 5).
-2. A borrowing resolves to the key its target already holds, so the target must
-   be filed before the borrowing is **resolved** (step 6). Filing therefore
-   comes before reference resolution — the store is built *first*.
-3. Only then are the rubric-variant directories **folded** (step 7), the files
-   **named** (step 8), the commemorations **split out** (step 9), the redundant
-   variants **collapsed** (step 10), and the Mass propers **published** (step 11).
+- An **inline reference** — `@File:Section:…`, standing in the lines of a
+  section — **assembles a text**. It pulls lines from elsewhere, often only some
+  of them, often with words substituted, often next to lines of the section's
+  own: two collects joined by `Oremus`, a lesson continued with one more verse, a
+  borrowed secret with its own closing. What it produces is the wording of the
+  section, so it must be resolved **on the lines**, before the section is
+  structured; structuring drops exactly what its substitutions and line ranges
+  act upon — verse numbers, reference markers, introductions.
+- A **broad reference** — a whole-file include (`@File`, `ex …`) or a selective
+  borrow (`vide …`) — **borrows sections whole**. It never changes their wording,
+  so it can be resolved after the sections are filed, by copying keys.
 
-The store is opened at step 5 and **added to** by the two later steps that
-finalize new text — reference resolution (step 6), where a substituted borrow
-becomes a text of its own, and the commemoration split (step 9), where a saint's
-prayers first stand alone. It is never rewritten, only extended, and step 11
-ships the subset the propers actually name.
+The ordering follows from this:
+
+1. **Inline references** are resolved first (step 4), so every section holds the
+   wording it will be said with.
+2. The sections are **structured** (step 5): a key is derived from a text's
+   structured content — its canonical scripture reference, or its opening words.
+3. They are **filed** into the stores (step 6), and each leaves its key behind.
+4. **Broad references** are resolved (step 7) by copying the keys the borrowed
+   sections already hold.
+5. Only then are the rubric-variant directories **folded** (step 8), the files
+   **named** (step 9), the commemorations **split out** (step 10), the redundant
+   variants **collapsed** (step 11), and the Mass propers **published**
+   (step 12).
+
+The store is opened at step 6 and **added to** once more, by the commemoration
+split (step 10), where a saint's prayers first stand as texts of their own. It is
+never rewritten, only extended, and step 12 ships the subset the propers
+actually name.
 
 ## Conventions used in this document
 
@@ -62,7 +76,7 @@ minutes or seconds. The examples throughout this document are written as YAML
 for readability; they describe the structure, not the file format.
 
 The **last step's output is published**, read by people and shipped alongside
-the hand-maintained assets, and is written as YAML (`.yml`). Step 11 is
+the hand-maintained assets, and is written as YAML (`.yml`). Step 12 is
 therefore the one place the two formats meet.
 
 The pipeline runs in two modes:
@@ -70,15 +84,20 @@ The pipeline runs in two modes:
 - **Streaming (steps 0–3)** — each source file is processed independently and
   passed through every step in the requested range before being written once.
   These steps read only the file in front of them.
-- **Batch (steps 4–11)** — whole-directory passes. From step 4 on, a step reads
-  more than one file at a time: it files texts into a per-language store, reads
-  another day's file to resolve a borrowing, merges the same saint across
+- **Batch (steps 4–12)** — whole-directory passes. From step 4 on, a step reads
+  more than one file at a time: it reads another day's file to resolve a
+  reference, files texts into a per-language store, merges the same saint across
   documents, or writes a shared file alongside the tree. Each batch step fully
   rebuilds its output directory.
 
-The move to batch at step 4 is not incidental. The store is per language, and
-resolving a borrowing means reading the target's file; neither fits the
-one-file-at-a-time streaming model, and both begin at step 4.
+The move to batch at step 4 is not incidental. Resolving a reference means
+reading the file it names, and the store is per language; neither fits the
+one-file-at-a-time streaming model.
+
+The **stores travel with the tree**: from step 6 on, each language root holds
+`lectio.json`, `oratio.json` and `antiphona.json` beside its directories, and
+every later step carries them forward to its own output, adding to them only
+where this document says so.
 
 ---
 
@@ -271,17 +290,24 @@ files are untouched.
 
 - **`horas/Latin/SanctiOP/11-14M.txt`** — its preamble include line
   `@SanctiM/11-14M;;Simplex;;1.1;;vide` is truncated at the first `;;` so
-  step 6 sees a clean reference `@SanctiM/11-14M`.
+  step 7 sees a clean reference `@SanctiM/11-14M`.
 - **`missa/Nederlands/Sancti/09-02.txt`** — its mistyped header `d[Rank]` is
   rewritten to `[Rank]`.
 
 ---
 
-## Step 2 — Combine mass and hours
+## Step 2 — The Mass and the Office, side by side
 
-Merges the `horas` (Divine Office) and `missa` (Mass) versions of each day into
-one file. Step 2 changes no section content; it only maps both trees onto a
-shared, root-stripped output path, and the runner unions whatever lands there.
+Files the `horas` (Divine Office) and `missa` (Mass) document of each day beside
+each other, below their language. Step 2 changes no section content; it only
+moves the `horas`/`missa` segment below the language, so that every later tree
+is rooted at the language — where, from step 6, the stores live.
+
+The two stay **separate documents** until [step 8](#step-8--directory-and-filename-suffixes-to-rubric-conditions-batch)
+combines them. Each resolves its own references, as the sources do: whether a
+day still lacks a section it borrows from its common is a question about its
+Mass, or about its Office, not about the two together. A Mass with no Gospel of
+its own takes its common's, even where the Office gives a Gospel for Matins.
 
 ### Input
 
@@ -290,21 +316,17 @@ shared, root-stripped output path, and the runner unions whatever lands there.
 ### Output
 
 - Section content is **unchanged**.
-- The output **path** has the leading `horas`/`missa` segment removed, so the
-  hours and mass versions of the same day resolve to one path (see
-  [Path mapping](#path-mapping-1)).
-- Files that resolve to the same path are unioned by the runner: section
-  variants are merged by condition, and on a condition collision the `missa`
-  version wins. Variant directories of the same day are still separate at this
-  point — step 7 folds those.
+- The output **path** has the `horas`/`missa` segment moved below the language
+  (see [Path mapping](#path-mapping-1)). Every input still has an output of its
+  own.
 
 ### Path mapping
 
-- Drop the leading `horas`/`missa` segment:
-  - `missa\Sancti\01-01.json` → `Sancti\01-01.json`
-  - `horas\Sancti\01-01.json` → `Sancti\01-01.json`
-- A variant directory or filename suffix is left untouched (that is step 7's
-  job): `missa\SanctiCist\01-01t.json` → `SanctiCist\01-01t.json`.
+- Swap the `horas`/`missa` segment with the language segment after it:
+  - `missa\la\Sancti\01-01.json` → `la\missa\Sancti\01-01.json`
+  - `horas\la\Sancti\01-01.json` → `la\horas\Sancti\01-01.json`
+- A variant directory or filename suffix is left untouched (that is step 8's
+  job): `missa\la\SanctiCist\01-01t.json` → `la\missa\SanctiCist\01-01t.json`.
 
 ---
 
@@ -440,10 +462,174 @@ Full-variant view — `(si innovata) kept` yields two variants: the default
 
 ---
 
-## Step 4 — Structure the sections *(batch)*
+## Step 4 — Inline references *(batch)*
 
-The first **batch** step, and the first act of the governing strategy: it turns
-a section's lines into the typed shape a store entry has, so that step 5 can
+Replaces each **reference line** — a line beginning `@` within a section — with
+the lines it names, so that every section holds the wording it will be said
+with. This is text assembly: a reference may pull a whole section, a few lines
+of one, or a section with words substituted, and a section may join several
+references and lines of its own. It runs on the lines, before step 5 structures
+them.
+
+Step 4 runs while variant directories (e.g. `SanctiM`, `SanctiCist`) are still
+**separate** files — the fold (step 8) comes much later — so a reference such as
+`@SanctiM/11-14M:Lectio1` resolves directly to its own file.
+
+### Input
+
+- The step 3 tree, one language at a time.
+
+### Output
+
+- The same object shape. Every reference line is replaced by the resolved lines;
+  a reference that cannot be resolved is **left in place** unchanged. Scalar
+  section values pass through untouched.
+- The broad references — the `@File` lines of `__preamble`, and the `ex`/`vide`
+  of `rank` and `rule` — are **not** resolved here; they are declarations step 7
+  acts upon. `__preamble` is therefore kept, and its lines are not treated as
+  inline references.
+- A **rank** that is itself an inline reference — the Dominican Easter Monday's
+  `[Rank]` is `@Tempora/Pasc0-1` — is left in place too, and resolved by step 7
+  *after* the broad references. A rank borrowed this way says how the day is
+  kept; the `ex Pasc0-0` it carries is the Roman day's own include, and does not
+  make the Dominican day include Easter Sunday as well.
+
+### Reference syntax
+
+A line whose text begins with `@` is a reference:
+`@File:Section:lineRange:s/pattern/replacement/flags`, colon-separated, where all
+parts after `File` are optional:
+
+- **`File`** — the target file path, relative to the language root. If omitted
+  (the reference begins `@:…`), the **current file** is the target — the section
+  is pulled from the file itself.
+- **`Section`** — the section to pull, kebab-cased. If omitted, the section of
+  the **same name** as the one holding the reference: `@Commune/C2` within
+  `[Oratio]` pulls the common's `oratio`.
+- **`lineRange`** — `N` or `N-M`, selecting lines *N*…*M* (1-based, inclusive).
+- **`substitution`** — one or more `s/pattern/replacement/flags` groups applied
+  to the pulled lines (sed-like; default flag is global).
+
+The substitution runs from the first `:s/` to the end of the line — a space may
+stand before the `s`, as in `@Commune/C7a:: s/N\./N. Vírginis tuæ/` — so a colon
+inside it — `s/.*5 /!1 Tim 3:5-9/` — belongs to the substitution rather than
+separating parts. A line range and a substitution may both be given.
+
+### What a target holds
+
+A reference reads the target file **as it stands once its own broad references
+are taken into account** — what step 7 will make of it, on the lines — and
+**with its Mass and its Office together**: the two documents of the target
+unioned by condition, the Mass winning a collision. A section a file does not
+give itself but borrows from its common is found in it all the same, with the
+condition its borrowing carries. A file is looked through this way at most once
+per run, and the look-through follows the rules of step 7 in full: the order of
+includes and borrows, which sections a borrow takes, the day's own text taking
+precedence, the base language's rank for a translation, and a cycle yielding
+nothing to borrow.
+
+The target's own inline references are not resolved by that look-through; a
+pulled line that is itself a reference is resolved as described under
+[Resolution](#resolution), item 6.
+
+### Resolution
+
+For each reference line:
+
+1. Look the target file up (see above). If the sources do not carry it, the
+   reference line is left unchanged.
+2. Choose the section — matched by exact key, by a `…/section` suffix, or by a
+   `section-` / `section/` prefix.
+3. From that section choose the variant for the current rubric condition: the
+   variant with that exact condition, else the most specific variant whose
+   condition the current one already includes (under `1962` and `monastica`, the
+   target's `1962` wording), else the default (unconditional) variant, else the
+   first.
+4. Apply the line range, if any.
+5. Apply the substitutions, if any — each as a regular-expression replace on
+   every line; an invalid pattern is skipped.
+6. If the result is a single line that is itself a reference, resolve it
+   recursively (transitively), up to a depth of **5**. A nested reference that
+   omits its file (`@:…`) names the file it was found in — the target, not the
+   file the resolution started from.
+
+The reference line is then replaced by the resulting lines. A reference that
+resolves to an empty section removes the line; only an *unresolvable* reference
+(missing file or section) leaves the line in place.
+
+### Examples
+
+- Pulling one section:
+
+  ```
+  section lectio1 = [{ value: ["@Commune/C1:Lectio1"], condition: [] }]
+  with Commune/C1 → { lectio1: [{ value: ["borrowed lectio"], condition: [] }] }
+  ⇒ lectio1 = [{ value: ["borrowed lectio"], condition: [] }]
+  ```
+
+- Assembling a section — the collect of SS. Peter and Paul joins two collects:
+
+  ```
+  oratio = [{ value: ["@:Oratio Pauli", "$Oremus", "@:Oratio Petri"], condition: [] }]
+  ⇒ oratio = [{ value: [<the collect of Paul>, "$Oremus", <the collect of Peter>], … }]
+  ```
+
+- A section the target only borrows is found: `@Sancti/11-09:Evangelium`, where
+  `Sancti/11-09` takes its Gospel from `Commune/C8` by `vide`, pulls the common's
+  Gospel.
+
+### In the Martyrology, a reference brings its target's rubric variants with it
+
+A day of the Martyrology lists its entries by reference, and an entry often has
+a wording of its own for a rubric the list does not vary by. Where a target
+varies by a rubric the borrowing variant does not name, the borrowing variant is
+written once more for each such target variant — labelled with both conditions,
+and resolved under the combined one — so that the entry's wording for that rubric
+is not lost behind its default. A variant the list gives of its own takes
+precedence: no copy is written where the list already has a variant at least as
+specific for that rubric.
+
+This is not done for the Mass and Office. There a target is read with its Mass
+and Office together, so a target section can hold the Mass's wording beside a
+variant that is the Office's, and bringing variants along would carry the Office
+into the Mass.
+
+For example, a day lists its entries with no condition, and the entry it names
+has a default wording and one for the 1960 rubrics:
+
+```yaml
+martyrologium:
+  - { condition: [], value: ["@:Octava"] }
+octava:
+  - { condition: [], value: ["Octava Epiphaniæ Domini."] }
+  - { condition: ["1962"], value: ["Commemoratio Baptismatis Domini."] }
+```
+
+The list then resolves to both:
+
+```yaml
+martyrologium:
+  - { condition: [], value: ["Octava Epiphaniæ Domini."] }
+  - { condition: ["1962"], value: ["Commemoratio Baptismatis Domini."] }
+```
+
+### Edge cases
+
+- **Unresolvable reference** (missing file or section) → the `@…` line is kept
+  verbatim. Step 6 does not file such a placeholder, and step 12 leaves it
+  inline.
+- **Recursion depth** is capped at 5; deeper chains stop resolving.
+- **Empty target section** → the reference line is removed (replaced by nothing).
+- **Scalar section values** pass through unchanged.
+- **`__preamble`** is passed through as it stands; its `@File` lines are broad
+  references, for step 7.
+
+---
+
+## Step 5 — Structure the sections *(batch)*
+
+Turns each section's lines — assembled by step 4 into the wording the section
+will be said with — into the typed shape a store entry has, so that step 6 can
 file it under a content-derived key. A reading becomes a reference and its
 verses; a prayer, its text and closure; a chant, its antiphon and verse. The
 readings of Matins are given the same reading shape as the readings of Mass, so
@@ -451,7 +637,7 @@ that a reading is one kind of thing wherever it occurs.
 
 ### Input
 
-- The step 3 tree — a directory of variant-shaped files.
+- The step 4 tree — every section holding its assembled lines.
 
 ### Output
 
@@ -549,7 +735,7 @@ The readings are treated as one kind of content wherever they occur: the Mass
 readings `lectio`, `evangelium` and `ultima-evangelium`, and the readings of
 Matins — `lectio1` … `lectio9` and the `…-in-N-loco` counterparts that place a
 reading elsewhere in the Office. Giving them one shape lets
-[step 5](#step-5--shared-stores-batch) store them together.
+[step 6](#step-6--shared-stores-batch) store them together.
 
 A reading's lines are read as three parts: an optional **introduction** line, a
 **reference marker**, and the **body** beneath it. What the step makes of them
@@ -585,29 +771,21 @@ nothing else records.
 
 #### No reference
 
-A reading with no marker keeps its lines as `{ text }`, with no `ref`. Step 5
+A reading with no marker keeps its lines as `{ text }`, with no `ref`. Step 6
 stores it under a key built from its opening words.
 
 #### Several references
 
 A reading drawn from more than one passage keeps its original lines. Structuring
 it would keep one reference and silently lose the interior ones. Such a reading
-passes through this step unchanged, and step 5 then leaves it inline — a
+passes through this step unchanged, and step 6 then leaves it inline — a
 deliberate omission rather than a final state.
 
-### A section that is still a reference
+### An unresolved reference
 
-A section whose content is a single **inline reference** — a lone `@…` line
-naming a section of another file — is **not** structured here. It carries no
-text of its own yet; its text lives in the file it points at.
-[Step 6](#step-6--resolve-references-batch) resolves it to the key that file's
-section already holds. Left to structure, a `@Commune/C1:Lectio1` line would be
-read as a reading whose text is the reference itself, and the pointer would be
-lost. So the variant is kept as its lines, marked for step 6.
-
-The whole-file and rank-line references (`@File`, `ex …`, `vide …`) live in the
-`__preamble`, `rank` and `rule` sections, which this step does not structure, so
-they are untouched here in any case.
+A section whose lines still hold an `@…` reference that step 4 could not
+resolve is structured like any other, and the reference becomes its text. Step 6
+recognizes such a placeholder and does not file it.
 
 ### Rule cleanup
 
@@ -615,22 +793,29 @@ The `rule` section is cleaned per variant: `Gloria` and `Credo` lines are
 dropped, and a `Prefatio=X` line is lifted out into a `prefatio` section (value
 `X`, lowercased) carrying the same condition.
 
+A preface may name the rubric it is said under in a trailing `(…)`:
+`Prefatio=Cord (rubrica divino)` is the Sacred Heart preface under the Divino
+rubrics. The condition is read with the [Appendix A](#appendix-a--rubric-conditions)
+grammar and added to the variant's own, so the preface is `cord` under `divino`
+— not a preface named `cord (rubrica divino)`. A condition with several
+alternatives (`aut`) gives the preface once under each.
+
 ### Commemorations
 
 The `commemoratio-oratio` / `-secreta` / `-postcommunio` sections are **not**
 structured here, and are left as lines. Each of their variants opens with a
 `!Pro S. …` line naming the saint the commemoration is of, which
-[step 9](#step-9--split-commemorations-batch) reads to split the saint out; only
+[step 10](#step-10--split-commemorations-batch) reads to split the saint out; only
 then, standing alone, is the saint's prayer structured and filed. Structured
 here, the `!Pro` line would be folded into the prayer's text and the saint's
 identity lost.
 
 ---
 
-## Step 5 — Shared stores *(batch)*
+## Step 6 — Shared stores *(batch)*
 
-The second act of the governing strategy, and the step that creates the store —
-early, before any borrowing is resolved. It lifts the structured readings,
+The step that creates the store — before any borrowing between files is
+resolved. It lifts the structured readings,
 prayers and chants of each language out of the day files into shared stores and
 leaves a key in their place. The same pericope is read, and the same oration
 said, on many days and under many rubrics, so each text is filed once and
@@ -638,13 +823,13 @@ referred to.
 
 ### Input
 
-- The step 4 tree.
+- The step 5 tree.
 
 ### Output
 
 - Three **store files** at each language root — `lectio.json`, `oratio.json`
   and `antiphona.json` — one entry per distinct reading, prayer and chant, keyed
-  as described under [Keys](#keys), in the shape step 4 gave it.
+  as described under [Keys](#keys), in the shape step 5 gave it.
 
   A prayer entry keeps its closure:
 
@@ -703,9 +888,7 @@ when the day is rendered.
 with its antiphon, verse and any alleluia together, since those travel as one
 piece.
 
-Every other section is left untouched. A section still holding an inline
-reference (step 4 left it as lines) is not a structured value and is not filed;
-it stays as lines for step 6.
+Every other section is left untouched.
 
 ### Scope of the store
 
@@ -734,6 +917,14 @@ Two entries that share a reference but differ in content are **both kept**. The
 first keeps the plain key; each further one is disambiguated by appending a
 counter (`matt-11-25-30-2`, `matt-11-25-30-3`).
 
+**A key is never given twice.** A counter can land on a key another reference
+holds as its own: `Ps 111:1` filed a second time would take `ps-111-1-2`, which
+is the plain key of `Ps 111:1-2`. Given twice, the key would name whichever text
+was filed last, and the days filed first would read someone else's chant. So a
+key already taken is passed over, and the counter moves on to the next free one
+— `Ps 111:1` filed a third and fourth time, after `Ps 111:1-2` and `Ps 111:1-3`
+took their keys, becomes `ps-111-1-4` and `ps-111-1-5`.
+
 A **prayer**, and any entry **without a reference**, is keyed by its opening
 words — the first four words of the text, in the same kebab form — followed by a
 short hash of the whole content, so that two texts opening alike stay apart. For
@@ -755,86 +946,116 @@ source carried.
 
 ### A stable, growing store
 
-The store is opened here and **added to** by two later steps — reference
-resolution ([step 6](#step-6--resolve-references-batch)), when a substituted
-borrow becomes a text of its own, and the commemoration split
-([step 9](#step-9--split-commemorations-batch)), when a saint's prayer first
-stands alone. A key, once given, is never reassigned. Documents are visited in a
-fixed order at every step that files into the store, so the same source tree
-yields the same keys and the same store file on every run.
+The store is opened here and **added to** once more, by the commemoration split
+([step 10](#step-10--split-commemorations-batch)), when a saint's prayer first
+stands as a text of its own. Between the two, it travels with the tree unchanged:
+step 7 resolves the borrowings by copying keys, which introduces no text. A key,
+once given, is never reassigned.
+
+Documents are visited in a fixed order wherever the store is added to, so the
+same source tree yields the same keys and the same store file on every run.
 
 ### Edge cases
 
-- **A value step 4 left as lines** — a reading carrying several references, or a
-  section still holding an inline reference — is not a structured value; no key
-  replaces it, and it stays inline.
+- **A value step 5 left as lines** — a reading carrying several references — is
+  not a structured value; no key replaces it, and it stays inline.
+- **A reading whose content is only an unresolved reference** — a lone `@…`
+  line that step 4 could not resolve — is left inline. It is not a reading yet,
+  and storing it would key a placeholder.
 - **A value that carries no words** — an empty structured section — is not
   filed; it stays as it is.
 - **An entry used only once** still moves to the store, so a covered section
-  holds a key wherever step 4 gave it a shape.
+  holds a key wherever step 5 gave it a shape.
 
 ---
 
-## Step 6 — Resolve references *(batch)*
+## Step 7 — Broad references *(batch)*
 
-The third act of the governing strategy: it resolves the borrowings, and because
-every text already lives in the store, it resolves them by **copying keys**, not
-text. A day that draws its Mass from a common takes the common's keys; the text
-those keys name is written once and shared.
+Resolves the **file-level** borrowings — a whole-file include (`@File` or
+`ex …`) or a selective borrow (`vide …`) — and, because every borrowed text is
+already in the store, resolves them by **copying keys**. A day that draws its
+Mass from a common comes to hold the keys the common holds; the text those keys
+name is stored once and shared.
 
-Step 6 runs while variant directories (e.g. `SanctiM`, `SanctiCist`) are still
-**separate** files — the fold (step 7) has not yet folded them onto their base —
-so a reference such as `@SanctiM/11-14M` resolves directly to its own file.
+Step 7 runs while variant directories are still **separate** files — the fold
+(step 8) follows it — so a reference such as `@SanctiM/11-14M` resolves directly
+to its own file.
 
 ### Input
 
-- The step 5 tree — each file with its covered sections already keyed — plus,
-  for the substitutions below, the step 5 stores.
+- The step 6 tree, one language at a time, with its stores.
 
 ### Output
 
-- The same object shape. The borrowed sections are merged in — as keys where the
-  target holds keys — and the reserved `__preamble` key is removed. Content that
-  is not a reference is left unchanged.
+- The same object shape. The borrowed sections are merged into the file's own,
+  and the reserved `__preamble` key is removed. Content that is not borrowed is
+  left unchanged.
+- A rank that step 4 left as an inline reference is resolved now, after the
+  borrowings: what it names is the rank only, not borrowings of its own (see
+  [step 4](#step-4--inline-references-batch)).
+- The stores, carried forward unchanged. Nothing is filed here: a borrowing
+  copies keys and introduces no new text.
 
-There are two kinds of reference, resolved in turn.
+### The Mass and the Office borrow apart
 
-### Broad references (`@File`, `ex …`, `vide …`)
+The Mass and the Office of a day are still separate documents here, and each
+resolves its own references: "still missing" is judged on the borrowing document
+alone. A target, on the other hand, is read with its Mass and Office together —
+unioned by condition, the Mass winning a collision — so a section either of them
+holds can be borrowed.
 
-A file that carries little or no proper text points at another with a
-whole-file include (`@File` or `ex …`) or a selective borrow (`vide …`). Each
-reference carries the rubric condition of the variant it was found in.
+### Where references come from
+
+Each reference carries the rubric condition of the variant it was found in.
 
 - **`__preamble`** — a line beginning with `@` is a whole-file include. The path
-  is the text after `@` up to the first `:`; any `:Section` suffix is ignored
-  here (it is the inline references' concern below).
-- **`rank`** — the fourth `;;`-separated field of a rank line: `ex X` →
-  include; `vide X` → borrow; a bare value with no keyword (e.g. `C5c`) →
-  treated as `vide`.
-- **`rule`** — a line beginning `ex X` or `vide X`.
+  is the text after `@` up to the first `:`; any `:Section` suffix is ignored.
+- **`rank`** — the fourth `;;`-separated field of a rank line:
+  - `ex X` → whole-file include;
+  - `vide X` → selective borrow;
+  - a bare value with no keyword (e.g. `C5c`) → treated as `vide`.
+- **`rule`** — a line beginning `ex X` or `vide X` (other rule lines are
+  ignored).
 
-**Include (`@` / `ex`)** copies **all** sections of the referenced file.
-**Borrow (`vide`)** copies these:
+### Include vs. borrow
 
-- **always**: `lectio*`, `ant-laudes`, `ant-vespera`, `versum*`, `oratio*` — the
-  Matins lessons and the antiphons, versicles and orations of Lauds and Vespers,
-  the Office texts a day takes from its common.
-- **only where still missing**: the Mass propers `introitus`, `graduale`,
-  `gradualep`, `tractus`, `evangelium`, `offertorium`, `secreta`, `communio`,
-  `postcommunio`, `ultima-evangelium`.
+- **Include (`@` / `ex`)** — import **all** sections of the referenced file.
+- **Borrow (`vide`)** — import these sections:
+  - **always**: `lectio*`, `ant-laudes`, `ant-vespera`, `versum*`, `oratio*` —
+    the Matins lessons and the antiphons, versicles and orations of Lauds and
+    Vespers, the Office texts a day takes from its common.
+  - **only where still missing**: the Mass propers `introitus`, `graduale`,
+    `alleluia`, `alleluiap`, `tractus`, `evangelium`, `offertorium`, `secreta`,
+    `communio`, `postcommunio`, `ultima-evangelium`.
 
-The Mass propers fill a gap rather than furnish the day. A day that resolves its
-own Mass — from its own text, or from a whole-file include — keeps it untouched;
-one that resolves none, such as a commemoration pointing at a common, takes the
-common's. "Still missing" is judged as the references are resolved, and includes
-come before borrows, so an `ex` always wins over a `vide` for the same section.
+  The Mass propers fill a gap rather than furnish the day. A day that resolves
+  its own Mass — from its own text, or from a whole-file include — keeps it
+  untouched. One that resolves none, such as a commemoration pointing at a
+  common, takes the common's rather than being left without a Mass at all.
 
-Whatever the target section holds is what is copied: a covered section holds a
-**key**, so the borrowing day comes to hold the same key, and the text stays
-single. An Office section the store does not cover holds its lines, and those
-lines are copied as before.
+  "Still missing" is judged as the references are resolved, and includes come
+  before borrows, so an `ex` always wins over a `vide` for the same section.
 
-#### Reference-path normalization
+Whatever the target section holds is what is copied. A section the store covers
+holds a **key**, so the borrowing day comes to hold the same key and the text
+stays single. A section the store does not cover — the antiphons and versicles of
+the Office — holds its lines, and those lines are copied.
+
+### A lifted section goes with the one it was lifted from
+
+Step 5 lifts two sections out of others: the **Alleluia** out of the `graduale`,
+and the **Preface** (`prefatio`) out of the `rule`. In the sources each is part
+of its parent, and a borrowing takes or leaves the parent whole. So it is here: a
+lifted section is borrowed exactly where its parent is, and judged by its
+parent, not by itself.
+
+A day that sings its own Gradual in Lent — a Gradual with a Tract, and no
+Alleluia — keeps the Lenten form. Judged by itself, its missing `alleluia` would
+take the common's, and the day would sing a Gradual of its own followed by an
+Alleluia of someone else's. Likewise, a day whose own `rule` stands does not take
+the Preface of the file it includes.
+
+### Reference-path normalization
 
 A raw reference target is normalized before lookup:
 
@@ -844,195 +1065,139 @@ A raw reference target is normalized before lookup:
   `feria-(n+1)` and `Feria` is dropped from the path;
 - a bare `Cn…` target (a `C` followed by a digit) gains a `Commune/` prefix; a
   `Quadp…` / `Epi…` / `Pasc…` target gains a `Tempora/` prefix;
-- a **self-reference** (whose final path segment equals the file's own name) is
-  dropped.
+- a **self-reference** (a target equal to the file's own path below the
+  language) is dropped.
 
 The target is otherwise used **as written**: a variant directory (`SanctiM`) or
 a filename rubric suffix (`…t`) is **not** stripped, because at this step those
-files still exist separately. A couple of individual targets receive a fixed
-correction (e.g. `Tempora/Epi4` → `Tempora/Epi4-0`).
+files still exist separately — the reference resolves directly to the specific
+variant file.
 
-#### Merging and condition propagation
+A couple of individual targets receive a fixed correction (e.g. `Tempora/Epi4`
+→ `Tempora/Epi4-0`).
+
+### Merging and condition propagation
 
 - Imported section variants have the reference's condition **prepended** to
   their own, so a `vide` made under `1570` contributes sections tagged `1570`.
-- If the file already has that section, an imported variant is added only where
-  no existing variant would already apply in its place — that is, where no
-  existing variant's condition is a subset of the import's. What the day already
-  holds is its own and takes precedence; an import only fills a gap. (Matching
-  whole condition sets is not enough: a day's unconditional Introit must not be
-  displaced by a common imported under `1962`.)
+- What the day already holds is its own and takes precedence; an import only
+  fills a gap. An imported variant is added only where no existing variant would
+  already apply in its place — that is, where no existing variant's condition is
+  contained in the import's.
 
-### Inline references (`@File:Section:…`)
+  Matching whole condition sets is not enough. The Assumption gives its own
+  Introit unconditionally, while its rank line includes a common under the 1962
+  rubric. Imported at `1962`, the common would out-rank the day's own wherever
+  1962 is in force, and the common would be sung in place of `Signum magnum`.
 
-An inline reference replaces a single **reference line** — a section whose
-content step 4 left as a lone `@…` line — with what that reference names. Its
-syntax is `@File:Section:lineRange:s/pattern/replacement/flags`, colon-separated,
-where all parts after `File` are optional:
+### Borrowing what the target borrowed
 
-- **`File`** — the target path, relative to the language root; omitted (`@:…`)
-  it is the current file.
-- **`Section`** — the section to pull, kebab-cased; omitted, the target's first
-  content section.
-- **`lineRange`** — `N` or `N-M`, selecting entries *N*…*M* (1-based, inclusive).
-- **`substitution`** — one or more `s/pattern/replacement/flags` groups.
+A file borrows from its target **as the target stands once its own references
+are resolved**: a day drawing on a common that itself includes another common
+takes both. The targets are therefore resolved first, each once per run.
 
-Resolution turns on whether the reference is **plain** or **modified**:
+Where two files borrow from each other — the Vigil of Pentecost and its rubric
+file do — the one reached second through the cycle yields **nothing to borrow**
+to the other, which keeps what it has. A reference the sources do not carry
+likewise yields nothing. In either case the file is still written: dropping it
+would lose a day of the calendar.
 
-- **A plain reference** — no line range, no substitution — resolves to the
-  **key the target section already holds** for the current rubric condition
-  (see the rubric variants below). The
-  borrowing section comes to hold that same key; nothing new is stored, and the
-  text stays single. Where the target section is one the store does not cover,
-  its value — the lines it holds — is copied instead, exactly as the broad
-  references copy an uncovered section.
-- **A modified reference** — a line range, a substitution, or both — names a
-  text that differs from the one in the store. The target entry is read from the
-  store, the range and substitutions are applied to its structured content, and
-  the **result is written inline**, not filed: a modification is usually unique,
-  and storing it would grow the store with entries nothing else shares. The
-  borrowing section then holds that structured value directly.
-
-  A substitution is a regular-expression replace on the entry's text (each verse
-  of a reading, the text of a prayer, the words of a chant); an invalid pattern
-  is skipped. A line range selects verses of a multi-verse reading, or lines of
-  a text.
-
-- If a plain reference's resolved value is **itself a reference**, it is
-  resolved transitively, up to a depth of **5**.
-
-**Rubric variants.** Each variant of the borrowing section resolves its
-references under its own condition: to the target variant with that exact
-condition, else to the most specific target variant whose condition it already
-includes, else to the default.
-
-**In the Martyrology, a reference also brings its target's rubric variants with
-it.** A day of the Martyrology lists its entries by reference, and an entry
-often has a wording of its own for a rubric the list does not vary by. Where a
-target varies by a rubric the borrowing variant does not name, the borrowing
-variant is written once more for each such target variant — labelled with both
-conditions, and resolved under the combined one — so that the entry's wording
-for that rubric is not lost behind its default. A variant the list gives of its
-own takes precedence: no copy is written where the list already has a variant
-at least as specific for that rubric.
-
-This is not done for the Mass and Office. There a day's Mass and Office share a
-file (step 2), so a target section can hold the Mass's wording beside a variant
-that is the Office's, and bringing variants along would carry the Office into
-the Mass.
-
-For example, a day lists its entries with no condition, and the entry it names
-has a default wording and one for the 1960 rubrics:
-
-```yaml
-martyrologium:
-  - { condition: [], value: ["@:Octava"] }
-octava:
-  - { condition: [], value: ["Octava Epiphaniæ Domini."] }
-  - { condition: ["1962"], value: ["Commemoratio Baptismatis Domini."] }
-```
-
-The list then resolves to both:
-
-```yaml
-martyrologium:
-  - { condition: [], value: ["Octava Epiphaniæ Domini."] }
-  - { condition: ["1962"], value: ["Commemoratio Baptismatis Domini."] }
-```
-
-A reference that cannot be resolved — a missing file, or a missing section — is
-**left in place** as its `@…` line, exactly as it stood. Step 11 then leaves it
-inline. A reference that resolves to an empty section removes the line.
-
-### Dependencies and ordering
-
-A borrowing resolves against the target's **resolved** keys — a common that
-itself includes another common must be resolved first — so step 6 orders its work
-by the references each file declares: a file is held back until every file it
-references has been resolved, then retried. References are resolved relative to
-the language root, so files nested more than one directory below it (e.g.
-`Sancti/Urbis/…`) resolve correctly.
-
-When the queue **stalls** — two files waiting on each other (the Vigil of
-Pentecost and its rubric file each borrow from the other), or a reference the
-sources do not carry — the gate comes off and the remaining files are resolved
-with whatever they could not follow left in place. Waiting longer cannot help,
-and dropping a file loses a day of the calendar.
-
-Because the borrowings now move keys rather than whole texts, this ordering pass
-carries far less than it did when references copied the readings themselves.
+Files are visited in a fixed order, so which side of a cycle borrows from the
+other is the same on every run.
 
 ### A translation borrows the Latin's rank
 
-Most translated files carry no `[Rank]` at all: the rank says how a day is
-celebrated rather than what is said on it, and that is not a matter of language.
-But the rank is also where a day names the **common** it draws its Mass from, so
-a translation without one borrows nothing and comes out with no Mass — even where
+Most translated files carry no `[Rank]` at all: it says how a day is celebrated
+rather than what is said on it, and that is not a matter of language. But the
+rank is also where a day names the **common** it draws its Mass from, so a
+translation without one borrows nothing and comes out with no Mass — even where
 the common itself has been translated.
 
 The rank is therefore taken from the base language, which is the one tree that
-always has it. The sections the day then borrows are the translation's own: a
-Dutch day drawing on `C4a` gets the Dutch `C4a`'s keys, into the Dutch store.
-Where the base language's document has not been produced yet, the day waits for
-it as it waits for any other dependency.
+always has it — the same day, at the same path below the language root, its Mass
+and Office together, as it stands in this step's input. No earlier step touches
+the rank, so it is there however the base language's own borrowings turn out —
+even for a day caught in a borrowing cycle. The sections the day then borrows
+are the translation's own: a Dutch day drawing on `C4a` gets the Dutch `C4a`'s
+keys, from the Dutch store.
 
 ### Examples
 
-- Preamble include + rank `ex`/`vide`, copying keys:
+- Preamble include + rank `ex`/`vide` (rank `vide` under `1570`):
 
   ```
-  { __preamble: [{ value: ["@Commune/C1"], condition: [] }],
-    rank: [{ value: [";;Simplex;;1;;vide Sancti/12-26"], condition: ["1570"] }] }
-  with Commune/C1 → { evangelium: [{ value: "matt-5-1-12", condition: [] }], … }
-  ⇒ the day comes to hold evangelium = matt-5-1-12 (the same key C1 holds)
+  { __preamble: [{ value: ["@Sancti/12-26:Lectio1"], condition: [] }],
+    rank: [{ value: [";;Duplex;;3;;ex Commune/C1"],   condition: [] },
+           { value: [";;Simplex;;1;;vide Sancti/12-26"], condition: ["1570"] }] }
+  →  includes: Commune/C1, Sancti/12-26   borrows: Sancti/12-26 (condition 1570)
   ```
 
-- A plain inline reference resolves to the target's key:
+- Copying a key:
 
   ```
-  lectio1 = [{ value: ["@Commune/C1:Lectio1"], condition: [] }]
-  with Commune/C1 → { lectio1: [{ value: "in-illo-tempore-…-8f2c", condition: [] }] }
-  ⇒ lectio1 = [{ value: "in-illo-tempore-…-8f2c", condition: [] }]
+  day:        { rank: [{ value: [";;Simplex;;1.1;;vide Commune/C2a"], condition: [] }] }
+  Commune/C2a { introitus: [{ value: "statuit-ei-dominus-…", condition: [] }] }
+  ⇒ day.introitus = [{ value: "statuit-ei-dominus-…", condition: [] }]
   ```
 
-- A bare rank pointer `C5c` normalizes to a `vide` on `Commune/C5c`.
+- A bare rank pointer `C5c` normalizes to a `vide` on `Commune/C5c` (the
+  `Commune/` prefix added, nothing stripped — `Commune/C5c` is its own file).
 
 ### Edge cases
 
 - **Bare rank reference** (no `ex`/`vide`) is treated as a `vide` commune
   pointer rather than an error.
-- **`@File:Section`** in the preamble is a whole-file include here; the
-  `:Section` narrowing is an inline reference's concern.
-- **A declared reference never produced** leaves the file queued and, if never
-  satisfied, is written with the reference unresolved (non-fatal) rather than
-  crashing.
-- **A modified reference whose target the store does not hold** — an inline
-  reference into an uncovered section, with a line range — falls back to copying
-  the target's lines and applying the range and substitutions to them.
+- **`@File:Section`** in the preamble is imported as the whole file; the
+  `:Section` narrowing belongs to an inline reference.
+- **A reference the sources do not carry**, or one caught in a cycle, yields
+  nothing to borrow; the file is kept rather than lost with the reference.
 
 ---
 
-## Step 7 — Directory and filename suffixes to rubric conditions *(batch)*
+## Step 8 — Directory and filename suffixes to rubric conditions *(batch)*
 
-Reads the file's **directory** and **filename** to infer which rubric(s) it
-represents, adds that rubric to every section's condition, and computes an output
-path with the variant markers removed so that all rubric variants of the same day
-or feast land on one path. This is where variant directories are folded onto
-their base — deliberately after references have been resolved (step 6), so a
-reference to a variant file still found its own file.
+First combines the Mass and the Office of each day into one document. Then reads
+the file's **directory** and **filename** to infer which rubric(s) it represents,
+adds that rubric to every section's condition, and computes an output path with
+the variant markers removed so that all rubric variants of the same day or feast
+land on one path. This is where variant directories are folded onto their base —
+deliberately after both kinds of reference have been resolved (steps 4 and 7),
+so a reference to a variant file found its own file.
 
 ### Input
 
-- The step 6 tree.
+- The step 7 tree, with its stores, which it carries forward unchanged.
 
 ### Output
 
-- The same object shape. Each variant's `condition` now also carries the tokens
-  derived from the path.
+- One document per day, its Mass and Office combined. Each variant's `condition`
+  now also carries the tokens derived from the path.
 - A **merged output path** (see [Path mapping](#path-mapping-2)) that folds a
-  variant directory onto its base and strips the filename's rubric suffix. The
-  runner unions everything landing on one path, merging section variants by
-  condition.
+  variant directory onto its base and strips the filename's rubric suffix.
+  Everything landing on one path is unioned by condition.
+
+### Combining the Mass and the Office
+
+The two documents of a day — which resolved their own references in steps 4
+and 7 — are unioned by condition, and on a collision the **Mass wins**.
+
+A section step 5 lifted out of another goes with its parent here as it does when
+borrowed (see [step 7](#a-lifted-section-goes-with-the-one-it-was-lifted-from)).
+Where the Mass's Gradual stands under a condition, the Office's Alleluia under
+that condition is not taken: the Vigil of St Andrew sings its own Gradual and
+no Alleluia, though its Office, having included the common of an apostle, carries
+the common's Gradual and Alleluia. Likewise the Office's Preface yields wherever
+the Mass's rule stands.
+
+### Folding the variant files
+
+The variant files of a day are folded in **path order** — the base file first,
+then its variant directories and suffixed files. Their sections are unioned by
+condition, the earlier file's variants first; on a collision the **earlier file
+wins**. Where the base file gives a variant for a use explicitly — 7 December's
+`[Rank] (rubrica cisterciensis)` — it stands over a variant file's for that use.
+
+The order is not cosmetic: step 9 reads a day's designations in it.
 
 ### Deriving the rubric context
 
@@ -1145,18 +1310,20 @@ takes `octava`, which says when it applies rather than what it is.
 
 ### Path mapping
 
-The path has already had its `horas`/`missa` root removed by step 2. Step 7
-removes the remaining rubric markers so variants converge:
+Step 8 removes the `horas`/`missa` segment step 2 placed below the language, and
+the remaining rubric markers, so a day's documents converge:
 
-1. If the directory is a variant, rename it to its base (`SanctiCist` →
+1. Drop the `horas`/`missa` segment: `la\missa\Sancti\01-01t.json` →
+   `la\Sancti\01-01t.json`.
+2. If the directory is a variant, rename it to its base (`SanctiCist` →
    `Sancti`).
-2. Strip the filename's trailing non-digit suffix (`01-01t.json` →
+3. Strip the filename's trailing non-digit suffix (`01-01t.json` →
    `01-01.json`). Excluded files keep their filename.
 
 Examples:
 
-- `root\SanctiCist\01-01.json` → `root\Sancti\01-01.json`
-- `root\Sancti\01-01t.json` → `root\Sancti\01-01.json`
+- `la\horas\SanctiCist\01-01.json` → `la\Sancti\01-01.json`
+- `la\missa\Sancti\01-01t.json` → `la\Sancti\01-01.json`
 
 ### Examples (condition derivation)
 
@@ -1187,15 +1354,15 @@ Examples:
 
 ---
 
-## Step 8 — Filename from liturgical name *(batch)*
+## Step 9 — Filename from liturgical name *(batch)*
 
 Names each file from the feast/office title, and folds `rank`/`officium`/`name`
 into a single `name` section. Section content keeps the rubric-variant shape,
-now holding keys where step 5 replaced text.
+now holding keys where step 6 replaced text.
 
 ### Input
 
-- The step 7 tree.
+- The step 8 tree, with its stores, which it carries forward unchanged.
 
 ### Output
 
@@ -1236,9 +1403,19 @@ business, and it often differs — an abbreviation, a word more or fewer, a seco
 name for the same saint. So the **base language** — Latin — decides the
 filenames, and the translation supplies only the content. Where the base
 language files a document under several names, the translation is written under
-each of them, described by its own designations as far as it has them; a source
-the base language does not carry keeps its own name. The base language settles
-the collision suffix too.
+each of them; a source the base language does not carry keeps its own name. The
+base language settles the collision suffix too.
+
+Each file the translation is written as is **described by the translation's own
+designation of the same celebration**: the one it files under the same name, or
+else the one it gives under the same rubric condition. The Latin 18 August is St
+Agapitus under the 1962 rubrics and a day in the octave of the Assumption under
+the older books; the Dutch designates both, and each file takes the Dutch
+designation of its own rubric. Where the translation designates nothing under
+any of the file's rubrics, the file keeps the base language's designation: a
+translation's designations need not come in the base language's order, and
+pairing them by position titles a day after another kept on the same date — the
+Rosary file after St Mark, both 7 October.
 
 ### Content transform
 
@@ -1271,7 +1448,7 @@ name: Adriáni
 
 ---
 
-## Step 9 — Split commemorations *(batch)*
+## Step 10 — Split commemorations *(batch)*
 
 Pulls each commemorated saint out of the day files into a file of the saint's
 own, merges the same saint across documents, and — because a saint's prayer now
@@ -1280,8 +1457,7 @@ prayer store.
 
 ### Input
 
-- The step 8 tree, and the language's prayer store as step 5 (and step 6) left
-  it.
+- The step 9 tree, with its stores.
 
 ### Output
 
@@ -1313,7 +1489,7 @@ copy the strategy is built to keep.
 
 - The same saint (slug) appearing in several documents in one directory merges
   into a single file; a non-empty section replaces the accumulated one. Because
-  the fold (step 7) has already normalized variant directories onto their base,
+  the fold (step 8) has already normalized variant directories onto their base,
   a saint commemorated in `SanctiCist` and in `Sancti` merges correctly.
 
 ### Edge cases
@@ -1322,7 +1498,7 @@ copy the strategy is built to keep.
 
 ---
 
-## Step 10 — Variant collapse *(batch)*
+## Step 11 — Variant collapse *(batch)*
 
 Removes the rubric variants that carry content identical to their section's
 default, so the tree states a rubric variant only where the rubric actually
@@ -1331,7 +1507,7 @@ compares keys rather than full texts.
 
 ### Input
 
-- The step 9 tree.
+- The step 10 tree, with its stores, which it carries forward unchanged.
 
 ### Output
 
@@ -1383,7 +1559,7 @@ has to implement that fallback; without it, collapsing loses content.
 
 ---
 
-## Step 11 — Mass propers *(batch)*
+## Step 12 — Mass propers *(batch)*
 
 The last step, and the only one whose output leaves the pipeline: it narrows the
 tree to what the calendar consumes — the Mass propers — so that the rest, which
@@ -1391,12 +1567,12 @@ is the Divine Office, is not carried into the published assets.
 
 ### Input
 
-- The step 10 tree, and its per-language stores.
+- The step 11 tree, and its per-language stores.
 
 ### Output
 
 - One file per document that has Mass content, holding **only** its Mass
-  sections, in the rubric-variant shape step 10 left them.
+  sections, in the rubric-variant shape step 11 left them.
 - A `lectio.yml`, `oratio.yml` and `antiphona.yml` at each language root, holding
   **only** the store entries those sections refer to.
 - A document with no Mass content is **not written** at all.
@@ -1416,7 +1592,7 @@ being published; they are dropped, and would otherwise shadow the general day
 they share a date with.
 
 `Commune` is not published. It is a base for other days rather than a day
-itself: [step 6](#step-6--resolve-references-batch) has already resolved the
+itself: [step 7](#step-7--broad-references-batch) has already resolved the
 borrowings, so the commons' texts reach the calendar through the days that use
 them — as the keys those days carry. A copy under `Commune` would only be
 reachable by a lookup no calendar makes.
@@ -1438,7 +1614,7 @@ alone are not enough, since nearly every document carries those.
 
 `rule` is dropped here, at the end. It carries how a day is to be observed — how
 many lessons, which preface — and the pipeline needs it up to this point:
-[step 4](#step-4--structure-the-sections-batch) reads it to lift out `prefatio`.
+[step 5](#step-5--structure-the-sections-batch) reads it to lift out `prefatio`.
 Once that is done nothing in the propers refers to it again.
 
 ### Days whose Mass changes with the season
@@ -1548,7 +1724,7 @@ between runs.
 ### The store subset
 
 Only the entries the kept sections name are carried over. The Office readings
-share the step 5 store but are not published, so most of its entries do not
+share the step 6 store but are not published, so most of its entries do not
 travel with the propers; neither do entries only a dropped variant named.
 
 ### The Martyrology
@@ -1576,7 +1752,7 @@ elogia:
   - Athénis natális sancti Públii Epíscopi, …
 ```
 
-The list of entries is taken as the references step 6 resolved it to, with:
+The list of entries is taken as the references step 4 resolved it to, with:
 
 - **an entry the language has no words for left out.** The sources list an
   entry another book carries; where its section is empty here, the reference
@@ -1623,8 +1799,8 @@ conclusion either: there is no reading for it to close.
 
 ### Edge cases
 
-- **A reading left inline** by step 5 (several references) or by step 6 (a
-  modified inline reference, an unresolved one) stays inline here; it is content,
+- **A reading left inline** by step 6 — one carrying several references, or an
+  unresolved inline reference — stays inline here; it is content,
   not a key, and needs no store entry.
 - **A key naming no store entry** is impossible by construction, since the
   subset is built from the keys the kept sections actually hold.
@@ -1639,7 +1815,7 @@ A **condition** is a set of rubric *tokens* (e.g. `1570`, `2020`, `monastica`);
 a **variant** pairs a `value` with a `condition` (its tokens), where an empty
 condition denotes the default/unconditional case.
 
-> This appendix covers the condition handling used by steps 1, 6 and 7.
+> This appendix covers the condition handling used by steps 1, 5 and 8.
 > Inline-conditional parsing, used by step 3, is specified alongside that step.
 
 ### Token vocabulary

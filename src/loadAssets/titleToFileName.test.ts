@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { titleToFileName } from "./index";
-import { toKebabFileName } from "../../convert-do/step7";
+import { toKebabFileName } from "../../convert-do/step9";
 
 /**
  * The pipeline names a file from a liturgical name, and the calendar looks one
