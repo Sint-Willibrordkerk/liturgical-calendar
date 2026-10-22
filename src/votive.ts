@@ -85,6 +85,10 @@ export function applyVotiveMasses(
       entry!.title = mass?.title ?? votive.id;
       entry!.mass = mass;
       entry!.liturgicalClass = votive.liturgicalClass;
+      // The votive is said in its own color; the rose of Gaudete or Laetare
+      // belonged to the feria's Mass, not to this one.
+      entry!.color = votive.color;
+      delete entry!.alternativeColor;
     }
   }
 }

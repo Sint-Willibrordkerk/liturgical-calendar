@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { VotiveData } from "../../types";
-import { weekdays } from "../../constants";
+import { colors, weekdays } from "../../constants";
 
 const CATEGORIES = ["mysteries-of-the-lord", "blessed-virgin-mary", "angels"] as const;
 const CLASSES = [3, 4] as const;
@@ -12,6 +12,7 @@ const votiveMassSchema = z.object({
   category: z.enum(CATEGORIES),
   "liturgical-class": z.union([z.literal(3), z.literal(4)]),
   rubric: z.string(),
+  color: z.enum(colors),
   slug: z.string().optional(),
   occurrence: z
     .object({

@@ -123,6 +123,8 @@ no commemoration of what it displaced. So on the first Saturday the Immaculate
 Heart is shown even over a third-class feast, and over the Saturday Office of the
 Blessed Virgin. It still yields to any day of the first or second class, to a
 vigil, and to the privileged ferias of Advent and Lent, which are no free day.
+A day the votive takes wears the votive's color — white for all four — in place
+of the feria's.
 
 The Eternal High Priest is granted the first Thursday *or* the first Saturday
 (§385a); the Thursday is taken, leaving the first Saturday to the Immaculate

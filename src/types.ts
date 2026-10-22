@@ -247,6 +247,8 @@ export type VotiveMass = {
   category: VotiveCategory;
   liturgicalClass: 3 | 4;
   rubric: string;
+  /** The color the Mass is said in, worn in place of the day's own. */
+  color: Color;
   /** The propers' lookup slug, where a proper is filed for it. */
   slug?: string;
   /** Present only where the rubrics fix a day; absent votives are not placed. */
@@ -266,6 +268,7 @@ export type VotiveData = {
       category: VotiveCategory;
       "liturgical-class": 3 | 4;
       rubric: string;
+      color: Color;
       slug?: string;
       occurrence?: { cadence: "monthly" | "weekly"; weekday: Weekday };
     }

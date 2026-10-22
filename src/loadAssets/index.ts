@@ -64,6 +64,7 @@ export function loadVotiveMasses(): VotiveCatalog {
         category: item.category,
         liturgicalClass: item["liturgical-class"],
         rubric: item.rubric,
+        color: item.color,
         slug: item.slug,
         occurrence: item.occurrence && {
           cadence: item.occurrence.cadence,

@@ -60,6 +60,7 @@ const catalog: VotiveCatalog = {
     category: "mysteries-of-the-lord",
     liturgicalClass: 3,
     rubric: "385b",
+    color: "white",
     slug: SACRED_HEART_SLUG,
     occurrence: { cadence: "monthly", weekday: 5 },
   },
@@ -68,6 +69,7 @@ const catalog: VotiveCatalog = {
     category: "blessed-virgin-mary",
     liturgicalClass: 3,
     rubric: "385c",
+    color: "white",
     slug: IMMACULATE_HEART,
     occurrence: { cadence: "monthly", weekday: 6 },
   },
@@ -76,6 +78,7 @@ const catalog: VotiveCatalog = {
     category: "mysteries-of-the-lord",
     liturgicalClass: 3,
     rubric: "385a",
+    color: "white",
     occurrence: { cadence: "monthly", weekday: 4 },
   },
   [HOLY_ANGELS]: {
@@ -83,6 +86,7 @@ const catalog: VotiveCatalog = {
     category: "angels",
     liturgicalClass: 4,
     rubric: "310b",
+    color: "white",
     occurrence: { cadence: "weekly", weekday: 2 },
   },
   [HOLY_SPIRIT]: {
@@ -90,6 +94,7 @@ const catalog: VotiveCatalog = {
     category: "mysteries-of-the-lord",
     liturgicalClass: 4,
     rubric: "308a-11",
+    color: "red",
   },
 };
 
@@ -173,6 +178,27 @@ describe("applyVotiveMasses", () => {
     apply(calendar, 2026, [HOLY_ANGELS]);
     expect(calendar[2]![3]!.title).toBe(HOLY_ANGELS);
     expect(calendar[2]![10]!.title).toBe(HOLY_ANGELS);
+  });
+
+  it("wears the votive's own color, not the feria's", () => {
+    const calendar = calendarOf({
+      "2-6": feria(),
+      "2-13": day("feria", 4, { color: "violet", alternativeColor: "rose" }),
+    });
+    apply(calendar, 2026, [SACRED_HEART]);
+    expect(calendar[2]![6]!.color).toBe("white");
+    // A feria left alone keeps its own.
+    expect(calendar[2]![13]!.color).toBe("violet");
+    expect(calendar[2]![13]!.alternativeColor).toBe("rose");
+  });
+
+  it("drops the alternative color of the day it takes", () => {
+    const calendar = calendarOf({
+      "2-6": day("feria", 4, { color: "violet", alternativeColor: "rose" }),
+    });
+    apply(calendar, 2026, [SACRED_HEART]);
+    expect(calendar[2]![6]!.color).toBe("white");
+    expect(calendar[2]![6]!.alternativeColor).toBeUndefined();
   });
 
   it("takes a third-class feast in the place of a third-class votive", () => {
@@ -260,5 +286,12 @@ describe("votive.yml", () => {
     expect(categories).toEqual(
       new Set(["mysteries-of-the-lord", "blessed-virgin-mary", "angels"])
     );
+  });
+
+  it("vests the four dated votives in white", () => {
+    assertVotiveData(raw);
+    for (const id of [SACRED_HEART, IMMACULATE_HEART, HIGH_PRIEST, HOLY_ANGELS]) {
+      expect(raw.items[id]!.color).toBe("white");
+    }
   });
 });
