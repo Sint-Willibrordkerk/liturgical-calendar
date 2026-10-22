@@ -274,7 +274,7 @@ export function selectVariant(
  * Replace a store key by the text it names. A value that is not a key was
  * shipped whole and stands for itself.
  */
-export function resolveStored(
+function resolveStored(
   value: unknown,
   store: Record<string, unknown>
 ): unknown | undefined {
