@@ -38,3 +38,28 @@ export function mapVariants<T>(
     value: fn(item.value, item.condition),
   }));
 }
+
+/** A document: section keys to their rubric variants (or, rarely, a plain value). */
+export type Document = Record<string, unknown>;
+
+/**
+ * Union two documents. A section both hold as variant lists is unioned by
+ * condition, `high` winning a condition collision; any other section `high`
+ * holds replaces `low`'s.
+ */
+export function unionDocuments(low: Document, high: Document): Document {
+  const merged: Document = { ...low };
+  for (const [key, highValue] of Object.entries(high)) {
+    const lowValue = merged[key];
+    if (isVariantArray(lowValue) && isVariantArray(highValue)) {
+      const byCondition = new Map<string, Variant>();
+      for (const variant of [...lowValue, ...highValue]) {
+        byCondition.set([...variant.condition].sort().join("|"), variant);
+      }
+      merged[key] = [...byCondition.values()];
+    } else {
+      merged[key] = highValue;
+    }
+  }
+  return merged;
+}

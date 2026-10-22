@@ -2,30 +2,30 @@ import { describe, expect, it } from "vitest";
 import { transform, getOutputFile } from "./step2";
 
 describe("step2 getOutputFile", () => {
-  it("strips the missa root so hours and mass collapse onto one path", () => {
-    expect(getOutputFile("root\\missa\\Sancti\\01-01.json")).toBe(
-      "root\\Sancti\\01-01.json"
+  it("files the Mass below its language, beside the Office", () => {
+    expect(getOutputFile("root\\missa\\la\\Sancti\\01-01.json")).toBe(
+      "root\\la\\missa\\Sancti\\01-01.json"
+    );
+    expect(getOutputFile("root\\horas\\la\\Sancti\\01-01.json")).toBe(
+      "root\\la\\horas\\Sancti\\01-01.json"
     );
   });
 
-  it("strips the horas root", () => {
-    expect(getOutputFile("root\\horas\\Sancti\\01-01.json")).toBe(
-      "root\\Sancti\\01-01.json"
+  it("does the same on POSIX paths", () => {
+    expect(getOutputFile("root/missa/nl/Sancti/01-01.json")).toBe(
+      "root/nl/missa/Sancti/01-01.json"
     );
   });
 
-  it("strips the root on POSIX paths", () => {
-    expect(getOutputFile("root/missa/Sancti/01-01.json")).toBe(
-      "root/Sancti/01-01.json"
-    );
-    expect(getOutputFile("root/horas/Sancti/01-01.json")).toBe(
-      "root/Sancti/01-01.json"
+  it("keeps the Mass and the Office of a day apart", () => {
+    expect(getOutputFile("root/missa/la/Sancti/01-01.json")).not.toBe(
+      getOutputFile("root/horas/la/Sancti/01-01.json")
     );
   });
 
-  it("leaves a variant directory and filename suffix untouched (step 3's job)", () => {
-    expect(getOutputFile("root\\missa\\SanctiCist\\01-01t.json")).toBe(
-      "root\\SanctiCist\\01-01t.json"
+  it("leaves a variant directory and filename suffix untouched (step 8's job)", () => {
+    expect(getOutputFile("root\\missa\\la\\SanctiCist\\01-01t.json")).toBe(
+      "root\\la\\missa\\SanctiCist\\01-01t.json"
     );
   });
 });

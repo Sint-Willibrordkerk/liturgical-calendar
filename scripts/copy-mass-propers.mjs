@@ -16,7 +16,7 @@ import { cp, rm, readdir, stat, mkdir } from "fs/promises";
 import { join, resolve } from "path";
 import { consola } from "consola";
 
-const SOURCE = ".divinum-officium/step11";
+const SOURCE = ".divinum-officium/step12";
 const PACKAGES = "languages";
 
 async function directorySize(dir) {

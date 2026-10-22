@@ -1,404 +1,750 @@
 import { join } from "path";
-import { readFile } from "fs/promises";
+import { readFile, writeFile } from "fs/promises";
 
-import { Step4Output } from "./step4";
-import { STEP_EXT, parseStep } from "./lib/serialize.js";
+import { consola } from "consola";
+import {
+  collectYmlFiles,
+  ensureDir,
+  runBatched,
+  DEFAULT_CONCURRENCY,
+} from "./lib/batch";
+import { isVariantArray, mapVariants } from "./lib/variants";
+import { canonicalizeRef } from "./lib/references.js";
+import { getIncludesExcludes } from "./condition.js";
+import { STEP_EXT, stripStepExt, parseStep, stringifyStep } from "./lib/serialize.js";
 
-export type Step5Output = Step4Output;
+/**
+ * Step 5 — structure the sections.
+ *
+ * Runs on the lines step 4 assembled, and before step 6 files them: a store key
+ * is derived from the structured text, so a section is structured first.
+ *
+ * Converts introit/oratio/lectio/graduale/… line arrays into typed objects:
+ * - verse:      `{ ref, text }`
+ * - prayer:     `{ text, closure }`
+ * - antiphonal: `{ antiphon, verse }`
+ *
+ * A gradual's Alleluia is lifted into its own section (`alleluia`, and
+ * `alleluiap` for the paschal form), as `Prefatio=X` is lifted out of `rule`.
+ *
+ * Also cleans the `rule` array (drops Gloria/Credo, lifts `Prefatio=X` into a
+ * `prefatio` key). Non-missa keys pass through unchanged.
+ */
+export type Step5Output = { [key: string]: unknown };
 
-const fileCache = new Map<string, Step4Output | null>();
-const MAX_RESOLVE_DEPTH = 5;
+const MISSA_SECTION_TYPES: Record<string, "antiphonal" | "prayer" | "verse"> = {
+  introitus: "antiphonal",
+  oratio: "prayer",
+  lectio: "verse",
+  graduale: "antiphonal",
+  tractus: "antiphonal",
+  gradualep: "antiphonal",
+  evangelium: "verse",
+  offertorium: "verse",
+  secreta: "prayer",
+  communio: "verse",
+  postcommunio: "prayer",
+  "ultima-evangelium": "verse",
+};
 
-function toKebabCase(str: string) {
-  if (str == null) return "";
-  return String(str).trim().toLowerCase().replace(/\s+/g, "-");
+const V_START = /^\s*v\.\s*/i;
+const LECTIO_INTRODUCTION = /^\s*(Léctio|Lectio|Sequéntia|Sequentia)\s+.+$/i;
+const ALLELUIA_CUE = /\s*,?\s*Allel[uú][ji]a\s*,?\s*Allel[uú][ji]a\.?\s*$/i;
+const PREFATIO_PREFIX = /^Prefatio\s*=\s*(.+)$/i;
+
+/**
+ * The readings of Matins: `lectio1` … `lectio9`, plus the `…-in-N-loco` forms
+ * that place a reading elsewhere in the Office. `lectio` itself (the Mass
+ * reading) is covered by the table above, and `lectio-prima` is not a reading.
+ */
+const MATINS_READING = /^lectio\d+(-in-\d+-loco)?$/;
+
+/** The Mass readings. `offertorium`/`communio` are antiphons, not readings. */
+const MASS_READINGS = new Set(["lectio", "evangelium", "ultima-evangelium"]);
+
+/** True for a section holding a reading, at Mass or at Matins. */
+export function isReadingSection(key: string): boolean {
+  const base = key.split("/")[0]!;
+  return MASS_READINGS.has(base) || MATINS_READING.test(base);
 }
 
-function parseSubstitutions(substStr: string) {
-  if (!substStr || typeof substStr !== "string") return [];
-  const result: { pattern: string; replacement: string; flags: string }[] = [];
-  const re = /\s*s\/((?:[^/\\]|\\.)*)\/((?:[^/\\]|\\.)*)\/([igms]*)/g;
-  let match: RegExpExecArray | null = null;
-  while ((match = re.exec(substStr)) !== null) {
-    const pattern = match[1];
-    const replacement = match[2];
-    const flags = match[3];
-    if (pattern == null || replacement == null) continue;
-    result.push({
-      pattern: pattern.replace(/\\(.)/g, "$1"),
-      replacement: replacement.replace(/\\(.)/g, "$1"),
-      flags: flags || "",
-    });
-  }
-  return result;
+export function getSectionType(
+  key: string
+): "antiphonal" | "prayer" | "verse" | null {
+  const base = key.split("/")[0]!;
+  if (MATINS_READING.test(base)) return "verse";
+  return MISSA_SECTION_TYPES[base] ?? null;
 }
 
-function parseReference(str: string) {
-  if (typeof str !== "string" || !str.startsWith("@")) return null;
-  const rest = str.slice(1);
-  const firstColon = rest.indexOf(":");
-  const filePath = firstColon >= 0 ? rest.slice(0, firstColon) : rest;
-  const remainder = firstColon >= 0 ? rest.slice(firstColon + 1) : "";
-
-  if (!remainder) {
-    return {
-      filePath: filePath.trim(),
-      section: "",
-      lineRange: null as { start: number; end: number } | null,
-      substitutions: [] as {
-        pattern: string;
-        replacement: string;
-        flags: string;
-      }[],
-    };
-  }
-
-  const parts = remainder.split(":");
-  let lineRange: { start: number; end: number } | null = null;
-  let substitutionPart: string | undefined;
-
-  if (parts.length > 0 && /^\d+(?:-\d+)?$/.test(parts[parts.length - 1]!)) {
-    const [startStr, endStr] = parts.pop()!.split("-");
-    const start = Number(startStr);
-    const end = Number(endStr ?? startStr);
-    lineRange = { start, end };
-  }
-
-  if (parts.length > 0 && parts[parts.length - 1]!.trim().startsWith("s/")) {
-    substitutionPart = parts.pop();
-  }
-
-  const section = parts.join(":").trim();
-  const substitutions = substitutionPart
-    ? parseSubstitutions(substitutionPart)
-    : [];
-
-  return {
-    filePath: filePath.trim(),
-    section: toKebabCase(section) || "",
-    lineRange,
-    substitutions,
-  };
-}
-
-function getBaseSectionName(sectionKey: string) {
-  return sectionKey.includes("/") ? sectionKey.split("/")[0]! : sectionKey;
-}
-
-function findSectionContent(doc: Step4Output, sectionKey: string) {
-  if (!doc || typeof doc !== "object") return null;
-
-  if (sectionKey) {
-    if (Array.isArray(doc[sectionKey])) return doc[sectionKey];
-
-    for (const [key, value] of Object.entries(doc)) {
-      if (
-        key !== "__preamble" &&
-        Array.isArray(value) &&
-        (key === sectionKey || key.endsWith(`/${sectionKey}`))
-      ) {
-        return value as Step4Output[string];
-      }
-    }
-
-    for (const [key, value] of Object.entries(doc)) {
-      if (key === "__preamble" || !Array.isArray(value)) continue;
-      if (
-        key === sectionKey ||
-        key.startsWith(`${sectionKey}-`) ||
-        key.startsWith(`${sectionKey}/`)
-      ) {
-        return value as Step4Output[string];
-      }
-    }
-    return null;
-  }
-
-  for (const [key, value] of Object.entries(doc)) {
-    if (key !== "__preamble" && Array.isArray(value))
-      return value as Step4Output[string];
-  }
-  return null;
-}
-
-function conditionKey(condition: string[]) {
-  return [...condition].sort().join("|");
-}
-
-function pickVariantLines(
-  section: Step4Output[string],
-  currentCondition: string[]
-): string[] {
-  if (!section.length) return [];
-  const exact = section.find(
-    (item) => conditionKey(item.condition) === conditionKey(currentCondition)
-  );
-  if (exact) return exact.value;
-  // The most specific variant the current condition already includes: under
-  // `1962` and `monastica`, the target's `1962` wording.
-  const included = section
-    .filter(
-      (item) =>
-        item.condition.length > 0 &&
-        includesAll(currentCondition, item.condition)
-    )
-    .sort((a, b) => b.condition.length - a.condition.length)[0];
-  if (included) return included.value;
-  const fallback = section.find((item) => item.condition.length === 0);
-  return (fallback ?? section[0]!).value;
-}
-
-/** True for a day of the Martyrology, whose sections are its entries. */
-function isMartyrology(path: string) {
-  return path.startsWith("Martyrologium/");
-}
-
-function includesAll(condition: string[], tokens: string[]) {
-  return tokens.every((token) => condition.includes(token));
+/** How many reference markers a reading's lines carry. */
+function countRefMarkers(lines: unknown): number {
+  if (!Array.isArray(lines)) return 0;
+  return lines.filter((l) => typeof l === "string" && l.startsWith("!")).length;
 }
 
 /**
- * The conditions a reference's target varies by, as far as that target can be
- * read: those of the section it names, and of what that section in turn refers
- * to, where it is itself no more than a reference.
+ * A reference naming a book, chapter and verse (`2 Cor 1:1-5`, `Matt 11:25-30`)
+ * rather than a patristic citation (`Sermo 1 de Nativitate Domini`).
  */
-async function targetConditions(
-  parsedRef: NonNullable<ReturnType<typeof parseReference>>,
-  basePath: string,
-  currentSectionKey: string,
-  depth = 0
-): Promise<string[][]> {
-  if (depth >= MAX_RESOLVE_DEPTH || !parsedRef.filePath) return [];
-  const doc = await getFileContent(basePath, parsedRef.filePath);
-  if (!doc) return [];
-  const section = findSectionContent(
-    doc,
-    getBaseSectionName(parsedRef.section || currentSectionKey)
+const BIBLICAL_REF = /^[1-3]?\s*[A-Za-zÀ-ÿ.]+\.?\s+\d+[:.]\d+/;
+
+/** A line announcing the passage the reference already names. */
+const READING_INTRODUCTION =
+  /^\s*(Léctio|Lectio|Sequéntia|Sequentia|Incipit|De|Ex)\s+\S/i;
+
+/** A body line opening with its verse number. */
+const VERSE_NUMBER = /^\s*\d+\s+(?=\S)/;
+
+export type Reading =
+  | { ref: string; verses: string[] }
+  | { ref: string; text: string }
+  | { text: string };
+
+/**
+ * Structure a reading's lines. A biblical reference drops the introduction and
+ * splits the body into verses; any other reference keeps its introduction, since
+ * there that line names the author; with no reference the lines are kept as
+ * text. A reading carrying several references is left to the caller.
+ */
+export function linesToReading(lines: unknown): Reading {
+  if (!Array.isArray(lines) || lines.length === 0) return { text: "" };
+
+  const markerAt = lines.findIndex(
+    (l) => typeof l === "string" && l.startsWith("!")
   );
-  if (!section) return [];
-  const conditions = section.map((item) => item.condition);
-  for (const item of section) {
-    if (item.value.length !== 1) continue;
-    const nested = parseReference(item.value[0]!);
-    if (!nested) continue;
-    conditions.push(
-      ...(await targetConditions(
-        nested,
-        basePath,
-        parsedRef.section || currentSectionKey,
-        depth + 1
-      ))
-    );
+  const body = (from: number) =>
+    lines
+      .slice(from)
+      .map((l) => (typeof l === "string" ? l : String(l)))
+      .filter((s) => !s.startsWith("$") && !s.startsWith("!"));
+
+  if (markerAt === -1) {
+    return { text: stripLeadingV(body(0).join("\n").trim()) };
   }
-  return conditions;
+
+  const ref = canonicalizeRef(String(lines[markerAt]).slice(1).trim());
+  if (!BIBLICAL_REF.test(ref)) {
+    return { ref, text: stripLeadingV(body(0).join("\n").trim()) };
+  }
+
+  // Biblical: the line above the marker only announces the passage.
+  const before = body(0).slice(0, markerAt);
+  const after = body(markerAt + 1);
+  const kept =
+    before.length && READING_INTRODUCTION.test(before[before.length - 1]!)
+      ? before.slice(0, -1)
+      : before;
+
+  const verses = [...kept, ...after]
+    .map((s) => stripLeadingV(s.replace(VERSE_NUMBER, "").trim()))
+    .filter((s) => s !== "");
+  return { ref, verses };
 }
 
-function applySubstitutions(
-  lines: string[],
-  substitutions: { pattern: string; replacement: string; flags: string }[]
-) {
-  if (!substitutions.length) return lines;
-  return lines.map((line) => {
-    let result = String(line);
-    for (const { pattern, replacement, flags } of substitutions) {
-      try {
-        result = result.replace(new RegExp(pattern, flags || "g"), replacement);
-      } catch {}
+/**
+ * A reading is only structured when it carries at most one reference marker.
+ * With several, structuring it would keep one reference and lose the interior
+ * ones, so it keeps its lines and step 6 leaves it inline.
+ */
+function canStructureReading(lines: unknown): boolean {
+  return countRefMarkers(lines) <= 1;
+}
+
+function stripLeadingV(text: string): string {
+  if (!text || typeof text !== "string") return text;
+  const lines = text.split("\n");
+  if (lines.length === 0) return text;
+  lines[0] = lines[0]!.trim().replace(V_START, "").trim();
+  return lines.join("\n").trim();
+}
+
+export function linesToVerse(lines: unknown): { ref: string; text: string } {
+  if (!Array.isArray(lines) || lines.length === 0) return { ref: "", text: "" };
+  let ref = "";
+  const textParts: string[] = [];
+  for (const line of lines) {
+    const s = typeof line === "string" ? line : String(line);
+    if (s.startsWith("!")) ref = canonicalizeRef(s.slice(1).trim());
+    else if (!s.startsWith("$")) textParts.push(s);
+  }
+  return {
+    ref,
+    text: stripTrailingAlleluia(stripLeadingV(textParts.join("\n").trim())),
+  };
+}
+
+export function linesToPrayer(lines: unknown): { text: string; closure: string } {
+  if (!Array.isArray(lines) || lines.length === 0)
+    return { text: "", closure: "" };
+  let closure = "";
+  const textParts: string[] = [];
+  for (const line of lines) {
+    const s = typeof line === "string" ? line : String(line);
+    if (s.startsWith("$")) closure = s.slice(1).trim();
+    else textParts.push(s);
+  }
+  return { text: textParts.join("\n").trim(), closure };
+}
+
+/**
+ * Strip the `Allelúja` a chant's text trails off with.
+ *
+ * The Alleluia is the response sung after the words, not part of them, and the
+ * sources append it — once, or two and three times over — to antiphons and
+ * verses throughout paschaltide. The punctuation that introduced it goes with
+ * it, and the sentence is closed off again.
+ */
+export function stripTrailingAlleluia(text: string): string {
+  if (typeof text !== "string" || text === "") return text;
+  // The response comes either plain — `… manet. Allelúja.` — or parenthesized as
+  // a paschaltide-only cue — `… manet. (Allelúja, allelúja).`; both are removed.
+  let t = text
+    .replace(/\s*\(\s*(?:allel[uú][ji]a\b[\s,.;]*)+\)\.?\s*$/i, "")
+    .replace(/(?:\s*\ballel[uú][ji]a\b[\s,.;]*)+$/i, "");
+  if (t === text) return text;
+  t = t.replace(/[\s,;]+$/, "");
+  return t === "" || /[.!?:]$/.test(t) ? t : `${t}.`;
+}
+
+/** A line that is nothing but the `Allelúja, allelúja.` opening cue. */
+const ALLELUIA_OPENING = /^\s*Allel[uú][ji]a\s*,?\s*Allel[uú][ji]a\.?\s*$/i;
+
+export type AlleluiaVerses = { verses: { ref: string; text: string }[] };
+
+/**
+ * A marker naming the chant that follows rather than citing its source. It marks
+ * where that chant begins, and gives its verse no reference of its own.
+ */
+const CHANT_LABEL = /^(Tractus|Allel[uú][ji]a)\.?$/i;
+
+/**
+ * Structure an extended Alleluia: the `Allelúja, allelúja.` opening followed by
+ * its verses.
+ *
+ * This is the paschal chant that replaces the Gradual — it is an Alleluia rather
+ * than a gradual, so it is a list of verses rather than an antiphon and a verse.
+ * A verse opens at its `!ref`, or at a `v.` where the source gives none.
+ * The opening is dropped: it is the same words every time, and the section
+ * being an Alleluia already says them.
+ */
+export function linesToVerses(lines: unknown): AlleluiaVerses {
+  if (!Array.isArray(lines)) return { verses: [] };
+
+  const verses: { ref: string; text: string[] }[] = [];
+  let current: { ref: string; text: string[] } | undefined;
+  let labelledAt = -1;
+  const open = (ref: string) => {
+    current = { ref, text: [] };
+    verses.push(current);
+  };
+
+  for (const line of lines) {
+    const s = typeof line === "string" ? line : String(line);
+    if (s.startsWith("$")) continue;
+    if (s.startsWith("!")) {
+      const marker = s.slice(1).trim();
+      // A label names the chant that follows; the verses before it belong to
+      // another chant sharing the section.
+      if (CHANT_LABEL.test(marker)) {
+        labelledAt = verses.length;
+        open("");
+      } else open(marker);
+      continue;
     }
-    return result;
+    if (ALLELUIA_OPENING.test(s)) continue;
+    // A blank line — empty or a lone `_` — separates chants rather than
+    // belonging to one.
+    if (s.trim() === "" || s.trim() === "_") continue;
+    if (V_START.test(s)) {
+      // A `v.` opens a further verse, unless it only marks the first one.
+      if (current && current.text.length) open("");
+      else if (!current) open("");
+      current!.text.push(s.trim().replace(V_START, "").trim());
+      continue;
+    }
+    if (!current) open("");
+    current!.text.push(s);
+  }
+
+  // Where a label named the chant, only what follows it belongs to this
+  // section; the verses before are another chant sharing the source section.
+  const kept = labelledAt >= 0 ? verses.slice(labelledAt) : verses;
+  return {
+    verses: kept
+      .map((v) => ({
+        ref: v.ref,
+        text: stripTrailingAlleluia(v.text.join("\n").trim()),
+      }))
+      .filter((v) => v.text !== ""),
+  };
+}
+
+function splitRefPair(refStr: string): { antiphonRef: string; verseRef: string } {
+  if (!refStr || typeof refStr !== "string")
+    return { antiphonRef: "", verseRef: "" };
+  const parts = refStr
+    .split(/[;,]/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+  if (parts.length < 2) return { antiphonRef: refStr.trim(), verseRef: "" };
+  const first = parts[0]!;
+  const bookMatch = first.match(/^(.+?)\s+\d/);
+  const book = bookMatch ? bookMatch[1]!.trim() : "";
+  const second = parts[1]!;
+  const verseRef = /^\d/.test(second) && book ? `${book} ${second}` : second;
+  return { antiphonRef: first, verseRef };
+}
+
+type RefSegment = { refIndex: number; start: number; end: number };
+
+/**
+ * Parse `!ref`-delimited segments from a line array.
+ *
+ * Text before the first marker forms an opening segment of its own, with no
+ * reference: a chant often gives its antiphon and verse before naming a source,
+ * and dropping those lines left the antiphon with a reference and no words. The
+ * `Allelúja, allelúja.` cue is not such text — it is the same words every time —
+ * and is skipped.
+ */
+function parseRefSegments(lines: unknown[]): { refs: string[]; segments: RefSegment[] } {
+  const refs: string[] = [];
+  const segments: RefSegment[] = [];
+  let i = 0;
+
+  const isMarker = (n: number) => {
+    const l = lines[n];
+    return typeof l === "string" && l.startsWith("!");
+  };
+  while (i < lines.length && !isMarker(i) && ALLELUIA_OPENING.test(String(lines[i]))) {
+    i++;
+  }
+  const opening = i;
+  let firstMarker = opening;
+  while (firstMarker < lines.length && !isMarker(firstMarker)) firstMarker++;
+  if (firstMarker > opening) {
+    refs.push("");
+    segments.push({ refIndex: 0, start: opening, end: firstMarker });
+    i = firstMarker;
+  }
+  while (i < lines.length) {
+    const s = typeof lines[i] === "string" ? (lines[i] as string) : String(lines[i]);
+    if (s.startsWith("!")) {
+      refs.push(canonicalizeRef(s.slice(1).trim()));
+      const seg: RefSegment = { refIndex: refs.length - 1, start: i + 1, end: i + 1 };
+      i++;
+      while (i < lines.length) {
+        const t =
+          typeof lines[i] === "string" ? (lines[i] as string) : String(lines[i]);
+        if (t.startsWith("!")) break;
+        i++;
+      }
+      seg.end = i;
+      segments.push(seg);
+    } else {
+      i++;
+    }
+  }
+  return { refs, segments };
+}
+
+function segmentLines(lines: unknown[], seg: RefSegment | undefined): string[] {
+  if (!seg || seg.end <= seg.start) return [];
+  return lines.slice(seg.start, seg.end).filter((l) => !String(l).startsWith("&")) as string[];
+}
+
+export function linesToAntiphonal(lines: unknown): {
+  antiphon: { ref: string; text: string };
+  verse: { ref: string; text: string };
+} {
+  const empty = { ref: "", text: "" };
+  if (!Array.isArray(lines) || lines.length === 0) {
+    return { antiphon: { ...empty }, verse: { ...empty } };
+  }
+  const { refs, segments } = parseRefSegments(lines);
+  const antiphonLines = segmentLines(lines, segments[0]);
+  const verseLines = segmentLines(lines, segments[1]);
+  const antiphonText = stripLeadingV(antiphonLines.join("\n").trim());
+  let verseText = verseLines.join("\n").trim();
+  // If the verse ends by repeating the antiphon (with or without "v."), drop it.
+  if (antiphonText) {
+    const verseLinesArr = verseText.split("\n");
+    while (verseLinesArr.length > 0) {
+      const last = verseLinesArr[verseLinesArr.length - 1]!.trim();
+      const lastNorm = last.replace(V_START, "").trim();
+      if (lastNorm === antiphonText) {
+        verseLinesArr.pop();
+        verseText = verseLinesArr.join("\n").trim();
+      } else break;
+    }
+  }
+  const pair = splitRefPair(refs[0] ?? "");
+  return {
+    antiphon: { ref: pair.antiphonRef, text: stripTrailingAlleluia(antiphonText) },
+    verse: {
+      ref: refs[1] ?? pair.verseRef,
+      text: stripTrailingAlleluia(stripLeadingV(verseText)),
+    },
+  };
+}
+
+function filterGradualeLines(lines: string[]): string[] {
+  return lines.filter((l) => String(l).trim() !== "_");
+}
+
+/**
+ * The `Allelúja, allelúja.` cue that marks the boundary from Gradual to Alleluia.
+ * It may be a line of its own, or trail the end of the Gradual's last line —
+ * `…manet. Allelúja, allelúja.` — in which case the text before it is the last of
+ * the Gradual (`inline`). A cue opening the whole section is not a boundary; it is
+ * skipped, as `parseRefSegments` skips it. `index` is -1 when there is none.
+ */
+function boundaryCue(lines: unknown[]): { index: number; inline: boolean } {
+  let sawContent = false;
+  for (let i = 0; i < lines.length; i++) {
+    const s = String(lines[i]).trim();
+    if (ALLELUIA_OPENING.test(s)) {
+      if (sawContent) return { index: i, inline: false };
+      continue;
+    }
+    if (ALLELUIA_CUE.test(s)) return { index: i, inline: true };
+    if (s !== "" && s !== "_") sawContent = true;
+  }
+  return { index: -1, inline: false };
+}
+
+/** Split a single gradual block into antiphon and verse at its `v.` marker. */
+function splitGradualBlock(
+  block: string[],
+  combinedRef: string
+): { antiphon: { ref: string; text: string }; verse: { ref: string; text: string } } {
+  const vIdx = block.findIndex((l) => V_START.test(String(l).trim()));
+  let antiphonText = "";
+  let verseText = "";
+  if (vIdx < 0) {
+    antiphonText = stripLeadingV(block.join("\n").trim());
+  } else {
+    antiphonText = block.slice(0, vIdx).join("\n").trim();
+    const verseBlock = block.slice(vIdx);
+    verseBlock[0] = String(verseBlock[0]).trim().replace(V_START, "").trim();
+    verseText = verseBlock.join("\n").trim();
+  }
+  const pair = splitRefPair(combinedRef);
+  return {
+    antiphon: {
+      ref: pair.antiphonRef,
+      text: stripTrailingAlleluia(stripLeadingV(antiphonText)),
+    },
+    verse: { ref: pair.verseRef, text: stripTrailingAlleluia(stripLeadingV(verseText)) },
+  };
+}
+
+/**
+ * The Gradual's antiphon and verse. Antiphon and verse are told apart by the
+ * `v.` marker, not by order: where they are given under separate references, the
+ * marked block is the verse and the unmarked the antiphon, each keeping its own
+ * reference; where they share one block, it is split at the `v.` as usual.
+ */
+function linesToGradual(gradualLines: string[]): {
+  antiphon: { ref: string; text: string };
+  verse: { ref: string; text: string };
+} {
+  const { refs, segments } = parseRefSegments(gradualLines);
+  const blocks = segments.map((seg) => ({
+    ref: refs[seg.refIndex] ?? "",
+    lines: filterGradualeLines(segmentLines(gradualLines, seg)),
+  }));
+
+  const isVerseBlock = (b: { lines: string[] }) =>
+    b.lines.length > 0 && V_START.test(String(b.lines[0]).trim());
+
+  const asPart = (block: { ref: string; lines: string[] }) => ({
+    ref: block.ref,
+    text: stripTrailingAlleluia(stripLeadingV(block.lines.join("\n").trim())),
   });
-}
 
-async function getFileContent(basePath: string, filePath: string) {
-  const cacheKey = `${basePath}::${filePath}`;
-  if (fileCache.has(cacheKey)) return fileCache.get(cacheKey)!;
-
-  const targetPath = join(basePath, `${filePath}${STEP_EXT}`);
-  try {
-    const raw = await readFile(targetPath, "utf-8");
-    const parsed = parseStep(raw) as Step4Output;
-    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
-      fileCache.set(cacheKey, null);
-      return null;
+  // Antiphon and verse under separate references. Where one block is marked with
+  // `v.`, that block is the verse and the unmarked one the antiphon, whatever
+  // their order. Where neither is marked, they are read in order — antiphon then
+  // verse — each keeping its own reference.
+  const nonEmpty = blocks.filter((b) => b.lines.length);
+  if (nonEmpty.length >= 2) {
+    const verseAt = blocks.findIndex(isVerseBlock);
+    if (verseAt >= 0) {
+      const antiphonAt = blocks.findIndex((b, i) => i !== verseAt && b.lines.length);
+      if (antiphonAt >= 0 && !isVerseBlock(blocks[antiphonAt]!)) {
+        return {
+          antiphon: asPart(blocks[antiphonAt]!),
+          verse: asPart(blocks[verseAt]!),
+        };
+      }
+    } else {
+      return { antiphon: asPart(nonEmpty[0]!), verse: asPart(nonEmpty[1]!) };
     }
-    fileCache.set(cacheKey, parsed);
-    return parsed;
-  } catch {
-    fileCache.set(cacheKey, null);
-    return null;
   }
+
+  return splitGradualBlock(blocks[0]?.lines ?? [], refs[0] ?? "");
 }
 
-async function resolveReference(
-  parsedRef: {
-    filePath: string;
-    section: string;
-    lineRange: { start: number; end: number } | null;
-    substitutions: { pattern: string; replacement: string; flags: string }[];
-  },
-  basePath: string,
-  currentSectionKey: string,
-  currentCondition: string[],
-  depth = 0
-): Promise<string[] | null> {
-  if (depth >= MAX_RESOLVE_DEPTH || !parsedRef.filePath) return null;
+export function linesToGraduale(lines: unknown): {
+  antiphon: { ref: string; text: string };
+  verse: { ref: string; text: string };
+  alleluia: { ref: string; text: string };
+} {
+  const empty = { ref: "", text: "" };
+  if (!Array.isArray(lines) || lines.length === 0) {
+    return { antiphon: { ...empty }, verse: { ...empty }, alleluia: { ...empty } };
+  }
 
-  const sectionKey = getBaseSectionName(parsedRef.section || currentSectionKey);
-  const doc = await getFileContent(basePath, parsedRef.filePath);
-  if (!doc) return null;
-
-  const section = findSectionContent(doc, sectionKey);
-  if (!section) return null;
-
-  let resolved = [...pickVariantLines(section, currentCondition)];
-  if (parsedRef.lineRange) {
-    const { start, end } = parsedRef.lineRange;
-    resolved = resolved.slice(
-      Math.max(0, start - 1),
-      Math.min(resolved.length, end)
+  // Where a cue marks the boundary, the Gradual is everything before it and the
+  // Alleluia everything after — even across references. An inline cue keeps the
+  // text before it as the Gradual's last line. The Alleluia's verse that merely
+  // repeats the Gradual verse is dropped for the distinctive one.
+  const { index: cueAt, inline } = boundaryCue(lines);
+  if (cueAt >= 0) {
+    const preCue = inline
+      ? String(lines[cueAt]).replace(ALLELUIA_CUE, "").trim()
+      : "";
+    const gradualLines = [
+      ...lines.slice(0, cueAt).map(String),
+      ...(preCue ? [preCue] : []),
+    ];
+    const gradual = linesToGradual(gradualLines);
+    const verses = linesToVerses(lines.slice(cueAt + 1)).verses;
+    const distinct = verses.filter(
+      (v) => v.text.trim() !== gradual.verse.text.trim()
     );
+    const chosen = distinct[0] ?? { ref: "", text: "" };
+    return {
+      antiphon: gradual.antiphon,
+      verse: gradual.verse,
+      alleluia: { ref: chosen.ref, text: chosen.text },
+    };
   }
 
-  resolved = applySubstitutions(resolved, parsedRef.substitutions);
+  const { refs, segments } = parseRefSegments(lines);
+  const block = filterGradualeLines(segmentLines(lines, segments[0]));
+  const secondBlock = filterGradualeLines(segmentLines(lines, segments[1]));
 
-  if (resolved.length === 1 && typeof resolved[0] === "string") {
-    const nestedRef = parseReference(resolved[0]);
-    if (nestedRef) {
-      const nestedResolved = await resolveReference(
-        nestedRef,
-        basePath,
-        parsedRef.section || currentSectionKey,
-        currentCondition,
-        depth + 1
-      );
-      if (nestedResolved) return nestedResolved;
+  // No boundary cue here (those are handled above): the Gradual is the first
+  // block, and any second block is the Alleluia, kept whole under its reference.
+  const firstText = block.join("\n").trim();
+  const vIdx = block.findIndex((l) => V_START.test(String(l).trim()));
+  let antiphonText = "";
+  let verseText = "";
+  if (vIdx < 0) {
+    antiphonText = stripLeadingV(firstText);
+  } else {
+    antiphonText = block.slice(0, vIdx).join("\n").trim();
+    const verseBlock = block.slice(vIdx);
+    if (verseBlock.length) {
+      verseBlock[0] = String(verseBlock[0]).trim().replace(V_START, "").trim();
+      verseText = verseBlock.join("\n").trim();
     }
   }
-
-  return resolved;
+  const pair = splitRefPair(refs[0] ?? "");
+  const secondRef = refs[1] ?? "";
+  const isTractus = /^Tractus/i.test(secondRef);
+  const alleluiaRef = isTractus ? "" : secondRef;
+  const alleluiaText = isTractus
+    ? ""
+    : stripLeadingV(secondBlock.join("\n").trim());
+  const verseTextClean = stripLeadingV(verseText).replace(ALLELUIA_CUE, "").trim();
+  return {
+    antiphon: {
+      ref: pair.antiphonRef,
+      text: stripTrailingAlleluia(stripLeadingV(antiphonText)),
+    },
+    verse: { ref: pair.verseRef, text: stripTrailingAlleluia(verseTextClean) },
+    alleluia: { ref: alleluiaRef, text: stripTrailingAlleluia(alleluiaText) },
+  };
 }
 
-function getLanguageBasePath(inputFile: string) {
-  const normalized = inputFile.replace(/\\/g, "/");
-  const parts = normalized.split("/");
-  const stepIndex = parts.findIndex((part) => /^step\d+$/.test(part));
-  if (stepIndex < 0 || stepIndex + 1 >= parts.length) {
-    throw new Error(`Cannot determine language base path for ${inputFile}`);
+/** Drop Gloria/Credo; lift `Prefatio=X` out as a lowercase `prefatio` value. */
+export function transformRule(value: unknown): {
+  rule: unknown;
+  prefatio: string | undefined;
+} {
+  if (!Array.isArray(value)) return { rule: value, prefatio: undefined };
+  let prefatio: string | undefined = undefined;
+  const rule = value.filter((item) => {
+    const s = typeof item === "string" ? item : String(item);
+    if (s === "Gloria" || s === "Credo") return false;
+    const m = s.match(PREFATIO_PREFIX);
+    if (m) {
+      prefatio = m[1]!.trim().toLowerCase();
+      return false;
+    }
+    return true;
+  });
+  return { rule, prefatio };
+}
+
+function stripLectioIntroduction(text: string): string {
+  if (!text || typeof text !== "string") return text;
+  const lines = text.split("\n").map((l) => l.trimEnd());
+  if (lines.length > 0 && LECTIO_INTRODUCTION.test(lines[0]!)) {
+    return lines.slice(1).join("\n").trim();
   }
-  return parts.slice(0, stepIndex + 2).join("/");
+  return text;
 }
 
-export async function transform(
-  obj: Step4Output,
-  inputFile: string
-): Promise<Step5Output> {
-  const basePath = getLanguageBasePath(inputFile);
-  // The current file's own path relative to the language root, used to resolve
-  // references whose `File` part is omitted (`@:Section`) against this file.
-  const selfPath = inputFile
-    .replace(/\\/g, "/")
-    .slice(basePath.length)
-    .replace(/^\/+/, "")
-    .replace(new RegExp(`\\${STEP_EXT}$`, "i"), "");
-  const result: Step5Output = {};
+function transformSection(
+  key: string,
+  value: unknown,
+  sectionType: "antiphonal" | "prayer" | "verse"
+): unknown {
+  if (!Array.isArray(value)) return value;
+  switch (sectionType) {
+    case "verse":
+      // A reading carries an introduction and, when biblical, numbered verses;
+      // the other verse sections are antiphons and keep `{ ref, text }`.
+      return isReadingSection(key) ? linesToReading(value) : linesToVerse(value);
+    case "prayer":
+      return linesToPrayer(value);
+    case "antiphonal":
+      if (key === "gradualep" || key === "tractus")
+        return linesToVerses(value);
+      if (key.startsWith("graduale")) return linesToGraduale(value);
+      return linesToAntiphonal(value);
+  }
+}
 
+/**
+ * Where a gradual's Alleluia is lifted to. The Alleluia is a chant in its own
+ * right, sung after the Gradual; the paschal form (`gradualep`) replaces the
+ * Gradual with two Alleluia verses, and its second one is a different chant
+ * again, so each keeps its own section.
+ */
+const ALLELUIA_OF: Record<string, string> = {
+  graduale: "alleluia",
+};
+
+/**
+ * Sections renamed on the way out. `gradualep` is not a gradual but the extended
+ * Alleluia that replaces the Gradual in paschaltide, so it is published as one.
+ */
+const RENAMED: Record<string, string> = {
+  gradualep: "alleluiap",
+};
+
+/** True when a value carries an Alleluia worth lifting out. */
+function hasAlleluia(value: unknown): boolean {
+  if (value == null || typeof value !== "object") return false;
+  const a = (value as { alleluia?: { ref?: string; text?: string } }).alleluia;
+  return a != null && (Boolean(a.text) || Boolean(a.ref));
+}
+
+/** The value without its `alleluia`, which is now a section of its own. */
+function withoutAlleluia(value: unknown): unknown {
+  if (value == null || typeof value !== "object") return value;
+  const { alleluia, ...rest } = value as Record<string, unknown>;
+  return rest;
+}
+
+/**
+ * Structure one document's missa sections. Each section is a rubric-variant
+ * list; the structuring is applied to every variant's `value`, keeping its
+ * `condition`. Exported for the runner and tests.
+ */
+export function transform(obj: Record<string, unknown>): Step5Output {
+  const result: Step5Output = {};
   for (const [key, value] of Object.entries(obj)) {
-    if (!Array.isArray(value)) {
+    if (key === "rule") {
+      // `rule` cleanup can lift a `Prefatio=X` line out into a `prefatio` key;
+      // do it per variant, keeping conditions aligned.
+      if (!isVariantArray(value)) {
+        result.rule = transformRule(value).rule;
+        continue;
+      }
+      const ruleVariants: { value: unknown; condition: string[] }[] = [];
+      const prefatioVariants: { value: string; condition: string[] }[] = [];
+      for (const variant of value) {
+        const { rule, prefatio } = transformRule(variant.value);
+        ruleVariants.push({ value: rule, condition: variant.condition });
+        if (prefatio !== undefined) {
+          // A trailing `(…)` names the rubric the preface is said under —
+          // `Prefatio=Cord (rubrica divino)`. Left in, it would become part of
+          // the preface's name.
+          const conditional = prefatio.match(/^(.*?)\s*\((.+)\)$/);
+          if (conditional) {
+            for (const { includes } of getIncludesExcludes(conditional[2]!)) {
+              prefatioVariants.push({
+                value: conditional[1]!,
+                condition: [...new Set([...variant.condition, ...includes])],
+              });
+            }
+          } else {
+            prefatioVariants.push({ value: prefatio, condition: variant.condition });
+          }
+        }
+      }
+      result.rule = ruleVariants;
+      if (prefatioVariants.length) result.prefatio = prefatioVariants;
+      continue;
+    }
+    const sectionType = getSectionType(key);
+    if (!sectionType) {
       result[key] = value;
       continue;
     }
-
-    const baseSection = getBaseSectionName(key);
-    const references = (lines: string[]) =>
-      lines.flatMap((line) => {
-        const parsedRef = parseReference(line);
-        if (!parsedRef) return [];
-        return [parsedRef.filePath ? parsedRef : { ...parsedRef, filePath: selfPath }];
-      });
-
-    const resolveUnder = async (lines: string[], condition: string[]) => {
-      const out: string[] = [];
-      for (const line of lines) {
-        const parsedRef = parseReference(line);
-        if (!parsedRef) {
-          out.push(line);
-          continue;
-        }
-
-        const resolved = await resolveReference(
-          parsedRef.filePath ? parsedRef : { ...parsedRef, filePath: selfPath },
-          basePath,
-          baseSection,
-          condition
-        );
-        if (resolved) out.push(...resolved);
-        else out.push(line);
-      }
-      return out;
-    };
-
-    const resolvedItems = await Promise.all(
-      value.map(async (item) => ({
-        ...item,
-        value: await resolveUnder(item.value, item.condition),
-      }))
+    const isReading = isReadingSection(key);
+    const structured = mapVariants(value, (v) =>
+      isReading && !canStructureReading(v)
+        ? v
+        : transformSection(key, v, sectionType)
     );
 
-    // In the Martyrology, the rubrics the entries vary by and a variant of the
-    // list does not name: each gets a copy of that variant, resolved under both
-    // conditions, unless the list already has a variant at least as specific
-    // for it. Elsewhere a day's Mass and Office share a file, so a target's
-    // variant may be the Office's wording rather than another rubric's.
-    const written = new Set(value.map((item) => conditionKey(item.condition)));
-    const extra: typeof resolvedItems = [];
-    for (const item of isMartyrology(selfPath) ? value : []) {
-      for (const ref of references(item.value)) {
-        for (const target of await targetConditions(ref, basePath, baseSection)) {
-          if (target.length === 0 || includesAll(item.condition, target)) continue;
-          const combined = [...new Set([...item.condition, ...target])].sort();
-          const label = conditionKey(combined);
-          if (written.has(label)) continue;
-          const ownVariant = value.some(
-            (other) =>
-              other !== item &&
-              includesAll(other.condition, item.condition) &&
-              other.condition.length > item.condition.length &&
-              includesAll(combined, other.condition)
-          );
-          if (ownVariant) continue;
-          written.add(label);
-          extra.push({
-            ...item,
-            value: await resolveUnder(item.value, combined),
-            condition: combined,
-          });
-        }
+    // A gradual carries the Alleluia sung after it; lift it into its own
+    // section, keeping each variant's condition.
+    const alleluiaKey = ALLELUIA_OF[key];
+    if (alleluiaKey && isVariantArray(structured)) {
+      const alleluia: { value: unknown; condition: string[] }[] = [];
+      for (const variant of structured) {
+        if (!hasAlleluia(variant.value)) continue;
+        alleluia.push({
+          value: (variant.value as { alleluia: unknown }).alleluia,
+          condition: variant.condition,
+        });
       }
+      result[key] = structured.map((variant) => ({
+        value: withoutAlleluia(variant.value),
+        condition: variant.condition,
+      }));
+      if (alleluia.length) result[alleluiaKey] = alleluia;
+      continue;
     }
 
-    result[key] = [...resolvedItems, ...extra];
+    result[RENAMED[key] ?? key] = structured;
   }
-
   return result;
 }
 
-export function extractDependencies(
-  obj: Step4Output,
-  outputFile: string
-): Set<string> {
-  const dependencies = new Set<string>();
-  for (const section of Object.values(obj)) {
-    if (!Array.isArray(section)) continue;
-    for (const item of section) {
-      for (const line of item.value) {
-        const parsedRef = parseReference(line);
-        if (
-          parsedRef?.filePath &&
-          !outputFile.includes(parsedRef.filePath.replace("/", "\\"))
-        )
-          dependencies.add(parsedRef.filePath);
+/** Batch runner: structures every `.yml` under `inputDir` into `outputDir`. */
+export async function run(
+  inputDir: string,
+  outputDir: string
+): Promise<{ written: number }> {
+  const files = await collectYmlFiles(inputDir);
+  const mkdirCache = new Set<string>();
+
+  const { processed } = await runBatched(
+    files,
+    DEFAULT_CONCURRENCY,
+    async (rel) => {
+      const raw = await readFile(join(inputDir, rel), "utf-8");
+      const obj = parseStep(raw);
+      if (typeof obj !== "object" || obj === null || Array.isArray(obj)) {
+        throw new Error("Expected object");
       }
+      const outPath = join(outputDir, rel);
+      await ensureDir(outPath, mkdirCache);
+      await writeFile(
+        outPath,
+        stringifyStep(transform(obj as Record<string, unknown>)),
+        "utf-8"
+      );
     }
-  }
-  return dependencies;
+  );
+
+  return { written: processed };
 }

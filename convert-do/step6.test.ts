@@ -1,122 +1,565 @@
 import { describe, expect, it } from "vitest";
-import { transform, getOutputFile,
-  isCommemorationFile,
+import {
+  refToKey,
+  createLectioStore,
+  substituteLectio,
+  substitutePrayers,
+  substituteChants,
+  transform,
 } from "./step6";
 
-describe("step6 transform", () => {
-  it("turns a filename rubric suffix into a condition", () => {
-    // `01-01t` — the `t` suffix maps to the 1570 rubric.
-    expect(
-      transform(
-        { oratio: [{ value: ["x"], condition: [] }] },
-        "Sancti\\01-01t.json"
-      )
-    ).toEqual({ oratio: [{ condition: ["1570"], value: ["x"] }] });
+/** A rubric variant; `condition` defaults to the unconditional (default) one. */
+const v = <T>(value: T, condition: string[] = []) => ({ value, condition });
+
+/** A reading, as step 5 leaves it. */
+const reading = (ref: string, text: string) => ({ ref, text });
+
+describe("step6 — key derivation", () => {
+  it("kebabs a scripture reference", () => {
+    expect(refToKey("Matt 11:25-30")).toBe("matt-11-25-30");
+    expect(refToKey("2 Cor 1:1-5")).toBe("2-cor-1-1-5");
+    expect(refToKey("Eccli 51:1-8; 51:12")).toBe("eccli-51-1-8-51-12");
   });
 
-  it("adds a directory-variant condition", () => {
-    // `SanctiCist` — the Cist directory maps to cisterciensis.
-    expect(
-      transform(
-        { name: [{ value: ["Foo"], condition: [] }] },
-        "SanctiCist\\01-01.json"
-      )
-    ).toEqual({ name: [{ condition: ["cisterciensis"], value: ["Foo"] }] });
-  });
-
-  it("extends an existing variant condition instead of replacing it", () => {
-    // A step-1 header condition (1570) is kept, with the directory token added.
-    expect(
-      transform(
-        { oratio: [{ value: ["x"], condition: ["1570"] }] },
-        "SanctiCist\\01-01.json"
-      )
-    ).toEqual({ oratio: [{ condition: ["1570", "cisterciensis"], value: ["x"] }] });
-  });
-
-  it("derives the same conditions from a POSIX input path", () => {
-    expect(
-      transform({ oratio: [{ value: ["x"], condition: [] }] }, "Sancti/01-01t.json")
-    ).toEqual({ oratio: [{ condition: ["1570"], value: ["x"] }] });
-    expect(
-      transform(
-        { name: [{ value: ["Foo"], condition: [] }] },
-        "SanctiCist/01-01.json"
-      )
-    ).toEqual({ name: [{ condition: ["cisterciensis"], value: ["Foo"] }] });
+  it("has no key for a missing or empty reference", () => {
+    expect(refToKey("")).toBeNull();
+    expect(refToKey("   ")).toBeNull();
+    expect(refToKey(null)).toBeNull();
+    expect(refToKey(undefined)).toBeNull();
   });
 });
 
-describe("step6 getOutputFile", () => {
-  it("folds a variant directory into its base", () => {
-    expect(getOutputFile("root\\SanctiCist\\01-01.json")).toBe(
-      "root\\Sancti\\01-01.json"
-    );
-  });
+describe("step6 — the shared store", () => {
+  it("stores one entry however often a reading is used", () => {
+    const store = createLectioStore();
+    const a = store.intern(reading("Matt 11:25-30", "In illo témpore…"));
+    const b = store.intern(reading("Matt 11:25-30", "In illo témpore…"));
 
-  it("strips a filename rubric suffix", () => {
-    expect(getOutputFile("root\\Sancti\\01-01t.json")).toBe(
-      "root\\Sancti\\01-01.json"
-    );
-  });
-
-  it("folds and strips on POSIX paths", () => {
-    expect(getOutputFile("root/SanctiCist/01-01.json")).toBe(
-      "root/Sancti/01-01.json"
-    );
-    expect(getOutputFile("root/Sancti/01-01t.json")).toBe(
-      "root/Sancti/01-01.json"
-    );
-  });
-});
-
-describe("step6 commemorations stand alone", () => {
-  it("keeps a commemoration on its own path", () => {
-    expect(getOutputFile("root/Sancti/09-08cc.json")).toBe(
-      "root/Sancti/09-08cc.json"
-    );
-    expect(getOutputFile("root/Sancti/01-05octt.json")).toBe(
-      "root/Sancti/01-05octt.json"
-    );
-  });
-
-  it("still folds the day itself onto its base", () => {
-    expect(getOutputFile("root/Sancti/09-08t.json")).toBe(
-      "root/Sancti/09-08.json"
-    );
-  });
-
-  it("does not condition a standalone commemoration on `commemoratio`", () => {
-    const out = transform(
-      { oratio: [{ value: ["Adrian"], condition: [] }] } as never,
-      "root/Sancti/09-08cc.json"
-    );
-    expect(out.oratio).toEqual([{ value: ["Adrian"], condition: [] }]);
-  });
-
-  it("recognises a commemoration filename", () => {
-    expect(isCommemorationFile("09-08cc")).toBe(true);
-    expect(isCommemorationFile("01-05octt")).toBe(true);
-    expect(isCommemorationFile("09-08")).toBe(false);
-    expect(isCommemorationFile("09-08t")).toBe(false);
-  });
-});
-
-describe("step6 the Martyrology's movable days", () => {
-  it("keeps the name of a file that is no date", () => {
-    expect(getOutputFile("la\\Martyrologium\\Mobile.json")).toBe(
-      "la\\Martyrologium\\Mobile.json"
-    );
-  });
-
-  it("adds no condition for it", () => {
-    expect(
-      transform(
-        { "adv1-0": [{ value: ["Dominica prima Adventus."], condition: [] }] },
-        "la\\Martyrologium\\Mobile.json"
-      )
-    ).toEqual({
-      "adv1-0": [{ value: ["Dominica prima Adventus."], condition: [] }],
+    expect(a).toBe("matt-11-25-30");
+    expect(b).toBe(a);
+    expect(Object.keys(store.entries())).toEqual(["matt-11-25-30"]);
+    expect(store.entries()["matt-11-25-30"]).toEqual({
+      ref: "Matt 11:25-30",
+      text: "In illo témpore…",
     });
+  });
+
+  it("stores a reading used only once", () => {
+    const store = createLectioStore();
+    expect(store.intern(reading("Joann 7:1-13", "Ambulábat Jesus…"))).toBe(
+      "joann-7-1-13"
+    );
+    expect(store.entries()).toHaveProperty("joann-7-1-13");
+  });
+
+  it("keeps both texts when one reference carries two spellings", () => {
+    const store = createLectioStore();
+    const first = store.intern(reading("Matt 11:25-30", "…Dómine coeli…"));
+    const second = store.intern(reading("Matt 11:25-30", "…Dómine cœli…"));
+
+    expect(first).toBe("matt-11-25-30");
+    expect(second).toBe("matt-11-25-30-2");
+    expect(store.entries()["matt-11-25-30"]).toMatchObject({
+      text: "…Dómine coeli…",
+    });
+    expect(store.entries()["matt-11-25-30-2"]).toMatchObject({
+      text: "…Dómine cœli…",
+    });
+  });
+
+  it("counts on past the first collision", () => {
+    const store = createLectioStore();
+    const keys = ["a", "b", "c"].map((t) =>
+      store.intern(reading("Luc 6:17-23", t))
+    );
+    expect(keys).toEqual(["luc-6-17-23", "luc-6-17-23-2", "luc-6-17-23-3"]);
+  });
+
+  it("re-uses the right key when a collided text comes back", () => {
+    const store = createLectioStore();
+    store.intern(reading("Luc 6:17-23", "first"));
+    store.intern(reading("Luc 6:17-23", "second"));
+
+    expect(store.intern(reading("Luc 6:17-23", "first"))).toBe("luc-6-17-23");
+    expect(store.intern(reading("Luc 6:17-23", "second"))).toBe("luc-6-17-23-2");
+    expect(Object.keys(store.entries())).toHaveLength(2);
+  });
+
+  it("keys a reading with no reference by its opening words and a hash", () => {
+    const store = createLectioStore();
+    const key = store.intern({ text: "Sed et reprobórum duos ördines cernit" });
+
+    expect(key).toMatch(/^sed-et-reproborum-duos-[0-9a-f]{8}$/);
+    expect(store.entries()[key!]).toEqual({
+      text: "Sed et reprobórum duos ördines cernit",
+    });
+  });
+
+  it("keeps two readings that open alike but differ apart", () => {
+    const store = createLectioStore();
+    const a = store.intern({ text: "Sed et reprobórum duos ördines cernit" });
+    const b = store.intern({ text: "Sed et reprobórum duos alia sequúntur" });
+
+    expect(a).not.toBe(b);
+    expect(Object.keys(store.entries())).toHaveLength(2);
+  });
+
+  it("gives two identical unreferenced readings one entry", () => {
+    const store = createLectioStore();
+    const a = store.intern({ text: "Verum his cum timóre" });
+    const b = store.intern({ text: "Verum his cum timóre" });
+
+    expect(b).toBe(a);
+    expect(Object.keys(store.entries())).toHaveLength(1);
+  });
+
+  it("keys a chant's verses by their words, not by their shape", () => {
+    // A chant's verses are objects, a reading's are strings; joining the objects
+    // blindly keyed a tract as `object-object-object-…`.
+    const store = createLectioStore();
+    const key = store.intern({
+      verses: [
+        { ref: "", text: "Gaude, María Virgo, cunctas hǽreses" },
+        { ref: "", text: "Quæ Gabriélis Archángeli dictis credidísti." },
+      ],
+    });
+    expect(key).toMatch(/^gaude-maria-virgo-cunctas-[0-9a-f]{8}$/);
+  });
+
+  it("keys a chant by its first verse's reference where it has one", () => {
+    const store = createLectioStore();
+    expect(
+      store.intern({
+        verses: [
+          { ref: "Num 17:8", text: "Virga Jesse flóruit." },
+          { ref: "Luc 1:28", text: "Ave, María." },
+        ],
+      })
+    ).toBe("num-17-8");
+  });
+
+  it("stores a verses reading whole", () => {
+    const store = createLectioStore();
+    const key = store.intern({ ref: "Rom 1:1", verses: ["Paulus", "Grátia"] });
+
+    expect(key).toBe("rom-1-1");
+    expect(store.entries()["rom-1-1"]).toEqual({
+      ref: "Rom 1:1",
+      verses: ["Paulus", "Grátia"],
+    });
+  });
+
+  it("separates two readings sharing a reference but differing in verses", () => {
+    const store = createLectioStore();
+    const a = store.intern({ ref: "Rom 1:1", verses: ["Paulus"] });
+    const b = store.intern({ ref: "Rom 1:1", verses: ["Paulus", "Grátia"] });
+
+    expect(a).toBe("rom-1-1");
+    expect(b).toBe("rom-1-1-2");
+  });
+
+  it("declines a reading that is only an unresolved reference", () => {
+    const store = createLectioStore();
+    expect(store.intern({ text: "@Tempora/Epi2-0::1-4" })).toBeNull();
+    expect(store.entries()).toEqual({});
+  });
+
+  it("declines a value that is not a reading", () => {
+    const store = createLectioStore();
+    expect(store.intern(["a line", "another line"])).toBeNull();
+    expect(store.intern("a bare string")).toBeNull();
+    expect(store.intern(null)).toBeNull();
+    expect(store.intern({})).toBeNull();
+    expect(store.entries()).toEqual({});
+  });
+});
+
+describe("step6 — substitution", () => {
+  it("replaces a reading with its key, keeping the condition", () => {
+    const store = createLectioStore();
+    const out = substituteLectio(
+      {
+        evangelium: [
+          v(reading("Matt 11:25-30", "text")),
+          v(reading("Matt 11:25-30", "text"), ["monastica"]),
+        ],
+      },
+      store
+    );
+
+    expect(out).toEqual({
+      evangelium: [
+        v("matt-11-25-30"),
+        v("matt-11-25-30", ["monastica"]),
+      ],
+    });
+  });
+
+  it("covers lectio, evangelium and ultima-evangelium", () => {
+    const store = createLectioStore();
+    const out = substituteLectio(
+      {
+        lectio: [v(reading("2 Cor 1:1-5", "a"))],
+        evangelium: [v(reading("Matt 17:1-9", "b"))],
+        "ultima-evangelium": [v(reading("Joann 1:1-14", "c"))],
+      },
+      store
+    );
+
+    expect(out).toEqual({
+      lectio: [v("2-cor-1-1-5")],
+      evangelium: [v("matt-17-1-9")],
+      "ultima-evangelium": [v("joann-1-1-14")],
+    });
+  });
+
+  it("covers the matins readings too", () => {
+    const store = createLectioStore();
+    const out = substituteLectio(
+      {
+        lectio1: [v(reading("2 Cor 1:1-5", "Paulus…"))],
+        lectio9: [v(reading("Isa 1:1", "Vísio…"))],
+        "lectio7-in-2-loco": [v(reading("Matt 5:1", "In illo témpore…"))],
+      },
+      store
+    );
+
+    expect(out).toEqual({
+      lectio1: [v("2-cor-1-1-5")],
+      lectio9: [v("isa-1-1")],
+      "lectio7-in-2-loco": [v("matt-5-1")],
+    });
+  });
+
+  it("stores a passage once whether it is read at mass or at matins", () => {
+    const store = createLectioStore();
+    const r = reading("2 Cor 1:1-5", "Paulus…");
+    const out = substituteLectio({ lectio: [v(r)], lectio1: [v(r)] }, store);
+
+    expect(out).toEqual({ lectio: [v("2-cor-1-1-5")], lectio1: [v("2-cor-1-1-5")] });
+    expect(Object.keys(store.entries())).toEqual(["2-cor-1-1-5"]);
+  });
+
+  it("leaves a reading that step 9 left as lines inline", () => {
+    const store = createLectioStore();
+    const lines = ["!Eccli 44:1", "Beátus vir…", "!Eccli 45:2", "Diléctus…"];
+    expect(substituteLectio({ lectio4: [v(lines)] }, store)).toEqual({
+      lectio4: [v(lines)],
+    });
+    expect(store.entries()).toEqual({});
+  });
+
+  it("stores an unreferenced reading rather than leaving it inline", () => {
+    const store = createLectioStore();
+    const out = substituteLectio(
+      { lectio4: [v({ text: "Sed et reprobórum duos ördines" })] },
+      store
+    );
+    const key = (out.lectio4 as { value: string }[])[0]!.value;
+
+    expect(key).toMatch(/^sed-et-reproborum-duos-[0-9a-f]{8}$/);
+    expect(Object.keys(store.entries())).toEqual([key]);
+  });
+
+  it("leaves every other section alone", () => {
+    const store = createLectioStore();
+    const obj = {
+      "lectio-prima": [v(["…"])],
+      introitus: [v({ antiphon: reading("Ps 65:4", "x") })],
+      oratio: [v({ text: "y", closure: "z" })],
+    };
+    expect(substituteLectio(obj, store)).toEqual(obj);
+    expect(store.entries()).toEqual({});
+  });
+
+  it("shares the store across documents", () => {
+    const store = createLectioStore();
+    const sancti = substituteLectio(
+      { evangelium: [v(reading("Matt 17:1-9", "same"))] },
+      store
+    );
+    const tempora = substituteLectio(
+      { evangelium: [v(reading("Matt 17:1-9", "same"))] },
+      store
+    );
+
+    expect(sancti).toEqual({ evangelium: [v("matt-17-1-9")] });
+    expect(tempora).toEqual({ evangelium: [v("matt-17-1-9")] });
+    expect(Object.keys(store.entries())).toEqual(["matt-17-1-9"]);
+  });
+});
+
+describe("step6 — prayers", () => {
+  const prayer = (text: string, closure = "Per Dominum") => ({ text, closure });
+
+  it("covers oratio, secreta and postcommunio", () => {
+    const store = createLectioStore();
+    const out = substitutePrayers(
+      {
+        oratio: [v(prayer("Deus, qui nos beáti"))],
+        secreta: [v(prayer("Múnera tibi, Dómine"))],
+        postcommunio: [v(prayer("Quǽsumus, omnípotens Deus"))],
+      },
+      store
+    );
+
+    for (const key of ["oratio", "secreta", "postcommunio"]) {
+      const [variant] = out[key] as { value: string }[];
+      expect(typeof variant!.value).toBe("string");
+    }
+    expect(Object.keys(store.entries())).toHaveLength(3);
+  });
+
+  it("keys a prayer by its opening words and a hash", () => {
+    const store = createLectioStore();
+    const out = substitutePrayers(
+      { oratio: [v(prayer("Concéde nos fámulos tuos, quǽsumus"))] },
+      store
+    );
+    const key = (out.oratio as { value: string }[])[0]!.value;
+
+    expect(key).toMatch(/^concede-nos-famulos-tuos-[0-9a-f]{8}$/);
+    expect(store.entries()[key]).toEqual({
+      text: "Concéde nos fámulos tuos, quǽsumus",
+      closure: "Per Dominum",
+    });
+  });
+
+  it("stores one entry for an oration a whole common shares", () => {
+    const store = createLectioStore();
+    const shared = prayer("Beatórum Mártyrum paritérque Pontíficum N.");
+    const a = substitutePrayers({ oratio: [v(shared)] }, store);
+    const b = substitutePrayers({ oratio: [v(shared)] }, store);
+
+    expect(a).toEqual(b);
+    expect(Object.keys(store.entries())).toHaveLength(1);
+  });
+
+  it("keeps prayers apart when only the closure differs", () => {
+    const store = createLectioStore();
+    const out = substitutePrayers(
+      {
+        oratio: [
+          v(prayer("Deus, qui nos", "Per Dominum")),
+          v(prayer("Deus, qui nos", "Qui vivis"), ["octava"]),
+        ],
+      },
+      store
+    );
+    const [first, second] = out.oratio as { value: string }[];
+
+    expect(first!.value).not.toBe(second!.value);
+    expect(Object.keys(store.entries())).toHaveLength(2);
+  });
+
+  it("leaves the readings and every other section alone", () => {
+    const store = createLectioStore();
+    const obj = {
+      lectio: [v({ ref: "Rom 1:1", verses: ["Paulus"] })],
+      introitus: [v({ antiphon: { ref: "Ps 65:4", text: "x" } })],
+    };
+    expect(substitutePrayers(obj, store)).toEqual(obj);
+    expect(store.entries()).toEqual({});
+  });
+
+  it("leaves a prayer with no text inline", () => {
+    const store = createLectioStore();
+    const empty = { text: "", closure: "Per Dominum" };
+    expect(substitutePrayers({ oratio: [v(empty)] }, store)).toEqual({
+      oratio: [v(empty)],
+    });
+    expect(store.entries()).toEqual({});
+  });
+});
+
+describe("step6 — chants", () => {
+  const verse = (ref: string, text: string) => ({ ref, text });
+  const chant = (ref: string, text: string) => ({
+    antiphon: verse(ref, text),
+    verse: verse(ref + "b", text + " v"),
+  });
+
+  it("covers every sung proper", () => {
+    const store = createLectioStore();
+    const out = substituteChants(
+      {
+        introitus: [v(chant("Ps 65:4", "Omnis terra"))],
+        graduale: [v({ ...chant("Ps 1:1", "Beatus vir"), alleluia: verse("Ps 1:2", "All") })],
+        alleluiap: [v({ verses: [verse("Ps 2:1", "Quare")] })],
+        tractus: [v(chant("Ps 3:1", "Domine"))],
+        offertorium: [v(verse("Ps 4:1", "Cum invocarem"))],
+        communio: [v(verse("Ps 5:1", "Verba mea"))],
+      },
+      store
+    );
+
+    for (const key of Object.keys(out)) {
+      const [variant] = out[key] as { value: unknown }[];
+      expect(typeof variant!.value).toBe("string");
+    }
+    expect(Object.keys(store.entries())).toHaveLength(6);
+  });
+
+  it("keys a chant by its antiphon's reference", () => {
+    const store = createLectioStore();
+    const out = substituteChants(
+      { introitus: [v(chant("Ps 65:4", "Omnis terra"))] },
+      store
+    );
+    expect((out.introitus as { value: string }[])[0]!.value).toBe("ps-65-4");
+  });
+
+  it("keys a chant with no reference by its antiphon's opening words", () => {
+    const store = createLectioStore();
+    const out = substituteChants(
+      {
+        graduale: [
+          v({
+            antiphon: { ref: "", text: "Ecce sacérdos magnus, qui in diébus" },
+            verse: { ref: "", text: "Non est invéntus" },
+          }),
+        ],
+      },
+      store
+    );
+    expect((out.graduale as { value: string }[])[0]!.value).toMatch(
+      /^ecce-sacerdos-magnus-qui-[0-9a-f]{8}$/
+    );
+  });
+
+  it("stores the chant whole, antiphon verse and alleluia together", () => {
+    const store = createLectioStore();
+    const whole = { ...chant("Ps 1:1", "Beatus vir"), alleluia: verse("Ps 1:2", "All") };
+    substituteChants({ graduale: [v(whole)] }, store);
+    expect(store.entries()["ps-1-1"]).toEqual(whole);
+  });
+
+  it("stores one entry for a chant a whole common shares", () => {
+    const store = createLectioStore();
+    const shared = chant("Ps 44:2", "Ave, María, grátia plena");
+    substituteChants({ introitus: [v(shared)] }, store);
+    substituteChants({ introitus: [v(shared)] }, store);
+    expect(Object.keys(store.entries())).toHaveLength(1);
+  });
+
+  it("keeps two chants sharing a reference but differing in text apart", () => {
+    const store = createLectioStore();
+    const out = substituteChants(
+      {
+        introitus: [v(chant("Ps 65:4", "Omnis terra")), v(chant("Ps 65:4", "Aliud"), ["octava"])],
+      },
+      store
+    );
+    const [a, b] = out.introitus as { value: string }[];
+    expect(a!.value).toBe("ps-65-4");
+    expect(b!.value).toBe("ps-65-4-2");
+  });
+
+  it("leaves the readings and prayers alone", () => {
+    const store = createLectioStore();
+    const obj = {
+      lectio: [v({ ref: "Rom 1:1", verses: ["Paulus"] })],
+      oratio: [v({ text: "Deus", closure: "Per Dominum" })],
+    };
+    expect(substituteChants(obj, store)).toEqual(obj);
+    expect(store.entries()).toEqual({});
+  });
+
+  it("leaves a chant with no text inline", () => {
+    const store = createLectioStore();
+    const empty = { antiphon: { ref: "", text: "" }, verse: { ref: "", text: "" } };
+    expect(substituteChants({ introitus: [v(empty)] }, store)).toEqual({
+      introitus: [v(empty)],
+    });
+    expect(store.entries()).toEqual({});
+  });
+});
+
+describe("step6 — transform", () => {
+  it("replaces each covered section by its key, filing it in its own store", () => {
+    const readings = createLectioStore();
+    const prayers = createLectioStore();
+    const chants = createLectioStore();
+    const out = transform(
+      {
+        evangelium: [v(reading("Matt 11:25-30", "In illo témpore…"))],
+        oratio: [v({ text: "Deus, qui…", closure: "Per Dominum" })],
+        communio: [v({ ref: "Ps 65:4", text: "Omnis terra…" })],
+        "ant-laudes": [v(["Ecce sacérdos magnus"])],
+      },
+      readings,
+      prayers,
+      chants
+    );
+    expect(out.evangelium).toEqual([v("matt-11-25-30")]);
+    expect(typeof (out.oratio as { value: unknown }[])[0]!.value).toBe("string");
+    expect(out.communio).toEqual([v("ps-65-4")]);
+    expect(out["ant-laudes"]).toEqual([v(["Ecce sacérdos magnus"])]);
+    expect(Object.keys(readings.entries())).toEqual(["matt-11-25-30"]);
+    expect(Object.keys(prayers.entries())).toHaveLength(1);
+    expect(Object.keys(chants.entries())).toEqual(["ps-65-4"]);
+  });
+
+  it("keeps every rubric variant: collapsing them is step 11's", () => {
+    const store = createLectioStore();
+    const r = reading("Matt 11:25-30", "In illo témpore…");
+    expect(
+      transform({ evangelium: [v(r), v(r, ["cisterciensis"]), v(r, ["1570"])] }, store)
+    ).toEqual({
+      evangelium: [
+        v("matt-11-25-30"),
+        v("matt-11-25-30", ["cisterciensis"]),
+        v("matt-11-25-30", ["1570"]),
+      ],
+    });
+  });
+});
+
+describe("step6 — keys never collide", () => {
+  it("does not give a counter-suffixed key that is another reference's own", () => {
+    // `Ps 111:1` filed twice would take `ps-111-1-2` — the key of `Ps 111:1-2`.
+    const store = createLectioStore();
+    const a = store.intern(reading("Ps 111:1", "Beátus vir…"))!;
+    const b = store.intern(reading("Ps 111:1", "Beátus vir, qui timet…"))!;
+    const c = store.intern(reading("Ps 111:1-2", "Beátus vir… Potens in terra…"))!;
+    expect(new Set([a, b, c]).size).toBe(3);
+    expect(store.entries()[a]).toEqual(reading("Ps 111:1", "Beátus vir…"));
+    expect(store.entries()[b]).toEqual(reading("Ps 111:1", "Beátus vir, qui timet…"));
+    expect(store.entries()[c]).toEqual(reading("Ps 111:1-2", "Beátus vir… Potens in terra…"));
+  });
+
+  it("steps past a plain key a counter took first", () => {
+    const store = createLectioStore();
+    store.intern(reading("Ps 111:1", "a"));
+    const taken = store.intern(reading("Ps 111:1", "b"))!;
+    const own = store.intern(reading("Ps 111:1-2", "c"))!;
+    expect(taken).toBe("ps-111-1-2");
+    expect(own).not.toBe(taken);
+    expect(store.entries()[taken]).toEqual(reading("Ps 111:1", "b"));
+  });
+});
+
+describe("step6 — a store opened on what was filed before", () => {
+  it("gives a text already filed its existing key", () => {
+    const first = createLectioStore();
+    const key = first.intern({ text: "Deus, qui…", closure: "Per Dominum" })!;
+    const reopened = createLectioStore(first.entries());
+    expect(reopened.intern({ text: "Deus, qui…", closure: "Per Dominum" })).toBe(key);
+    expect(Object.keys(reopened.entries())).toEqual([key]);
+  });
+
+  it("continues the counter of a reference already filed twice", () => {
+    const first = createLectioStore();
+    first.intern(reading("Matt 11:25-30", "…coeli…"));
+    first.intern(reading("Matt 11:25-30", "…cœli…"));
+    const reopened = createLectioStore(first.entries());
+    expect(reopened.intern(reading("Matt 11:25-30", "…cæli…"))).toBe("matt-11-25-30-3");
+  });
+
+  it("does not alter the entries it was opened on", () => {
+    const filed = { "matt-11-25-30": { ref: "Matt 11:25-30", text: "a" } };
+    const reopened = createLectioStore(filed);
+    reopened.intern(reading("Rom 12:6-16", "b"));
+    expect(Object.keys(filed)).toEqual(["matt-11-25-30"]);
   });
 });
