@@ -16,6 +16,13 @@ import {
   PRAYER_SECTIONS,
   CHANT_SECTIONS,
 } from "../src/massPropers.js";
+import {
+  OFFICE_ANTIPHON_SECTIONS,
+  HYMN_SECTIONS,
+  CHAPTER_SECTIONS,
+  RESPONSORY_SECTIONS,
+  VERSICLE_SECTIONS,
+} from "../src/officium.js";
 
 /**
  * Step 6 — shared stores.
@@ -48,10 +55,26 @@ export function isPrayerSection(key: string): boolean {
   return PRAYER_SECTIONS.has(key);
 }
 
-/** True for a section whose values are lifted into the chant store. */
+/**
+ * True for a section whose values are lifted into the chant store: the chants
+ * of the Mass, and the antiphons of the Office.
+ */
 export function isChantSection(key: string): boolean {
-  return CHANT_SECTIONS.has(key);
+  return CHANT_SECTIONS.has(key) || OFFICE_ANTIPHON_SECTIONS.has(key);
 }
+
+/**
+ * The stores of the Office's other texts, and the sections each takes. The
+ * lessons of Matins go with the readings, and its antiphons with the chants.
+ */
+export const OFFICE_STORES = {
+  hymnus: HYMN_SECTIONS,
+  capitulum: CHAPTER_SECTIONS,
+  responsorium: RESPONSORY_SECTIONS,
+  versus: VERSICLE_SECTIONS,
+} as const;
+
+export type OfficeStoreName = keyof typeof OFFICE_STORES;
 
 /**
  * What a store holds: a reading (verses or text, usually with a reference), a
@@ -85,7 +108,36 @@ function entryText(value: LectioEntry): string {
   }
   if (typeof value.text === "string") return value.text;
   const antiphon = antiphonOf(value);
-  return antiphon && typeof antiphon.text === "string" ? antiphon.text : "";
+  if (antiphon && typeof antiphon.text === "string") return antiphon.text;
+  return officeText(value);
+}
+
+/**
+ * The words of a text of the Office: a psalmody's antiphons, a hymn's stanzas,
+ * a responsory's response or a versicle.
+ */
+function officeText(value: LectioEntry): string {
+  if (Array.isArray(value.antiphonae)) {
+    return value.antiphonae
+      .map((entry) => {
+        const { text, versus } = (entry ?? {}) as { text?: unknown; versus?: unknown };
+        return typeof text === "string" ? text : typeof versus === "string" ? versus : "";
+      })
+      .filter((text) => text !== "")
+      .join("\n");
+  }
+  if (Array.isArray(value.strophae)) {
+    return value.strophae.flat().filter((line) => typeof line === "string").join("\n");
+  }
+  // A versicle opens with its verse; a responsory, which has one too, is keyed
+  // by its response (see the responsory store).
+  if (typeof value.versus === "string") return value.versus;
+  return "";
+}
+
+/** The words a responsory is keyed by: its response, which it opens with. */
+function responsoryText(value: LectioEntry): string {
+  return typeof value.responsum === "string" ? value.responsum : entryText(value);
 }
 
 /** The entry's reference, if it has one. A chant borrows its antiphon's. */
@@ -102,13 +154,16 @@ function entryRef(value: LectioEntry): unknown {
   return antiphonOf(value)?.ref;
 }
 
+/** The words an entry is keyed by, which a store may choose for its own kind. */
+type TextOf = (value: LectioEntry) => string;
+
 /** A value a store can hold: an object carrying words of its own. */
-function isStorable(value: unknown): value is LectioEntry {
+function isStorable(value: unknown, textOf: TextOf): value is LectioEntry {
   return (
     value != null &&
     typeof value === "object" &&
     !Array.isArray(value) &&
-    entryText(value as LectioEntry).trim() !== ""
+    textOf(value as LectioEntry).trim() !== ""
   );
 }
 
@@ -179,8 +234,8 @@ export type LectioStore = {
 };
 
 /** The key an entry is filed under before any counter: its reference, or its opening words. */
-function baseKeyOf(value: LectioEntry): string {
-  const text = entryText(value);
+function baseKeyOf(value: LectioEntry, textOf: TextOf): string {
+  const text = textOf(value);
   return (
     refToKey(entryRef(value)) ??
     // No reference: the opening words keep the key readable, the hash keeps
@@ -196,9 +251,14 @@ function baseKeyOf(value: LectioEntry): string {
  * same text again returns the key it was first given.
  *
  * A store may be opened on the entries an earlier step filed: a text already
- * there keeps its key, and a counter carries on from where it stood.
+ * there keeps its key, and a counter carries on from where it stood. `textOf`
+ * names the words an entry is keyed by, where a kind of text opens with other
+ * words than its first.
  */
-export function createLectioStore(initial: LectioEntries = {}): LectioStore {
+export function createLectioStore(
+  initial: LectioEntries = {},
+  textOf: TextOf = entryText
+): LectioStore {
   const entries: LectioEntries = {};
   // base key -> identity -> assigned key
   const assigned = new Map<string, Map<string, string>>();
@@ -217,20 +277,20 @@ export function createLectioStore(initial: LectioEntries = {}): LectioStore {
   for (const [key, value] of Object.entries(initial)) {
     entries[key] = value;
     const identity = identityOf(value);
-    at(baseKeyOf(value)).set(identity, key);
+    at(baseKeyOf(value, textOf)).set(identity, key);
     byIdentity.set(identity, key);
   }
 
   return {
     intern(value: unknown): string | null {
-      if (!isStorable(value)) return null;
-      if (isUnresolvedReference(entryText(value))) return null;
+      if (!isStorable(value, textOf)) return null;
+      if (isUnresolvedReference(textOf(value))) return null;
 
       const identity = identityOf(value);
       const seen = byIdentity.get(identity);
       if (seen != null) return seen;
 
-      const base = baseKeyOf(value);
+      const base = baseKeyOf(value, textOf);
       const seenHere = at(base);
       // A counter may land on a key another reference holds as its own —
       // `Ps 111:1` filed twice would take `ps-111-1-2`, the key of `Ps 111:1-2`
@@ -294,25 +354,52 @@ export function substituteChants(
   return substituteInto(obj, store, isChantSection);
 }
 
+/** The stores of the Office's hymns, chapters, responsories and versicles. */
+export type OfficeStores = Record<OfficeStoreName, LectioStore>;
+
+/** The Office's stores, empty; a responsory is keyed by its response. */
+export function createOfficeStores(): OfficeStores {
+  return {
+    hymnus: createLectioStore(),
+    capitulum: createLectioStore(),
+    responsorium: createLectioStore({}, responsoryText),
+    versus: createLectioStore(),
+  };
+}
+
+/** Replace every hymn, chapter, responsory and versicle by its key in its store. */
+export function substituteOffice(
+  obj: Record<string, unknown>,
+  stores: OfficeStores
+): Step6Output {
+  let out: Step6Output = obj;
+  for (const [name, sections] of Object.entries(OFFICE_STORES)) {
+    out = substituteInto(out, stores[name as OfficeStoreName], (key) => sections.has(key));
+  }
+  return out;
+}
+
 /**
- * Substitute the readings, the prayers and the chants by their keys. Every
- * rubric variant is kept: dropping the ones that repeat the default is step 11's.
+ * Substitute the readings, the prayers, the chants and the Office's other texts
+ * by their keys. Every rubric variant is kept: dropping the ones that repeat
+ * the default is step 11's.
  */
 export function transform(
   obj: Record<string, unknown>,
   store: LectioStore,
   prayerStore: LectioStore = createLectioStore(),
-  chantStore: LectioStore = createLectioStore()
+  chantStore: LectioStore = createLectioStore(),
+  officeStores: OfficeStores = createOfficeStores()
 ): Step6Output {
-  return substituteChants(
-    substitutePrayers(substituteLectio(obj, store), prayerStore),
-    chantStore
+  return substituteOffice(
+    substituteChants(substitutePrayers(substituteLectio(obj, store), prayerStore), chantStore),
+    officeStores
   );
 }
 
 /**
  * Batch runner: reads every document under `inputDir`, writes the rewritten
- * tree to `outputDir` plus the three stores at each language root.
+ * tree to `outputDir` plus the stores at each language root.
  *
  * Documents are visited one at a time in sorted path order, so the keys a
  * collided reference receives — and therefore the store file — are the same on
@@ -342,6 +429,7 @@ export async function run(
     const store = createLectioStore();
     const prayerStore = createLectioStore();
     const chantStore = createLectioStore();
+    const officeStores = createOfficeStores();
 
     for (const relPath of relPaths) {
       try {
@@ -359,7 +447,8 @@ export async function run(
               obj as Record<string, unknown>,
               store,
               prayerStore,
-              chantStore
+              chantStore,
+              officeStores
             )
           ),
           "utf-8"
@@ -375,6 +464,9 @@ export async function run(
       ["lectio" + STEP_EXT, store],
       ["oratio" + STEP_EXT, prayerStore],
       ["antiphona" + STEP_EXT, chantStore],
+      ...Object.entries(officeStores).map(
+        ([name, office]) => [name + STEP_EXT, office] as const
+      ),
     ] as const) {
       const storePath = join(outputDir, lang, name);
       await ensureDir(storePath, mkdirCache);

@@ -16,6 +16,7 @@ export class CalendarBuilder {
       acceptCommemorationTypes: liturgicalDayProp.acceptCommemorationTypes,
       color: liturgicalDayProp.color,
       mass: liturgicalDayProp.mass,
+      officium: liturgicalDayProp.officium,
       season: liturgicalDayProp.season,
       alternativeColor: liturgicalDayProp.alternativeColor,
     };

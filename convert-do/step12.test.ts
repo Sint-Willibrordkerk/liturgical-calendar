@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
-  hasMassContent,
-  keepMassSections,
+  hasPropers,
+  keepPropers,
   usedReadingKeys,
   storeSubset,
   keepPublishedRubric,
@@ -24,22 +24,33 @@ import { isOtherRubricSystem } from "./lib/rubrics";
 const v = <T>(value: T, condition: string[] = []) => ({ value, condition });
 
 describe("step12 — kept sections", () => {
-  it("keeps the mass sections and drops the office", () => {
-    expect(
-      keepMassSections({
-        introitus: [v({ antiphon: "a" })],
-        oratio: [v({ text: "b", closure: "c" })],
-        lectio: [v("rom-1-1")],
-        lectio1: [v("isa-1-1")],
-        "lectio7-in-2-loco": [v("matt-5-1")],
-        "ant-vespera": [v(["x"])],
-        "hymnus-matutinum": [v(["y"])],
-      })
-    ).toEqual({
+  it("keeps the sections of the Mass and of the Office", () => {
+    const propers = {
       introitus: [v({ antiphon: "a" })],
       oratio: [v({ text: "b", closure: "c" })],
       lectio: [v("rom-1-1")],
-    });
+      lectio1: [v("isa-1-1")],
+      lectio94: [v("ex-libro-1")],
+      "ant-vespera": [v("haec-est-virgo")],
+      "hymnus-matutinum": [v("jesu-corona")],
+      "responsory-breve-nona": [v("gloria-et-honore")],
+      "nocturn-3-versum": [v("diffusa-est")],
+    };
+    expect(keepPropers(propers)).toEqual(propers);
+  });
+
+  it("drops the lessons of other rubrics, the uses' sections and the small Hours' antiphons", () => {
+    expect(
+      keepPropers({
+        "lectio7-in-2-loco": [v("matt-5-1")],
+        lectio93: [v("sermo-2")],
+        "hymnusm-laudes": [v(["y"])],
+        "mm-capitulum": [v(["z"])],
+        "ant-tertia": [v(["x"])],
+        "versum-0": [v(["V. Ora pro nobis."])],
+        communio: [v("x")],
+      })
+    ).toEqual({ communio: [v("x")] });
   });
 
   it("keeps name and prefatio alongside", () => {
@@ -48,12 +59,12 @@ describe("step12 — kept sections", () => {
       prefatio: [v("trinitate")],
       communio: [v("x")],
     };
-    expect(keepMassSections(obj)).toEqual(obj);
+    expect(keepPropers(obj)).toEqual(obj);
   });
 
   it("drops rule, which describes the office and has served its purpose", () => {
     expect(
-      keepMassSections({ rule: [v(["12 lectiones"])], communio: [v("x")] })
+      keepPropers({ rule: [v(["12 lectiones"])], communio: [v("x")] })
     ).toEqual({ communio: [v("x")] });
   });
 });
@@ -92,27 +103,25 @@ describe("step12 — which trees are published", () => {
 
 describe("step12 — which documents are written", () => {
   it("counts a document with a mass section as having content", () => {
-    expect(hasMassContent({ introitus: [v({ antiphon: "a" })] })).toBe(true);
-    expect(hasMassContent({ evangelium: [v("matt-5-1")] })).toBe(true);
+    expect(hasPropers({ introitus: [v({ antiphon: "a" })] })).toBe(true);
+    expect(hasPropers({ evangelium: [v("matt-5-1")] })).toBe(true);
   });
 
   it("does not count name or prefatio on their own", () => {
     expect(
-      hasMassContent({
+      hasPropers({
         name: [v("Feria quarta")],
         prefatio: [v("trinitate")],
       })
     ).toBe(false);
   });
 
-  it("does not count an office-only document", () => {
-    expect(hasMassContent({ lectio1: [v("isa-1-1")], "ant-laudes": [v(["x"])] })).toBe(
-      false
-    );
+  it("counts a document with only the Office as having content", () => {
+    expect(hasPropers({ lectio1: [v("isa-1-1")], "ant-laudes": [v("x")] })).toBe(true);
   });
 
   it("does not count an empty document", () => {
-    expect(hasMassContent({})).toBe(false);
+    expect(hasPropers({})).toBe(false);
   });
 });
 
@@ -279,6 +288,21 @@ describe("step12 — section order", () => {
     ]);
   });
 
+  it("writes the Office after the Mass, in the order of the Hours", () => {
+    const shuffled = {
+      "ant-3": 1, "versum-3": 1, "ant-vespera": 1, "versum-nona": 1,
+      "capitulum-sexta": 1, "lectio-prima": 1, "ant-2": 1, "capitulum-laudes": 1,
+      responsory1: 1, lectio1: 1, "nocturn-1-versum": 1, "ant-matutinum": 1,
+      invit: 1, "versum-1": 1, "ant-1": 1, communio: 1,
+    };
+    expect(Object.keys(sortSections(shuffled))).toEqual([
+      "communio", "ant-1", "versum-1", "invit", "ant-matutinum",
+      "nocturn-1-versum", "lectio1", "responsory1", "capitulum-laudes", "ant-2",
+      "lectio-prima", "capitulum-sexta", "versum-nona", "ant-vespera",
+      "versum-3", "ant-3",
+    ]);
+  });
+
   it("keeps an unknown section, after the rest and alphabetically", () => {
     expect(
       Object.keys(sortSections({ zeta: 1, communio: 1, alpha: 1, name: 1 }))
@@ -330,7 +354,10 @@ describe("step12 — the store subset", () => {
 });
 
 describe("step12 — every text is a key", () => {
-  const empty = () => ({ lectio: {}, oratio: {}, antiphona: {} });
+  const empty = () => ({
+    lectio: {}, oratio: {}, antiphona: {},
+    hymnus: {}, capitulum: {}, responsorium: {}, versus: {},
+  });
 
   it("files a value left inline that carries words", () => {
     const passio = ["Pássio Dómini nostri Jesu Christi.", "!Matt 26:1-75; 27:1-66.", "In illo témpore"];
@@ -351,6 +378,15 @@ describe("step12 — every text is a key", () => {
     const key = (out.graduale as { value: string }[])[0]!.value;
     expect(key).toMatch(/^sacerdotes-ejus-induam-salutari-[0-9a-f]{8}$/);
     expect(stores.antiphona).toEqual({ [key]: chant });
+  });
+
+  it("files a text of the Office left as lines into the store its section draws on", () => {
+    const lines = ["R. Sancta Dei Génetrix,", "V. Intercéde pro nobis."];
+    const stores = empty();
+    const out = fileInline({ responsory2: [v(lines)] }, stores);
+    const key = (out.responsory2 as { value: string }[])[0]!.value;
+    expect(key).toMatch(/^r-sancta-dei-genetrix-[0-9a-f]{8}$/);
+    expect(stores.responsorium).toEqual({ [key]: lines });
   });
 
   it("leaves a value that carries no words as it is", () => {
@@ -417,6 +453,17 @@ describe("step12 — a translation's renderings", () => {
     },
     antiphona: {},
   };
+
+  it("renders the Office's texts as it renders the Mass's", () => {
+    const hymn = { strophae: [["Jezus, kroon der maagden,"]] };
+    expect(
+      renderingsOf(
+        { "hymnus-laudes": [v("jesu-corona-virginum-1a2b3c4d")] },
+        { "hymnus-laudes": [v("jezus-kroon-der-maagden-5e6f")] },
+        { ...stores, hymnus: { "jezus-kroon-der-maagden-5e6f": hymn } }
+      )
+    ).toEqual([{ store: "hymnus", key: "jesu-corona-virginum-1a2b3c4d", rendering: hymn }]);
+  });
 
   it("pairs each base key with what the translation says in its place", () => {
     expect(

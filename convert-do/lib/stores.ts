@@ -6,10 +6,19 @@ import { STEP_EXT, parseStep, stringifyStep } from "./serialize.js";
 
 /**
  * The stores at each language root, from step 6 on: the readings, the prayers
- * and the chants the day files refer to by key. They travel with the tree —
- * every later step carries them forward to its own output.
+ * and the chants the day files refer to by key, and the Office's hymns,
+ * chapters, responsories and versicles. They travel with the tree — every later
+ * step carries them forward to its own output.
  */
-export const STORE_NAMES = ["lectio", "oratio", "antiphona"] as const;
+export const STORE_NAMES = [
+  "lectio",
+  "oratio",
+  "antiphona",
+  "hymnus",
+  "capitulum",
+  "responsorium",
+  "versus",
+] as const;
 export type StoreName = (typeof STORE_NAMES)[number];
 
 export type StoreEntries = Record<string, Record<string, unknown>>;

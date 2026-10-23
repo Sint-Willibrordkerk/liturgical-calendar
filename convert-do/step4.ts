@@ -75,15 +75,21 @@ function parseSubstitutions(substStr: string): Substitution[] {
 }
 
 /**
- * Read a reference line. The substitution runs from the first `:s/` (a space
- * may stand before the `s`) to the end
+ * Where a reference's substitution begins: at the first `:s/` (a space may
+ * stand before the `s`), or after a line range at a space alone —
+ * `@Commune/C6:Ant Matutinum:7 s/95/121/`.
+ */
+const SUBSTITUTION_START = /:\s*s\/|(?<=:\d+(?:-\d+)?)\s+s\//;
+
+/**
+ * Read a reference line. The substitution runs from where it begins to the end
  * of the line — its text may hold a colon of its own — and a line range is read
  * from what precedes it.
  */
 export function parseReference(str: string): ParsedReference | null {
   if (typeof str !== "string" || !str.startsWith("@")) return null;
   const rest = str.slice(1);
-  const substMatch = /:\s*s\//.exec(rest);
+  const substMatch = SUBSTITUTION_START.exec(rest);
   const head = substMatch ? rest.slice(0, substMatch.index) : rest;
   const substPart = substMatch ? rest.slice(substMatch.index + 1) : "";
 
@@ -279,6 +285,34 @@ function resolveReference(
   return resolved;
 }
 
+/** A line that stands on its own: a reference, or one opening a part. */
+const OWN_LINE = /^\s*(?:[!$&_]|[VR]\.)/;
+
+/**
+ * Join each line Divinum Officium marks with a trailing `~` to the line after
+ * it. A reference takes nothing after it, and nothing is joined that opens a
+ * part of its own — a reference, a verse, a response, a closing; there the
+ * mark is only dropped, as it is on the last line.
+ */
+function joinRunOns(lines: string[]): string[] {
+  const out: string[] = [];
+  for (let i = 0; i < lines.length; i++) {
+    let line = lines[i]!;
+    while (typeof line === "string" && /~\s*$/.test(line)) {
+      const bare = line.replace(/\s*~\s*$/, "");
+      const next = lines[i + 1];
+      if (bare.trimStart().startsWith("!") || typeof next !== "string" || OWN_LINE.test(next)) {
+        line = bare;
+        break;
+      }
+      line = `${bare} ${next.trimStart()}`;
+      i++;
+    }
+    out.push(line);
+  }
+  return out;
+}
+
 /**
  * Replace every inline reference line with the lines it names. `ownPath` is the
  * document's path below the language root; `lookup` reads a target as its broad
@@ -318,7 +352,7 @@ export function transform(
         if (resolved) out.push(...resolved);
         else out.push(line);
       }
-      return out;
+      return joinRunOns(out);
     };
 
     const variants = value as Variant[];

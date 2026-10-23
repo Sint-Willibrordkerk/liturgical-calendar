@@ -109,7 +109,9 @@ directory operation: read the whole `step{N-1}` folder, transform, write
 Shared helpers live in [`lib/batch.ts`](lib/batch.ts).
 
 **The stores travel with the tree.** From step 6 on, each language root holds
-`lectio.json`, `oratio.json` and `antiphona.json`. Every later step skips them
+`lectio.json`, `oratio.json` and `antiphona.json`, and the Office's
+`hymnus.json`, `capitulum.json`, `responsorium.json` and `versus.json`. Every
+later step skips them
 when it collects documents (`collectDocumentFiles`) and carries them forward
 (`copyStores`); only step 10 adds to one — the prayer store. See
 [`lib/stores.ts`](lib/stores.ts).
@@ -144,7 +146,7 @@ rank takes the base language's, read from the same input tree.
 | 9    | step8                          | [`step9.ts`](step9.ts)   | Filename from the liturgical name *(batch)*                                 |
 | 10   | step9                          | [`step10.ts`](step10.ts) | Commemorations into their own files; their prayers filed *(batch)*         |
 | 11   | step10                         | [`step11.ts`](step11.ts) | Collapse variants that repeat the default *(batch)*                         |
-| 12   | step11                         | [`step12.ts`](step12.ts) | The published Mass propers *(batch)*                                        |
+| 12   | step11                         | [`step12.ts`](step12.ts) | The published propers, Mass and Office *(batch)*                            |
 
 ---
 
@@ -201,8 +203,11 @@ rank takes the base language's, read from the same input tree.
 - `__preamble` and the `ex`/`vide` lines are left for step 7, and so is a rank
   that is itself a reference (`DEFERRED_SECTIONS`): step 7 resolves it after the
   borrowings, so it does not borrow on the day's behalf.
-- **`parseReference`** — the substitution runs from the first `:s/` (or `: s/`)
-  to the end of the line, so a colon inside it belongs to it.
+- **`parseReference`** — the substitution runs from the first `:s/` (or `: s/`,
+  or a space after a line range: `:1 s/…`) to the end of the line, so a colon
+  inside it belongs to it.
+- **`joinRunOns`** — a line ending in `~` runs on into the next, unless it is a
+  reference or the next opens a part of its own (`V.`, `R.`, `!`, `$`, `&`, `_`).
 
 ## Step 5 — Structure the sections *(batch)*
 
@@ -214,24 +219,36 @@ rank takes the base language's, read from the same input tree.
   `rule` is cleaned up (Gloria/Credo removed; `Prefatio=X` lifted out into a
   `prefatio` key, a trailing `(rubrica …)` read as its condition).
 - `commemoratio-*` sections stay as lines: step 10 reads their `!Pro` line.
+- A Matins homily — the Gospel, `_`, the homily — becomes the homily with
+  `evangelium` beside it (`linesToHomily`).
+- **The Office** ([`lib/office.ts`](lib/office.ts)) — `officeKindOf` names a
+  section's kind (antiphon, psalmody, hymn, chapter, responsory, versicle) and
+  `structureOffice` reads its lines into that shape, or leaves them where they do
+  not fit.
 
 ## Step 6 — Shared stores *(batch)*
 
 - Readings, prayers and chants repeat across the year, so each is written once
   into a store at the language root — `lectio.json`, `oratio.json`,
-  `antiphona.json` — and the sections refer to it by key. A key is the
+  `antiphona.json`, and for the Office `hymnus.json`, `capitulum.json`,
+  `responsorium.json`, `versus.json` (`createOfficeStores`) — and the sections
+  refer to it by key. A key is the
   kebab-cased scripture reference, or the opening words plus a short hash. A
   counter suffix never lands on a key already given.
-- **`createLectioStore(initial?)`** — a store may be opened on what was filed
-  before; step 10 does, to add the saints' prayers.
+- **`createLectioStore(initial?, textOf?)`** — a store may be opened on what was
+  filed before; step 10 does, to add the saints' prayers. `textOf` names the
+  words an entry is keyed by: a responsory by its response.
 
 ## Step 7 — Broad references *(batch)*
 
 - Resolves `@File` (preamble) and `ex …` / `vide …` (rank, rule) with the
   key-level resolver (`KEYED_RULES`): a borrowed section's **key** is copied.
-  For `vide` only certain sections are taken (`lectio*`, `ant-laudes`,
-  `ant-vespera`, `versum*`, `oratio*`), plus the Mass propers where the day is
-  still missing them. `__preamble` is then removed.
+  For `vide` the Office's texts are taken (`lectio*`, `oratio*`, `invit`,
+  `hymnus*`, `capitulum*`, `responsory*`, `versum*`, `nocturn-*-versum`,
+  `ant-1`/`-2`/`-3`) but not its psalmody, plus the Mass propers where the day
+  is still missing them. `__preamble` is then removed.
+- **`withheldFrom`** — the Mass document (`missa`) takes none of the Office's
+  sections, so the day's own Office wins when step 8 combines the two.
 - **Lifted sections** — `alleluia` (out of `graduale`) and `prefatio` (out of
   `rule`) are borrowed exactly where their parent is (`liftedFrom`).
 - Runs before the fold, so `@SanctiM/11-14M` still finds a file of its own.
@@ -281,11 +298,13 @@ rank takes the base language's, read from the same input tree.
 - **`collapseVariants`** — drops variants repeating the section's default, which
   the runtime undoes by falling back to the default.
 
-## Step 12 — The Mass propers *(batch)*
+## Step 12 — The propers *(batch)*
 
 - The last step, and the only one whose output leaves the pipeline. It narrows
-  the tree to what the calendar consumes, so the Divine Office is not carried
-  into the published assets.
+  the tree to what the calendar consumes — the propers of the Mass and of the
+  Office (`keepPropers`, the Office's sections from `OFFICE_SECTIONS` in
+  [`src/officium.ts`](../src/officium.ts)) — so the psalter, the ordinary and the
+  rules are not carried into the published assets.
 - Only the **day trees** are published (`Sancti`, `Tempora`), plus days under
   `aliquibus locis`. Variants requiring a rubric system other than the one in
   force are dropped. A day whose Mass changes with the season is written as one
@@ -325,6 +344,8 @@ rank takes the base language's, read from the same input tree.
   rubric suffix tables used by step 8.
 - [`lib/paths.ts`](lib/paths.ts) — path separator helpers (`SEP`, `SEP_RE`,
   `escapeRegExp`, `splitPath`) so the pipeline works on Windows and POSIX alike.
+- [`lib/office.ts`](lib/office.ts) — the Office's texts by kind:
+  `officeKindOf`, `structureOffice`. Used by step 5.
 - [`lib/references.ts`](lib/references.ts) — `canonicalizeRef`, the canonical
   form of a scripture reference, applied where step 5 first reads one.
 - [`lib/rubrics.ts`](lib/rubrics.ts) — which rubric is published

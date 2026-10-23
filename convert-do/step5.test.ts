@@ -594,6 +594,42 @@ describe("step5 readings — no or several references", () => {
     expect(transform({ lectio7: [v(lines)] })).toEqual({ lectio7: [v(lines)] });
   });
 
+  it("reads a homily as the homily, with the Gospel it expounds beside it", () => {
+    const out = transform({
+      lectio7: [
+        v([
+          "Léctio sancti Evangélii secúndum Matthǽum",
+          "!Matt 25:14-23",
+          "In illo témpore: Dixit Jesus discípulis suis parábolam hanc. Et réliqua.",
+          "_",
+          "Homilía sancti Gregórii Papæ",
+          "!Homilía 9 in Evangelia",
+          "Léctio sancti Evangélii, fratres caríssimi, sollícite consideráre nos ádmonet.",
+        ]),
+      ],
+    });
+    expect(out.lectio7).toEqual([
+      v({
+        ref: "Homilía 9 in Evangelia",
+        text: "Homilía sancti Gregórii Papæ\nLéctio sancti Evangélii, fratres caríssimi, sollícite consideráre nos ádmonet.",
+        evangelium: {
+          ref: "Matt 25:14-23",
+          verses: ["In illo témpore: Dixit Jesus discípulis suis parábolam hanc. Et réliqua."],
+        },
+      }),
+    ]);
+  });
+
+  it("keeps the lines of a lesson in two parts that are not each one reading", () => {
+    const lines = ["!Matt 5:1", "In illo témpore", "!Matt 5:3", "Beáti", "_", "Homilía", "!Sermo 1", "Text"];
+    expect(transform({ lectio7: [v(lines)] })).toEqual({ lectio7: [v(lines)] });
+  });
+
+  it("does not read a Mass reading as a homily", () => {
+    const lines = ["Munda cor meum", "_", "!Matt 26:36-75", "Tunc venit Jesus", "!Hic genuflectitur.", "Et ecce"];
+    expect(transform({ evangelium: [v(lines)] })).toEqual({ evangelium: [v(lines)] });
+  });
+
   it("carries an unresolved reference through as text, for step 10 to decline", () => {
     expect(transform({ lectio3: [v(["@Tempora/Epi2-0::1-4"])] })).toEqual({
       lectio3: [v({ text: "@Tempora/Epi2-0::1-4" })],
@@ -618,5 +654,227 @@ describe("step5 readings — no or several references", () => {
       v({ ref: "Is 1:1", verses: ["Vísio Isaíæ…"] }),
       v(several, ["monastica"]),
     ]);
+  });
+});
+
+describe("step5 the Office", () => {
+  it("keeps an antiphon's words, its asterisk included", () => {
+    const out = transform({
+      invit: [v(["Regem Vírginum Dóminum, * Veníte, adorémus."])],
+      "ant-2": [v(["Ecce, quod concupívi, * jam vídeo."])],
+    });
+    expect(out.invit).toEqual([v({ text: "Regem Vírginum Dóminum, * Veníte, adorémus." })]);
+    expect(out["ant-2"]).toEqual([v({ text: "Ecce, quod concupívi, * jam vídeo." })]);
+  });
+
+  it("reads the psalmody line by line, each antiphon with its psalm", () => {
+    const out = transform({
+      "ant-vespera": [
+        v([
+          "Hæc est Virgo sápiens, * et una de número prudéntum.;;109",
+          "Veni, elécta mea, * et ponam in te thronum meum.",
+        ]),
+      ],
+    });
+    expect(out["ant-vespera"]).toEqual([
+      v({
+        antiphonae: [
+          { text: "Hæc est Virgo sápiens, * et una de número prudéntum.", psalmus: "109" },
+          { text: "Veni, elécta mea, * et ponam in te thronum meum." },
+        ],
+      }),
+    ]);
+  });
+
+  it("reads a bare psalm as said under the antiphon before it", () => {
+    const out = transform({
+      "ant-matutinum": [v(["Invéntæ Crucis festa recólimus, * allelúja.;;1", ";;2", ";;3"])],
+    });
+    expect(out["ant-matutinum"]).toEqual([
+      v({
+        antiphonae: [
+          { text: "Invéntæ Crucis festa recólimus, * allelúja.", psalmus: "1" },
+          { psalmus: "2" },
+          { psalmus: "3" },
+        ],
+      }),
+    ]);
+  });
+
+  it("keeps a nocturn's versicle in its place among the antiphons", () => {
+    const out = transform({
+      "ant-matutinum": [
+        v([
+          "Dómine, Dóminus noster, * quam admirábile.;;8",
+          "V. Glória et honóre coronásti eum.",
+          "R. Et constituísti eum super ópera mánuum tuárum.",
+        ]),
+      ],
+    });
+    expect(out["ant-matutinum"]).toEqual([
+      v({
+        antiphonae: [
+          { text: "Dómine, Dóminus noster, * quam admirábile.", psalmus: "8" },
+          {
+            versus: "Glória et honóre coronásti eum.",
+            responsum: "Et constituísti eum super ópera mánuum tuárum.",
+          },
+        ],
+      }),
+    ]);
+  });
+
+  it("reads a hymn into its stanzas, the doxology apart", () => {
+    const out = transform({
+      "hymnus-laudes": [
+        v([
+          "{:H-Jesucoronavirginum:}v. Jesu, coróna Vírginum,",
+          "Quem Mater illa cóncipit",
+          "_",
+          "Qui pergis inter lília",
+          "Septus choréis Vírginum,",
+          "_",
+          "* Virtus, honor, laus, glória",
+          "Deo Patri cum Fílio,",
+          "Amen.",
+        ]),
+      ],
+    });
+    expect(out["hymnus-laudes"]).toEqual([
+      v({
+        strophae: [
+          ["Jesu, coróna Vírginum,", "Quem Mater illa cóncipit"],
+          ["Qui pergis inter lília", "Septus choréis Vírginum,"],
+        ],
+        doxologia: ["Virtus, honor, laus, glória", "Deo Patri cum Fílio,", "Amen."],
+      }),
+    ]);
+  });
+
+  it("drops a direction to the reader from a hymn", () => {
+    const out = transform({
+      "hymnus-vespera": [
+        v([
+          "/:Prima stropha sequentis hymni dicitur flexis genibus.:/",
+          "v. Vexílla Regis pródeunt;",
+          "_",
+          "!Sequens stropha dicitur flexis genibus.",
+          "O Crux, ave, spes única,",
+        ]),
+      ],
+    });
+    expect(out["hymnus-vespera"]).toEqual([
+      v({ strophae: [["Vexílla Regis pródeunt;"], ["O Crux, ave, spes única,"]] }),
+    ]);
+  });
+
+  it("reads a hymn without a doxology as its stanzas alone", () => {
+    const out = transform({
+      "hymnus-vespera": [v(["v. Iste Conféssor", "Dómini colentes", "_", "Qui pius, prudens"])],
+    });
+    expect(out["hymnus-vespera"]).toEqual([
+      v({ strophae: [["Iste Conféssor", "Dómini colentes"], ["Qui pius, prudens"]] }),
+    ]);
+  });
+
+  it("reads a chapter, and the short lesson of Prime, as a reference and its text", () => {
+    const out = transform({
+      "capitulum-laudes": [
+        v(["!Sir 51:1-3", "v. Confitébor tibi, Dómine, Rex.", "$Deo gratias"]),
+      ],
+      "lectio-prima": [v(["!Sir 51:13-14", "v. Dómine, Deus meus, exaltásti."])],
+    });
+    expect(out["capitulum-laudes"]).toEqual([
+      v({ ref: "Sir 51:1-3", text: "Confitébor tibi, Dómine, Rex." }),
+    ]);
+    expect(out["lectio-prima"]).toEqual([
+      v({ ref: "Sir 51:13-14", text: "Dómine, Deus meus, exaltásti." }),
+    ]);
+  });
+
+  it("reads a responsory of Matins", () => {
+    const out = transform({
+      responsory3: [
+        v([
+          "R. Amo Christum, in cujus thálamum introíbo: ",
+          "* Quem cum amávero, casta sum.",
+          "V. Anulo fídei suæ subarrhávit me.",
+          "R. Quem cum amávero, casta sum.",
+          "&Gloria",
+          "R. Quem cum amávero, casta sum.",
+        ]),
+      ],
+      responsory1: [
+        v([
+          "R. Diem festum celebrémus:",
+          "* Quia solum vitæ diléxit auctórem.",
+          "V. Infántia quidem computabátur in annis.",
+          "R. Quia solum vitæ diléxit auctórem.",
+        ]),
+      ],
+    });
+    expect(out.responsory3).toEqual([
+      v({
+        responsum: "Amo Christum, in cujus thálamum introíbo: * Quem cum amávero, casta sum.",
+        versus: "Anulo fídei suæ subarrhávit me.",
+        repetitio: "Quem cum amávero, casta sum.",
+        gloria: "Quem cum amávero, casta sum.",
+      }),
+    ]);
+    expect(out.responsory1).toEqual([
+      v({
+        responsum: "Diem festum celebrémus: * Quia solum vitæ diléxit auctórem.",
+        versus: "Infántia quidem computabátur in annis.",
+        repetitio: "Quia solum vitæ diléxit auctórem.",
+      }),
+    ]);
+  });
+
+  it("reads a short responsory, dropping the choir's repetition of it", () => {
+    const out = transform({
+      "responsory-breve-tertia": [
+        v([
+          "R.br. Glória et honóre * Coronásti eum, Dómine.",
+          "R. Glória et honóre * Coronásti eum, Dómine.",
+          "V. Et constituísti eum super ópera mánuum tuárum.",
+          "R. Coronásti eum, Dómine.",
+          "&Gloria",
+          "R. Glória et honóre * Coronásti eum, Dómine.",
+        ]),
+      ],
+    });
+    expect(out["responsory-breve-tertia"]).toEqual([
+      v({
+        responsum: "Glória et honóre * Coronásti eum, Dómine.",
+        versus: "Et constituísti eum super ópera mánuum tuárum.",
+        repetitio: "Coronásti eum, Dómine.",
+        gloria: "Glória et honóre * Coronásti eum, Dómine.",
+      }),
+    ]);
+  });
+
+  it("reads a versicle and its response", () => {
+    const out = transform({
+      "versum-2": [v(["V. Diffúsa est grátia in lábiis tuis.", "R. Proptérea benedíxit te Deus."])],
+    });
+    expect(out["versum-2"]).toEqual([
+      v({ versus: "Diffúsa est grátia in lábiis tuis.", responsum: "Proptérea benedíxit te Deus." }),
+    ]);
+  });
+
+  it("keeps the lines of a section its marks do not fit", () => {
+    const unresolved = ["@Commune/C6:Responsory4:1-2"];
+    const odd = ["R. Sancta Dei Génetrix,", "V. Intercéde pro nobis."];
+    expect(transform({ responsory2: [v(unresolved)], "versum-1": [v(odd)] })).toEqual({
+      responsory2: [v(unresolved)],
+      "versum-1": [v(odd)],
+    });
+  });
+
+  it("leaves the uses' sections and the small Hours' antiphons as lines", () => {
+    const lines = ["v. Te lucis ante términum"];
+    expect(
+      transform({ "hymnusm-laudes": [v(lines)], "ant-tertia": [v(["Hæc est Virgo"])] })
+    ).toEqual({ "hymnusm-laudes": [v(lines)], "ant-tertia": [v(["Hæc est Virgo"])] });
   });
 });

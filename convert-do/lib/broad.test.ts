@@ -115,13 +115,15 @@ describe("importReferences — include and borrow", () => {
       loaderOf({
         "Commune/C2a": {
           introitus: [v("statuit-ei-dominus-9f00")],
-          "ant-laudes": [v(["Ecce sacérdos magnus", "Non est invéntus"])],
+          "versum-2": [v(["V. Amávit eum Dóminus.", "R. Stolam glóriæ índuit eum."])],
         },
       }),
       KEYED_RULES
     );
     expect(out.introitus).toEqual([v("statuit-ei-dominus-9f00")]);
-    expect(out["ant-laudes"]).toEqual([v(["Ecce sacérdos magnus", "Non est invéntus"])]);
+    expect(out["versum-2"]).toEqual([
+      v(["V. Amávit eum Dóminus.", "R. Stolam glóriæ índuit eum."]),
+    ]);
   });
 
   it("borrows the common's mass where the day resolves none of its own", () => {
@@ -155,20 +157,56 @@ describe("importReferences — include and borrow", () => {
     expect(out.introitus).toEqual([v("its-own-introit")]);
   });
 
-  it("does not borrow the rest of the office", () => {
+  it("borrows the Office's proper texts from the common", () => {
+    const office = {
+      invit: [v("regem-confessorum")],
+      "hymnus-laudes": [v("jesu-redemptor")],
+      "capitulum-laudes": [v("ecce-sacerdos")],
+      "lectio-prima": [v("justum-deduxit")],
+      responsory1: [v("euge-serve-bone")],
+      "responsory-breve-tertia": [v("amavit-eum")],
+      "nocturn-2-versum": [v("os-justi")],
+      "ant-1": [v("similabo-eum")],
+      "ant-2": [v("euge-serve")],
+      "ant-3": [v("hic-vir")],
+    };
+    const out = importReferences(
+      { rank: [v([";;Simplex;;1.1;;vide Commune/C2a"])] },
+      "Sancti/09-08cc",
+      loaderOf({ "Commune/C2a": office }),
+      KEYED_RULES
+    );
+    for (const [key, value] of Object.entries(office)) expect(out[key]).toEqual(value);
+  });
+
+  it("does not borrow the psalmody: a day that only borrows says the psalter's", () => {
     const out = importReferences(
       { rank: [v([";;Simplex;;1.1;;vide Commune/C2a"])] },
       "Sancti/09-08cc",
       loaderOf({
         "Commune/C2a": {
-          "hymnus-laudes": [v(["a hymn"])],
-          responsory1: [v(["a responsory"])],
+          "ant-matutinum": [v("beatus-vir")],
+          "ant-laudes": [v("ecce-sacerdos-magnus")],
+          "ant-vespera": [v("ecce-sacerdos-magnus")],
+          "ant-vespera-3": [v("domine-quinque")],
+          "ant-tertia": [v(["Non est invéntus"])],
         },
       }),
       KEYED_RULES
     );
-    expect(out["hymnus-laudes"]).toBeUndefined();
-    expect(out.responsory1).toBeUndefined();
+    for (const key of ["ant-matutinum", "ant-laudes", "ant-vespera", "ant-vespera-3", "ant-tertia"]) {
+      expect(out[key]).toBeUndefined();
+    }
+  });
+
+  it("includes the psalmody with the rest where the day takes the common whole", () => {
+    const out = importReferences(
+      { rank: [v([";;Duplex;;3;;ex Commune/C2a"])] },
+      "Sancti/x",
+      loaderOf({ "Commune/C2a": { "ant-laudes": [v("ecce-sacerdos-magnus")] } }),
+      KEYED_RULES
+    );
+    expect(out["ant-laudes"]).toEqual([v("ecce-sacerdos-magnus")]);
   });
 
   it("prepends the reference's condition to the borrowed variants", () => {
@@ -439,16 +477,46 @@ describe("createSourcedResolver — the Mass and the Office of a day", () => {
     expect(resolve("missa", "Sancti/x")!.oratio).toHaveLength(2);
   });
 
-  it("finds a target that only one of the two carries", () => {
-    const { resolve } = createSourcedResolver(
+  it("gives the Mass none of the Office, so the day's own Office stands", () => {
+    const { resolve, view } = createSourcedResolver(
       loaderOver({
-        missa: { "Sancti/x": { rank: [v([";;;;;;vide C2a"])] } },
-        horas: { "Commune/C2a": { "ant-laudes": [v(["Ecce sacérdos"])] } },
+        missa: { "Sancti/01-21": { rank: [v([";;Duplex;;3;;vide C6-1"])] } },
+        horas: {
+          "Sancti/01-21": { rank: [v([";;Duplex;;3;;vide C6-1"])], "ant-1": [v("beata-agnes")] },
+          "Commune/C6-1": { "ant-1": [v("veni-sponsa")], oratio: [v("indulgentiam")] },
+        },
       }),
       SOURCES,
       KEYED_RULES
     );
-    expect(resolve("missa", "Sancti/x")!["ant-laudes"]).toEqual([v(["Ecce sacérdos"])]);
+    expect(resolve("missa", "Sancti/01-21")!["ant-1"]).toBeUndefined();
+    expect(resolve("missa", "Sancti/01-21")!.oratio).toEqual([v("indulgentiam")]);
+    expect(view("Sancti/01-21")!["ant-1"]).toEqual([v("beata-agnes")]);
+  });
+
+  it("does not give the Mass the Office of a common it includes whole", () => {
+    const { resolve } = createSourcedResolver(
+      loaderOver({
+        missa: { "Sancti/x": { __preamble: [v(["@Commune/C2"])] } },
+        horas: { "Commune/C2": { "ant-3": [v("hic-vir")], "hymnus-laudes": [v("iste-confessor")] } },
+      }),
+      SOURCES,
+      KEYED_RULES
+    );
+    expect(resolve("missa", "Sancti/x")!["ant-3"]).toBeUndefined();
+    expect(resolve("missa", "Sancti/x")!["hymnus-laudes"]).toBeUndefined();
+  });
+
+  it("finds a target that only one of the two carries", () => {
+    const { resolve } = createSourcedResolver(
+      loaderOver({
+        missa: { "Sancti/x": { rank: [v([";;;;;;vide C2a"])] } },
+        horas: { "Commune/C2a": { oratio: [v("da-quaesumus-1")] } },
+      }),
+      SOURCES,
+      KEYED_RULES
+    );
+    expect(resolve("missa", "Sancti/x")!.oratio).toEqual([v("da-quaesumus-1")]);
   });
 
   it("borrows nothing from a target still being resolved, and does not keep that half view", () => {

@@ -11,6 +11,7 @@ import {
 import { isVariantArray, mapVariants } from "./lib/variants";
 import { canonicalizeRef } from "./lib/references.js";
 import { getIncludesExcludes } from "./condition.js";
+import { officeKindOf, structureOffice } from "./lib/office.js";
 import { STEP_EXT, stripStepExt, parseStep, stringifyStep } from "./lib/serialize.js";
 
 /**
@@ -27,8 +28,11 @@ import { STEP_EXT, stripStepExt, parseStep, stringifyStep } from "./lib/serializ
  * A gradual's Alleluia is lifted into its own section (`alleluia`, and
  * `alleluiap` for the paschal form), as `Prefatio=X` is lifted out of `rule`.
  *
+ * The Office's proper texts — antiphons, psalmody, hymns, chapters,
+ * responsories, versicles — are structured by their kind (see `lib/office`).
+ *
  * Also cleans the `rule` array (drops Gloria/Credo, lifts `Prefatio=X` into a
- * `prefatio` key). Non-missa keys pass through unchanged.
+ * `prefatio` key). Any other key passes through unchanged.
  */
 export type Step5Output = { [key: string]: unknown };
 
@@ -139,6 +143,23 @@ export function linesToReading(lines: unknown): Reading {
     .map((s) => stripLeadingV(s.replace(VERSE_NUMBER, "").trim()))
     .filter((s) => s !== "");
   return { ref, verses };
+}
+
+/**
+ * A homily at Matins: the Gospel it expounds, a `_` line, and the homily, each
+ * one reading. Structured as the homily with the Gospel beside it; undefined
+ * where the lines are not two such parts.
+ */
+export function linesToHomily(
+  lines: unknown
+): (Reading & { evangelium: Reading }) | undefined {
+  if (!Array.isArray(lines)) return undefined;
+  const at = lines.indexOf("_");
+  if (at === -1) return undefined;
+  const gospel = lines.slice(0, at);
+  const homily = lines.slice(at + 1);
+  if (countRefMarkers(gospel) !== 1 || countRefMarkers(homily) !== 1) return undefined;
+  return { ...linesToReading(homily), evangelium: linesToReading(gospel) };
 }
 
 /**
@@ -682,15 +703,23 @@ export function transform(obj: Record<string, unknown>): Step5Output {
       if (prefatioVariants.length) result.prefatio = prefatioVariants;
       continue;
     }
+    // The Office's own texts, structured by what they are; a section whose
+    // lines do not fit its kind keeps them.
+    const officeKind = officeKindOf(key);
+    if (officeKind) {
+      result[key] = mapVariants(value, (v) => structureOffice(officeKind, v) ?? v);
+      continue;
+    }
     const sectionType = getSectionType(key);
     if (!sectionType) {
       result[key] = value;
       continue;
     }
     const isReading = isReadingSection(key);
+    const isMatins = MATINS_READING.test(key.split("/")[0]!);
     const structured = mapVariants(value, (v) =>
       isReading && !canStructureReading(v)
-        ? v
+        ? (isMatins && linesToHomily(v)) || v
         : transformSection(key, v, sectionType)
     );
 

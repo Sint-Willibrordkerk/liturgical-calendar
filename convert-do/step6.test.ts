@@ -6,6 +6,7 @@ import {
   substitutePrayers,
   substituteChants,
   transform,
+  createOfficeStores,
 } from "./step6";
 
 /** A rubric variant; `condition` defaults to the unconditional (default) one. */
@@ -561,5 +562,57 @@ describe("step6 — a store opened on what was filed before", () => {
     const reopened = createLectioStore(filed);
     reopened.intern(reading("Rom 12:6-16", "b"));
     expect(Object.keys(filed)).toEqual(["matt-11-25-30"]);
+  });
+});
+
+describe("step6 — the Office", () => {
+  it("files the Office's antiphons with the chants, and its other texts each in its store", () => {
+    const chants = createLectioStore();
+    const office = createOfficeStores();
+    const out = transform(
+      {
+        invit: [v({ text: "Regem Vírginum Dóminum, * Veníte, adorémus." })],
+        "ant-laudes": [v({ antiphonae: [{ text: "Hæc est Virgo sápiens, * et una.", psalmus: "92" }] })],
+        "hymnus-laudes": [v({ strophae: [["Jesu, coróna Vírginum,"]] })],
+        "capitulum-laudes": [v({ ref: "Sir 51:1-3", text: "Confitébor tibi, Dómine, Rex." })],
+        "lectio-prima": [v({ ref: "Sir 51:13-14", text: "Dómine, Deus meus." })],
+        responsory1: [v({ responsum: "Diem festum * Quia solum.", versus: "Infántia.", repetitio: "Quia solum." })],
+        "versum-2": [v({ versus: "Diffúsa est grátia.", responsum: "Proptérea benedíxit te Deus." })],
+      },
+      createLectioStore(),
+      createLectioStore(),
+      chants,
+      office
+    );
+    for (const key of Object.keys(out)) expect(typeof (out[key] as { value: unknown }[])[0]!.value).toBe("string");
+    expect(Object.keys(chants.entries())).toHaveLength(2);
+    expect(Object.keys(office.hymnus.entries())).toHaveLength(1);
+    // A chapter is keyed by its reference, like a reading.
+    expect(Object.keys(office.capitulum.entries())).toEqual(["sir-51-1-3", "sir-51-13-14"]);
+    expect(Object.keys(office.responsorium.entries())).toHaveLength(1);
+    expect(Object.keys(office.versus.entries())).toHaveLength(1);
+  });
+
+  it("keys a text without a reference by its opening words, so the same text is filed once", () => {
+    const office = createOfficeStores();
+    const versicle = { versus: "Diffúsa est grátia in lábiis tuis.", responsum: "Proptérea benedíxit te Deus." };
+    const out = transform(
+      { "versum-2": [v(versicle)], "versum-3": [v(versicle)] },
+      createLectioStore(),
+      createLectioStore(),
+      createLectioStore(),
+      office
+    );
+    const [key] = Object.keys(office.versus.entries());
+    expect(key).toMatch(/^diffusa-est-gratia-in-[0-9a-f]{8}$/);
+    expect(out["versum-2"]).toEqual([v(key)]);
+    expect(out["versum-3"]).toEqual([v(key)]);
+  });
+
+  it("leaves a section step 5 left as lines inline", () => {
+    const lines = ["@Commune/C6:Responsory4:1-2"];
+    expect(
+      transform({ responsory2: [v(lines)] }, createLectioStore(), createLectioStore(), createLectioStore(), createOfficeStores())
+    ).toEqual({ responsory2: [v(lines)] });
   });
 });

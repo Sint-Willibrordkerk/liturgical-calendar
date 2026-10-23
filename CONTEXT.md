@@ -49,6 +49,14 @@ What the Martyrology reads before the elogia on a movable day — Septuagesima,
 Easter, Christ the King — keyed to the date it is read before.
 _Avoid_: movable feast (the announcement is of a day, not always a feast)
 
+**Office**:
+The *Officium divinum* of the Breviary: the Hours a day prays — first Vespers
+on the evening before, Matins, Lauds, Prime, Terce, Sext, None, Vespers. What
+the calendar gives a day of it is its **propers**: the texts the day says of its
+own or takes from its common — hymns, antiphons, lessons, responsories,
+chapters, versicles — not the Hours assembled.
+_Avoid_: breviary (for the texts of a day), divine office in lowercase, liturgy of the hours (a 1971 term)
+
 **Local Proper**:
 The calendar of a diocese, region, church or congregation, filling the slots
 the base calendar leaves for it; it names the color of its own days and is
@@ -93,6 +101,9 @@ _Avoid_: diocesan calendar, supplement
 - A day has one **Color**, that of its Mass. The rites within a day — the
   Easter Vigil on Holy Saturday, the procession of Palm Sunday, a blessing —
   are not modelled, so Holy Saturday and Palm Sunday are violet.
+- The **Office** of a day is its propers. The psalter, the ordinary and the
+  rubrics that assemble an Hour from them are the reader's; a part of an Hour
+  the day says nothing of is said from the psalter.
 - The **Seasons** are the rubrics' ten and nothing finer. Holy Week and the
   Triduum are the last days of `passionis`, recognisable by their titles; the
   octaves show through the day's type. No field names a period within a

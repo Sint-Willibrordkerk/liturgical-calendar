@@ -13,6 +13,42 @@ const v = (value: unknown, condition: string[] = []) => ({ value, condition });
 /** A lookup over an in-memory tree, keyed by path below the language root. */
 const lookupOf = (docs: Record<string, Doc>) => (path: string) => docs[path];
 
+describe("step4 a line marked to run on", () => {
+  it("joins the line after it, but keeps a reference on its own line", () => {
+    const docs = {
+      "Sancti/08-22": {
+        graduale: [v(["!Cant. 6:2", "V. Ego dilécto meo, qui páscitur inter lília."])],
+        gradualep: [v(["@:Graduale:1-2 s/$/~/", "Allelúja."])],
+      },
+    };
+    const out = transform(docs["Sancti/08-22"], "Sancti/08-22", lookupOf(docs));
+    expect(out.gradualep).toEqual([
+      v(["!Cant. 6:2", "V. Ego dilécto meo, qui páscitur inter lília. Allelúja."]),
+    ]);
+  });
+
+  it("does not join a line that opens a part of its own", () => {
+    const docs = {
+      "Sancti/x": {
+        graduale: [v(["!Ps 44:17", "Constítues eos príncipes.~", "V. Pro patribus tuis.", "$Per Dominum"])],
+      },
+    };
+    expect(transform(docs["Sancti/x"], "Sancti/x", lookupOf(docs)).graduale).toEqual([
+      v(["!Ps 44:17", "Constítues eos príncipes.", "V. Pro patribus tuis.", "$Per Dominum"]),
+    ]);
+  });
+
+  it("drops the mark on a section's last line", () => {
+    const docs = { "Commune/C11": { oratio: [v(["Deus, qui"])] } };
+    const out = transform(
+      { oratio: [v(["@Commune/C11:Oratio:s/$/~/"])] },
+      "Commune/C12",
+      lookupOf(docs)
+    );
+    expect(out.oratio).toEqual([v(["Deus, qui"])]);
+  });
+});
+
 describe("step4 parseReference", () => {
   it("reads file, section, line range and substitutions", () => {
     expect(parseReference("@Commune/C1:Lectio3:2-4:s/N\\./Petri/")).toEqual({
@@ -46,6 +82,24 @@ describe("step4 parseReference", () => {
       section: "",
       lineRange: null,
       substitutions: [{ pattern: "N.", replacement: "N. Vírginis tuæ", flags: "" }],
+    });
+  });
+
+  it("reads a line range whose substitution follows after a space", () => {
+    expect(parseReference("@Commune/C7:Ant Vespera:1 s/;;.*//g")).toEqual({
+      filePath: "Commune/C7",
+      section: "ant-vespera",
+      lineRange: { start: 1, end: 1 },
+      substitutions: [{ pattern: ";;.*", replacement: "", flags: "g" }],
+    });
+  });
+
+  it("reads such a line range with no section named", () => {
+    expect(parseReference("@Commune/C7::3 s/121/126/")).toEqual({
+      filePath: "Commune/C7",
+      section: "",
+      lineRange: { start: 3, end: 3 },
+      substitutions: [{ pattern: "121", replacement: "126", flags: "" }],
     });
   });
 

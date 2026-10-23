@@ -6,6 +6,14 @@
  * concern: which rubric applies depends on the calendar being generated, not on
  * how the sources were converted.
  */
+import {
+  CHAPTER_SECTIONS,
+  HYMN_SECTIONS,
+  LESSON_SECTIONS,
+  OFFICE_ANTIPHON_SECTIONS,
+  RESPONSORY_SECTIONS,
+  VERSICLE_SECTIONS,
+} from "./officium";
 
 /**
  * A section as shipped: one entry per rubric the section varies by. A variant
@@ -43,13 +51,19 @@ export type NameStore = Record<string, string>;
  * The stores, and the sections whose value may be a key into each.
  *
  * The days are the same for every language and hold keys alone; a language is
- * its stores, each entry its own words for the text a key names.
+ * its stores, each entry its own words for the text a key names. The Office
+ * files its lessons with the readings and its antiphons with the chants, and
+ * has a store of its own for each other kind of text.
  */
 export type Stores = {
   readings: LectioStore;
   prayers: PrayerStore;
   chants: ChantStore;
   names: NameStore;
+  hymns?: Record<string, unknown>;
+  chapters?: Record<string, unknown>;
+  responsories?: Record<string, unknown>;
+  versicles?: Record<string, unknown>;
 };
 
 /**
@@ -304,10 +318,14 @@ export const resolveReading = resolveStored;
 
 /** The store a section draws on, or undefined when it holds its own content. */
 function storeFor(key: string, stores: Stores): Record<string, unknown> | undefined {
-  if (READING_SECTIONS.has(key)) return stores.readings;
+  if (READING_SECTIONS.has(key) || LESSON_SECTIONS.has(key)) return stores.readings;
   if (PRAYER_SECTIONS.has(key)) return stores.prayers;
-  if (CHANT_SECTIONS.has(key)) return stores.chants;
+  if (CHANT_SECTIONS.has(key) || OFFICE_ANTIPHON_SECTIONS.has(key)) return stores.chants;
   if (NAME_SECTIONS.has(key)) return stores.names;
+  if (HYMN_SECTIONS.has(key)) return stores.hymns ?? {};
+  if (CHAPTER_SECTIONS.has(key)) return stores.chapters ?? {};
+  if (RESPONSORY_SECTIONS.has(key)) return stores.responsories ?? {};
+  if (VERSICLE_SECTIONS.has(key)) return stores.versicles ?? {};
   return undefined;
 }
 

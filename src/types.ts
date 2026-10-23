@@ -77,6 +77,11 @@ export type Commemoration = {
   commemorationType?: string;
   acceptCommemorationTypes?: string[];
   mass?: MassProper | MassProper[] | RawMassProper;
+  /**
+   * The propers of the Office, Hour by Hour. Present only when asked for, and
+   * where the language says something of the celebration's Office.
+   */
+  officium?: Officium;
 };
 
 export type LiturgicalDay = Commemoration & {
@@ -107,6 +112,94 @@ export type LiturgicalDay = Commemoration & {
    * Martyrology.
    */
   martyrologium?: Martyrologium;
+};
+
+/** An antiphon. Its `*` marks where the choir takes up the intonation. */
+export type Antiphona = { text: string };
+
+/** A versicle and its response. */
+export type Versus = { versus: string; responsum: string };
+
+/**
+ * The antiphons of an Hour's psalms, in order. An antiphon names the psalm it
+ * is said with; an entry with a psalm and no text is said under the antiphon
+ * before it. At Matins a nocturn's versicle may stand among them.
+ */
+export type Psalmodia = {
+  antiphonae: ({ text?: string; psalmus?: string } | Versus)[];
+};
+
+/** A hymn: its stanzas, and the doxology that closes it. */
+export type Hymnus = { strophae: string[][]; doxologia?: string[] };
+
+/** A chapter, or the short lesson of Prime. */
+export type Capitulum = { ref?: string; text: string };
+
+/**
+ * A responsory: the response, its versicle, the part of the response repeated
+ * after the versicle, and what is repeated after the *Glória Patri*, where it
+ * is said.
+ */
+export type Responsorium = {
+  responsum: string;
+  versus: string;
+  repetitio?: string;
+  gloria?: string;
+};
+
+/** A homily: its author and its text, and the Gospel it expounds. */
+export type Homilia = { ref?: string; text: string; evangelium: RawReading };
+
+/** A lesson of Matins, numbered as it is read, with the responsory after it. */
+export type LectioMatutini = {
+  numerus: number;
+  lectio: RawReading | Homilia;
+  responsorium?: Responsorium;
+};
+
+export type Nocturnus = { versus?: Versus; lectiones: LectioMatutini[] };
+
+/** A small Hour: Terce, Sext or None. */
+export type HoraMinor = { capitulum?: Capitulum; responsorium?: Responsorium; versus?: Versus };
+
+export type Vesperae = {
+  psalmodia?: Psalmodia;
+  capitulum?: Capitulum;
+  hymnus?: Hymnus;
+  versus?: Versus;
+  magnificat?: Antiphona;
+};
+
+/**
+ * The propers of the Office of a day: what it says at each Hour of its own, or
+ * takes from its common. An Hour, or a part of one, the day says nothing of is
+ * absent, and is said from the psalter. First Vespers are said on the evening
+ * before.
+ */
+export type Officium = {
+  primaeVesperae?: Vesperae;
+  matutinum?: {
+    invitatorium?: Antiphona;
+    hymnus?: Hymnus;
+    psalmodia?: Psalmodia;
+    nocturni?: Nocturnus[];
+    /** The saint's legend in one lesson, read as the last on a lesser day. */
+    legenda?: RawReading;
+  };
+  laudes?: {
+    psalmodia?: Psalmodia;
+    capitulum?: Capitulum;
+    hymnus?: Hymnus;
+    versus?: Versus;
+    benedictus?: Antiphona;
+  };
+  prima?: { lectioBrevis?: Capitulum };
+  tertia?: HoraMinor;
+  sexta?: HoraMinor;
+  nona?: HoraMinor;
+  vesperae?: Vesperae;
+  /** The collect, said at every Hour after Prime, and at Mass. */
+  oratio?: { text?: string; closure?: string };
 };
 
 /**
