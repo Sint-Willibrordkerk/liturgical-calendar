@@ -462,13 +462,14 @@ export async function readTree(inputDir: string): Promise<Map<string, LanguageTr
 /**
  * A resolver over one language's documents, each given the base language's rank
  * where it has none of its own — the rank of the base language's day, its Mass
- * and its Office together.
+ * and its Office together — and borrowing only where the base language's
+ * document of the same day leaves a gap.
  */
 export function languageResolver(
   tree: Map<string, LanguageTree>,
   language: string,
   rules: BorrowRules
-) {
+): ReturnType<typeof createSourcedResolver> {
   const own = tree.get(language) ?? new Map<string, Map<string, Doc>>();
   const base = language === BASE_LANGUAGE ? undefined : tree.get(BASE_LANGUAGE);
   const baseDay = (path: string): Doc | undefined => {
@@ -479,10 +480,18 @@ export function languageResolver(
     }
     return combined;
   };
+  const baseView: Load | undefined = base && languageResolver(tree, BASE_LANGUAGE, rules).view;
   return createSourcedResolver(
     (source, path) => withBaseRank(own.get(source)?.get(path), baseDay(path)),
     SOURCES,
-    rules
+    rules,
+    // A translation borrows only where the base language does: what the base
+    // language's same day gives of its own, the translation says from its own
+    // file of that day, or not at all.
+    (source, path) => {
+      const doc = base?.get(source)?.get(path);
+      return doc && baseView ? { doc, view: baseView } : undefined;
+    }
   );
 }
 

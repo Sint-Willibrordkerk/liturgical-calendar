@@ -547,8 +547,9 @@ give itself but borrows from its common is found in it all the same, with the
 condition its borrowing carries. A file is looked through this way at most once
 per run, and the look-through follows the rules of step 7 in full: the order of
 includes and borrows, which sections a borrow takes, the day's own text taking
-precedence, the base language's rank for a translation, and a cycle yielding
-nothing to borrow.
+precedence, the base language's rank for a translation, the base language's
+own sections standing for a translation's, and a cycle yielding nothing to
+borrow.
 
 The target's own inline references are not resolved by that look-through; a
 pulled line that is itself a reference is resolved as described under
@@ -1279,6 +1280,39 @@ the rank, so it is there however the base language's own borrowings turn out —
 even for a day caught in a borrowing cycle. The sections the day then borrows
 are the translation's own: a Dutch day drawing on `C4a` gets the Dutch `C4a`'s
 keys, from the Dutch store.
+
+### A translation borrows only where the base language does
+
+A translation borrows to say what the base language borrows, not to stand in for
+what the base language says of its own. Where the base language's day has a
+section of its own, that text is the day's, and the translation's wording of it
+can come only from the translation's own file of the same day. Borrowed, it
+would be another day's text filed under this day's key: St Raphael (24 October)
+draws his Office from the Apparition of St Michael (`ex Sancti/05-08`) but has
+antiphons, a chapter and a hymn of his own; the Dutch file of 24 October gives
+only the collect, and the Dutch would have said St Michael's.
+
+So when a translation's document resolves its references, the base language's
+document of the same day and the same book — its Mass for the Mass, its Office
+for the Office, as it stands in this step's input — counts as **already held**:
+an import fills only a gap that neither the translation's own sections nor the
+base language's leave, judged rubric by rubric as under [Merging and condition
+propagation](#merging-and-condition-propagation), and a Mass proper or a lifted
+section is "still missing" only where both lack it. A section the base language
+gives of its own and the translation's file lacks stays missing, and
+[step 12](#step-12--the-propers-batch) renders nothing for its key. What the
+base language itself borrows, the translation borrows from its own file of the
+borrowed day, as before.
+
+A text of its own that is the borrowed day's too does not stand in the way. Many
+a day gives its common's collect as a section of its own, *N.* for the name:
+the base language holds there the very key its common holds, and the
+translation's common says that text. So a variant of the base language's own
+counts as already held only where the file being borrowed from, as the base
+language reads it, does not hold the same text in the same section.
+
+This holds for every document of the translation, a common being resolved for a
+day to borrow from as much as the day.
 
 ### Examples
 

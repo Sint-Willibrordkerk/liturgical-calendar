@@ -95,6 +95,33 @@ describe("step7 run", () => {
     expect(day.oratio).toEqual([v("eigen-gebed")]);
   });
 
+  it("does not give a translation the borrowed day's text where the Latin day has its own", async () => {
+    // St Raphael includes St Michael's Office and has his own Magnificat
+    // antiphon; the Dutch 24 October gives only the collect.
+    const { input, output } = await setup();
+    await put(input, "la/horas/Sancti/10-24.json", {
+      rank: [v([";;Duplex majus;;4;;ex Sancti/05-08"])],
+      "ant-3": [v("ego-sum-raphael")],
+    });
+    await put(input, "la/horas/Sancti/05-08.json", {
+      "ant-3": [v("dum-sacrum-mysterium")],
+      "ant-2": [v("michael-benedictus")],
+    });
+    await put(input, "nl/horas/Sancti/05-08.json", {
+      "ant-3": [v("toen-johannes")],
+      "ant-2": [v("michael-benedictus-nl")],
+    });
+    await put(input, "nl/horas/Sancti/10-24.json", { oratio: [v("god-die-de-aartsengel")] });
+
+    await run(input, output);
+
+    const day = await read(output, "nl/horas/Sancti/10-24.json");
+    expect(day["ant-3"]).toBeUndefined();
+    expect(day["ant-2"]).toEqual([v("michael-benedictus-nl")]);
+    expect(day.oratio).toEqual([v("god-die-de-aartsengel")]);
+    expect((await read(output, "la/horas/Sancti/10-24.json"))["ant-3"]).toEqual([v("ego-sum-raphael")]);
+  });
+
   it("gives a translation the Latin rank even where the Latin day is caught in a cycle", async () => {
     // The Latin day and its rubric file include each other. A translation used
     // to wait for the Latin day to be written, which never happened in time.

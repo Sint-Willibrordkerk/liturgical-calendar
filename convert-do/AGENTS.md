@@ -251,6 +251,9 @@ rank takes the base language's, read from the same input tree.
   sections, so the day's own Office wins when step 8 combines the two.
 - **Lifted sections** — `alleluia` (out of `graduale`) and `prefatio` (out of
   `rule`) are borrowed exactly where their parent is (`liftedFrom`).
+- **`held`** — a translation borrows only where the base language does: the
+  base language's document of the same day counts as already held, except where
+  the borrowed file holds the same text in the same section (`heldAgainst`).
 - Runs before the fold, so `@SanctiM/11-14M` still finds a file of its own.
 
 ## Step 8 — Suffixes to rubric conditions; fold *(batch)*
