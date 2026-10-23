@@ -526,7 +526,8 @@ parts after `File` are optional:
   `[Oratio]` pulls the common's `oratio`.
 - **`lineRange`** — `N` or `N-M`, selecting lines *N*…*M* (1-based, inclusive).
 - **`substitution`** — one or more `s/pattern/replacement/flags` groups applied
-  to the pulled lines (sed-like; default flag is global).
+  to the pulled lines, as Divinum Officium applies them (see
+  [Resolution](#resolution), item 5).
 
 The substitution runs from the first `:s/` to the end of the line — a space may
 stand before the `s`, as in `@Commune/C7a:: s/N\./N. Vírginis tuæ/` — so a colon
@@ -567,12 +568,25 @@ For each reference line:
    target's `1962` wording), else the default (unconditional) variant, else the
    first.
 4. Apply the line range, if any.
-5. Apply the substitutions, if any — each as a regular-expression replace on
-   every line; an invalid pattern is skipped.
-6. If the result is a single line that is itself a reference, resolve it
-   recursively (transitively), up to a depth of **5**. A nested reference that
-   omits its file (`@:…`) names the file it was found in — the target, not the
-   file the resolution started from.
+5. Apply the substitutions, if any, in the order written. Each is a
+   regular-expression replace on **the lines joined as one text**, exactly as
+   Divinum Officium does it: with its own flags and no others, so that without
+   `g` only the first match is replaced — which is how
+   `s/$/_/gm s/_/;;109/s s/_/;;112/ s/_/;;115/` numbers the psalms of a run of
+   antiphons one after another — `m` lets `^` and `$` stand at every line, and
+   `s` lets a dot cross them: `s/^V\..*//sm` takes the first versicle and all that
+   follows it away. An escape in the pattern keeps its meaning (`\.` is a dot,
+   `\$` a dollar), the delimiter `\/` apart; in the replacement `\n` is a line
+   break. An invalid pattern is skipped.
+6. Resolve the references among the resulting lines, each in turn,
+   recursively (transitively), up to a depth of **5**: a hymn taken from another
+   with its doxology cut off, or a collect with the commemoration of another
+   saint added, ends in a reference of its own. This is after the
+   substitutions, so a substitution acts on the target's text as it is written
+   and the references it holds are resolved once the text is made. A nested
+   reference that omits its file (`@:…`) names the file it was found in — the
+   target, not the file the resolution started from. A nested reference that
+   cannot be resolved stays as it is, a line of its own.
 
 The reference line is then replaced by the resulting lines. A reference that
 resolves to an empty section removes the line; only an *unresolvable* reference
@@ -841,7 +855,7 @@ says them. The Matins lessons are readings (above); the collect is the prayer
 | hymn | `hymnus-matutinum`, `hymnus-laudes`, `hymnus-vespera`, `hymnus-vespera-3` | `{ strophae: [[line]], doxologia: [line] }` |
 | chapter | `capitulum-laudes`, `capitulum-tertia`, `capitulum-sexta`, `capitulum-nona`, `capitulum-vespera`, `lectio-prima` | `{ ref, text }` |
 | responsory | `responsory1` … `responsory8`, `responsory-breve-tertia`, `responsory-breve-sexta`, `responsory-breve-nona` | `{ responsum, versus, repetitio, gloria }` |
-| versicle | `versum-1`, `versum-2`, `versum-3`, `versum-tertia`, `versum-sexta`, `versum-nona`, `nocturn-1-versum`, `nocturn-2-versum`, `nocturn-3-versum` | `{ versus, responsum }` |
+| versicle | `versum-1`, `versum-2`, `versum-3`, `versum-tertia`, `versum-sexta`, `versum-nona`, `nocturn-1-versum`, `nocturn-2-versum`, `nocturn-3-versum` | `{ versus, responsum }`, or `{ text }` where an antiphon stands for it |
 
 The sources' marks are read as follows, and taken off the text:
 
@@ -851,7 +865,8 @@ The sources' marks are read as follows, and taken off the text:
   `;;` — `Hæc est Virgo sápiens, * et una de número prudéntum.;;109` is the
   antiphon of Psalm 109 — as `psalmus`; a line that is nothing but `;;N` is a
   psalm said under the antiphon before it, and has no `text`. A line with no
-  `;;` has no `psalmus`. At Matins a nocturn's versicle may stand among the
+  `;;` has no `psalmus`. A mark trailing the psalm — the `;` of `46;`, the `_`
+  a substitution leaves after the last of a run of them — is dropped. At Matins a nocturn's versicle may stand among the
   antiphons, as a `V.` line and an `R.` line; it is an entry
   `{ versus, responsum }` in its place.
 - **hymn** — the lines are the stanzas, a `_` line between two. The stanza whose
@@ -866,10 +881,20 @@ The sources' marks are read as follows, and taken off the text:
 - **responsory** — the `R.` line (`R.br.` for a short responsory) and the `*`
   line under it are `responsum`, joined by a space; the `V.` line is `versus`;
   the `R.` line after it, what is repeated, is `repetitio`; and after the
-  `&Gloria` line, which stands for the *Glória Patri*, the `R.` line said
-  after it is `gloria`. A responsory with no `&Gloria` has no `gloria`. A short
+  `&Gloria` line, which stands for the *Glória Patri* — or the `$Requiem` line
+  that stands in its place in the Office of the Dead — the `R.` line said
+  after it is `gloria`. A responsory with neither has no `gloria`. A short
   responsory's second `R.` line — the choir repeating the first — is dropped.
-- **versicle** — the `V.` line is `versus`, the `R.` line `responsum`.
+- **versicle** — the `V.` line is `versus`, the `R.` line `responsum`. During
+  the Easter octave the line is `Ant. Hæc dies * …`: an antiphon stands where
+  the versicle is said, and it is `{ text }`.
+- **a lesson of Matins** — a `&teDeum` line closing the last lesson marks where
+  the *Te Deum* is said; the hymn is the reader's, and the line is dropped from
+  the lesson. A lesson read in place of another begins with a direction — `!de
+  Homilía Feriæ.` — before its own introduction; it is no reference, and is
+  dropped. A lesson a rubric leaves out (`lectio3` under `1962`, whose
+  variant is empty) stays an empty section and is **not** structured into a
+  lesson of no words: an empty variant says the lesson is not read.
 
 A section these marks do not fit — the lines in another order, or a mark
 missing — keeps its lines, like a reading with several references, and step 6

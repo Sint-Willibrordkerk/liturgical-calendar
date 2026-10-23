@@ -52,6 +52,34 @@ const MISSA_SECTION_TYPES: Record<string, "antiphonal" | "prayer" | "verse"> = {
 };
 
 const V_START = /^\s*v\.\s*/i;
+/**
+ * Where Matins says the *Te Deum*, the sources close the last lesson with this
+ * mark. The Hymn is the reader's, not the lesson's.
+ */
+const TE_DEUM_MARK = /^\s*&te\s?deum\.?\s*$/i;
+
+/**
+ * The lines of a lesson of Matins without the *Te Deum* mark, or none at all
+ * where a rubric leaves the lesson out: an empty section says nothing, and is
+ * not a lesson of no words.
+ */
+function matinsLines(lines: unknown): unknown {
+  if (!Array.isArray(lines)) return lines;
+  const kept = lines.filter((line) => typeof line !== "string" || !TE_DEUM_MARK.test(line));
+  // A lesson read in place of another is headed by a direction — `!de Homilía
+  // Feriæ.` — before its own introduction; it is no reference.
+  const [heading, introduction] = kept;
+  if (
+    typeof heading === "string" &&
+    heading.startsWith("!") &&
+    typeof introduction === "string" &&
+    LECTIO_INTRODUCTION.test(introduction)
+  ) {
+    kept.shift();
+  }
+  return kept.every((line) => typeof line === "string" && line.trim() === "") ? [] : kept;
+}
+
 const LECTIO_INTRODUCTION = /^\s*(Léctio|Lectio|Sequéntia|Sequentia)\s+.+$/i;
 const ALLELUIA_CUE = /\s*,?\s*Allel[uú][ji]a\s*,?\s*Allel[uú][ji]a\.?\s*$/i;
 const PREFATIO_PREFIX = /^Prefatio\s*=\s*(.+)$/i;
@@ -717,11 +745,13 @@ export function transform(obj: Record<string, unknown>): Step5Output {
     }
     const isReading = isReadingSection(key);
     const isMatins = MATINS_READING.test(key.split("/")[0]!);
-    const structured = mapVariants(value, (v) =>
-      isReading && !canStructureReading(v)
+    const structured = mapVariants(value, (lines) => {
+      const v = isMatins ? matinsLines(lines) : lines;
+      if (isMatins && Array.isArray(v) && v.length === 0) return v;
+      return isReading && !canStructureReading(v)
         ? (isMatins && linesToHomily(v)) || v
-        : transformSection(key, v, sectionType)
-    );
+        : transformSection(key, v, sectionType);
+    });
 
     // A gradual carries the Alleluia sung after it; lift it into its own
     // section, keeping each variant's condition.

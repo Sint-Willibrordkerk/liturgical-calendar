@@ -78,7 +78,14 @@ function antiphon(lines: string[]): { text: string } | undefined {
 
 type Versicle = { versus: string; responsum: string };
 
-function versicle(lines: string[]): Versicle | undefined {
+/** At Easter an antiphon stands where the versicle is said: `Ant. Hæc dies * …`. */
+const ANTIPHON_FOR_VERSICLE = /^Ant\.\s*/;
+
+function versicle(lines: string[]): Versicle | { text: string } | undefined {
+  if (lines.length === 1 && ANTIPHON_FOR_VERSICLE.test(lines[0]!)) {
+    const text = lines[0]!.replace(ANTIPHON_FOR_VERSICLE, "").trim();
+    return text === "" ? undefined : { text };
+  }
   if (lines.length !== 2) return undefined;
   const [v, r] = lines as [string, string];
   if (!VERSUS.test(v) || !RESPONSUM.test(r)) return undefined;
@@ -93,7 +100,7 @@ function psalmody(lines: string[]): { antiphonae: PsalmodyEntry[] } | undefined 
     const line = lines[i]!;
     if (VERSUS.test(line)) {
       const pair = versicle(lines.slice(i, i + 2));
-      if (pair === undefined) return undefined;
+      if (pair === undefined || "text" in pair) return undefined;
       antiphonae.push(pair);
       i++;
       continue;
@@ -101,7 +108,8 @@ function psalmody(lines: string[]): { antiphonae: PsalmodyEntry[] } | undefined 
     if (FOREIGN.test(line) || RESPONSUM.test(line) || line.trim() === "_") return undefined;
     const at = line.indexOf(";;");
     const text = (at === -1 ? line : line.slice(0, at)).trim();
-    const psalmus = at === -1 ? "" : line.slice(at + 2).trim();
+    // A mark of the sources trails some: `46;`, `138_`.
+    const psalmus = at === -1 ? "" : line.slice(at + 2).replace(/[;_\s]+$/, "").trim();
     if (text === "" && psalmus === "") return undefined;
     const entry: { text?: string; psalmus?: string } = {};
     if (text !== "") entry.text = text;
@@ -175,7 +183,8 @@ function chapter(lines: string[]): { ref?: string; text: string } | undefined {
 type Responsory = { responsum: string; versus: string; repetitio?: string; gloria?: string };
 
 const RESPONSUM_BREVE = /^R\.br\.\s*/;
-const GLORIA = /^&Gloria\.?$/;
+/** The *Glória Patri*, which the Office of the Dead replaces with the *Réquiem*. */
+const GLORIA = /^(?:&Gloria|\$Requiem)\.?$/;
 
 function responsory(lines: string[]): Responsory | undefined {
   let i = 0;

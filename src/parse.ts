@@ -29,8 +29,10 @@ export class CalendarBuilder {
       // The day gives way and is commemorated. The season belongs to the date
       // and the color to the Mass that is said, so neither follows it down: a
       // commemoration is a collect added to that Mass, not a Mass of its own.
+      // Nor does the Office, which is that of the celebration kept.
       const {
         commemorations,
+        officium: _officium,
         season: _season,
         color: _color,
         alternativeColor: _alternativeColor,

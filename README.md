@@ -238,7 +238,7 @@ type Psalmodia = { antiphonae: ({ text?: string; psalmus?: string } | Versus)[] 
 type Hymnus = { strophae: string[][]; doxologia?: string[] };
 type Capitulum = { ref?: string; text: string };
 type Responsorium = { responsum: string; versus: string; repetitio?: string; gloria?: string };
-type Versus = { versus: string; responsum: string };
+type Versus = { versus: string; responsum: string }; // in the Easter octave an Antiphona ({ text }) stands where it is said
 type LectioMatutini = { numerus: number; lectio: Reading | Homilia; responsorium?: Responsorium };
 type Homilia = { ref?: string; text: string; evangelium: Reading }; // the homily, and the Gospel it expounds
 ```
@@ -250,6 +250,12 @@ third class gives its Lauds no antiphons, and says the psalms of the day of the
 week. Where the day gives second Vespers no antiphons, hymn, versicle or
 antiphon at the *Magnificat* of their own, they are first Vespers'. The chapter
 of Lauds is said at Terce, and at Vespers where they have none of their own.
+
+A text is published only as the shape its type declares. One the sources leave
+as the lines they could not make sense of, or with a directive of Divinum
+Officium unresolved in it, says nothing, and its Hour is said from the psalter
+like any other the day does not give. The *Te Deum* closing the last lesson of
+Matins is the reader's: the lesson ends without it.
 
 What the propers cannot yet say:
 

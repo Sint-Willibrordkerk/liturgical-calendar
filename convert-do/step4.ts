@@ -66,8 +66,10 @@ function parseSubstitutions(substStr: string): Substitution[] {
     const flags = match[3];
     if (pattern == null || replacement == null) continue;
     result.push({
-      pattern: pattern.replace(/\\(.)/g, "$1"),
-      replacement: replacement.replace(/\\(.)/g, "$1"),
+      // Only the delimiter is unescaped: `\.` and `\$` still mean what they do.
+      pattern: pattern.replace(/\\\//g, "/"),
+      // `\n` is a line break; any other escaped character stands for itself.
+      replacement: replacement.replace(/\\n/g, "\n").replace(/\\(.)/g, "$1"),
       flags: flags || "",
     });
   }
@@ -222,17 +224,23 @@ function targetConditions(
   return conditions;
 }
 
+/**
+ * Apply the substitutions to the lines, as Divinum Officium does: to the text as
+ * a whole, in the order written, each as its flags say. Without `g` only the
+ * first match is replaced, which is how `s/_/;;109/ s/_/;;112/` numbers the
+ * psalms of a run of antiphons one at a time; `m` lets `^` and `$` stand at
+ * every line, and `s` lets a dot cross them.
+ */
 function applySubstitutions(lines: string[], substitutions: Substitution[]) {
-  if (!substitutions.length) return lines;
-  return lines.map((line) => {
-    let result = String(line);
-    for (const { pattern, replacement, flags } of substitutions) {
-      try {
-        result = result.replace(new RegExp(pattern, flags || "g"), replacement);
-      } catch {}
-    }
-    return result;
-  });
+  let out = lines.map(String);
+  for (const { pattern, replacement, flags } of substitutions) {
+    try {
+      const replaced = out.join("\n").replace(new RegExp(pattern, flags), replacement).split("\n");
+      // The text's own closing newline is not a line.
+      out = replaced.at(-1) === "" ? replaced.slice(0, -1) : replaced;
+    } catch {}
+  }
+  return out;
 }
 
 /**
@@ -267,22 +275,23 @@ function resolveReference(
 
   resolved = applySubstitutions(resolved, reference.substitutions);
 
-  if (resolved.length === 1 && typeof resolved[0] === "string") {
-    const nested = parseReference(resolved[0]);
-    if (nested) {
-      const nestedResolved = resolveReference(
-        nested,
-        filePath,
-        lookup,
-        reference.section || currentSectionKey,
-        currentCondition,
-        depth + 1
-      );
-      if (nestedResolved) return nestedResolved;
-    }
-  }
-
-  return resolved;
+  // What was taken may itself hold references, which Divinum Officium resolves
+  // in turn once the substitutions are made: a hymn borrowed from another's
+  // ends in a reference to the doxology it is sung with.
+  return resolved.flatMap((line) => {
+    const nested = typeof line === "string" ? parseReference(line) : null;
+    const nestedResolved = nested
+      ? resolveReference(
+          nested,
+          filePath,
+          lookup,
+          reference.section || currentSectionKey,
+          currentCondition,
+          depth + 1
+        )
+      : null;
+    return nestedResolved ?? [line];
+  });
 }
 
 /** A line that stands on its own: a reference, or one opening a part. */

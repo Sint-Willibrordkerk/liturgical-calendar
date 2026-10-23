@@ -878,3 +878,151 @@ describe("step5 the Office", () => {
     ).toEqual({ "hymnusm-laudes": [v(lines)], "ant-tertia": [v(["Hæc est Virgo"])] });
   });
 });
+
+/**
+ * Lines as Divinum Officium prints them, for the cases that once left a mark of
+ * the source in the published Office.
+ */
+describe("step5 the Office, as the sources print it", () => {
+  it("reads the antiphon that stands for the versicle at Easter", () => {
+    const out = transform({
+      "versum-2": [v(["Ant. Hæc dies * quam fecit Dóminus: exsultémus et lætémur in ea."])],
+    });
+    expect(out["versum-2"]).toEqual([
+      v({ text: "Hæc dies * quam fecit Dóminus: exsultémus et lætémur in ea." }),
+    ]);
+  });
+
+  it("reads the antiphons of the Easter octave with the versicle that closes them", () => {
+    const out = transform({
+      "ant-matutinum": [
+        v([
+          "Ego sum qui sum, * et consílium meum non est cum ímpiis, sed in lege Dómini volúntas mea est, allelúja.;;1",
+          "Postulávi Patrem meum, * allelúja: dedit mihi gentes, allelúja, in hereditátem, allelúja.;;2",
+          "Ego dormívi, * et somnum cepi: et exsurréxi, quóniam Dóminus suscépit me, allelúja, allelúja.;;3",
+          "V. Gavísi sunt discípuli, allelúja.",
+          "R. Viso Dómino, allelúja.",
+        ]),
+      ],
+    });
+    expect(out["ant-matutinum"]).toEqual([
+      v({
+        antiphonae: [
+          {
+            text: "Ego sum qui sum, * et consílium meum non est cum ímpiis, sed in lege Dómini volúntas mea est, allelúja.",
+            psalmus: "1",
+          },
+          {
+            text: "Postulávi Patrem meum, * allelúja: dedit mihi gentes, allelúja, in hereditátem, allelúja.",
+            psalmus: "2",
+          },
+          {
+            text: "Ego dormívi, * et somnum cepi: et exsurréxi, quóniam Dóminus suscépit me, allelúja, allelúja.",
+            psalmus: "3",
+          },
+          { versus: "Gavísi sunt discípuli, allelúja.", responsum: "Viso Dómino, allelúja." },
+        ],
+      }),
+    ]);
+  });
+
+  it("drops the marks the sources leave after a psalm number", () => {
+    const out = transform({
+      "ant-vespera-3": [
+        v(["Dixit Angelus * ad Petrum.;;125", "Tu es Petrus, * et super hanc petram.;;138_", "Pater * noster.;;46;"]),
+      ],
+    });
+    expect(out["ant-vespera-3"]).toEqual([
+      v({
+        antiphonae: [
+          { text: "Dixit Angelus * ad Petrum.", psalmus: "125" },
+          { text: "Tu es Petrus, * et super hanc petram.", psalmus: "138" },
+          { text: "Pater * noster.", psalmus: "46" },
+        ],
+      }),
+    ]);
+  });
+
+  it("reads a responsory of the Office of the Dead, the Réquiem in the Glória's place", () => {
+    const out = transform({
+      responsory3: [
+        v([
+          "R. Dómine, quando véneris judicáre terram, ubi me abscóndam a vultu iræ tuæ? ",
+          "* Quia peccávi nimis in vita mea.",
+          "V. Commíssa mea pavésco, et ante te erubésco: dum véneris judicáre, noli me condemnáre.",
+          "R. Quia peccávi nimis in vita mea.",
+          "$Requiem",
+          "R. Quia peccávi nimis in vita mea.",
+        ]),
+      ],
+    });
+    expect(out.responsory3).toEqual([
+      v({
+        responsum:
+          "Dómine, quando véneris judicáre terram, ubi me abscóndam a vultu iræ tuæ? * Quia peccávi nimis in vita mea.",
+        versus: "Commíssa mea pavésco, et ante te erubésco: dum véneris judicáre, noli me condemnáre.",
+        repetitio: "Quia peccávi nimis in vita mea.",
+        gloria: "Quia peccávi nimis in vita mea.",
+      }),
+    ]);
+  });
+
+  it("leaves the Te Deum to the reader, and not in the lesson", () => {
+    const out = transform({
+      lectio9: [
+        v([
+          "Circa hanc piscinam jacebat multitúdo magna infirmórum.",
+          "Non enim Angelus est qui aquam movet.",
+          "&teDeum",
+        ]),
+      ],
+    });
+    expect(out.lectio9).toEqual([
+      v({
+        text: "Circa hanc piscinam jacebat multitúdo magna infirmórum.\nNon enim Angelus est qui aquam movet.",
+      }),
+    ]);
+  });
+
+  it("reads a lesson that only marks the Te Deum as none", () => {
+    expect(transform({ lectio9: [v(["&teDeum"])] }).lectio9).toEqual([v([])]);
+  });
+
+  it("says nothing of a lesson a rubric leaves out, rather than a lesson of no words", () => {
+    const out = transform({
+      lectio3: [v(["Tertio liberat nos a contrarietáte Dei, quam incurrimus per offensam Dei."]), v([], ["1962"])],
+    });
+    expect(out.lectio3).toEqual([
+      v({ text: "Tertio liberat nos a contrarietáte Dei, quam incurrimus per offensam Dei." }),
+      v([], ["1962"]),
+    ]);
+  });
+
+  it("takes the direction off a lesson read in the place of another", () => {
+    const out = transform({
+      lectio9: [
+        v([
+          "!de Homilía Feriæ.",
+          "Léctio sancti Evangélii secúndum Joánnem",
+          "!Joannes 11:47-54",
+          "In illo témpore: Collegérunt pontífices et pharisǽi concílium advérsus Jesum. Et réliqua.",
+          "_",
+          "Homilía sancti Augustíni Epíscopi",
+          "!Tract. 49 in Joannem, sub finem",
+          "Pontífices et pharisǽi sibi consulébant: nec tamen dicébant: Credámus.",
+          "&teDeum",
+        ]),
+      ],
+    });
+    expect(out.lectio9).toEqual([
+      v({
+        ref: "Tract. 49 in Joannem, sub finem",
+        text: "Homilía sancti Augustíni Epíscopi\nPontífices et pharisǽi sibi consulébant: nec tamen dicébant: Credámus.",
+        evangelium: {
+          ref: "Joann 11:47-54",
+          verses: ["In illo témpore: Collegérunt pontífices et pharisǽi concílium advérsus Jesum. Et réliqua."],
+        },
+      }),
+    ]);
+  });
+});

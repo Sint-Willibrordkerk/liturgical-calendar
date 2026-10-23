@@ -79,7 +79,8 @@ export type Commemoration = {
   mass?: MassProper | MassProper[] | RawMassProper;
   /**
    * The propers of the Office, Hour by Hour. Present only when asked for, and
-   * where the language says something of the celebration's Office.
+   * only on the celebration kept, where the language says something of its
+   * Office: a commemoration carries none.
    */
   officium?: Officium;
 };
@@ -121,6 +122,12 @@ export type Antiphona = { text: string };
 export type Versus = { versus: string; responsum: string };
 
 /**
+ * What stands where a versicle is said. Usually the versicle; during the Easter
+ * octave an antiphon (*Hæc dies*) takes its place. Tell them apart by `text`.
+ */
+export type VersusVelAntiphona = Versus | Antiphona;
+
+/**
  * The antiphons of an Hour's psalms, in order. An antiphon names the psalm it
  * is said with; an entry with a psalm and no text is said under the antiphon
  * before it. At Matins a nocturn's versicle may stand among them.
@@ -138,7 +145,8 @@ export type Capitulum = { ref?: string; text: string };
 /**
  * A responsory: the response, its versicle, the part of the response repeated
  * after the versicle, and what is repeated after the *Glória Patri*, where it
- * is said.
+ * is said. In the Office of the Dead the *Réquiem* stands in the *Glória Patri*'s
+ * place, and `gloria` follows it.
  */
 export type Responsorium = {
   responsum: string;
@@ -160,13 +168,17 @@ export type LectioMatutini = {
 export type Nocturnus = { versus?: Versus; lectiones: LectioMatutini[] };
 
 /** A small Hour: Terce, Sext or None. */
-export type HoraMinor = { capitulum?: Capitulum; responsorium?: Responsorium; versus?: Versus };
+export type HoraMinor = {
+  capitulum?: Capitulum;
+  responsorium?: Responsorium;
+  versus?: VersusVelAntiphona;
+};
 
 export type Vesperae = {
   psalmodia?: Psalmodia;
   capitulum?: Capitulum;
   hymnus?: Hymnus;
-  versus?: Versus;
+  versus?: VersusVelAntiphona;
   magnificat?: Antiphona;
 };
 
@@ -190,7 +202,7 @@ export type Officium = {
     psalmodia?: Psalmodia;
     capitulum?: Capitulum;
     hymnus?: Hymnus;
-    versus?: Versus;
+    versus?: VersusVelAntiphona;
     benedictus?: Antiphona;
   };
   prima?: { lectioBrevis?: Capitulum };
