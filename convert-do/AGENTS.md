@@ -289,7 +289,15 @@ rank takes the base language's, read from the same input tree.
 - Only the **day trees** are published (`Sancti`, `Tempora`), plus days under
   `aliquibus locis`. Variants requiring a rubric system other than the one in
   force are dropped. A day whose Mass changes with the season is written as one
-  day per season. Each store is narrowed to the keys the published days hold.
+  day per season.
+- The **days are written once**, from the base language (`step12/Sancti`,
+  `step12/Tempora`), holding keys alone: what step 6 left inline is filed now
+  (`fileInline`), and the name goes into a fourth store, `nomen`
+  (`fileName`). `copy-mass-propers` bundles them into the calendar package.
+- Each language root holds only its **stores**, keyed by the base language's
+  keys. A translation's entry is what its own file of the same day says in the
+  key's place (`renderingsOf`), the rendering found on most days winning
+  (`chooseRenderings`).
 - The **Martyrology** is written beside the propers, for each language that has
   one (`publishMartyrology`): `Martyrologium/<MM-DD>.yml` (`titulus`, `elogia`),
   `mobile.yml` (the movable days' announcements) and `conclusio.yml`. It is

@@ -19,8 +19,9 @@ This library generates a complete liturgical calendar for any given year. It sup
 ## Installation
 
 The calendar and the propers are published separately: this package holds the
-calendar, and each language holds its own Mass propers and translations. Install
-the calendar and the languages you read.
+calendar and the days of the Mass propers, which are the same in every language,
+and each language holds its words for them — its readings, prayers and chants —
+and its translations. Install the calendar and the languages you read.
 
 ```bash
 pnpm add @sint-willibrordkerk/liturgical-calendar @sint-willibrordkerk/liturgical-calendar-la
@@ -28,8 +29,8 @@ pnpm add @sint-willibrordkerk/liturgical-calendar @sint-willibrordkerk/liturgica
 pnpm add @sint-willibrordkerk/liturgical-calendar @sint-willibrordkerk/liturgical-calendar-nl
 ```
 
-The propers run to well over a megabyte per language, so a caller carries only
-the languages they ask for.
+A language runs to about a megabyte, so a caller carries only the languages they
+ask for.
 
 ## Usage
 
@@ -57,8 +58,8 @@ they fall — but no day carries a Mass and nothing is translated.
 - `propers` (string[]): Array of proper names to include (e.g., `['ultrajectum', 'fsspx']`)
 - `language` (Language): A language package —
   `@sint-willibrordkerk/liturgical-calendar-la`, `…-nl` — imported and passed
-  in. It supplies both the Mass propers and the translations. Optional; omit it
-  for the bare calendar.
+  in. It supplies the words of the Mass propers and the translations. Optional;
+  omit it for the bare calendar, whose days have no Mass.
 - `options` (Options): Optional.
   - `martyrologium` (boolean): give each day the Roman Martyrology; see
     [The Martyrology](#the-martyrology).
@@ -223,7 +224,7 @@ in this repository. To rebuild them, point `DIVINUM_OFFICIUM_BASE` at a checkout
 and run:
 
 ```bash
-pnpm pipeline --from 0 --to 11
+pnpm pipeline
 pnpm copy-mass-propers
 ```
 
@@ -238,8 +239,9 @@ pnpm start # uses scripts/main.js to generate test_output.yml
 ```
 ├── assets/              # What every language shares
 │   ├── calendar1962.yml # Base calendar
-│   └── propers/         # Local proper calendars
-├── languages/           # One package per language
+│   ├── propers/         # Local proper calendars
+│   └── mass-propers/    # The days of the Mass propers, keys only (generated)
+├── languages/           # One package per language: what the keys say
 │   ├── la/assets/       #   mass-propers/la/, martyrologium/la/ (generated)
 │   └── nl/assets/       #   mass-propers/nl/ (generated), translations/nl/
 ├── convert-do/          # The pipeline that generates the Mass propers

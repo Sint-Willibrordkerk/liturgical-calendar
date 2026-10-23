@@ -1,9 +1,11 @@
-import { loadAsset } from "./assert/utils";
+import { findAsset, loadAsset } from "./assert/utils";
 import type { Language } from "../language";
 import {
   selectMassProper,
   applySeason,
   nameSaint,
+  isMassSection,
+  selectVariant,
   type Stores,
 } from "../massPropers";
 import type { CalendarData, RawMassProper } from "../types";
@@ -129,12 +131,17 @@ function loadStores(language: Language): Stores {
     readings: store("lectio") as Stores["readings"],
     prayers: store("oratio") as Stores["prayers"],
     chants: store("antiphona") as Stores["chants"],
+    names: store("nomen") as Stores["names"],
   };
 }
 
 /**
  * The mass proper for a liturgical title, reduced to the rubric in force and
- * with its readings resolved against the store.
+ * with its texts said in the language.
+ *
+ * The day is the same in every language and is bundled here, holding keys
+ * alone; the language supplies what each key says. A day the language says
+ * nothing of has no Mass in it — nor has any day without a language.
  */
 export function loadMassPropersByTitle(
   title: string,
@@ -143,26 +150,30 @@ export function loadMassPropersByTitle(
   season?: { date: Date; easter: Date }
 ): RawMassProper | undefined {
   const fileName = titleToFileName(title);
-  const at = (tree: string) =>
-    fromLanguage(language, `mass-propers/${language.code}/${tree}/${fileName}.yml`);
+  const at = (tree: string) => findAsset(`mass-propers/${tree}/${fileName}.yml`);
   const data = at("Sancti") ?? at("Tempora");
 
   if (!data || typeof data !== "object") {
     return undefined;
   }
 
-  const selected = selectMassProper(
-    data as Record<string, unknown>,
-    rubrics,
-    loadStores(language)
+  const document = data as Record<string, unknown>;
+  const selected = selectMassProper(document, rubrics, loadStores(language));
+  // The day holds keys, and the language's words for them are its Mass. Where
+  // it has words for none, the language has no Mass for the day, whatever
+  // empty section the day carries inline.
+  const says = Object.keys(selected).some(
+    (key) =>
+      isMassSection(key) && typeof selectVariant(document[key], rubrics) === "string"
   );
+  if (!says) return undefined;
   const seasonal = season
     ? applySeason(selected, season.date, season.easter)
     : selected;
   // The commons leave the saint's name open; the day supplies it.
   const proper = nameSaint(seasonal);
 
-  return Object.keys(proper).length === 0
-    ? undefined
-    : (proper as RawMassProper);
+  return Object.keys(proper).some(isMassSection)
+    ? (proper as RawMassProper)
+    : undefined;
 }

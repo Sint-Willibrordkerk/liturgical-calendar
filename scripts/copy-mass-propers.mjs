@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 /**
- * Copy the pipeline's last step — the Mass propers, and the Martyrology where a
- * language has one — into the language package for each language it produced:
- * `assets/mass-propers/<code>/` and `assets/martyrologium/<code>/`.
+ * Copy the pipeline's last step to where it is published: the days, which are
+ * the same in every language, into this package's `assets/mass-propers/`; and
+ * each language's stores, and its Martyrology where it has one, into its
+ * package's `assets/mass-propers/<code>/` and `assets/martyrologium/<code>/`.
  *
  * The pipeline writes to `.divinum-officium/`, which is not committed, and the
  * propers run to megabytes per language, so they are not committed either. This
@@ -18,6 +19,12 @@ import { consola } from "consola";
 
 const SOURCE = ".divinum-officium/step12";
 const PACKAGES = "languages";
+
+/** The trees of days the pipeline writes once, beside the languages. */
+const DAY_TREES = ["Sancti", "Tempora"];
+
+/** Where this package bundles the days from. */
+const DAYS = join("assets", "mass-propers");
 
 async function directorySize(dir) {
   let bytes = 0;
@@ -64,9 +71,16 @@ async function main() {
     process.exit(1);
   }
 
+  // The days, keys only, bundled with the calendar for every language.
+  await rm(DAYS, { recursive: true, force: true });
+  for (const tree of DAY_TREES) {
+    await cp(join(SOURCE, tree), join(DAYS, tree), { recursive: true });
+  }
+  await report("days", DAYS);
+
   const unpackaged = [];
   for (const entry of await readdir(SOURCE, { withFileTypes: true })) {
-    if (!entry.isDirectory()) continue;
+    if (!entry.isDirectory() || DAY_TREES.includes(entry.name)) continue;
     const code = entry.name;
     const pkg = join(PACKAGES, code);
     if (!(await exists(join(pkg, "package.json")))) {
@@ -74,7 +88,7 @@ async function main() {
       continue;
     }
 
-    // Replace the generated propers and Martyrology only. Anything else in the
+    // Replace the generated stores and Martyrology only. Anything else in the
     // package's assets — the translations — is hand-maintained and left alone.
     const target = join(pkg, "assets", "mass-propers", code);
     await rm(target, { recursive: true, force: true });

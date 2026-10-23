@@ -28,9 +28,13 @@ export function stringifyStep(value: unknown): string {
   return JSON.stringify(value);
 }
 
-/** Write a published file. */
+/**
+ * Write a published file. Each entry is written out in full, never as an
+ * anchor and alias: a translation's store names one text under several keys,
+ * and a reader should see the text under each.
+ */
 export function stringifyOutput(value: unknown): string {
-  return stringifyYaml(value);
+  return stringifyYaml(value, { aliasDuplicateObjects: false });
 }
 
 /** Swap an intermediate path's extension for the published one. */

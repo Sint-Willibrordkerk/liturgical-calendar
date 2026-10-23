@@ -31,11 +31,21 @@ function readAssetsFromFolder(
   return assets;
 }
 
-// Only what every language shares: the calendar itself, the sanctoral, and the
-// local propers. The Mass propers and the translations belong to a language and
-// are published as `@liturgical-calendar/<code>`, built from `languages/` by
-// `pnpm build:languages` — so this bundle stays small whatever languages exist.
+// Only what every language shares: the calendar itself, the sanctoral, the
+// local propers, and the days of the Mass propers, which hold keys alone. What
+// the keys say belongs to a language and is published as
+// `@sint-willibrordkerk/liturgical-calendar-<code>`, built from `languages/` by
+// `pnpm build:languages` — so this bundle stays the same whatever languages exist.
 const bundledAssets = readAssetsFromFolder("assets");
+
+// The days are generated, not committed. Built without them, every language
+// would quietly come out with no Mass on any day.
+if (!Object.keys(bundledAssets).some((path) => path.startsWith("mass-propers/"))) {
+  throw new Error(
+    "assets/mass-propers/ is empty. The Mass propers are generated: run\n" +
+      "  pnpm pipeline\n  pnpm copy-mass-propers"
+  );
+}
 
 export default defineConfig({
   entry: ["src/index.ts"],
