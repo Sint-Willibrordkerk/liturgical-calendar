@@ -124,6 +124,7 @@ describe("selectMassProper", () => {
     chants: {
       "ps-65-4": { antiphon: { ref: "Ps 65:4", text: "Omnis terra" } },
     },
+    names: { adriani: "Adriáni" },
   };
 
   it("selects each section and resolves its readings", () => {
@@ -169,6 +170,16 @@ describe("selectMassProper", () => {
     ).toEqual({ lectio: { ref: "Matt 5:1", verses: ["In illo témpore"] } });
   });
 
+  it("says the name in the language, and leaves out a key it has no words for", () => {
+    expect(
+      selectMassProper(
+        { title: "S. Adriani, Martyris", name: "adriani", lectio: [v("isa-1-1")] },
+        rubrics("1962"),
+        stores
+      )
+    ).toEqual({ title: "S. Adriani, Martyris", name: "Adriáni" });
+  });
+
   it("keeps a reading the pipeline left inline", () => {
     const inline = { ref: "Eccli 44:1", text: "Beátus vir" };
     expect(
@@ -182,7 +193,7 @@ describe("the store contract", () => {
     // Each published chant section must draw on the chant store. Adding one to
     // the pipeline without adding it here left its key unresolved in the
     // calendar, so assert the whole set resolves rather than a sample.
-    const stores = { readings: {}, prayers: {}, chants: {} } as never;
+    const stores = { readings: {}, prayers: {}, chants: {}, names: {} } as never;
     for (const key of CHANT_SECTIONS) {
       (stores as { chants: Record<string, unknown> }).chants[`k-${key}`] = {
         ref: key,

@@ -14,6 +14,10 @@ import {
   martyrologyDay,
   martyrologyMobile,
   martyrologyConclusion,
+  fileInline,
+  fileName,
+  renderingsOf,
+  chooseRenderings,
 } from "./step12";
 import { isOtherRubricSystem } from "./lib/rubrics";
 
@@ -322,6 +326,198 @@ describe("step12 — the store subset", () => {
 
   it("skips a key the store does not hold rather than emitting a hole", () => {
     expect(storeSubset({ "rom-1-1": { text: "x" } }, new Set(["nope"]))).toEqual({});
+  });
+});
+
+describe("step12 — every text is a key", () => {
+  const empty = () => ({ lectio: {}, oratio: {}, antiphona: {} });
+
+  it("files a value left inline that carries words", () => {
+    const passio = ["Pássio Dómini nostri Jesu Christi.", "!Matt 26:1-75; 27:1-66.", "In illo témpore"];
+    const stores = empty();
+    const out = fileInline({ evangelium: [v(passio)] }, stores);
+    const key = (out.evangelium as { value: string }[])[0]!.value;
+    expect(key).toMatch(/^passio-domini-nostri-jesu-[0-9a-f]{8}$/);
+    expect(stores.lectio).toEqual({ [key]: passio });
+  });
+
+  it("files a chant whose words all stand in its verse", () => {
+    const chant = {
+      antiphon: { ref: "Ps 131:16-17", text: "" },
+      verse: { ref: "", text: "Sacerdótes ejus índuam salutári" },
+    };
+    const stores = empty();
+    const out = fileInline({ graduale: [v(chant)] }, stores);
+    const key = (out.graduale as { value: string }[])[0]!.value;
+    expect(key).toMatch(/^sacerdotes-ejus-induam-salutari-[0-9a-f]{8}$/);
+    expect(stores.antiphona).toEqual({ [key]: chant });
+  });
+
+  it("leaves a value that carries no words as it is", () => {
+    const stores = empty();
+    const doc = {
+      oratio: [v({ text: "", closure: "" })],
+      secreta: [v({ text: "@Commune/Propaganda:Secreta", closure: "" })],
+    };
+    expect(fileInline(doc, stores)).toEqual(doc);
+    expect(stores).toEqual(empty());
+  });
+
+  it("files the same value once, under one key", () => {
+    const stores = empty();
+    const lines = ["Pássio Dómini nostri Jesu Christi."];
+    const a = fileInline({ evangelium: [v(lines)] }, stores);
+    const b = fileInline({ evangelium: [v([...lines])] }, stores);
+    expect(b).toEqual(a);
+    expect(Object.keys(stores.lectio)).toHaveLength(1);
+  });
+
+  it("leaves a key alone, and a section that draws on no store", () => {
+    const stores = empty();
+    const doc = { lectio: [v("rom-1-1")], prefatio: [v("trinitate")], title: "S. X" };
+    expect(fileInline(doc, stores)).toEqual(doc);
+  });
+
+  it("files the name, keyed in the form of a reference", () => {
+    const names = {};
+    expect(fileName({ title: "S. Adriani, Martyris", name: "Adriáni" }, names)).toEqual({
+      title: "S. Adriani, Martyris",
+      name: "adriani",
+    });
+    expect(names).toEqual({ adriani: "Adriáni" });
+  });
+
+  it("gives a name filed again the key it was given", () => {
+    const names = {};
+    fileName({ name: "Adriáni" }, names);
+    expect(fileName({ name: "Adriáni" }, names)).toEqual({ name: "adriani" });
+    expect(names).toEqual({ adriani: "Adriáni" });
+  });
+
+  it("never gives a key twice, when two names fold alike", () => {
+    const names = {};
+    fileName({ name: "Adriáni" }, names);
+    expect(fileName({ name: "Adriani" }, names)).toEqual({ name: "adriani-2" });
+    expect(names).toEqual({ adriani: "Adriáni", "adriani-2": "Adriani" });
+  });
+
+  it("leaves a day without a name alone", () => {
+    expect(fileName({ title: "Dominica I Adventus" }, {})).toEqual({
+      title: "Dominica I Adventus",
+    });
+  });
+});
+
+describe("step12 — a translation's renderings", () => {
+  const stores = {
+    lectio: { "sap-10-10-14": { ref: "Sap 10:10-14", verses: ["De rechtvaardige"] } },
+    oratio: {
+      "wil-ons-heer-1": { text: "Wil ons, Heer", closure: "Door onze Heer" },
+      "god-die-ons-2": { text: "God, die ons", closure: "Door onze Heer" },
+    },
+    antiphona: {},
+  };
+
+  it("pairs each base key with what the translation says in its place", () => {
+    expect(
+      renderingsOf(
+        { lectio: [v("sap-10-10-14")], oratio: [v("deus-qui-a"), v("fac-nos-b", ["octava"])] },
+        { lectio: [v("sap-10-10-14")], oratio: [v("wil-ons-heer-1"), v("god-die-ons-2", ["octava"])] },
+        stores
+      )
+    ).toEqual([
+      { store: "lectio", key: "sap-10-10-14", rendering: stores.lectio["sap-10-10-14"] },
+      { store: "oratio", key: "deus-qui-a", rendering: stores.oratio["wil-ons-heer-1"] },
+      { store: "oratio", key: "fac-nos-b", rendering: stores.oratio["god-die-ons-2"] },
+    ]);
+  });
+
+  it("renders nothing where the translation lacks the variant the base language has", () => {
+    expect(
+      renderingsOf(
+        { oratio: [v("adjuvet-a"), v("sumptis-b", ["octava"])] },
+        { oratio: [v("wil-ons-heer-1")] },
+        stores
+      ).map(({ key, rendering }) => [key, rendering])
+    ).toEqual([["adjuvet-a", stores.oratio["wil-ons-heer-1"]]]);
+  });
+
+  it("matches a condition however its tokens are ordered", () => {
+    expect(
+      renderingsOf(
+        { oratio: [v("fac-nos-b", ["octava", "1962"])] },
+        { oratio: [v("god-die-ons-2", ["1962", "octava"])] },
+        stores
+      ).map(({ key }) => key)
+    ).toEqual(["fac-nos-b"]);
+  });
+
+  it("pairs the default with the default, not with the variant for the rubric in force", () => {
+    expect(
+      renderingsOf(
+        { lectio: [v("phil-2-5-11"), v("sap-3-1-8", ["1962"])] },
+        { lectio: [v("sap-10-10-14"), v("other", ["1962"])] },
+        stores
+      ).map(({ key, rendering }) => [key, rendering])
+    ).toEqual([["phil-2-5-11", stores.lectio["sap-10-10-14"]]]);
+  });
+
+  it("renders nothing where the translation lacks the section or the key", () => {
+    expect(
+      renderingsOf(
+        { lectio: [v("sap-10-10-14")], oratio: [v("deus-qui-a")] },
+        { oratio: [v("not-in-the-store")] },
+        stores
+      )
+    ).toEqual([]);
+  });
+
+  it("renders a value the translation left inline as itself, if it carries words", () => {
+    const passie = ["Het lijden van onze Heer"];
+    expect(
+      renderingsOf(
+        { evangelium: [v("passio-domini-1")], secreta: [v("suscipe-2")] },
+        { evangelium: [v(passie)], secreta: [v({ text: "", closure: "" })] },
+        stores
+      )
+    ).toEqual([{ store: "lectio", key: "passio-domini-1", rendering: passie }]);
+  });
+
+  it("renders the name from the translation's name of the same day", () => {
+    expect(renderingsOf({ name: "adriani" }, { name: "Hadrianus" }, stores)).toEqual([
+      { store: "nomen", key: "adriani", rendering: "Hadrianus" },
+    ]);
+  });
+
+  it("keeps the rendering found on most days", () => {
+    const a = { text: "Wil ons, Heer" };
+    const b = { text: "Heer, wil ons" };
+    expect(
+      chooseRenderings([
+        { store: "oratio", key: "k", rendering: b },
+        { store: "oratio", key: "k", rendering: a },
+        { store: "oratio", key: "k", rendering: { ...a } },
+      ])
+    ).toEqual({ oratio: { k: a } });
+  });
+
+  it("keeps the one met first between renderings found as often", () => {
+    const a = { text: "Wil ons, Heer" };
+    const b = { text: "Heer, wil ons" };
+    expect(
+      chooseRenderings([
+        { store: "oratio", key: "k", rendering: b },
+        { store: "oratio", key: "k", rendering: a },
+      ])
+    ).toEqual({ oratio: { k: b } });
+  });
+
+  it("orders each store by key", () => {
+    const chosen = chooseRenderings([
+      { store: "nomen", key: "b", rendering: "B" },
+      { store: "nomen", key: "a", rendering: "A" },
+    ]);
+    expect(Object.keys(chosen.nomen!)).toEqual(["a", "b"]);
   });
 });
 

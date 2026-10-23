@@ -37,12 +37,19 @@ export type Chant = {
 export type LectioStore = Record<string, Reading>;
 export type PrayerStore = Record<string, Prayer>;
 export type ChantStore = Record<string, Chant>;
+export type NameStore = Record<string, string>;
 
-/** The stores, and the sections whose value may be a key into each. */
+/**
+ * The stores, and the sections whose value may be a key into each.
+ *
+ * The days are the same for every language and hold keys alone; a language is
+ * its stores, each entry its own words for the text a key names.
+ */
 export type Stores = {
   readings: LectioStore;
   prayers: PrayerStore;
   chants: ChantStore;
+  names: NameStore;
 };
 
 /**
@@ -70,6 +77,16 @@ export const CHANT_SECTIONS = new Set([
   "offertorium",
   "communio",
 ]);
+
+/** The saint's name, which the commons' `N.` gives way to. */
+export const NAME_SECTIONS = new Set(["name"]);
+
+/** True when `key` is a section of the Mass itself, not one designating it. */
+export function isMassSection(key: string): boolean {
+  return (
+    READING_SECTIONS.has(key) || PRAYER_SECTIONS.has(key) || CHANT_SECTIONS.has(key)
+  );
+}
 
 function isVariantArray(value: unknown): value is Variant[] {
   return (
@@ -290,13 +307,15 @@ function storeFor(key: string, stores: Stores): Record<string, unknown> | undefi
   if (READING_SECTIONS.has(key)) return stores.readings;
   if (PRAYER_SECTIONS.has(key)) return stores.prayers;
   if (CHANT_SECTIONS.has(key)) return stores.chants;
+  if (NAME_SECTIONS.has(key)) return stores.names;
   return undefined;
 }
 
 /**
  * Reduce a shipped document to the sections that apply under `rubrics`, with
- * readings and prayers resolved against their stores. A section with nothing
- * applicable is left out entirely rather than carried as undefined.
+ * readings, prayers, chants and the name resolved against their stores. A
+ * section with nothing applicable, or a key the language has no words for, is
+ * left out entirely rather than carried as undefined.
  */
 export function selectMassProper(
   document: Record<string, unknown>,

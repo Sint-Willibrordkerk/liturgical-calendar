@@ -137,7 +137,7 @@ function identityOf(value: LectioEntry): string {
 }
 
 /** A short, stable hash of a reading's content. */
-function contentHash(text: string): string {
+export function contentHash(text: string): string {
   // FNV-1a, 32-bit.
   let h = 0x811c9dc5;
   for (let i = 0; i < text.length; i++) {
@@ -148,7 +148,7 @@ function contentHash(text: string): string {
 }
 
 /** The opening words of a reading, for a key that is still readable. */
-function openingWords(text: string, count = 4): string {
+export function openingWords(text: string, count = 4): string {
   const words = text.trim().split(/\s+/).slice(0, count).join(" ");
   return refToKey(words) ?? "";
 }

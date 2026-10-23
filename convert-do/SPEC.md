@@ -57,6 +57,12 @@ split (step 10), where a saint's prayers first stand as texts of their own. It i
 never rewritten, only extended, and step 12 ships the subset the propers
 actually name.
 
+The same holds between languages. A translation says the base language's Mass
+in other words; it does not make the day of its own. So the days are published
+**once**, as the base language lays them out, and holding keys alone; a
+translation is published as stores **keyed by the base language's keys**, each
+entry the translation's wording of that text (step 12).
+
 ## Conventions used in this document
 
 - **Input** — what the step consumes, and from where.
@@ -1571,13 +1577,108 @@ is the Divine Office, is not carried into the published assets.
 
 ### Output
 
-- One file per document that has Mass content, holding **only** its Mass
-  sections, in the rubric-variant shape step 11 left them.
-- A `lectio.yml`, `oratio.yml` and `antiphona.yml` at each language root, holding
-  **only** the store entries those sections refer to.
+- The **days**, once for every language, at the root of the output —
+  `Sancti\…` and `Tempora\…`: one file per document of the **base language**
+  that has Mass content, holding **only** its Mass sections, in the
+  rubric-variant shape step 11 left them. A text is never written into a day; a
+  section holds a key (see [Every text is a key](#every-text-is-a-key)).
 - A document with no Mass content is **not written** at all.
+- At each language root, four **stores** — `lectio.yml`, `oratio.yml`,
+  `antiphona.yml` and `nomen.yml` — keyed by the keys the days hold, each entry
+  that language's wording of the text (see [A translation's stores are keyed by
+  the base language's](#a-translations-stores-are-keyed-by-the-base-languages)).
 - The Martyrology, for each language that has one (see [The
   Martyrology](#the-martyrology)).
+
+```
+step12\
+  Sancti\adriani-martyris.yml     the day, keys only
+  Tempora\…
+  la\lectio.yml  oratio.yml  antiphona.yml  nomen.yml  Martyrologium\…
+  nl\lectio.yml  oratio.yml  antiphona.yml  nomen.yml
+```
+
+### The days are the base language's
+
+A translation renders the texts of a day; what the day *is* — which sections it
+has, which variant applies under which rubric, which common it draws on — is
+the base language's. After step 11 a translation's day is the base language's
+day in other words, and where the two differ in shape it is the translation
+that has gone astray: it borrowed from another common, it lacks a variant, a
+file of it holds another saint. Published side by side, the two would carry
+the same structure twice and let it drift.
+
+So the days are published from the base language alone, and a translation
+contributes only its wording. A document of a translation that the base
+language does not publish is not published either; the sources carry one,
+`Sancti\officium-defunctorum-11-02m1`.
+
+### Every text is a key
+
+A day file holds identifiers and keys, and no text in any language, so the one
+file serves every language:
+
+- `title` and `prefatio` are identifiers and are written as they stand: the
+  designation the file is filed under, and the name of a preface.
+- A reading, prayer or chant holds the key step 6 filed it under.
+- A value step 6 **left inline** and that carries words — a Passion read across
+  several references, a chant whose antiphon is empty and whose words all stand
+  in its verse — is filed now, into the store its section draws on, keyed by its
+  opening words and a short hash of its whole content, as step 6 keys an entry
+  without a reference. A value that carries no words stays as it is: there is
+  nothing in it to say in any language.
+- `name` is filed into a fourth store, `nomen.yml`, and the day holds its key:
+  the base language's name in the form step 6 gives a reference — lowercased,
+  accents folded, every other run a single hyphen. A key is never given twice:
+  a second name folding to a key already taken takes the next free counter, as
+  in step 6.
+
+```yaml
+# Sancti\adriani-martyris.yml
+title: S. Adriani, Martyris
+name: adriani
+introitus: ps-20-2-3
+oratio: præsta-quæsumus-omnipotens-deus-96d4f120
+# la\nomen.yml
+adriani: Adriáni
+# nl\nomen.yml
+adriani: Hadrianus
+```
+
+### A translation's stores are keyed by the base language's
+
+A translation's wording of a base text is found where the two say it: on the
+same day. For every published day, every kept section and every variant of it,
+the base language holds a key; the translation's **rendering** of that key is
+what the translation's own file of the same day says in that place —
+
+- its variant of the **same condition** — its default for the base language's
+  default. Step 11 drops a variant only where it repeats the default, so where
+  the base language still tells a variant apart and the translation has none,
+  the translation lacks that text: its default says another, and renders
+  nothing here;
+- resolved against the translation's own store, or the value itself where the
+  translation left it inline.
+
+A rendering that carries no words is no rendering. A day the translation has no
+file for, or a section its file lacks, renders nothing.
+
+A base text is said on many days, and a translation does not always say it the
+same way on each: two translators rendered the same collect differently, or a
+file of the translation borrowed another common than the base language did. A
+text has one home in every language, so one rendering is kept — the one found
+on **most** days; between renderings found on as many days, the one met first,
+days being visited in path order. The rest are not published.
+
+`name` is rendered the same way, from the translation's `name` of the same day.
+
+A base key the translation never renders has no entry in its store. The
+calendar, reading that language, says nothing for that section — as it said
+nothing where the translation's own file lacked it.
+
+The base language's stores hold its own entries for the keys the days hold.
+
+Each store is ordered by key.
 
 ### Which trees are published
 
@@ -1723,9 +1824,10 @@ between runs.
 
 ### The store subset
 
-Only the entries the kept sections name are carried over. The Office readings
-share the step 6 store but are not published, so most of its entries do not
-travel with the propers; neither do entries only a dropped variant named.
+Only the entries the days name are carried over. The Office readings share the
+step 6 store but are not published, so most of its entries do not travel with
+the propers; neither do entries only a dropped variant named, nor a
+translation's entries the base language's days never come to.
 
 ### The Martyrology
 
@@ -1799,11 +1901,14 @@ conclusion either: there is no reading for it to close.
 
 ### Edge cases
 
-- **A reading left inline** by step 6 — one carrying several references, or an
-  unresolved inline reference — stays inline here; it is content,
-  not a key, and needs no store entry.
-- **A key naming no store entry** is impossible by construction, since the
-  subset is built from the keys the kept sections actually hold.
+- **A value left inline** by step 6 is filed here where it carries words (see
+  [Every text is a key](#every-text-is-a-key)). One that carries none — an empty
+  section, an unresolved inline reference — stays inline and needs no store
+  entry.
+- **A key naming no entry in the base language's store** is impossible by
+  construction, since the subset is built from the keys the days actually hold.
+  In a translation's store it is the rule wherever the translation renders
+  nothing.
 
 ---
 

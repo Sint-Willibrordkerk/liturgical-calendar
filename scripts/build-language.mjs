@@ -34,7 +34,7 @@ try {
 } catch {
   throw new Error(
     `${name} has no assets. The Mass propers are generated: run\n` +
-      `  pnpm pipeline --from 0 --to 11\n  pnpm copy-mass-propers`
+      `  pnpm pipeline\n  pnpm copy-mass-propers`
   );
 }
 

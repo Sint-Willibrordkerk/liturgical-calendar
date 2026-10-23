@@ -8,9 +8,14 @@ import {
 } from "./lib/serialize.js";
 import { consola } from "consola";
 import { collectYmlFiles, ensureDir } from "./lib/batch";
-import { isVariantArray } from "./lib/variants";
-import type { LectioEntries } from "./step6.js";
+import { isVariantArray, type Variant } from "./lib/variants";
 import {
+  contentHash,
+  openingWords,
+  refToKey,
+} from "./step6.js";
+import {
+  BASE_LANGUAGE,
   PUBLISHED_RUBRIC,
   isOtherRubricSystem,
 } from "./lib/rubrics.js";
@@ -203,14 +208,230 @@ export function usedReadingKeys(obj: Record<string, unknown>): Set<string> {
 }
 
 /** The store entries named by `keys`; a key the store lacks is skipped. */
-export function storeSubset(
-  store: LectioEntries,
+export function storeSubset<T>(
+  store: Record<string, T>,
   keys: Set<string>
-): LectioEntries {
-  const out: LectioEntries = {};
+): Record<string, T> {
+  const out: Record<string, T> = {};
   for (const key of [...keys].sort()) {
     const entry = store[key];
     if (entry !== undefined) out[key] = entry;
+  }
+  return out;
+}
+
+// --- Every text a key ----------------------------------------------------------
+
+/**
+ * The store of the saints' names, beside the three step 6 opened. A day holds
+ * the key of its name, and each language says the name in its own words.
+ */
+export const NAME_STORE = "nomen";
+
+/** A store as published: keys to whatever the language says for them. */
+type Entries = Record<string, unknown>;
+
+/**
+ * Every string a value says, leaving out its references, its closing formula,
+ * and the lines the sources mark with `!` as a direction to the reader
+ * (`!Oratio propria.`) or a reference within the text.
+ */
+function wordsOf(value: unknown): string {
+  if (typeof value === "string") {
+    return value
+      .split("\n")
+      .filter((line) => !line.trim().startsWith("!"))
+      .join("\n");
+  }
+  if (Array.isArray(value)) return value.map(wordsOf).join("\n");
+  if (value != null && typeof value === "object") {
+    return Object.entries(value)
+      .filter(([key]) => key !== "ref" && key !== "closure")
+      .map(([, part]) => wordsOf(part))
+      .join("\n");
+  }
+  return "";
+}
+
+/**
+ * True when a value says something. A lone `@…` line is a reference step 4
+ * could not resolve, a placeholder rather than words.
+ */
+function carriesWords(value: unknown): boolean {
+  const words = wordsOf(value).trim();
+  return words !== "" && !(words.startsWith("@") && !words.includes("\n"));
+}
+
+/** The store a section draws on, or undefined where it holds an identifier. */
+function storeOf(section: string): string | undefined {
+  return STORES.find(({ sections }) => sections.has(section))?.file;
+}
+
+/**
+ * File a value into `store` and return its key: its opening words and a hash
+ * of the whole value, as step 6 keys an entry without a reference. The same
+ * value filed again gets the key it was given; a key is never given twice.
+ */
+function fileValue(value: unknown, store: Entries): string {
+  const identity = JSON.stringify(value);
+  const base = `${openingWords(wordsOf(value))}-${contentHash(identity)}`.replace(/^-/, "");
+  let key = base;
+  let n = 1;
+  while (key in store && JSON.stringify(store[key]) !== identity) key = `${base}-${++n}`;
+  store[key] = value;
+  return key;
+}
+
+/**
+ * File every value step 6 left inline that carries words — a Passion read
+ * across several references, a chant whose antiphon is empty — so the day holds
+ * keys alone and serves every language. A value carrying no words stays: there
+ * is nothing in it to say. `stores` is added to.
+ */
+export function fileInline(
+  obj: Record<string, unknown>,
+  stores: Record<string, Entries>
+): Step12Output {
+  const out: Step12Output = {};
+  for (const [section, value] of Object.entries(obj)) {
+    const file = storeOf(section);
+    out[section] =
+      file === undefined || !isVariantArray(value)
+        ? value
+        : value.map((variant) =>
+            typeof variant.value === "string" || !carriesWords(variant.value)
+              ? variant
+              : { ...variant, value: fileValue(variant.value, stores[file]!) }
+          );
+  }
+  return out;
+}
+
+/**
+ * File the day's name into `names` and leave its key: the name in the form a
+ * reference is keyed in. A second name folding to a key already taken takes the
+ * next free counter.
+ */
+export function fileName(
+  obj: Record<string, unknown>,
+  names: Record<string, string>
+): Step12Output {
+  const name = obj.name;
+  if (typeof name !== "string") return obj;
+  const base = refToKey(name);
+  if (base === null) return obj;
+  let key = base;
+  let n = 1;
+  while (key in names && names[key] !== name) key = `${base}-${++n}`;
+  names[key] = name;
+  return { ...obj, name: key };
+}
+
+/**
+ * A base key, and what a translation says in its place. `untranslated` where
+ * that is the base language's own text: a translation's sources carry it where
+ * they have nothing of their own.
+ */
+export type Rendering = {
+  store: string;
+  key: string;
+  rendering: unknown;
+  untranslated?: boolean;
+};
+
+/**
+ * The variant of `section` under exactly `condition`. Step 11 drops a variant
+ * only where it repeats the default, so where the base language still tells a
+ * variant apart and the translation has none, the translation lacks that text:
+ * its default says another.
+ */
+function sameCondition(section: Variant[], condition: string[]): Variant | undefined {
+  const tokens = JSON.stringify([...condition].sort());
+  return section.find((variant) => JSON.stringify([...variant.condition].sort()) === tokens);
+}
+
+/**
+ * What a translation's file of a day says in the place of each key the base
+ * language's file of it holds: its variant of the same condition, resolved
+ * against its own store, or the value itself where it left it inline.
+ * One rendering of a key per day, so a day counts once however often it says it.
+ */
+export function renderingsOf(
+  base: Record<string, unknown>,
+  translation: Record<string, unknown>,
+  stores: Record<string, Entries>,
+  baseStores: Record<string, Entries> = {}
+): Rendering[] {
+  const out: Rendering[] = [];
+  const seen = new Set<string>();
+  const add = (store: string, key: string, rendering: unknown) => {
+    if (rendering === undefined || !carriesWords(rendering)) return;
+    const id = JSON.stringify(rendering);
+    if (seen.has(JSON.stringify([store, key, id]))) return;
+    seen.add(JSON.stringify([store, key, id]));
+    out.push(
+      id === JSON.stringify(baseStores[store]?.[key])
+        ? { store, key, rendering, untranslated: true }
+        : { store, key, rendering }
+    );
+  };
+
+  for (const [section, value] of Object.entries(base)) {
+    if (section === "name") {
+      if (typeof value === "string") add(NAME_STORE, value, translation.name);
+      continue;
+    }
+    const file = storeOf(section);
+    const theirs = translation[section];
+    if (file === undefined || !isVariantArray(value) || !isVariantArray(theirs)) {
+      continue;
+    }
+    for (const variant of value) {
+      if (typeof variant.value !== "string") continue;
+      const said = sameCondition(theirs, variant.condition)?.value;
+      add(file, variant.value, typeof said === "string" ? stores[file]?.[said] : said);
+    }
+  }
+  return out;
+}
+
+/**
+ * One rendering per key — the one found on most days, the one met first
+ * between renderings found as often — each store ordered by key. The base
+ * language's own text is kept only where the translation says it no other way.
+ */
+export function chooseRenderings(
+  renderings: Rendering[]
+): Record<string, Entries> {
+  type Tally = { count: number; rendering: unknown; untranslated: boolean };
+  // store -> key -> rendering -> how often, and the rendering itself
+  const tally = new Map<string, Map<string, Map<string, Tally>>>();
+  for (const { store, key, rendering, untranslated = false } of renderings) {
+    if (!tally.has(store)) tally.set(store, new Map());
+    const byKey = tally.get(store)!;
+    if (!byKey.has(key)) byKey.set(key, new Map());
+    const found = byKey.get(key)!;
+    const id = JSON.stringify(rendering);
+    const seen = found.get(id);
+    if (seen) seen.count++;
+    else found.set(id, { count: 1, rendering, untranslated });
+  }
+
+  const out: Record<string, Entries> = {};
+  for (const [store, byKey] of tally) {
+    const entries: Entries = {};
+    for (const key of [...byKey.keys()].sort()) {
+      // A Map keeps the order its entries were met in, so a strict `>` keeps
+      // the first of those found as often.
+      const better = (a: Tally, b: Tally) =>
+        a.untranslated !== b.untranslated ? b.untranslated : a.count > b.count;
+      let best: Tally | undefined;
+      for (const candidate of byKey.get(key)!.values()) {
+        if (best === undefined || better(candidate, best)) best = candidate;
+      }
+      entries[key] = best!.rendering;
+    }
+    out[store] = entries;
   }
   return out;
 }
@@ -536,10 +757,33 @@ async function publishMartyrology(
   return written;
 }
 
+/** A path without its language root: `la/Sancti/x.json` -> `Sancti/x.json`. */
+function withoutLanguage(relPath: string): string {
+  return relPath.replace(/^[^/\\]*[/\\]/, "");
+}
+
+/** A publication's day: its Mass sections under the published rubric and season. */
+async function massOf(
+  inputDir: string,
+  { relPath, outRelPath, season }: Publication
+): Promise<Step12Output> {
+  const obj = parseStep(await readFile(join(inputDir, relPath), "utf-8"));
+  if (typeof obj !== "object" || obj === null || Array.isArray(obj)) {
+    throw new Error("Expected object");
+  }
+  const published = keepPublishedRubric(
+    keepMassSections(obj as Record<string, unknown>)
+  );
+  // Narrowed after the rubric filter, so a season is decided among the
+  // variants that could actually be chosen.
+  return relPath === outRelPath ? published : keepSeason(published, season);
+}
+
 /**
- * Batch runner: reads the step 11 tree under `inputDir` and writes the Mass
- * propers to `outputDir`, with a `lectio.yml` per language holding only the
- * readings those propers name.
+ * Batch runner: reads the step 11 tree under `inputDir` and writes to
+ * `outputDir` the days, once, as the base language lays them out and holding
+ * keys alone; and for each language the stores those keys name, a
+ * translation's keyed by the base language's.
  */
 export async function run(
   inputDir: string,
@@ -568,68 +812,94 @@ export async function run(
     byLanguage.get(lang)!.push(...publications);
   }
 
+  const readStores = async (lang: string) => {
+    const stores: Record<string, Entries> = {};
+    for (const { file } of STORES) {
+      try {
+        const raw = await readFile(join(inputDir, lang, file + STEP_EXT), "utf-8");
+        stores[file] = (parseStep(raw) ?? {}) as Entries;
+      } catch {
+        consola.warn(`Step 12: no ${file} store for ${lang}`);
+        stores[file] = {};
+      }
+    }
+    return stores;
+  };
+  const writeStores = async (lang: string, stores: Record<string, Entries>) => {
+    for (const file of [...STORES.map(({ file }) => file), NAME_STORE]) {
+      const storePath = join(outputDir, lang, file + ".yml");
+      await ensureDir(storePath, mkdirCache);
+      await writeFile(storePath, stringifyOutput(stores[file] ?? {}), "utf-8");
+    }
+  };
+
   let written = 0;
   let skipped = 0;
   let errors = 0;
 
-  for (const [lang, publications] of byLanguage) {
-    const stores = new Map<string, LectioEntries>();
-    const used = new Map<string, Set<string>>();
-    for (const { file } of STORES) {
-      used.set(file, new Set());
-      try {
-        const raw = await readFile(
-          join(inputDir, lang, file + STEP_EXT),
-          "utf-8"
-        );
-        stores.set(file, (parseStep(raw) ?? {}) as LectioEntries);
-      } catch {
-        consola.warn(`Step 12: no ${file} store for ${lang}`);
-        stores.set(file, {});
+  // The days, from the base language. Each is kept, keyed, for the
+  // translations to be read against.
+  const days = new Map<string, Step12Output>();
+  const baseStores = await readStores(BASE_LANGUAGE);
+  const names: Record<string, string> = {};
+  const used = new Map<string, Set<string>>(STORES.map(({ file }) => [file, new Set()]));
+  for (const publication of byLanguage.get(BASE_LANGUAGE) ?? []) {
+    try {
+      const mass = await massOf(inputDir, publication);
+      if (!hasMassContent(mass)) {
+        skipped++;
+        continue;
       }
+      const day = fileName(fileInline(mass, baseStores), names);
+      for (const { file, sections } of STORES) {
+        for (const key of usedKeys(day, sections)) used.get(file)!.add(key);
+      }
+      const outRelPath = withoutLanguage(publication.outRelPath);
+      days.set(outRelPath, day);
+      const outPath = join(outputDir, toOutputPath(outRelPath));
+      await ensureDir(outPath, mkdirCache);
+      await writeFile(outPath, stringifyOutput(sortSections(compactSections(day))), "utf-8");
+      written++;
+    } catch (err) {
+      errors++;
+      consola.error(`Error processing ${publication.relPath}:`, (err as Error).message);
     }
+  }
+  const published: Record<string, Entries> = {
+    [NAME_STORE]: storeSubset(names, new Set(Object.keys(names))),
+  };
+  for (const { file } of STORES) {
+    published[file] = storeSubset(baseStores[file]!, used.get(file)!);
+  }
+  await writeStores(BASE_LANGUAGE, published);
 
-    for (const { relPath, outRelPath, season } of publications) {
+  // Each translation, as stores keyed by the base language's keys.
+  for (const [lang, publications] of byLanguage) {
+    if (lang === BASE_LANGUAGE) continue;
+    const stores = await readStores(lang);
+    const renderings: Rendering[] = [];
+    let unmatched = 0;
+    for (const publication of publications) {
       try {
-        const raw = await readFile(join(inputDir, relPath), "utf-8");
-        const obj = parseStep(raw);
-        if (typeof obj !== "object" || obj === null || Array.isArray(obj)) {
-          throw new Error("Expected object");
-        }
-        const published = keepPublishedRubric(
-          keepMassSections(obj as Record<string, unknown>)
-        );
-        // Narrowed after the rubric filter, so a season is decided among the
-        // variants that could actually be chosen.
-        const mass =
-          relPath === outRelPath ? published : keepSeason(published, season);
-        if (!hasMassContent(mass)) {
-          skipped++;
+        const mass = await massOf(inputDir, publication);
+        const day = days.get(withoutLanguage(publication.outRelPath));
+        if (day === undefined) {
+          if (hasMassContent(mass)) unmatched++;
           continue;
         }
-        for (const { file, sections } of STORES) {
-          for (const key of usedKeys(mass, sections)) used.get(file)!.add(key);
-        }
-
-        const outPath = join(outputDir, toOutputPath(outRelPath));
-        await ensureDir(outPath, mkdirCache);
-        await writeFile(outPath, stringifyOutput(sortSections(compactSections(mass))), "utf-8");
-        written++;
+        renderings.push(...renderingsOf(day, mass, stores, baseStores));
       } catch (err) {
         errors++;
-        consola.error(`Error processing ${relPath}:`, (err as Error).message);
+        consola.error(`Error processing ${publication.relPath}:`, (err as Error).message);
       }
     }
-
-    for (const { file } of STORES) {
-      const storePath = join(outputDir, lang, file + ".yml");
-      await ensureDir(storePath, mkdirCache);
-      await writeFile(
-        storePath,
-        stringifyOutput(storeSubset(stores.get(file)!, used.get(file)!)),
-        "utf-8"
-      );
-    }
+    const chosen = chooseRenderings(renderings);
+    await writeStores(lang, chosen);
+    const rendered = Object.values(chosen).reduce((n, s) => n + Object.keys(s).length, 0);
+    consola.info(
+      `Step 12: ${lang} renders ${rendered} texts; ` +
+        `${unmatched} of its days the base language does not publish`
+    );
   }
 
   const martyrology = await publishMartyrology(
@@ -640,7 +910,7 @@ export async function run(
   );
 
   consola.info(
-    `Step 12: ${written} written, ${skipped} without mass content, ` +
+    `Step 12: ${written} days written, ${skipped} without mass content, ` +
       `${martyrology} of the Martyrology`
   );
   if (errors > 0) consola.error(`Step 12 errors: ${errors}`);
