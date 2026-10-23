@@ -14,14 +14,16 @@ This library generates a complete liturgical calendar for any given year. It sup
 - **Local propers**: Add the local propers of your diocese or congregation to this repository; see Ultrajectum as an example.
 - **Mass propers**: The Introit, readings, chants and prayers of each day,
   generated from Divinum Officium
+- **Office propers**: The Breviary's texts of each day, Hour by Hour — hymns,
+  antiphons, Matins lessons and responsories, chapters and versicles (opt-in)
 - **Translations**: Multi-language support; see nl as an example.
 
 ## Installation
 
 The calendar and the propers are published separately: this package holds the
-calendar and the days of the Mass propers, which are the same in every language,
-and each language holds its words for them — its readings, prayers and chants —
-and its translations. Install the calendar and the languages you read.
+calendar and the days of the propers, which are the same in every language, and
+each language holds its words for them — its readings, prayers, chants and the
+texts of its Office — and its translations. Install the calendar and the languages you read.
 
 ```bash
 pnpm add @sint-willibrordkerk/liturgical-calendar @sint-willibrordkerk/liturgical-calendar-la
@@ -29,7 +31,7 @@ pnpm add @sint-willibrordkerk/liturgical-calendar @sint-willibrordkerk/liturgica
 pnpm add @sint-willibrordkerk/liturgical-calendar @sint-willibrordkerk/liturgical-calendar-nl
 ```
 
-A language runs to about a megabyte, so a caller carries only the languages they
+A language runs to a few megabytes, so a caller carries only the languages they
 ask for.
 
 ## Usage
@@ -63,6 +65,8 @@ they fall — but no day carries a Mass and nothing is translated.
 - `options` (Options): Optional.
   - `martyrologium` (boolean): give each day the Roman Martyrology; see
     [The Martyrology](#the-martyrology).
+  - `officium` (boolean): give each day the propers of its Office; see
+    [The Office](#the-office).
 
 ### With Local Propers
 
@@ -102,6 +106,7 @@ type LiturgicalDay = {
   alternativeColorName?: string;
   commemorations: Commemoration[];
   martyrologium?: Martyrologium;
+  officium?: Officium;
 };
 ```
 
@@ -196,6 +201,78 @@ calendar asked for it carries none. It adds about half a megabyte to the Latin
 package and a few kilobytes to each day, which is why it is left out unless
 asked for.
 
+### The Office
+
+Ask for it and each day carries the propers of its Office — what the Breviary
+gives the day of its own, or takes from its common — Hour by Hour:
+
+```javascript
+const calendar = generateCalendar(2026, [], la, { officium: true });
+const agnes = calendar[1][21].officium;
+console.log(agnes.laudes.benedictus.text); // "Ecce, quod concupívi, * jam vídeo: …"
+console.log(agnes.matutinum.nocturni[1].lectiones[0].lectio.ref); // "Liber 1, post initium"
+console.log(agnes.vesperae.hymnus.strophae[0][0]); // "Jesu, coróna Vírginum,"
+```
+
+```typescript
+type Officium = {
+  primaeVesperae?: Vesperae; // said on the evening before
+  matutinum?: {
+    invitatorium?: Antiphona;
+    hymnus?: Hymnus;
+    psalmodia?: Psalmodia;
+    nocturni?: { versus?: Versus; lectiones: LectioMatutini[] }[];
+    legenda?: Reading; // the saint's legend in one lesson
+  };
+  laudes?: { psalmodia?; capitulum?; hymnus?; versus?; benedictus?: Antiphona };
+  prima?: { lectioBrevis?: Capitulum };
+  tertia?: HoraMinor; // { capitulum?, responsorium?, versus? }
+  sexta?: HoraMinor;
+  nona?: HoraMinor;
+  vesperae?: Vesperae; // { psalmodia?, capitulum?, hymnus?, versus?, magnificat? }
+  oratio?: { text: string; closure: string };
+};
+
+type Antiphona = { text: string }; // its * marks where the choir takes up the intonation
+type Psalmodia = { antiphonae: ({ text?: string; psalmus?: string } | Versus)[] };
+type Hymnus = { strophae: string[][]; doxologia?: string[] };
+type Capitulum = { ref?: string; text: string };
+type Responsorium = { responsum: string; versus: string; repetitio?: string; gloria?: string };
+type Versus = { versus: string; responsum: string }; // in the Easter octave an Antiphona ({ text }) stands where it is said
+type LectioMatutini = { numerus: number; lectio: Reading | Homilia; responsorium?: Responsorium };
+type Homilia = { ref?: string; text: string; evangelium: Reading }; // the homily, and the Gospel it expounds
+```
+
+These are the **propers**, not the Hours assembled. The psalms, the ordinary and
+the rubrics that put an Hour together are left to the reader, and an Hour, or a
+part of one, the day says nothing of is said from the psalter: a feast of the
+third class gives its Lauds no antiphons, and says the psalms of the day of the
+week. Where the day gives second Vespers no antiphons, hymn, versicle or
+antiphon at the *Magnificat* of their own, they are first Vespers'. The chapter
+of Lauds is said at Terce, and at Vespers where they have none of their own.
+
+A text is published only as the shape its type declares. One the sources leave
+as the lines they could not make sense of, or with a directive of Divinum
+Officium unresolved in it, says nothing, and its Hour is said from the psalter
+like any other the day does not give. The *Te Deum* closing the last lesson of
+Matins is the reader's: the lesson ends without it.
+
+What the propers cannot yet say:
+
+- **Ferias with no title** — most ferias of the year — have no Office: the
+  lessons of the occurring Scripture are not yet laid on them, and their collect
+  is the Sunday's (`mass.oratio`).
+- **The resumed Sundays** after Pentecost have none either.
+- **Alleluias** are as the sources print them; the ones paschaltide adds are
+  the reader's to add.
+- **Commemorations** carry no Office of their own.
+
+The text is Divinum Officium's. A language has the Office its sources translate:
+Divinum Officium's Dutch Breviary is far from complete, so a Dutch calendar
+asked for it carries the Office of about half the days, often only in part. The
+Office adds a few megabytes to the Latin package and a few kilobytes to each
+day, which is why it is left out unless asked for.
+
 ### Colors in Local Propers
 
 A day in a local proper is white unless it says otherwise. Give a martyr's day
@@ -218,7 +295,7 @@ pnpm build            # the calendar
 pnpm build:languages  # the language packages
 ```
 
-The Mass propers are generated from [Divinum
+The propers are generated from [Divinum
 Officium](https://github.com/DivinumOfficium/divinum-officium) rather than kept
 in this repository. To rebuild them, point `DIVINUM_OFFICIUM_BASE` at a checkout
 and run:
@@ -240,11 +317,11 @@ pnpm start # uses scripts/main.js to generate test_output.yml
 ├── assets/              # What every language shares
 │   ├── calendar1962.yml # Base calendar
 │   ├── propers/         # Local proper calendars
-│   └── mass-propers/    # The days of the Mass propers, keys only (generated)
+│   └── mass-propers/    # The days of the propers, Mass and Office, keys only (generated)
 ├── languages/           # One package per language: what the keys say
 │   ├── la/assets/       #   mass-propers/la/, martyrologium/la/ (generated)
 │   └── nl/assets/       #   mass-propers/nl/ (generated), translations/nl/
-├── convert-do/          # The pipeline that generates the Mass propers
+├── convert-do/          # The pipeline that generates the propers
 ├── src/                 # TypeScript source
 ├── dist/                # Compiled output
 └── scripts/             # Utility scripts

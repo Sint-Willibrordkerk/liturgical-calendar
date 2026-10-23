@@ -14,6 +14,7 @@ import {
   loadCalendarData,
   loadPropers,
   loadMassPropersByTitle,
+  loadOfficiumByTitle,
   type RawMassProper,
 } from "./loadAssets";
 import { ordinals, days, feriae } from "./ordinals";
@@ -158,7 +159,8 @@ export function parseCalendarData(
   year: number,
   propers: string[],
   language: Language,
-  translations?: Translations
+  translations?: Translations,
+  officium = false
 ) {
   const calendarData = loadCalendarData();
   const calendarBuilder = new CalendarBuilder();
@@ -253,6 +255,10 @@ export function parseCalendarData(
           ...item,
           title,
           mass,
+          officium:
+            officium && titleWithSubstitution
+              ? loadOfficiumByTitle(titleWithSubstitution, language)
+              : undefined,
           color,
           season,
           alternativeColor,

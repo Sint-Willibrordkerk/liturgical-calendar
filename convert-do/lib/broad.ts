@@ -10,6 +10,7 @@
  */
 
 import { unionDocuments } from "./variants.js";
+import { OFFICE_SECTIONS } from "../../src/officium.js";
 
 export type Variant = { value: unknown; condition: string[] };
 
@@ -29,11 +30,19 @@ export type Load = (path: string) => Doc | undefined;
  *   none of its own.
  * - `liftedFrom` — sections step 5 lifts out of another; a borrowing takes or
  *   leaves them exactly as it takes or leaves the section they came from.
+ * - `withheldFrom` — by source, the sections its documents never take: the
+ *   Mass takes none of the Office, which the day's Office document takes for
+ *   itself. Taken by the Mass too, the common's copy would win when the two are
+ *   combined (step 8), over the day's own.
  */
 export type BorrowRules = {
   massPropers: ReadonlySet<string>;
   liftedFrom: Readonly<Record<string, string>>;
+  withheldFrom: Readonly<Record<string, ReadonlySet<string>>>;
 };
+
+/** The Office's sections, which the Mass (`missa`) does not take. */
+const WITHHELD_FROM = { missa: new Set(OFFICE_SECTIONS) };
 
 const MASS_PROPERS = [
   "introitus",
@@ -51,6 +60,7 @@ const MASS_PROPERS = [
 export const LINE_RULES: BorrowRules = {
   massPropers: new Set([...MASS_PROPERS, "gradualep"]),
   liftedFrom: {},
+  withheldFrom: WITHHELD_FROM,
 };
 
 /**
@@ -61,20 +71,33 @@ export const LINE_RULES: BorrowRules = {
 export const KEYED_RULES: BorrowRules = {
   massPropers: new Set([...MASS_PROPERS, "alleluia", "alleluiap"]),
   liftedFrom: { alleluia: "graduale", prefatio: "rule" },
+  withheldFrom: WITHHELD_FROM,
 };
 
+/** The antiphons of the *Magnificat* and the *Benedictus*. */
+const GOSPEL_CANTICLE_ANTIPHONS = new Set(["ant-1", "ant-2", "ant-3"]);
+
 /**
- * The Office texts a day takes from its common: the Matins lessons, and the
- * antiphons, versicles and orations of Lauds and Vespers. A `vide` always
- * borrows these.
+ * The Office texts a day takes from its common, which a `vide` always borrows:
+ * the lessons, the orations, the invitatory, the hymns, chapters, responsories
+ * and versicles, and the antiphons of the *Magnificat* and the *Benedictus*.
+ *
+ * Not the psalmody. A day that only borrows from its common says the psalms of
+ * the day of the week with their own antiphons, and takes the common's — at
+ * Matins, Lauds, Vespers or the small Hours — only by including it. This is how
+ * Divinum Officium reads a `vide`.
  */
 function isOfficeBorrow(key: string): boolean {
   return (
     key.startsWith("lectio") ||
-    key === "ant-laudes" ||
-    key === "ant-vespera" ||
+    key.startsWith("oratio") ||
+    key === "invit" ||
+    key.startsWith("hymnus") ||
+    key.startsWith("capitulum") ||
+    key.startsWith("responsory") ||
     key.startsWith("versum") ||
-    key.startsWith("oratio")
+    /^nocturn-\d+-versum$/.test(key) ||
+    GOSPEL_CANTICLE_ANTIPHONS.has(key)
   );
 }
 
@@ -202,7 +225,8 @@ export function importReferences(
   obj: Doc,
   ownPath: string,
   load: Load,
-  rules: BorrowRules
+  rules: BorrowRules,
+  withheld: ReadonlySet<string> = new Set()
 ): Doc {
   const result: Doc = { ...obj };
   const { ex, vide } = extractExVideReferences(obj, ownPath);
@@ -216,7 +240,7 @@ export function importReferences(
     const before: Doc = { ...result };
 
     for (const [key, value] of Object.entries(file)) {
-      if (!Array.isArray(value)) continue;
+      if (!Array.isArray(value) || withheld.has(key)) continue;
       const parent = rules.liftedFrom[key];
 
       if (!isInclude && !isOfficeBorrow(key)) {
@@ -302,7 +326,7 @@ export function createSourcedResolver(
       return undefined;
     }
     inProgress.add(key);
-    const resolved = importReferences(raw, path, view, rules);
+    const resolved = importReferences(raw, path, view, rules, rules.withheldFrom[source]);
     delete resolved.__preamble;
     inProgress.delete(key);
     done.set(key, resolved);

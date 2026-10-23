@@ -8,7 +8,8 @@ import {
   selectVariant,
   type Stores,
 } from "../massPropers";
-import type { CalendarData, RawMassProper } from "../types";
+import type { CalendarData, Officium, RawMassProper } from "../types";
+import { buildOfficium, isOfficeSection } from "../officium";
 import type { Martyrology, MartyrologyDay } from "../martyrology";
 
 export type { RawMassProper };
@@ -132,7 +133,43 @@ function loadStores(language: Language): Stores {
     prayers: store("oratio") as Stores["prayers"],
     chants: store("antiphona") as Stores["chants"],
     names: store("nomen") as Stores["names"],
+    hymns: store("hymnus") as Stores["hymns"],
+    chapters: store("capitulum") as Stores["chapters"],
+    responsories: store("responsorium") as Stores["responsories"],
+    versicles: store("versus") as Stores["versicles"],
   };
+}
+
+/** The day filed under a liturgical title, holding keys, or undefined. */
+function dayByTitle(title: string): Record<string, unknown> | undefined {
+  const fileName = titleToFileName(title);
+  const at = (tree: string) => findAsset(`mass-propers/${tree}/${fileName}.yml`);
+  const data = at("Sancti") ?? at("Tempora");
+  return data && typeof data === "object" ? (data as Record<string, unknown>) : undefined;
+}
+
+/** Keys that name the celebration, kept with its Mass. */
+const DESIGNATIONS = new Set(["title", "name", "prefatio"]);
+
+/**
+ * The sections of a day `belongs` selects, reduced to the rubric in force and
+ * with their texts said in the language; undefined where the language has words
+ * for none of them, whatever empty section the day carries inline.
+ */
+function properOf(
+  document: Record<string, unknown>,
+  language: Language,
+  rubrics: ReadonlySet<string>,
+  belongs: (key: string) => boolean
+): Record<string, unknown> | undefined {
+  const own = Object.fromEntries(
+    Object.entries(document).filter(([key]) => belongs(key) || DESIGNATIONS.has(key))
+  );
+  const selected = selectMassProper(own, rubrics, loadStores(language));
+  const says = Object.keys(selected).some(
+    (key) => belongs(key) && typeof selectVariant(document[key], rubrics) === "string"
+  );
+  return says ? selected : undefined;
 }
 
 /**
@@ -149,24 +186,11 @@ export function loadMassPropersByTitle(
   rubrics: ReadonlySet<string> = DEFAULT_RUBRICS,
   season?: { date: Date; easter: Date }
 ): RawMassProper | undefined {
-  const fileName = titleToFileName(title);
-  const at = (tree: string) => findAsset(`mass-propers/${tree}/${fileName}.yml`);
-  const data = at("Sancti") ?? at("Tempora");
+  const document = dayByTitle(title);
+  if (document === undefined) return undefined;
 
-  if (!data || typeof data !== "object") {
-    return undefined;
-  }
-
-  const document = data as Record<string, unknown>;
-  const selected = selectMassProper(document, rubrics, loadStores(language));
-  // The day holds keys, and the language's words for them are its Mass. Where
-  // it has words for none, the language has no Mass for the day, whatever
-  // empty section the day carries inline.
-  const says = Object.keys(selected).some(
-    (key) =>
-      isMassSection(key) && typeof selectVariant(document[key], rubrics) === "string"
-  );
-  if (!says) return undefined;
+  const selected = properOf(document, language, rubrics, isMassSection);
+  if (selected === undefined) return undefined;
   const seasonal = season
     ? applySeason(selected, season.date, season.easter)
     : selected;
@@ -177,3 +201,40 @@ export function loadMassPropersByTitle(
     ? (proper as RawMassProper)
     : undefined;
 }
+
+/**
+ * The propers of the Office for a liturgical title, Hour by Hour, reduced to the
+ * rubric in force and said in the language. Undefined where the language says
+ * nothing of the day's Office, and without a language.
+ */
+export function loadOfficiumByTitle(
+  title: string,
+  language: Language,
+  rubrics: ReadonlySet<string> = DEFAULT_RUBRICS
+): Officium | undefined {
+  const own = dayByTitle(title);
+  const elsewhere = OFFICE_FILED_WITH[titleToFileName(title)];
+  const document = elsewhere === undefined ? own : dayByTitle(elsewhere);
+  if (document === undefined) return undefined;
+
+  // The collect is the day's own, said at Mass and at the Hours alike.
+  const office = { ...document, oratio: own?.oratio ?? document.oratio };
+  const selected = properOf(
+    office,
+    language,
+    rubrics,
+    (key) => isOfficeSection(key) || key === "oratio"
+  );
+  if (selected === undefined) return undefined;
+  return buildOfficium(nameSaint(selected));
+}
+
+/**
+ * A day whose Office the sources keep with another of its Masses. Christmas
+ * has three Masses and one Office, which is filed with the first, at midnight;
+ * the calendar keeps the day by the third. Its collect is the third Mass's,
+ * which the Hours say from Lauds on.
+ */
+const OFFICE_FILED_WITH: Record<string, string> = {
+  "in-die-nativitatis-domini": "In Nativitate Domini",
+};

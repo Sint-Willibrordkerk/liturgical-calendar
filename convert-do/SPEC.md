@@ -49,8 +49,18 @@ The ordering follows from this:
    sections already hold.
 5. Only then are the rubric-variant directories **folded** (step 8), the files
    **named** (step 9), the commemorations **split out** (step 10), the redundant
-   variants **collapsed** (step 11), and the Mass propers **published**
-   (step 12).
+   variants **collapsed** (step 11), and the propers **published** (step 12).
+
+The propers are of two books. The **Mass** is what a day sings and reads at the
+altar; the **Office** — the Breviary — is what it prays at the Hours: its
+invitatory, hymns and antiphons, its Matins lessons and responsories, its
+chapters and versicles. Both are texts of the same kind, borrowed from the same
+commons, and both go the same way through every step: the Office's antiphons,
+hymns, chapters, responsories and versicles are structured and filed beside the
+Mass's readings, prayers and chants, and published with them. What the
+pipeline publishes of the Office is its **propers** — what a day says of its own
+or takes from its common — not the Hours assembled: the psalter, the ordinary
+and the rubrics that put them together are the reader's.
 
 The store is opened at step 6 and **added to** once more, by the commemoration
 split (step 10), where a saint's prayers first stand as texts of their own. It is
@@ -101,7 +111,9 @@ reading the file it names, and the store is per language; neither fits the
 one-file-at-a-time streaming model.
 
 The **stores travel with the tree**: from step 6 on, each language root holds
-`lectio.json`, `oratio.json` and `antiphona.json` beside its directories, and
+`lectio.json`, `oratio.json` and `antiphona.json`, and the Office's
+`hymnus.json`, `capitulum.json`, `responsorium.json` and `versus.json`, beside
+its directories, and
 every later step carries them forward to its own output, adding to them only
 where this document says so.
 
@@ -514,12 +526,16 @@ parts after `File` are optional:
   `[Oratio]` pulls the common's `oratio`.
 - **`lineRange`** — `N` or `N-M`, selecting lines *N*…*M* (1-based, inclusive).
 - **`substitution`** — one or more `s/pattern/replacement/flags` groups applied
-  to the pulled lines (sed-like; default flag is global).
+  to the pulled lines, as Divinum Officium applies them (see
+  [Resolution](#resolution), item 5).
 
 The substitution runs from the first `:s/` to the end of the line — a space may
 stand before the `s`, as in `@Commune/C7a:: s/N\./N. Vírginis tuæ/` — so a colon
 inside it — `s/.*5 /!1 Tim 3:5-9/` — belongs to the substitution rather than
-separating parts. A line range and a substitution may both be given.
+separating parts. A line range and a substitution may both be given, and then
+a space alone may separate them: `@Commune/C7:Ant Vespera:1 s/;;.*//g` is line 1
+of the common's Vespers antiphons with its psalm number taken off, and
+`@Commune/C7::3 s/121/126/` line 3 of the section of the same name.
 
 ### What a target holds
 
@@ -552,16 +568,37 @@ For each reference line:
    target's `1962` wording), else the default (unconditional) variant, else the
    first.
 4. Apply the line range, if any.
-5. Apply the substitutions, if any — each as a regular-expression replace on
-   every line; an invalid pattern is skipped.
-6. If the result is a single line that is itself a reference, resolve it
-   recursively (transitively), up to a depth of **5**. A nested reference that
-   omits its file (`@:…`) names the file it was found in — the target, not the
-   file the resolution started from.
+5. Apply the substitutions, if any, in the order written. Each is a
+   regular-expression replace on **the lines joined as one text**, exactly as
+   Divinum Officium does it: with its own flags and no others, so that without
+   `g` only the first match is replaced — which is how
+   `s/$/_/gm s/_/;;109/s s/_/;;112/ s/_/;;115/` numbers the psalms of a run of
+   antiphons one after another — `m` lets `^` and `$` stand at every line, and
+   `s` lets a dot cross them: `s/^V\..*//sm` takes the first versicle and all that
+   follows it away. An escape in the pattern keeps its meaning (`\.` is a dot,
+   `\$` a dollar), the delimiter `\/` apart; in the replacement `\n` is a line
+   break. An invalid pattern is skipped.
+6. Resolve the references among the resulting lines, each in turn,
+   recursively (transitively), up to a depth of **5**: a hymn taken from another
+   with its doxology cut off, or a collect with the commemoration of another
+   saint added, ends in a reference of its own. This is after the
+   substitutions, so a substitution acts on the target's text as it is written
+   and the references it holds are resolved once the text is made. A nested
+   reference that omits its file (`@:…`) names the file it was found in — the
+   target, not the file the resolution started from. A nested reference that
+   cannot be resolved stays as it is, a line of its own.
 
 The reference line is then replaced by the resulting lines. A reference that
 resolves to an empty section removes the line; only an *unresolvable* reference
 (missing file or section) leaves the line in place.
+
+A line ending in `~` is **joined to the line after it**, with a space between —
+the mark is Divinum Officium's, and a substitution often appends it
+(`s/$/~/`) so that a borrowed verse runs on into the section's own `Allelúja.`
+or closing. A reference line (`!…`) takes nothing after it, and nothing is
+joined that opens a part of its own — a verse (`V.`), a response (`R.`), a
+reference, a closing (`$…`), a `&` or `_` line. There the `~` is only dropped,
+as it is on a section's last line.
 
 ### Examples
 
@@ -787,6 +824,87 @@ it would keep one reference and silently lose the interior ones. Such a reading
 passes through this step unchanged, and step 6 then leaves it inline — a
 deliberate omission rather than a final state.
 
+One lesson of Matins is drawn from two passages by design: the **homily**, which
+opens with the Gospel it expounds. Its lines are the Gospel — its introduction,
+its reference, its opening words — then a `_` line, then the homily — its
+author, its source, its text. Each part is structured as a reading of its own,
+and the lesson is the homily with the Gospel beside it:
+
+```yaml
+ref: Homilía 9 in Evangelia
+text: "Homilía sancti Gregórii Papæ\nLéctio sancti Evangélii, fratres caríssimi…"
+evangelium:
+  ref: Matt 25:14-23
+  verses: ["In illo témpore: Dixit Jesus discípulis suis parábolam hanc…"]
+```
+
+A lesson in two parts that are not each one reading keeps its lines, like any
+other drawn from several passages. This is the Matins lessons' alone: a reading
+of the Mass in two parts is not a homily.
+
+### The Office
+
+The proper texts of the Office are structured by what they are, whichever Hour
+says them. The Matins lessons are readings (above); the collect is the prayer
+`oratio`, said at Mass and at the Hours alike.
+
+| Kind | Sections | Shape |
+| ---- | -------- | ----- |
+| antiphon | `invit`, `ant-1`, `ant-2`, `ant-3` | `{ text }` |
+| psalmody | `ant-matutinum`, `ant-laudes`, `ant-vespera`, `ant-vespera-3` | `{ antiphonae: [{ text, psalmus }] }` |
+| hymn | `hymnus-matutinum`, `hymnus-laudes`, `hymnus-vespera`, `hymnus-vespera-3` | `{ strophae: [[line]], doxologia: [line] }` |
+| chapter | `capitulum-laudes`, `capitulum-tertia`, `capitulum-sexta`, `capitulum-nona`, `capitulum-vespera`, `lectio-prima` | `{ ref, text }` |
+| responsory | `responsory1` … `responsory8`, `responsory-breve-tertia`, `responsory-breve-sexta`, `responsory-breve-nona` | `{ responsum, versus, repetitio, gloria }` |
+| versicle | `versum-1`, `versum-2`, `versum-3`, `versum-tertia`, `versum-sexta`, `versum-nona`, `nocturn-1-versum`, `nocturn-2-versum`, `nocturn-3-versum` | `{ versus, responsum }`, or `{ text }` where an antiphon stands for it |
+
+The sources' marks are read as follows, and taken off the text:
+
+- **antiphon** — the line is the antiphon. Its `*`, where the choir takes up the
+  intonation, is part of the text and stays.
+- **psalmody** — one entry per line. An antiphon line gives its psalm after
+  `;;` — `Hæc est Virgo sápiens, * et una de número prudéntum.;;109` is the
+  antiphon of Psalm 109 — as `psalmus`; a line that is nothing but `;;N` is a
+  psalm said under the antiphon before it, and has no `text`. A line with no
+  `;;` has no `psalmus`. A mark trailing the psalm — the `;` of `46;`, the `_`
+  a substitution leaves after the last of a run of them — is dropped. At Matins a nocturn's versicle may stand among the
+  antiphons, as a `V.` line and an `R.` line; it is an entry
+  `{ versus, responsum }` in its place.
+- **hymn** — the lines are the stanzas, a `_` line between two. The stanza whose
+  first line opens with `*` is the doxology: it is said in another wording in
+  some seasons, so it is `doxologia` rather than a stanza, without its `*`. The
+  `v.` that opens the first line, and a `{:…:}` label before it, are dropped,
+  and so is a direction to the reader — *the stanza that follows is said
+  kneeling* — standing on a `!` line or between `/:` and `:/`.
+- **chapter** — a `!` line is `ref`, and the lines after it, the opening `v.`
+  dropped, are `text`. The `$Deo gratias` that answers a chapter is the same
+  every time and is dropped.
+- **responsory** — the `R.` line (`R.br.` for a short responsory) and the `*`
+  line under it are `responsum`, joined by a space; the `V.` line is `versus`;
+  the `R.` line after it, what is repeated, is `repetitio`; and after the
+  `&Gloria` line, which stands for the *Glória Patri* — or the `$Requiem` line
+  that stands in its place in the Office of the Dead — the `R.` line said
+  after it is `gloria`. A responsory with neither has no `gloria`. A short
+  responsory's second `R.` line — the choir repeating the first — is dropped.
+- **versicle** — the `V.` line is `versus`, the `R.` line `responsum`. During
+  the Easter octave the line is `Ant. Hæc dies * …`: an antiphon stands where
+  the versicle is said, and it is `{ text }`.
+- **a lesson of Matins** — a `&teDeum` line closing the last lesson marks where
+  the *Te Deum* is said; the hymn is the reader's, and the line is dropped from
+  the lesson. A lesson read in place of another begins with a direction — `!de
+  Homilía Feriæ.` — before its own introduction; it is no reference, and is
+  dropped. A lesson a rubric leaves out (`lectio3` under `1962`, whose
+  variant is empty) stays an empty section and is **not** structured into a
+  lesson of no words: an empty variant says the lesson is not read.
+
+A section these marks do not fit — the lines in another order, or a mark
+missing — keeps its lines, like a reading with several references, and step 6
+leaves it inline.
+
+The other sections of the Office are not structured. The rules of a day, the
+antiphons of the small Hours, the commemorations and the uses' own sections —
+the monastic hymns (`hymnusm-…`), the Cistercian chapter (`mm-capitulum`) — keep
+their lines.
+
 ### An unresolved reference
 
 A section whose lines still hold an `@…` reference that step 4 could not
@@ -833,9 +951,11 @@ referred to.
 
 ### Output
 
-- Three **store files** at each language root — `lectio.json`, `oratio.json`
-  and `antiphona.json` — one entry per distinct reading, prayer and chant, keyed
-  as described under [Keys](#keys), in the shape step 5 gave it.
+- The **store files** at each language root — `lectio.json`, `oratio.json` and
+  `antiphona.json` for the readings, prayers and chants, and `hymnus.json`,
+  `capitulum.json`, `responsorium.json` and `versus.json` for the rest of the
+  Office — one entry per distinct text, keyed as described under [Keys](#keys),
+  in the shape step 5 gave it.
 
   A prayer entry keeps its closure:
 
@@ -892,7 +1012,22 @@ when the day is rendered.
 **Chants**, into `antiphona.json`: `introitus`, `graduale`, `alleluia`,
 `alleluiap`, `tractus`, `offertorium` and `communio`. A chant is stored whole,
 with its antiphon, verse and any alleluia together, since those travel as one
-piece.
+piece. The antiphons of the Office are chants too, and go into the same store:
+the invitatory, the antiphons of the *Benedictus* and the *Magnificat*, and the
+psalmody of Matins, Lauds and Vespers.
+
+The other texts of the Office each have a store of their own, since none is
+the same kind of thing as a reading, a prayer or a chant:
+
+- **Hymns**, into `hymnus.json`: `hymnus-matutinum`, `hymnus-laudes`,
+  `hymnus-vespera`, `hymnus-vespera-3`.
+- **Chapters**, into `capitulum.json`: `capitulum-laudes`, `capitulum-tertia`,
+  `capitulum-sexta`, `capitulum-nona`, `capitulum-vespera`, and the short
+  lesson of Prime, `lectio-prima`.
+- **Responsories**, into `responsorium.json`: `responsory1` … `responsory8`,
+  and the short responsories of Terce, Sext and None.
+- **Versicles**, into `versus.json`: `versum-1`, `versum-2`, `versum-3`, the
+  versicles of the small Hours and of the three nocturns.
 
 Every other section is left untouched.
 
@@ -1010,6 +1145,15 @@ alone. A target, on the other hand, is read with its Mass and Office together �
 unioned by condition, the Mass winning a collision — so a section either of them
 holds can be borrowed.
 
+**The Mass takes none of the Office's sections** — those
+[step 12](#step-12--the-propers-batch) publishes as the Office — by include or by
+borrow. A day's Office is its Office document's, which takes from its common
+what it lacks for itself. Were the Mass to take them as well, its copy would win
+when the two are combined (step 8), and the common's text would stand in place
+of the day's own: St Agnes, who has an antiphon of her own at the *Magnificat*,
+would say the common's. A day the sources give a Mass and no Office has none.
+The collect is the Mass's own section, and the Mass takes it as before.
+
 ### Where references come from
 
 Each reference carries the rubric condition of the variant it was found in.
@@ -1027,9 +1171,18 @@ Each reference carries the rubric condition of the variant it was found in.
 
 - **Include (`@` / `ex`)** — import **all** sections of the referenced file.
 - **Borrow (`vide`)** — import these sections:
-  - **always**: `lectio*`, `ant-laudes`, `ant-vespera`, `versum*`, `oratio*` —
-    the Matins lessons and the antiphons, versicles and orations of Lauds and
-    Vespers, the Office texts a day takes from its common.
+  - **always**: the Office texts a day takes from its common —
+    `lectio*` (the Matins lessons and the short lesson of Prime), `oratio*`,
+    `invit`, `hymnus*`, `capitulum*`, `responsory*` (the Matins responsories
+    and the short responsories), `versum*` and `nocturn-*-versum` (the
+    versicles), and `ant-1`, `ant-2`, `ant-3` (the antiphons of the
+    *Magnificat* and the *Benedictus*).
+
+    The **psalmody** is not borrowed — `ant-matutinum`, `ant-laudes`,
+    `ant-vespera`, `ant-vespera-3`, and the antiphons of the small Hours. A day
+    that only borrows from its common says the psalms of the day of the week
+    with their own antiphons; it takes the common's antiphons only by including
+    it (`ex`). This is Divinum Officium's own reading of `vide`.
   - **only where still missing**: the Mass propers `introitus`, `graduale`,
     `alleluia`, `alleluiap`, `tractus`, `evangelium`, `offertorium`, `secreta`,
     `communio`, `postcommunio`, `ultima-evangelium`.
@@ -1044,8 +1197,8 @@ Each reference carries the rubric condition of the variant it was found in.
 
 Whatever the target section holds is what is copied. A section the store covers
 holds a **key**, so the borrowing day comes to hold the same key and the text
-stays single. A section the store does not cover — the antiphons and versicles of
-the Office — holds its lines, and those lines are copied.
+stays single. A section the store does not cover — the rules, the antiphons of
+the small Hours — holds its lines, and those lines are copied.
 
 ### A lifted section goes with the one it was lifted from
 
@@ -1565,11 +1718,12 @@ has to implement that fallback; without it, collapsing loses content.
 
 ---
 
-## Step 12 — Mass propers *(batch)*
+## Step 12 — The propers *(batch)*
 
 The last step, and the only one whose output leaves the pipeline: it narrows the
-tree to what the calendar consumes — the Mass propers — so that the rest, which
-is the Divine Office, is not carried into the published assets.
+tree to what the calendar consumes — the propers of the Mass and of the Office
+— so that the rest, the psalter, the ordinary and the rules that assemble the
+Hours, is not carried into the published assets.
 
 ### Input
 
@@ -1579,12 +1733,14 @@ is the Divine Office, is not carried into the published assets.
 
 - The **days**, once for every language, at the root of the output —
   `Sancti\…` and `Tempora\…`: one file per document of the **base language**
-  that has Mass content, holding **only** its Mass sections, in the
-  rubric-variant shape step 11 left them. A text is never written into a day; a
-  section holds a key (see [Every text is a key](#every-text-is-a-key)).
-- A document with no Mass content is **not written** at all.
-- At each language root, four **stores** — `lectio.yml`, `oratio.yml`,
-  `antiphona.yml` and `nomen.yml` — keyed by the keys the days hold, each entry
+  that has Mass or Office content, holding **only** its Mass and Office
+  sections (see [Kept sections](#kept-sections)), in the rubric-variant shape
+  step 11 left them. A text is never written into a day; a section holds a key
+  (see [Every text is a key](#every-text-is-a-key)).
+- A document with neither is **not written** at all.
+- At each language root, the **stores** — `lectio.yml`, `oratio.yml`,
+  `antiphona.yml`, `hymnus.yml`, `capitulum.yml`, `responsorium.yml`,
+  `versus.yml` and `nomen.yml` — keyed by the keys the days hold, each entry
   that language's wording of the text (see [A translation's stores are keyed by
   the base language's](#a-translations-stores-are-keyed-by-the-base-languages)).
 - The Martyrology, for each language that has one (see [The
@@ -1594,8 +1750,9 @@ is the Divine Office, is not carried into the published assets.
 step12\
   Sancti\adriani-martyris.yml     the day, keys only
   Tempora\…
-  la\lectio.yml  oratio.yml  antiphona.yml  nomen.yml  Martyrologium\…
-  nl\lectio.yml  oratio.yml  antiphona.yml  nomen.yml
+  la\lectio.yml  oratio.yml  antiphona.yml  hymnus.yml  capitulum.yml
+     responsorium.yml  versus.yml  nomen.yml  Martyrologium\…
+  nl\lectio.yml  oratio.yml  antiphona.yml  …  nomen.yml
 ```
 
 ### The days are the base language's
@@ -1704,14 +1861,28 @@ either.
 
 ### Kept sections
 
-| Kept                                                                       |
-| -------------------------------------------------------------------------- |
-| `introitus`, `oratio`, `lectio`, `graduale`, `alleluia`, `alleluiap`, `tractus`, `evangelium`, `offertorium`, `secreta`, `communio`, `postcommunio`, `ultima-evangelium` |
-| `title`, `name`, `prefatio`                                                 |
+| Kept | |
+| ---- | - |
+| `introitus`, `oratio`, `lectio`, `graduale`, `alleluia`, `alleluiap`, `tractus`, `evangelium`, `offertorium`, `secreta`, `communio`, `postcommunio`, `ultima-evangelium` | the Mass |
+| `invit`, `hymnus-matutinum`, `ant-matutinum`, `nocturn-1-versum`, `nocturn-2-versum`, `nocturn-3-versum`, `lectio1` … `lectio9`, `responsory1` … `responsory8`, `lectio94` | Matins |
+| `ant-laudes`, `capitulum-laudes`, `hymnus-laudes`, `versum-2`, `ant-2` | Lauds |
+| `lectio-prima` | Prime |
+| `capitulum-tertia`, `responsory-breve-tertia`, `versum-tertia`, and the same of `sexta` and `nona` | the small Hours |
+| `ant-vespera`, `ant-vespera-3`, `capitulum-vespera`, `hymnus-vespera`, `hymnus-vespera-3`, `versum-1`, `versum-3`, `ant-1`, `ant-3` | Vespers |
+| `title`, `name`, `prefatio` | the day |
 
 Everything else is dropped. A document counts as having Mass content when it
-keeps at least one section from the first row; `title`, `name` and `prefatio`
-alone are not enough, since nearly every document carries those.
+keeps at least one section of the Mass, and Office content when it keeps one of
+the Office; `title`, `name` and `prefatio` alone are not enough, since nearly
+every document carries those. `oratio` is both: the collect is said at Mass and
+at the Hours.
+
+`lectio94` is the saint's legend in one lesson, which the 1960 rubrics read as
+the last lesson of Matins on a day the saint is commemorated, or keeps a feast
+of the third class. The other forms the sources place a lesson in — the
+`…-in-N-loco` lessons, the Tridentine and Dominican ones — are other rubrics'
+and are dropped, as are the sections of the uses (`hymnusm-…`,
+`mm-capitulum`), and the commemorations.
 
 `rule` is dropped here, at the end. It carries how a day is to be observed — how
 many lessons, which preface — and the pipeline needs it up to this point:
@@ -1816,22 +1987,31 @@ the way the day is celebrated:
 | 15 | `postcommunio` | Postcommunion |
 | 16 | `ultima-evangelium` | Last Gospel |
 
-A section outside this list — there should be none — is written after them, in
-alphabetical order, so nothing is silently dropped by being unrecognized.
+The Office follows, in the order of the Hours: first Vespers (`ant-1`,
+`versum-1`), Matins (`invit`, `hymnus-matutinum`, `ant-matutinum`, then each
+nocturn's versicle, lessons and responsories, and `lectio94`), Lauds
+(`ant-laudes`, `capitulum-laudes`, `hymnus-laudes`, `versum-2`, `ant-2`),
+Prime (`lectio-prima`), Terce, Sext and None (each its chapter, short
+responsory and versicle), and second Vespers (`ant-vespera`, `ant-vespera-3`,
+`capitulum-vespera`, `hymnus-vespera`, `hymnus-vespera-3`, `versum-3`,
+`ant-3`).
+
+A section outside these lists — there should be none — is written after them,
+in alphabetical order, so nothing is silently dropped by being unrecognized.
 
 The store files are ordered by key, so both they and the day files diff cleanly
 between runs.
 
 ### The store subset
 
-Only the entries the days name are carried over. The Office readings share the
-step 6 store but are not published, so most of its entries do not travel with
-the propers; neither do entries only a dropped variant named, nor a
-translation's entries the base language's days never come to.
+Only the entries the days name are carried over. Entries only a dropped section
+or variant named — the lessons of other rubrics, the monastic hymns — do not
+travel with the propers; neither do a translation's entries the base language's
+days never come to.
 
 ### The Martyrology
 
-The Martyrology is published beside the Mass propers, as
+The Martyrology is published beside the propers, as
 `Martyrologium/<MM-DD>.yml` for each date, `Martyrologium/mobile.yml` for the
 movable days and `Martyrologium/conclusio.yml` for the versicle that closes
 every reading, under each language whose sources carry a Martyrology. Its text is read at

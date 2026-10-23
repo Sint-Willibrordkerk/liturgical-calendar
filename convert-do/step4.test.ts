@@ -13,13 +13,216 @@ const v = (value: unknown, condition: string[] = []) => ({ value, condition });
 /** A lookup over an in-memory tree, keyed by path below the language root. */
 const lookupOf = (docs: Record<string, Doc>) => (path: string) => docs[path];
 
+describe("step4 a line marked to run on", () => {
+  it("joins the line after it, but keeps a reference on its own line", () => {
+    const docs = {
+      "Sancti/08-22": {
+        graduale: [v(["!Cant. 6:2", "V. Ego dilécto meo, qui páscitur inter lília."])],
+        gradualep: [v(["@:Graduale:1-2 s/$/~/", "Allelúja."])],
+      },
+    };
+    const out = transform(docs["Sancti/08-22"], "Sancti/08-22", lookupOf(docs));
+    expect(out.gradualep).toEqual([
+      v(["!Cant. 6:2", "V. Ego dilécto meo, qui páscitur inter lília. Allelúja."]),
+    ]);
+  });
+
+  it("does not join a line that opens a part of its own", () => {
+    const docs = {
+      "Sancti/x": {
+        graduale: [v(["!Ps 44:17", "Constítues eos príncipes.~", "V. Pro patribus tuis.", "$Per Dominum"])],
+      },
+    };
+    expect(transform(docs["Sancti/x"], "Sancti/x", lookupOf(docs)).graduale).toEqual([
+      v(["!Ps 44:17", "Constítues eos príncipes.", "V. Pro patribus tuis.", "$Per Dominum"]),
+    ]);
+  });
+
+  it("drops the mark on a section's last line", () => {
+    const docs = { "Commune/C11": { oratio: [v(["Deus, qui"])] } };
+    const out = transform(
+      { oratio: [v(["@Commune/C11:Oratio:s/$/~/"])] },
+      "Commune/C12",
+      lookupOf(docs)
+    );
+    expect(out.oratio).toEqual([v(["Deus, qui"])]);
+  });
+});
+
+/**
+ * The texts below are Divinum Officium's own, as step 3 hands them over; each
+ * is a case whose resolving once left a mark of the source in the published
+ * Office.
+ */
+describe("step4 a substitution is made on the text as a whole", () => {
+  const sunday = [
+    "Ego sum qui sum, * et consílium meum non est cum ímpiis, sed in lege Dómini volúntas mea est, allelúja.;;1",
+    "Postulávi Patrem meum, * allelúja: dedit mihi gentes, allelúja, in hereditátem, allelúja.;;2",
+    "Ego dormívi, * et somnum cepi: et exsurréxi, quóniam Dóminus suscépit me, allelúja, allelúja.;;3",
+    "V. Surréxit Dóminus de sepúlcro, allelúja.",
+    "R. Qui pro nobis pepéndit in ligno, allelúja.",
+  ];
+
+  it("takes the first versicle and all that follows it away, across lines", () => {
+    const docs = {
+      "Tempora/Pasc0-0": { "ant-matutinum": [v(sunday)] },
+      "Tempora/Pasc0-3": {
+        "ant-matutinum": [
+          v([
+            "@Tempora/Pasc0-0::s/^V\\..*//sm",
+            "V. Gavísi sunt discípuli, allelúja.",
+            "R. Viso Dómino, allelúja.",
+          ]),
+        ],
+      },
+    };
+    const out = transform(docs["Tempora/Pasc0-3"], "Tempora/Pasc0-3", lookupOf(docs));
+    expect(out["ant-matutinum"]).toEqual([
+      v([
+        ...sunday.slice(0, 3),
+        "V. Gavísi sunt discípuli, allelúja.",
+        "R. Viso Dómino, allelúja.",
+      ]),
+    ]);
+  });
+
+  it("reads \\n in a replacement as a line break", () => {
+    const docs = {
+      "Tempora/Pasc7-0": {
+        "ant-matutinum": [v([...sunday.slice(0, 3), "V. Dixit Dóminus.", "R. Et factum est."])],
+      },
+      "Tempora/Pasc7-3": {
+        "ant-matutinum": [
+          v([
+            "@Tempora/Pasc7-0::s/V\\. .*/V. Repléti sunt omnes Spíritu Sancto, allelúja.\\nR. Et cœpérunt loqui, allelúja./s",
+          ]),
+        ],
+      },
+    };
+    const out = transform(docs["Tempora/Pasc7-3"], "Tempora/Pasc7-3", lookupOf(docs));
+    expect(out["ant-matutinum"]).toEqual([
+      v([
+        ...sunday.slice(0, 3),
+        "V. Repléti sunt omnes Spíritu Sancto, allelúja.",
+        "R. Et cœpérunt loqui, allelúja.",
+      ]),
+    ]);
+  });
+
+  it("makes a substitution without g once, so that a run of them numbers the psalms in turn", () => {
+    const docs = {
+      "Sancti/08-01": {
+        "ant-vespera": [
+          v([
+            "Heródes rex * appósuit ut apprehénderet et Petrum.",
+            "Petrus quidem * servabátur in cárcere.",
+            "Dixit Angelus * ad Petrum: Circúmda tibi vestiméntum tuum.",
+            "Misit Dóminus * Angelum suum, et liberávit me.",
+            "Tu es Petrus, * et super hanc petram ædificábo Ecclésiam meam.;;116",
+          ]),
+        ],
+        "ant-vespera-3": [
+          v(["@:Ant Vespera:s/$/_/gm s/_/;;109/s s/_/;;112/ s/_/;;115/ s/_/;;125/ s/116/138/"]),
+        ],
+      },
+    };
+    const out = transform(docs["Sancti/08-01"], "Sancti/08-01", lookupOf(docs));
+    expect(out["ant-vespera-3"]).toEqual([
+      v([
+        "Heródes rex * appósuit ut apprehénderet et Petrum.;;109",
+        "Petrus quidem * servabátur in cárcere.;;112",
+        "Dixit Angelus * ad Petrum: Circúmda tibi vestiméntum tuum.;;115",
+        "Misit Dóminus * Angelum suum, et liberávit me.;;125",
+        // Divinum Officium leaves the mark of the fifth antiphon, which no
+        // substitution takes; the structuring drops it.
+        "Tu es Petrus, * et super hanc petram ædificábo Ecclésiam meam.;;138_",
+      ]),
+    ]);
+  });
+
+  it("keeps an escape in a pattern, so that an escaped dot is a dot", () => {
+    const docs = {
+      "Commune/C1": {
+        "ant-vespera": [v(["Salve, crux pretiósa, * súscipe discípulum ejus.", "Beátus Andréas * orábat, dicens: Dómine."])],
+      },
+      "Sancti/11-30": {
+        "ant-vespera-3": [v(["@Commune/C1:Ant Vespera:s/\\.$/.;;109/m s/\\.$/.;;112/m"])],
+      },
+    };
+    const out = transform(docs["Sancti/11-30"], "Sancti/11-30", lookupOf(docs));
+    expect(out["ant-vespera-3"]).toEqual([
+      v([
+        "Salve, crux pretiósa, * súscipe discípulum ejus.;;109",
+        "Beátus Andréas * orábat, dicens: Dómine.;;112",
+      ]),
+    ]);
+  });
+});
+
+describe("step4 what a reference takes may hold references of its own", () => {
+  it("resolves them once the substitution is made", () => {
+    // The hymn of the Rosary at Matins is that of its Vespers up to the
+    // doxology the Vespers would add, which is taken from the Psalterium.
+    const docs = {
+      "Sancti/10-07": {
+        "hymnus-matutinum": [
+          v(["@Sancti/10-07:Hymnus Vespera:s/\\@Psalterium.*//s", "@Sancti/10-07:Hymnus Matutinum_:s/^v. //"]),
+        ],
+        "hymnus-vespera": [v(["v. Cæléstis aulæ Núntius,", "Arcána pandens Núminis,", "_", "@Psalterium/Doxologies:Nat"])],
+        "hymnus-matutinum_": [v(["v. In monte olívis cónsito", "Redémptor orans prócidit,", "_", "@Psalterium/Doxologies:Nat"])],
+      },
+      "Psalterium/Doxologies": {
+        nat: [v(["Jesu, tibi sit glória,", "Qui natus es de Vírgine,", "Cum Patr[e] et almo Spíritu,", "In sempitérna sǽcula.", "Amen."])],
+      },
+    };
+    const out = transform(docs["Sancti/10-07"], "Sancti/10-07", lookupOf(docs));
+    expect(out["hymnus-matutinum"]).toEqual([
+      v([
+        "v. Cæléstis aulæ Núntius,",
+        "Arcána pandens Núminis,",
+        "_",
+        "In monte olívis cónsito",
+        "Redémptor orans prócidit,",
+        "_",
+        "Jesu, tibi sit glória,",
+        "Qui natus es de Vírgine,",
+        "Cum Patr[e] et almo Spíritu,",
+        "In sempitérna sǽcula.",
+        "Amen.",
+      ]),
+    ]);
+  });
+
+  it("resolves a collect added in commemoration, which names the other day's own", () => {
+    const docs = {
+      "Sancti/06-30": {
+        oratio: [v(["Deus, qui multitúdinem géntium.", "$Per Dominum.", "_", "$Oremus", "!Pro S. Petro", "@Sancti/02-22:Oratio Petri"])],
+      },
+      "Sancti/02-22": {
+        "oratio-petri": [v(["Deus, qui beáto Petro Apóstolo tuo, collátis clávibus regni cæléstis."])],
+      },
+    };
+    const out = transform(docs["Sancti/06-30"], "Sancti/06-30", lookupOf(docs));
+    expect(out.oratio).toEqual([
+      v([
+        "Deus, qui multitúdinem géntium.",
+        "$Per Dominum.",
+        "_",
+        "$Oremus",
+        "!Pro S. Petro",
+        "Deus, qui beáto Petro Apóstolo tuo, collátis clávibus regni cæléstis.",
+      ]),
+    ]);
+  });
+});
+
 describe("step4 parseReference", () => {
   it("reads file, section, line range and substitutions", () => {
     expect(parseReference("@Commune/C1:Lectio3:2-4:s/N\\./Petri/")).toEqual({
       filePath: "Commune/C1",
       section: "lectio3",
       lineRange: { start: 2, end: 4 },
-      substitutions: [{ pattern: "N.", replacement: "Petri", flags: "" }],
+      substitutions: [{ pattern: "N\\.", replacement: "Petri", flags: "" }],
     });
   });
 
@@ -46,6 +249,24 @@ describe("step4 parseReference", () => {
       section: "",
       lineRange: null,
       substitutions: [{ pattern: "N.", replacement: "N. Vírginis tuæ", flags: "" }],
+    });
+  });
+
+  it("reads a line range whose substitution follows after a space", () => {
+    expect(parseReference("@Commune/C7:Ant Vespera:1 s/;;.*//g")).toEqual({
+      filePath: "Commune/C7",
+      section: "ant-vespera",
+      lineRange: { start: 1, end: 1 },
+      substitutions: [{ pattern: ";;.*", replacement: "", flags: "g" }],
+    });
+  });
+
+  it("reads such a line range with no section named", () => {
+    expect(parseReference("@Commune/C7::3 s/121/126/")).toEqual({
+      filePath: "Commune/C7",
+      section: "",
+      lineRange: { start: 3, end: 3 },
+      substitutions: [{ pattern: "121", replacement: "126", flags: "" }],
     });
   });
 
@@ -107,7 +328,7 @@ describe("step4 transform", () => {
 
   it("applies a line range and substitutions to the pulled lines", () => {
     const out = transform(
-      { lectio4: [v(["@Commune/C1:Lectio3:2-3:s/N\\./Petri/"])] },
+      { lectio4: [v(["@Commune/C1:Lectio3:2-3:s/N\\./Petri/g"])] },
       "Sancti/x",
       lookupOf({ "Commune/C1": { lectio3: [v(["!Ezech 1:10", "10 N. vidit", "11 N. audivit", "12 rest"])] } })
     );

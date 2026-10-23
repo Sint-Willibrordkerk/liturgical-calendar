@@ -68,7 +68,8 @@ export function sundayMasses(
  * ferias of its week say.
  *
  * `massFor` reads a Mass by title, so this stays a question of which Mass a day
- * says rather than of how one is loaded.
+ * says rather than of how one is loaded; `officeFor`, where given, reads the
+ * Office of the same title, which the Sunday says with it.
  */
 export function applyResumedSundays(
   calendar: Calendar,
@@ -76,7 +77,8 @@ export function applyResumedSundays(
   easter: Date,
   advent: Date,
   epiphanySundaysKept: number,
-  massFor: (title: string) => LiturgicalDay["mass"]
+  massFor: (title: string) => LiturgicalDay["mass"],
+  officeFor?: (title: string) => LiturgicalDay["officium"]
 ): void {
   const firstSunday = new Date(easter);
   firstSunday.setDate(firstSunday.getDate() + 56);
@@ -111,6 +113,7 @@ export function applyResumedSundays(
     if (mass !== undefined) {
       sunday.title = title;
       sunday.mass = mass;
+      if (officeFor !== undefined) sunday.officium = officeFor(title);
     }
   });
 }

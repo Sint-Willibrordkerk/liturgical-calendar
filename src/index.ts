@@ -10,6 +10,7 @@ import {
   DEFAULT_RUBRICS,
   loadTranslations,
   loadMassPropersByTitle,
+  loadOfficiumByTitle,
   loadMartyrology,
 } from "./loadAssets";
 import {
@@ -28,6 +29,7 @@ export type {
   Commemoration,
   LiturgicalDay,
   Martyrologium,
+  Officium,
   Season,
 } from "./types";
 
@@ -40,6 +42,12 @@ export type Options = {
    * for.
    */
   martyrologium?: boolean;
+  /**
+   * Give each day the propers of its Office — the Breviary's texts of the day,
+   * Hour by Hour — in the language passed in. They run to several kilobytes a
+   * day, so they are left out unless asked for.
+   */
+  officium?: boolean;
 };
 
 function deleteFields(day: Partial<LiturgicalDay | Commemoration>) {
@@ -72,7 +80,13 @@ export default (
 ) => {
   const lang = asLanguage(language);
   const translations = loadTranslations(lang);
-  const calendar = parseCalendarData(year, propers, lang, translations);
+  const calendar = parseCalendarData(
+    year,
+    propers,
+    lang,
+    translations,
+    options.officium === true
+  );
 
   // A year with more Sundays after Pentecost than the missal numbers resumes
   // the Sundays after the Epiphany that Septuagesima cut short. Which of those
@@ -91,7 +105,8 @@ export default (
       loadMassPropersByTitle(title, lang, undefined, {
         date: septuagesima,
         easter,
-      })
+      }),
+    options.officium ? (title) => loadOfficiumByTitle(title, lang) : undefined
   );
 
   // A fourth-class feria has no Mass of its own; it takes one from the day the

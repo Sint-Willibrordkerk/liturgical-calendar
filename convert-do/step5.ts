@@ -11,6 +11,7 @@ import {
 import { isVariantArray, mapVariants } from "./lib/variants";
 import { canonicalizeRef } from "./lib/references.js";
 import { getIncludesExcludes } from "./condition.js";
+import { officeKindOf, structureOffice } from "./lib/office.js";
 import { STEP_EXT, stripStepExt, parseStep, stringifyStep } from "./lib/serialize.js";
 
 /**
@@ -27,8 +28,11 @@ import { STEP_EXT, stripStepExt, parseStep, stringifyStep } from "./lib/serializ
  * A gradual's Alleluia is lifted into its own section (`alleluia`, and
  * `alleluiap` for the paschal form), as `Prefatio=X` is lifted out of `rule`.
  *
+ * The Office's proper texts — antiphons, psalmody, hymns, chapters,
+ * responsories, versicles — are structured by their kind (see `lib/office`).
+ *
  * Also cleans the `rule` array (drops Gloria/Credo, lifts `Prefatio=X` into a
- * `prefatio` key). Non-missa keys pass through unchanged.
+ * `prefatio` key). Any other key passes through unchanged.
  */
 export type Step5Output = { [key: string]: unknown };
 
@@ -48,6 +52,34 @@ const MISSA_SECTION_TYPES: Record<string, "antiphonal" | "prayer" | "verse"> = {
 };
 
 const V_START = /^\s*v\.\s*/i;
+/**
+ * Where Matins says the *Te Deum*, the sources close the last lesson with this
+ * mark. The Hymn is the reader's, not the lesson's.
+ */
+const TE_DEUM_MARK = /^\s*&te\s?deum\.?\s*$/i;
+
+/**
+ * The lines of a lesson of Matins without the *Te Deum* mark, or none at all
+ * where a rubric leaves the lesson out: an empty section says nothing, and is
+ * not a lesson of no words.
+ */
+function matinsLines(lines: unknown): unknown {
+  if (!Array.isArray(lines)) return lines;
+  const kept = lines.filter((line) => typeof line !== "string" || !TE_DEUM_MARK.test(line));
+  // A lesson read in place of another is headed by a direction — `!de Homilía
+  // Feriæ.` — before its own introduction; it is no reference.
+  const [heading, introduction] = kept;
+  if (
+    typeof heading === "string" &&
+    heading.startsWith("!") &&
+    typeof introduction === "string" &&
+    LECTIO_INTRODUCTION.test(introduction)
+  ) {
+    kept.shift();
+  }
+  return kept.every((line) => typeof line === "string" && line.trim() === "") ? [] : kept;
+}
+
 const LECTIO_INTRODUCTION = /^\s*(Léctio|Lectio|Sequéntia|Sequentia)\s+.+$/i;
 const ALLELUIA_CUE = /\s*,?\s*Allel[uú][ji]a\s*,?\s*Allel[uú][ji]a\.?\s*$/i;
 const PREFATIO_PREFIX = /^Prefatio\s*=\s*(.+)$/i;
@@ -139,6 +171,23 @@ export function linesToReading(lines: unknown): Reading {
     .map((s) => stripLeadingV(s.replace(VERSE_NUMBER, "").trim()))
     .filter((s) => s !== "");
   return { ref, verses };
+}
+
+/**
+ * A homily at Matins: the Gospel it expounds, a `_` line, and the homily, each
+ * one reading. Structured as the homily with the Gospel beside it; undefined
+ * where the lines are not two such parts.
+ */
+export function linesToHomily(
+  lines: unknown
+): (Reading & { evangelium: Reading }) | undefined {
+  if (!Array.isArray(lines)) return undefined;
+  const at = lines.indexOf("_");
+  if (at === -1) return undefined;
+  const gospel = lines.slice(0, at);
+  const homily = lines.slice(at + 1);
+  if (countRefMarkers(gospel) !== 1 || countRefMarkers(homily) !== 1) return undefined;
+  return { ...linesToReading(homily), evangelium: linesToReading(gospel) };
 }
 
 /**
@@ -682,17 +731,27 @@ export function transform(obj: Record<string, unknown>): Step5Output {
       if (prefatioVariants.length) result.prefatio = prefatioVariants;
       continue;
     }
+    // The Office's own texts, structured by what they are; a section whose
+    // lines do not fit its kind keeps them.
+    const officeKind = officeKindOf(key);
+    if (officeKind) {
+      result[key] = mapVariants(value, (v) => structureOffice(officeKind, v) ?? v);
+      continue;
+    }
     const sectionType = getSectionType(key);
     if (!sectionType) {
       result[key] = value;
       continue;
     }
     const isReading = isReadingSection(key);
-    const structured = mapVariants(value, (v) =>
-      isReading && !canStructureReading(v)
-        ? v
-        : transformSection(key, v, sectionType)
-    );
+    const isMatins = MATINS_READING.test(key.split("/")[0]!);
+    const structured = mapVariants(value, (lines) => {
+      const v = isMatins ? matinsLines(lines) : lines;
+      if (isMatins && Array.isArray(v) && v.length === 0) return v;
+      return isReading && !canStructureReading(v)
+        ? (isMatins && linesToHomily(v)) || v
+        : transformSection(key, v, sectionType);
+    });
 
     // A gradual carries the Alleluia sung after it; lift it into its own
     // section, keeping each variant's condition.

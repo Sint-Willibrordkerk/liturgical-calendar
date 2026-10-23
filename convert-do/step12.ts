@@ -26,19 +26,29 @@ import {
   PRAYER_SECTIONS,
   CHANT_SECTIONS,
 } from "../src/massPropers.js";
+import {
+  CHAPTER_SECTIONS,
+  HYMN_SECTIONS,
+  LESSON_SECTIONS,
+  OFFICE_ANTIPHON_SECTIONS,
+  OFFICE_SECTIONS,
+  RESPONSORY_SECTIONS,
+  VERSICLE_SECTIONS,
+} from "../src/officium.js";
 
 /**
- * Step 12 — the Mass propers.
+ * Step 12 — the propers.
  *
  * The last step, and the only one whose output leaves the pipeline. It narrows
- * the tree to what the calendar consumes, so the Divine Office — by far the
- * larger part — is not carried into the published assets. Section content keeps
- * the rubric-variant shape: which variant applies is a question for whoever
- * renders a given day, not for the pipeline.
+ * the tree to what the calendar consumes — the propers of the Mass and of the
+ * Office — so the psalter, the ordinary and the rules that assemble the Hours
+ * are not carried into the published assets. Section content keeps the
+ * rubric-variant shape: which variant applies is a question for whoever renders
+ * a given day, not for the pipeline.
  */
 export type Step12Output = { [key: string]: unknown };
 
-/** The Mass sections proper — a document needs one of these to be worth writing. */
+/** The Mass sections proper — a document needs one of these, or of the Office's, to be worth writing. */
 const MASS_SECTIONS = new Set([
   "introitus",
   "oratio",
@@ -65,11 +75,22 @@ const MASS_SECTIONS = new Set([
  */
 const SUPPORTING_SECTIONS = new Set(["title", "name", "prefatio"]);
 
-/** The stores a language ships, and which sections draw on each. */
+/** The Office's sections proper, published in the order of the Hours. */
+const OFFICE = new Set(OFFICE_SECTIONS);
+
+/**
+ * The stores a language ships, and which sections draw on each. The Office's
+ * lessons are readings and its antiphons chants; its other texts have stores of
+ * their own.
+ */
 export const STORES = [
-  { file: "lectio", sections: READING_SECTIONS },
+  { file: "lectio", sections: new Set([...READING_SECTIONS, ...LESSON_SECTIONS]) },
   { file: "oratio", sections: PRAYER_SECTIONS },
-  { file: "antiphona", sections: CHANT_SECTIONS },
+  { file: "antiphona", sections: new Set([...CHANT_SECTIONS, ...OFFICE_ANTIPHON_SECTIONS]) },
+  { file: "hymnus", sections: HYMN_SECTIONS },
+  { file: "capitulum", sections: CHAPTER_SECTIONS },
+  { file: "responsorium", sections: RESPONSORY_SECTIONS },
+  { file: "versus", sections: VERSICLE_SECTIONS },
 ] as const;
 
 /**
@@ -97,8 +118,9 @@ export function keepPublishedRubric(
 }
 
 /**
- * The order the sections occur in at Mass. A day file reads the way the day is
- * celebrated, rather than in whatever order the sources happened to yield.
+ * The order the sections occur in at Mass, and then at the Hours. A day file
+ * reads the way the day is celebrated, rather than in whatever order the
+ * sources happened to yield.
  */
 const SECTION_ORDER = [
   "title",
@@ -117,6 +139,7 @@ const SECTION_ORDER = [
   "communio",
   "postcommunio",
   "ultima-evangelium",
+  ...OFFICE_SECTIONS,
 ];
 
 const SECTION_RANK = new Map(SECTION_ORDER.map((key, i) => [key, i]));
@@ -170,18 +193,24 @@ export function compactSections(obj: Record<string, unknown>): Step12Output {
   return out;
 }
 
-/** Keep only the Mass sections, dropping the Office. */
-export function keepMassSections(obj: Record<string, unknown>): Step12Output {
+/**
+ * Keep only the propers: the sections of the Mass and of the Office, and what
+ * names the day. The rest — the rules, the lessons of other rubrics, the uses'
+ * own sections — is dropped.
+ */
+export function keepPropers(obj: Record<string, unknown>): Step12Output {
   const out: Step12Output = {};
   for (const [key, value] of Object.entries(obj)) {
-    if (MASS_SECTIONS.has(key) || SUPPORTING_SECTIONS.has(key)) out[key] = value;
+    if (MASS_SECTIONS.has(key) || OFFICE.has(key) || SUPPORTING_SECTIONS.has(key)) {
+      out[key] = value;
+    }
   }
   return out;
 }
 
-/** True when a document carries Mass content worth publishing. */
-export function hasMassContent(obj: Record<string, unknown>): boolean {
-  return Object.keys(obj).some((key) => MASS_SECTIONS.has(key));
+/** True when a document carries Mass or Office content worth publishing. */
+export function hasPropers(obj: Record<string, unknown>): boolean {
+  return Object.keys(obj).some((key) => MASS_SECTIONS.has(key) || OFFICE.has(key));
 }
 
 /**
@@ -762,7 +791,7 @@ function withoutLanguage(relPath: string): string {
   return relPath.replace(/^[^/\\]*[/\\]/, "");
 }
 
-/** A publication's day: its Mass sections under the published rubric and season. */
+/** A publication's day: its propers under the published rubric and season. */
 async function massOf(
   inputDir: string,
   { relPath, outRelPath, season }: Publication
@@ -772,7 +801,7 @@ async function massOf(
     throw new Error("Expected object");
   }
   const published = keepPublishedRubric(
-    keepMassSections(obj as Record<string, unknown>)
+    keepPropers(obj as Record<string, unknown>)
   );
   // Narrowed after the rubric filter, so a season is decided among the
   // variants that could actually be chosen.
@@ -846,7 +875,7 @@ export async function run(
   for (const publication of byLanguage.get(BASE_LANGUAGE) ?? []) {
     try {
       const mass = await massOf(inputDir, publication);
-      if (!hasMassContent(mass)) {
+      if (!hasPropers(mass)) {
         skipped++;
         continue;
       }
@@ -884,7 +913,7 @@ export async function run(
         const mass = await massOf(inputDir, publication);
         const day = days.get(withoutLanguage(publication.outRelPath));
         if (day === undefined) {
-          if (hasMassContent(mass)) unmatched++;
+          if (hasPropers(mass)) unmatched++;
           continue;
         }
         renderings.push(...renderingsOf(day, mass, stores, baseStores));
@@ -910,7 +939,7 @@ export async function run(
   );
 
   consola.info(
-    `Step 12: ${written} days written, ${skipped} without mass content, ` +
+    `Step 12: ${written} days written, ${skipped} without propers, ` +
       `${martyrology} of the Martyrology`
   );
   if (errors > 0) consola.error(`Step 12 errors: ${errors}`);

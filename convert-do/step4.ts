@@ -66,8 +66,10 @@ function parseSubstitutions(substStr: string): Substitution[] {
     const flags = match[3];
     if (pattern == null || replacement == null) continue;
     result.push({
-      pattern: pattern.replace(/\\(.)/g, "$1"),
-      replacement: replacement.replace(/\\(.)/g, "$1"),
+      // Only the delimiter is unescaped: `\.` and `\$` still mean what they do.
+      pattern: pattern.replace(/\\\//g, "/"),
+      // `\n` is a line break; any other escaped character stands for itself.
+      replacement: replacement.replace(/\\n/g, "\n").replace(/\\(.)/g, "$1"),
       flags: flags || "",
     });
   }
@@ -75,15 +77,21 @@ function parseSubstitutions(substStr: string): Substitution[] {
 }
 
 /**
- * Read a reference line. The substitution runs from the first `:s/` (a space
- * may stand before the `s`) to the end
+ * Where a reference's substitution begins: at the first `:s/` (a space may
+ * stand before the `s`), or after a line range at a space alone —
+ * `@Commune/C6:Ant Matutinum:7 s/95/121/`.
+ */
+const SUBSTITUTION_START = /:\s*s\/|(?<=:\d+(?:-\d+)?)\s+s\//;
+
+/**
+ * Read a reference line. The substitution runs from where it begins to the end
  * of the line — its text may hold a colon of its own — and a line range is read
  * from what precedes it.
  */
 export function parseReference(str: string): ParsedReference | null {
   if (typeof str !== "string" || !str.startsWith("@")) return null;
   const rest = str.slice(1);
-  const substMatch = /:\s*s\//.exec(rest);
+  const substMatch = SUBSTITUTION_START.exec(rest);
   const head = substMatch ? rest.slice(0, substMatch.index) : rest;
   const substPart = substMatch ? rest.slice(substMatch.index + 1) : "";
 
@@ -216,17 +224,23 @@ function targetConditions(
   return conditions;
 }
 
+/**
+ * Apply the substitutions to the lines, as Divinum Officium does: to the text as
+ * a whole, in the order written, each as its flags say. Without `g` only the
+ * first match is replaced, which is how `s/_/;;109/ s/_/;;112/` numbers the
+ * psalms of a run of antiphons one at a time; `m` lets `^` and `$` stand at
+ * every line, and `s` lets a dot cross them.
+ */
 function applySubstitutions(lines: string[], substitutions: Substitution[]) {
-  if (!substitutions.length) return lines;
-  return lines.map((line) => {
-    let result = String(line);
-    for (const { pattern, replacement, flags } of substitutions) {
-      try {
-        result = result.replace(new RegExp(pattern, flags || "g"), replacement);
-      } catch {}
-    }
-    return result;
-  });
+  let out = lines.map(String);
+  for (const { pattern, replacement, flags } of substitutions) {
+    try {
+      const replaced = out.join("\n").replace(new RegExp(pattern, flags), replacement).split("\n");
+      // The text's own closing newline is not a line.
+      out = replaced.at(-1) === "" ? replaced.slice(0, -1) : replaced;
+    } catch {}
+  }
+  return out;
 }
 
 /**
@@ -261,22 +275,51 @@ function resolveReference(
 
   resolved = applySubstitutions(resolved, reference.substitutions);
 
-  if (resolved.length === 1 && typeof resolved[0] === "string") {
-    const nested = parseReference(resolved[0]);
-    if (nested) {
-      const nestedResolved = resolveReference(
-        nested,
-        filePath,
-        lookup,
-        reference.section || currentSectionKey,
-        currentCondition,
-        depth + 1
-      );
-      if (nestedResolved) return nestedResolved;
-    }
-  }
+  // What was taken may itself hold references, which Divinum Officium resolves
+  // in turn once the substitutions are made: a hymn borrowed from another's
+  // ends in a reference to the doxology it is sung with.
+  return resolved.flatMap((line) => {
+    const nested = typeof line === "string" ? parseReference(line) : null;
+    const nestedResolved = nested
+      ? resolveReference(
+          nested,
+          filePath,
+          lookup,
+          reference.section || currentSectionKey,
+          currentCondition,
+          depth + 1
+        )
+      : null;
+    return nestedResolved ?? [line];
+  });
+}
 
-  return resolved;
+/** A line that stands on its own: a reference, or one opening a part. */
+const OWN_LINE = /^\s*(?:[!$&_]|[VR]\.)/;
+
+/**
+ * Join each line Divinum Officium marks with a trailing `~` to the line after
+ * it. A reference takes nothing after it, and nothing is joined that opens a
+ * part of its own — a reference, a verse, a response, a closing; there the
+ * mark is only dropped, as it is on the last line.
+ */
+function joinRunOns(lines: string[]): string[] {
+  const out: string[] = [];
+  for (let i = 0; i < lines.length; i++) {
+    let line = lines[i]!;
+    while (typeof line === "string" && /~\s*$/.test(line)) {
+      const bare = line.replace(/\s*~\s*$/, "");
+      const next = lines[i + 1];
+      if (bare.trimStart().startsWith("!") || typeof next !== "string" || OWN_LINE.test(next)) {
+        line = bare;
+        break;
+      }
+      line = `${bare} ${next.trimStart()}`;
+      i++;
+    }
+    out.push(line);
+  }
+  return out;
 }
 
 /**
@@ -318,7 +361,7 @@ export function transform(
         if (resolved) out.push(...resolved);
         else out.push(line);
       }
-      return out;
+      return joinRunOns(out);
     };
 
     const variants = value as Variant[];
