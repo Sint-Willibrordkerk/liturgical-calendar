@@ -220,13 +220,21 @@ export function referencedPaths(obj: Doc, ownPath: string): Set<string> {
 /**
  * The document with the sections its broad references name merged in. The
  * `__preamble` is kept; the resolver removes it once the document is done.
+ *
+ * `held`, for a translation, is the base language's document of the same day,
+ * and how the base language reads the files it borrows from: what the base
+ * language gives of its own counts as the day's too. Borrowed in the
+ * translation it would be another day's text: St Raphael has antiphons of his
+ * own and takes the rest from St Michael, whose Dutch antiphons the Dutch St
+ * Raphael, which has none, would otherwise say.
  */
 export function importReferences(
   obj: Doc,
   ownPath: string,
   load: Load,
   rules: BorrowRules,
-  withheld: ReadonlySet<string> = new Set()
+  withheld: ReadonlySet<string> = new Set(),
+  held?: Held
 ): Doc {
   const result: Doc = { ...obj };
   const { ex, vide } = extractExVideReferences(obj, ownPath);
@@ -235,6 +243,7 @@ export function importReferences(
     const file = load(reference.path);
     if (!file) continue;
     const isInclude = ex.includes(reference);
+    const own = heldAgainst(held, reference.path);
     // Judged against what the day held before this reference: a section and
     // the one lifted out of it are taken from one file, or left together.
     const before: Doc = { ...result };
@@ -247,7 +256,11 @@ export function importReferences(
         // A Mass proper travels with a borrow only where normal resolution —
         // the day's own text, and anything an `ex` already included — has left
         // nothing in its place. A lifted section is judged by its parent.
-        if (!rules.massPropers.has(key) || hasContent(before[parent ?? key]))
+        if (
+          !rules.massPropers.has(key) ||
+          hasContent(before[parent ?? key]) ||
+          hasContent(own[parent ?? key])
+        )
           continue;
       }
 
@@ -268,7 +281,11 @@ export function importReferences(
       // wherever 1962 is in force, and the common is sung in place of
       // `Signum magnum`.
       const existing = variantsOf(result[key]);
-      const guards = parent ? [...variantsOf(before[parent]), ...existing] : existing;
+      const guards = [
+        ...(parent ? [...variantsOf(before[parent]), ...variantsOf(own[parent])] : []),
+        ...existing,
+        ...variantsOf(own[key]),
+      ];
       const gaps = imported.filter(
         (incoming) =>
           !guards.some((own) =>
@@ -281,6 +298,30 @@ export function importReferences(
   }
 
   return result;
+}
+
+/**
+ * The base language's document of a translation's day, and the files it
+ * borrows from as the base language reads them.
+ */
+export type Held = { doc: Doc; view: Load };
+
+/**
+ * What the base language's day gives of its own and the file at `path` would
+ * not lend it: a variant whose text that file holds in the same section is the
+ * borrowed day's text as much as this one's — a day whose collect is its
+ * common's, with N. for the name — so the translation's file of it renders it.
+ */
+function heldAgainst(held: Held | undefined, path: string): Doc {
+  if (held === undefined) return {};
+  const target = held.view(path);
+  const own: Doc = {};
+  for (const [key, value] of Object.entries(held.doc)) {
+    const lent = new Set(variantsOf(target?.[key]).map((item) => JSON.stringify(item.value)));
+    const variants = variantsOf(value).filter((item) => !lent.has(JSON.stringify(item.value)));
+    if (variants.length > 0) own[key] = variants;
+  }
+  return own;
 }
 
 /** A day's documents by source — its Office (`horas`) and its Mass (`missa`). */
@@ -300,11 +341,15 @@ export type SourcedLoad = (source: string, path: string) => Doc | undefined;
  * Where documents borrow from each other, the one reached second through the
  * cycle finds the other still being resolved, and borrows nothing from it.
  * Visiting the documents in a fixed order keeps that the same on every run.
+ *
+ * `held` gives, for a translation's document, the base language's (see
+ * `importReferences`).
  */
 export function createSourcedResolver(
   load: SourcedLoad,
   sources: readonly string[],
-  rules: BorrowRules
+  rules: BorrowRules,
+  held: (source: string, path: string) => Held | undefined = () => undefined
 ): {
   resolve: (source: string, path: string) => Doc | undefined;
   view: Load;
@@ -326,7 +371,14 @@ export function createSourcedResolver(
       return undefined;
     }
     inProgress.add(key);
-    const resolved = importReferences(raw, path, view, rules, rules.withheldFrom[source]);
+    const resolved = importReferences(
+      raw,
+      path,
+      view,
+      rules,
+      rules.withheldFrom[source],
+      held(source, path)
+    );
     delete resolved.__preamble;
     inProgress.delete(key);
     done.set(key, resolved);

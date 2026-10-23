@@ -278,6 +278,85 @@ describe("importReferences — the day's own text takes precedence", () => {
   });
 });
 
+describe("importReferences — a translation borrows only where the base language does", () => {
+  // St Raphael draws his Office from St Michael's, with antiphons of his own;
+  // the Dutch file of the day gives only the collect.
+  const latin: Doc = {
+    rank: [v([";;Duplex majus;;4;;ex Sancti/05-08"])],
+    "ant-1": [v("ego-sum-raphael")],
+  };
+  const latinMichael = loaderOf({
+    "Sancti/05-08": { "ant-1": [v("dum-sacrum-mysterium")], "ant-2": [v("michael-benedictus")] },
+  });
+  const michael = loaderOf({
+    "Sancti/05-08": { "ant-1": [v("toen-johannes")], "ant-2": [v("michael-benedictus-nl")] },
+  });
+  const raphael = (doc: Doc = latin) => ({ doc, view: latinMichael });
+
+  it("does not take the borrowed day's text where the base language has its own", () => {
+    const out = importReferences(
+      { rank: latin.rank, oratio: [v("god-die-de-aartsengel")] },
+      "Sancti/10-24",
+      michael,
+      KEYED_RULES,
+      new Set(),
+      raphael()
+    );
+    expect(out["ant-1"]).toBeUndefined();
+    expect(out.oratio).toEqual([v("god-die-de-aartsengel")]);
+  });
+
+  it("still borrows what the base language borrows too", () => {
+    const out = importReferences({ rank: latin.rank }, "Sancti/10-24", michael, KEYED_RULES, new Set(), raphael());
+    expect(out["ant-2"]).toEqual([v("michael-benedictus-nl")]);
+  });
+
+  it("judges the base language's own text rubric by rubric", () => {
+    const out = importReferences(
+      { rank: latin.rank },
+      "Sancti/10-24",
+      michael,
+      KEYED_RULES,
+      new Set(),
+      raphael({ ...latin, "ant-1": [v("ego-sum-raphael", ["1570"])] })
+    );
+    expect(out["ant-1"]).toEqual([v("toen-johannes")]);
+  });
+
+  it("borrows where the base language's own text is the borrowed day's", () => {
+    // St Gregory Thaumaturgus says his common's collect, N. for the name, as a
+    // section of his own; the Dutch file of the day has none, and the Dutch
+    // common's is the same text.
+    const out = importReferences(
+      { rank: [v([";;Duplex;;3;;vide C4"])] },
+      "Sancti/11-17",
+      loaderOf({ "Commune/C4": { oratio: [v("wij-vragen-u-n")] } }),
+      KEYED_RULES,
+      new Set(),
+      {
+        doc: { rank: [v([";;Duplex;;3;;vide C4"])], oratio: [v("da-quaesumus-n")] },
+        view: loaderOf({ "Commune/C4": { oratio: [v("da-quaesumus-n")] } }),
+      }
+    );
+    expect(out.oratio).toEqual([v("wij-vragen-u-n")]);
+  });
+
+  it("does not take a Mass proper the base language gives of its own", () => {
+    const out = importReferences(
+      { rank: [v([";;Duplex;;3;;vide C4a"])] },
+      "Sancti/01-27",
+      loaderOf({ "Commune/C4a": { evangelium: [v("matt-5-13-19-nl")] } }),
+      KEYED_RULES,
+      new Set(),
+      {
+        doc: { rank: [v([";;Duplex;;3;;vide C4a"])], evangelium: [v("own-gospel")] },
+        view: loaderOf({ "Commune/C4a": { evangelium: [v("matt-5-13-19")] } }),
+      }
+    );
+    expect(out.evangelium).toBeUndefined();
+  });
+});
+
 describe("importReferences — a lifted section goes with the one it was lifted from", () => {
   const common = {
     graduale: [v("common-gradual")],
