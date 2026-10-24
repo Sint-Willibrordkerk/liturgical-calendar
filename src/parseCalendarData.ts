@@ -52,6 +52,13 @@ type ParsedCalendarData = {
   calendar?: Record<DateString, CalendarEntry[] | CalendarEntry | undefined>;
   slot?: string;
   slotName?: string;
+  /**
+   * The local calendars of the sources a local proper's own day is read from,
+   * before the general ones. A day of the base calendar reads only the general
+   * ones, so it keeps its own propers whatever local proper is chosen: a local
+   * calendar may file a different saint under the same name.
+   */
+  localCalendars?: string[];
 };
 
 function flattenCalendarData(
@@ -167,10 +174,12 @@ export function parseCalendarData(
 
   const slots: Record<string, ParsedCalendarData[]> = {};
   propers.reverse().forEach((proper) => {
-    const properData = flattenCalendarData(loadPropers(proper), {});
+    const data = loadPropers(proper);
+    const localCalendars = data["local-calendars"];
+    const properData = flattenCalendarData(data, {});
     properData.forEach(({ slotName, ...item }) => {
       slots[slotName!] ??= [];
-      slots[slotName!]!.push(item);
+      slots[slotName!]!.push({ ...item, localCalendars });
     });
   });
 
@@ -208,10 +217,13 @@ export function parseCalendarData(
         // Load mass proper by title and language. A proper carries every chant
         // the year might call for; the season decides which the day sings.
         const mass: RawMassProper | undefined = titleWithSubstitution
-          ? loadMassPropersByTitle(titleWithSubstitution, language, undefined, {
-              date,
-              easter,
-            })
+          ? loadMassPropersByTitle(
+              titleWithSubstitution,
+              language,
+              undefined,
+              { date, easter },
+              item.localCalendars
+            )
           : undefined;
 
         // Fill the parametric parts to build the name shown. A slug stays a
@@ -257,7 +269,12 @@ export function parseCalendarData(
           mass,
           officium:
             officium && titleWithSubstitution
-              ? loadOfficiumByTitle(titleWithSubstitution, language)
+              ? loadOfficiumByTitle(
+                  titleWithSubstitution,
+                  language,
+                  undefined,
+                  item.localCalendars
+                )
               : undefined,
           color,
           season,

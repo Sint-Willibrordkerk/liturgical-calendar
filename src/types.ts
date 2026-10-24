@@ -311,6 +311,12 @@ export type CalendarData = {
   "valid-commemoration-types"?: string[];
   "valid-colors"?: string[];
 
+  /**
+   * A local proper's: the local calendars of the sources its days are read
+   * from, by their path below the day tree, the most particular first.
+   */
+  "local-calendars"?: string[];
+
   title?: string;
   type?: string;
   "liturgical-class"?: number;

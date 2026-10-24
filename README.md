@@ -281,9 +281,28 @@ its color beside its title:
 ```yaml
 - slot-name: dioecesis-3
   calendar:
-    15-07: S. Plechelmi
-    18-07: { title: S. Frederici, color: red }
+    15-07: plechelmi-episcopi-et-confessoris
+    18-07: { title: frederici-episcopi-et-martyris, color: red }
 ```
+
+### The Propers of a Local Calendar
+
+Divinum Officium keeps the days of some places in local calendars of their own.
+A local proper names the ones it reads, the most particular first, and its days
+are named as the sources file them:
+
+```yaml
+local-calendars:
+  - Neerlandia/Ultrajectum
+  - Neerlandia
+```
+
+The proper's own days look for their propers in those local calendars before
+the general ones. The days of the base calendar keep their own, with or without
+the proper: a local calendar may file a different saint under the same name, as
+the Netherlands' Gertrude of Nivelles shares hers with Gertrude the Great. Only the local calendars
+a local proper reads are published: today the Netherlands and the archdiocese of
+Utrecht.
 
 ## Development
 

@@ -60,7 +60,9 @@ _Avoid_: breviary (for the texts of a day), divine office in lowercase, liturgy 
 **Local Proper**:
 The calendar of a diocese, region, church or congregation, filling the slots
 the base calendar leaves for it; it names the color of its own days and is
-white where it says nothing.
+white where it says nothing. It may name the **local calendars** of the sources
+its days are read from — the Netherlands, the archdiocese of Utrecht — which are
+searched before the general calendar's.
 _Avoid_: diocesan calendar, supplement
 
 ## Relationships

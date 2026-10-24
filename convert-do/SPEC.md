@@ -1877,11 +1877,26 @@ Only the **day trees** — `Sancti` and `Tempora` — are written. A calendar as
 for the propers of a day, and those are the two trees that hold days.
 
 A day nested in a **local calendar** under those trees is published only when
-that calendar is `aliquibus locis` — "in some places" — which is a universal
-option of the general calendar. The regional ones (`Urbis`, `Bavaria`,
-`Brasilia`, …) are the propers of a particular place, not part of the calendar
-being published; they are dropped, and would otherwise shadow the general day
-they share a date with.
+that calendar is one of these:
+
+| Local calendar         | |
+| ---------------------- | - |
+| `aliquibus locis`      | "in some places" — a universal option of the general calendar |
+| `Neerlandia`           | the Netherlands, which the Utrecht local proper reads |
+| `Neerlandia/Ultrajectum` | the archdiocese of Utrecht, which the Utrecht local proper reads |
+
+A local calendar is named by its whole path below the day tree, so keeping
+`Neerlandia` keeps the days directly in it and not those of the calendars nested
+in it: `Neerlandia/Groningen` is not kept. The other regional ones (`Urbis`,
+`Bavaria`, `Brasilia`, …) are the propers of a place no local proper of the
+calendar reads; they are dropped rather than shipped unreachable.
+
+A kept local calendar is published **at its own path** —
+`Sancti/Neerlandia/Ultrajectum/willibrordi-….yml` — beside the general day of
+the same name, never in its place. A local day is reached only by a calendar
+generated with a local proper that names its local calendar, so it cannot
+shadow the general day for anyone else — nor, in that calendar, for a day the
+local proper does not keep itself.
 
 `Commune` is not published. It is a base for other days rather than a day
 itself: [step 7](#step-7--broad-references-batch) has already resolved the

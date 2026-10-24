@@ -79,6 +79,19 @@ describe("step12 — which trees are published", () => {
     expect(isPublishedTree("la/Sancti/aliquibus locis/pauli.json")).toBe(true);
   });
 
+  it("publishes the local calendars the Utrecht proper reads", () => {
+    expect(isPublishedTree("la/Sancti/Neerlandia/gertrudis-virginis.json")).toBe(true);
+    expect(
+      isPublishedTree("la/Sancti/Neerlandia/Ultrajectum/lebuini-confessoris.json")
+    ).toBe(true);
+  });
+
+  it("keeps a local calendar by its whole path, not the calendars nested in it", () => {
+    expect(isPublishedTree("la/Sancti/Neerlandia/Groningen/liduinae-virginis.json")).toBe(
+      false
+    );
+  });
+
   it("does not publish a regional local calendar", () => {
     expect(isPublishedTree("la/Sancti/Urbis/martinae.json")).toBe(false);
     expect(isPublishedTree("la/Sancti/Bavaria/Monacensis/x.json")).toBe(false);

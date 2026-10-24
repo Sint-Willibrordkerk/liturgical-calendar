@@ -48,6 +48,7 @@ export function createCalendarDataSchema(
       "valid-liturgical-classes": z.array(z.number()).optional(),
       "valid-commemoration-types": z.array(z.string()).optional(),
       "valid-colors": z.array(z.string()).optional(),
+      "local-calendars": z.array(z.string()).optional(),
       type: z.string().optional(),
       title: z.string().optional(),
       "liturgical-class": z.number().optional(),
