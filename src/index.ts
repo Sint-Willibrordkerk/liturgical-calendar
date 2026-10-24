@@ -48,6 +48,15 @@ export type Options = {
    * day, so they are left out unless asked for.
    */
   officium?: boolean;
+  /**
+   * A second language to say the Mass in where the first has no words for a
+   * text: a day the Dutch has no collect for says the Latin one, and `mass`
+   * names the sections it said in the fallback (`mass.fallback`). It is passed
+   * in like the language itself and never bundled with it, so a caller who
+   * wants Dutch alone carries no Latin. Without it a text the language lacks
+   * is left out. It does not reach the Office.
+   */
+  fallback?: Language;
 };
 
 function deleteFields(day: Partial<LiturgicalDay | Commemoration>) {
@@ -85,7 +94,8 @@ export default (
     propers,
     lang,
     translations,
-    options.officium === true
+    options.officium === true,
+    options.fallback
   );
 
   // A year with more Sundays after Pentecost than the missal numbers resumes
@@ -102,10 +112,14 @@ export default (
     calculateAdvent(year),
     epiphanySundaysKept,
     (title) =>
-      loadMassPropersByTitle(title, lang, undefined, {
-        date: septuagesima,
-        easter,
-      }),
+      loadMassPropersByTitle(
+        title,
+        lang,
+        undefined,
+        { date: septuagesima, easter },
+        undefined,
+        options.fallback
+      ),
     options.officium ? (title) => loadOfficiumByTitle(title, lang) : undefined
   );
 
@@ -120,15 +134,21 @@ export default (
   applyFerialMass(
     calendar,
     year,
-    loadMassPropersByTitle(SUNDAY_AFTER_EPIPHANY_MASS, lang, undefined, {
-      date: new Date(year, 0, 12),
-      easter,
-    }),
+    loadMassPropersByTitle(
+      SUNDAY_AFTER_EPIPHANY_MASS,
+      lang,
+      undefined,
+      { date: new Date(year, 0, 12), easter },
+      undefined,
+      options.fallback
+    ),
     loadMassPropersByTitle(
       SUNDAY_AFTER_PENTECOST_MASS,
       lang,
       new Set([...DEFAULT_RUBRICS, SUNDAY_AFTER_PENTECOST_VARIANT]),
-      { date: afterTrinity, easter }
+      { date: afterTrinity, easter },
+      undefined,
+      options.fallback
     )
   );
 

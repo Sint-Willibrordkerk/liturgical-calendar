@@ -67,6 +67,8 @@ they fall — but no day carries a Mass and nothing is translated.
     [The Martyrology](#the-martyrology).
   - `officium` (boolean): give each day the propers of its Office; see
     [The Office](#the-office).
+  - `fallback` (Language): a second language to say a Mass text in where
+    `language` has none; see [A fallback language](#a-fallback-language).
 
 ### With Local Propers
 
@@ -80,6 +82,31 @@ const calendar = generateCalendar(2026, ['ultrajectum'], nl);
 const november7 = calendar[11][7];
 console.log(november7.title); // "H. Willibrordus" (in Dutch)
 ```
+
+### A fallback language
+
+A language may have no words for a text a day refers to. Divinum Officium has
+no Dutch for the days of a local calendar, for one, so the Dutch Mass of
+7 November, the feast of H. Willibrordus, has no collect, epistle, secret or
+postcommunion. By default such a text is left out. Pass another language as
+`fallback` and it is said in that one instead:
+
+```javascript
+import la from '@sint-willibrordkerk/liturgical-calendar-la';
+import nl from '@sint-willibrordkerk/liturgical-calendar-nl';
+
+const calendar = generateCalendar(2026, ['ultrajectum'], nl, { fallback: la });
+
+const { mass } = calendar[11][7];
+mass.oratio;   // the Latin collect
+mass.fallback; // { oratio: 'la', lectio: 'la', secreta: 'la', ... }
+```
+
+`mass.fallback` names the sections said in the fallback, each by the code of the
+language it was said in, so a site can label them. It is absent when the whole
+Mass is in the language asked for. The fallback is a package the caller
+imports, like the language itself: the Dutch package carries no Latin. It
+applies to the Mass only; the Office and the Martyrology are the language's own.
 
 ### Calendar Structure
 

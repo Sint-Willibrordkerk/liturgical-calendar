@@ -48,6 +48,13 @@ export type RawMassProper = {
   title?: string;
   /** The short name of the celebration. */
   name?: string;
+  /**
+   * The sections said in the fallback language because the language asked for
+   * has no words for them, each by the code of the language it is said in:
+   * `{ oratio: "la", lectio: "la" }`. Absent when the whole Mass is in the
+   * language asked for.
+   */
+  fallback?: Record<string, string>;
   prefatio?: string;
   introitus?: { antiphon?: RawVerse; verse?: RawVerse };
   oratio?: { text?: string; closure?: string };
