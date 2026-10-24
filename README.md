@@ -58,17 +58,17 @@ they fall — but no day carries a Mass and nothing is translated.
 
 - `year` (number): The year for which to generate the calendar
 - `propers` (string[]): Array of proper names to include (e.g., `['ultrajectum', 'fsspx']`)
-- `language` (Language): A language package —
+- `language` (Language | Language[]): A language package —
   `@sint-willibrordkerk/liturgical-calendar-la`, `…-nl` — imported and passed
-  in. It supplies the words of the Mass propers and the translations. Optional;
-  omit it for the bare calendar, whose days have no Mass.
+  in. It supplies the words of the Mass propers and the translations. Pass
+  several, as a list, to say a Mass text in the next where the first has none;
+  see [Several languages](#several-languages). Optional; omit it for the bare
+  calendar, whose days have no Mass.
 - `options` (Options): Optional.
   - `martyrologium` (boolean): give each day the Roman Martyrology; see
     [The Martyrology](#the-martyrology).
   - `officium` (boolean): give each day the propers of its Office; see
     [The Office](#the-office).
-  - `fallback` (Language): a second language to say a Mass text in where
-    `language` has none; see [A fallback language](#a-fallback-language).
 
 ### With Local Propers
 
@@ -83,30 +83,31 @@ const november7 = calendar[11][7];
 console.log(november7.title); // "H. Willibrordus" (in Dutch)
 ```
 
-### A fallback language
+### Several languages
 
 A language may have no words for a text a day refers to. Divinum Officium has
 no Dutch for the days of a local calendar, for one, so the Dutch Mass of
 7 November, the feast of H. Willibrordus, has no collect, epistle, secret or
-postcommunion. By default such a text is left out. Pass another language as
-`fallback` and it is said in that one instead:
+postcommunion. With one language such a text is left out. Pass a list and it is
+said in the next language that has it:
 
 ```javascript
 import la from '@sint-willibrordkerk/liturgical-calendar-la';
 import nl from '@sint-willibrordkerk/liturgical-calendar-nl';
 
-const calendar = generateCalendar(2026, ['ultrajectum'], nl, { fallback: la });
+const calendar = generateCalendar(2026, ['ultrajectum'], [nl, la]);
 
 const { mass } = calendar[11][7];
 mass.oratio;   // the Latin collect
 mass.fallback; // { oratio: 'la', lectio: 'la', secreta: 'la', ... }
 ```
 
-`mass.fallback` names the sections said in the fallback, each by the code of the
-language it was said in, so a site can label them. It is absent when the whole
-Mass is in the language asked for. The fallback is a package the caller
-imports, like the language itself: the Dutch package carries no Latin. It
-applies to the Mass only; the Office and the Martyrology are the language's own.
+The first language is the one asked for: the translations, the Martyrology and
+the Office are its own. The others only say the Mass, the first that has a text
+first. `mass.fallback` names the sections said in another language, each by the
+code of the language it was said in, so a site can label them; it is absent when
+the whole Mass is in the first. Every language is a package the caller imports:
+the Dutch package carries no Latin.
 
 ### Calendar Structure
 

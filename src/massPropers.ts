@@ -330,7 +330,7 @@ function storeFor(key: string, stores: Stores): Record<string, unknown> | undefi
 }
 
 /**
- * A second language to read a text in where the first has no words for it: its
+ * Another language to read a text in where the first has no words for it: its
  * code, which marks the sections it supplied, and its stores.
  *
  * It is handed in by the caller and never bundled with the language it backs,
@@ -347,21 +347,20 @@ export type FellBack = Record<string, string>;
  * section with nothing applicable, or a key the language has no words for, is
  * left out entirely rather than carried as undefined.
  *
- * Where a `fallback` is given, a key the language has no words for is read from
- * the fallback's stores instead, and the section is recorded in what is returned
+ * Where `fallbacks` are given, a key the language has no words for is read from
+ * the first of them that has, and the section is recorded in what is returned
  * beside the proper. The saint's name is not: it is a name in the language, and
  * a Latin one set in a Dutch prayer would be Latin declined in Dutch. A text
- * said in the fallback has its `N.` filled with the fallback's own name.
+ * said in a fallback has its `N.` filled with that fallback's own name.
  */
 export function resolveMassProper(
   document: Record<string, unknown>,
   rubrics: ReadonlySet<string>,
   stores: Stores,
-  fallback?: Fallback
+  fallbacks: readonly Fallback[] = []
 ): { proper: Record<string, unknown>; fellBack: FellBack } {
   const proper: Record<string, unknown> = {};
   const fellBack: FellBack = {};
-  const fallbackName = fallback && nameIn(document, rubrics, fallback.stores);
 
   for (const [key, section] of Object.entries(document)) {
     const value = selectVariant(section, rubrics);
@@ -369,15 +368,15 @@ export function resolveMassProper(
     const store = storeFor(key, stores);
     let resolved = store ? resolveStored(value, store) : value;
 
-    if (resolved === undefined && fallback && !NAME_SECTIONS.has(key)) {
-      const backup = storeFor(key, fallback.stores);
-      const text = backup && resolveStored(value, backup);
-      if (text !== undefined) {
-        resolved =
-          fallbackName === undefined
-            ? text
-            : nameSaint({ name: fallbackName, [key]: text })[key];
+    if (resolved === undefined && !NAME_SECTIONS.has(key)) {
+      for (const fallback of fallbacks) {
+        const backup = storeFor(key, fallback.stores);
+        const text = backup && resolveStored(value, backup);
+        if (text === undefined) continue;
+        const name = nameIn(document, rubrics, fallback.stores);
+        resolved = name === undefined ? text : nameSaint({ name, [key]: text })[key];
         fellBack[key] = fallback.code;
+        break;
       }
     }
 

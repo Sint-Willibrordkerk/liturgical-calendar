@@ -21,7 +21,7 @@ import {
 } from "./ferias";
 import { applyResumedSundays } from "./resumedSundays";
 import { applyMartyrology } from "./martyrology";
-import { asLanguage, type Language } from "./language";
+import { asLanguages, type Language } from "./language";
 export { type Language } from "./language";
 export type {
   Calendar,
@@ -48,15 +48,6 @@ export type Options = {
    * day, so they are left out unless asked for.
    */
   officium?: boolean;
-  /**
-   * A second language to say the Mass in where the first has no words for a
-   * text: a day the Dutch has no collect for says the Latin one, and `mass`
-   * names the sections it said in the fallback (`mass.fallback`). It is passed
-   * in like the language itself and never bundled with it, so a caller who
-   * wants Dutch alone carries no Latin. Without it a text the language lacks
-   * is left out. It does not reach the Office.
-   */
-  fallback?: Language;
 };
 
 function deleteFields(day: Partial<LiturgicalDay | Commemoration>) {
@@ -80,14 +71,21 @@ function deleteFields(day: Partial<LiturgicalDay | Commemoration>) {
  * in, so a caller carries only the languages they read. Omit it and the
  * calendar comes out with the days in place but no propers and no
  * translations.
+ *
+ * Several languages may be passed, as a list. The first is the language asked
+ * for, and the Office, the Martyrology and the translations are its own. The
+ * rest say the Mass where it has no words for a text, the first that has them
+ * first, and `mass.fallback` names the sections they said by their codes. A
+ * Dutch calendar with Latin behind it is `[nl, la]`: the Dutch package carries
+ * no Latin, the caller adds it.
  */
 export default (
   year: number,
   propers: string[] = [],
-  language?: Language,
+  language?: Language | Language[],
   options: Options = {}
 ) => {
-  const lang = asLanguage(language);
+  const [lang, ...fallbacks] = asLanguages(language);
   const translations = loadTranslations(lang);
   const calendar = parseCalendarData(
     year,
@@ -95,7 +93,7 @@ export default (
     lang,
     translations,
     options.officium === true,
-    options.fallback
+    fallbacks
   );
 
   // A year with more Sundays after Pentecost than the missal numbers resumes
@@ -118,7 +116,7 @@ export default (
         undefined,
         { date: septuagesima, easter },
         undefined,
-        options.fallback
+        fallbacks
       ),
     options.officium ? (title) => loadOfficiumByTitle(title, lang) : undefined
   );
@@ -140,7 +138,7 @@ export default (
       undefined,
       { date: new Date(year, 0, 12), easter },
       undefined,
-      options.fallback
+      fallbacks
     ),
     loadMassPropersByTitle(
       SUNDAY_AFTER_PENTECOST_MASS,
@@ -148,7 +146,7 @@ export default (
       new Set([...DEFAULT_RUBRICS, SUNDAY_AFTER_PENTECOST_VARIANT]),
       { date: afterTrinity, easter },
       undefined,
-      options.fallback
+      fallbacks
     )
   );
 

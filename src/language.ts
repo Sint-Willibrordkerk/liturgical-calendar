@@ -26,22 +26,35 @@ export type Language = {
 export const NO_LANGUAGE: Language = { code: "la", assets: {} };
 
 /**
- * The language argument, checked.
+ * The language argument, checked, as the list of languages it names.
  *
  * Until version 3 this was the language's code, and the assets of every
  * language were bundled into this package. Passing a code now would silently
  * produce a calendar with no Masses and no translations, so it is refused with
  * the reason rather than accepted.
+ *
+ * One language or several: the first is the language asked for, and the rest
+ * are said in where it has no words for a text, in their order. Without a
+ * language, or with an empty list, the calendar has none.
  */
-export function asLanguage(language: Language | string | undefined): Language {
-  if (language === undefined) return NO_LANGUAGE;
-  if (typeof language === "string") {
-    throw new TypeError(
-      `Expected a language package, not the code "${language}". ` +
-        `Each language is published separately now: ` +
-        `import ${language} from "@sint-willibrordkerk/liturgical-calendar-${language}" ` +
-        `and pass it in.`
-    );
+export function asLanguages(
+  language: Language | readonly Language[] | string | undefined
+): [Language, ...Language[]] {
+  const named: readonly unknown[] = Array.isArray(language)
+    ? language
+    : language === undefined
+      ? []
+      : [language];
+  for (const each of named) {
+    if (typeof each === "string") {
+      throw new TypeError(
+        `Expected a language package, not the code "${each}". ` +
+          `Each language is published separately now: ` +
+          `import ${each} from "@sint-willibrordkerk/liturgical-calendar-${each}" ` +
+          `and pass it in.`
+      );
+    }
   }
-  return language;
+  const [first = NO_LANGUAGE, ...rest] = named as Language[];
+  return [first, ...rest];
 }

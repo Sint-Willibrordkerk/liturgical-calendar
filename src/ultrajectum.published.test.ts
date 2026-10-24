@@ -115,10 +115,8 @@ describe.skipIf(!generated)("the Utrecht local proper as published", () => {
       expect(mass).not.toHaveProperty("fallback");
     });
 
-    it("says them in Latin when Latin is passed as the fallback, and names them", () => {
-      const nl = generateCalendar(2026, ["ultrajectum"], languages.nl!, {
-        fallback: languages.la!,
-      });
+    it("says them in Latin when Latin is passed after it, and names them", () => {
+      const nl = generateCalendar(2026, ["ultrajectum"], [languages.nl!, languages.la!]);
       const mass = nl[NOVEMBER[0]]![NOVEMBER[1]]!.mass as Record<string, unknown>;
       for (const section of ["oratio", "lectio", "secreta", "communio", "postcommunio"]) {
         expect(mass, section).toHaveProperty(section);

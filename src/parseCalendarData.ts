@@ -168,7 +168,7 @@ export function parseCalendarData(
   language: Language,
   translations?: Translations,
   officium = false,
-  fallback?: Language
+  fallbacks: readonly Language[] = []
 ) {
   const calendarData = loadCalendarData();
   const calendarBuilder = new CalendarBuilder();
@@ -224,7 +224,7 @@ export function parseCalendarData(
               undefined,
               { date, easter },
               item.localCalendars,
-              fallback
+              fallbacks
             )
           : undefined;
 

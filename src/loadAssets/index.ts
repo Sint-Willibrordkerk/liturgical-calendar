@@ -169,25 +169,24 @@ const DESIGNATIONS = new Set(["title", "name", "prefatio"]);
  * with their texts said in the language; undefined where the language has words
  * for none of them, whatever empty section the day carries inline.
  *
- * With a `fallback`, a text the language lacks is said in the fallback instead,
- * and `fellBack` names those sections. A day the language says nothing of is
- * then said entirely in the fallback.
+ * With `fallbacks`, a text the language lacks is said in the first of them that
+ * has it, and `fellBack` names those sections. A day the language says nothing
+ * of is then said entirely in the fallbacks.
  */
 function properOf(
   document: Record<string, unknown>,
   language: Language,
   rubrics: ReadonlySet<string>,
   belongs: (key: string) => boolean,
-  fallback?: Language
+  fallbacks: readonly Language[] = []
 ): { proper: Record<string, unknown>; fellBack: FellBack } | undefined {
   const own = Object.fromEntries(
     Object.entries(document).filter(([key]) => belongs(key) || DESIGNATIONS.has(key))
   );
-  const backup =
-    fallback === undefined || fallback.code === language.code
-      ? undefined
-      : { code: fallback.code, stores: loadStores(fallback) };
-  const selected = resolveMassProper(own, rubrics, loadStores(language), backup);
+  const backups = fallbacks
+    .filter((other) => other.code !== language.code)
+    .map((other) => ({ code: other.code, stores: loadStores(other) }));
+  const selected = resolveMassProper(own, rubrics, loadStores(language), backups);
   const says = Object.keys(selected.proper).some(
     (key) => belongs(key) && typeof selectVariant(document[key], rubrics) === "string"
   );
@@ -202,9 +201,9 @@ function properOf(
  * alone; the language supplies what each key says. A day the language says
  * nothing of has no Mass in it — nor has any day without a language.
  *
- * A `fallback` language says the texts the language has none for, and `fallback`
- * on the Mass names the sections it said, by its code — absent when the Mass is
- * wholly the language's own.
+ * The `fallbacks` say the texts the language has none for, the first that has
+ * one first, and `fallback` on the Mass names the sections they said, by their
+ * codes — absent when the Mass is wholly the language's own.
  */
 export function loadMassPropersByTitle(
   title: string,
@@ -212,12 +211,12 @@ export function loadMassPropersByTitle(
   rubrics: ReadonlySet<string> = DEFAULT_RUBRICS,
   season?: { date: Date; easter: Date },
   local: readonly string[] = [],
-  fallback?: Language
+  fallbacks: readonly Language[] = []
 ): RawMassProper | undefined {
   const document = dayByTitle(title, local);
   if (document === undefined) return undefined;
 
-  const selected = properOf(document, language, rubrics, isMassSection, fallback);
+  const selected = properOf(document, language, rubrics, isMassSection, fallbacks);
   if (selected === undefined) return undefined;
   const seasonal = season
     ? applySeason(selected.proper, season.date, season.easter)
