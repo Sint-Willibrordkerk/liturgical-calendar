@@ -243,7 +243,8 @@ export function loadOfficiumByTitle(
   title: string,
   language: Language,
   rubrics: ReadonlySet<string> = DEFAULT_RUBRICS,
-  local: readonly string[] = []
+  local: readonly string[] = [],
+  fallbacks: readonly Language[] = []
 ): Officium | undefined {
   const own = dayByTitle(title, local);
   const elsewhere = OFFICE_FILED_WITH[titleToFileName(title)];
@@ -256,10 +257,11 @@ export function loadOfficiumByTitle(
     office,
     language,
     rubrics,
-    (key) => isOfficeSection(key) || key === "oratio"
+    (key) => isOfficeSection(key) || key === "oratio",
+    fallbacks
   );
   if (selected === undefined) return undefined;
-  return buildOfficium(nameSaint(selected.proper));
+  return buildOfficium(nameSaint(selected.proper), selected.fellBack);
 }
 
 /**

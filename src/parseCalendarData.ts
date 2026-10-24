@@ -275,7 +275,8 @@ export function parseCalendarData(
                   titleWithSubstitution,
                   language,
                   undefined,
-                  item.localCalendars
+                  item.localCalendars,
+                  fallbacks
                 )
               : undefined,
           color,

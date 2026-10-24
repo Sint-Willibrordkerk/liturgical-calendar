@@ -43,18 +43,24 @@ export type RawReading =
   | { ref?: string; text: string }
   | string[];
 
+/**
+ * Which fields of the object that holds it are said in a language other than
+ * the one asked for, each by the code of the language it is said in:
+ * `{ oratio: "la" }`. It appears only where something is: an object said wholly
+ * in the language asked for carries none.
+ *
+ * Several languages may be passed, the first being the one asked for; the rest
+ * say what it has no words for.
+ */
+export type Fallback = Record<string, string>;
+
 export type RawMassProper = {
   /** The formal designation, from the source's officium. */
   title?: string;
   /** The short name of the celebration. */
   name?: string;
-  /**
-   * The sections said in the fallback language because the language asked for
-   * has no words for them, each by the code of the language it is said in:
-   * `{ oratio: "la", lectio: "la" }`. Absent when the whole Mass is in the
-   * language asked for.
-   */
-  fallback?: Record<string, string>;
+  /** The sections said in another language than the one asked for. */
+  fallback?: Fallback;
   prefatio?: string;
   introitus?: { antiphon?: RawVerse; verse?: RawVerse };
   oratio?: { text?: string; closure?: string };
@@ -170,15 +176,21 @@ export type LectioMatutini = {
   numerus: number;
   lectio: RawReading | Homilia;
   responsorium?: Responsorium;
+  fallback?: Fallback;
 };
 
-export type Nocturnus = { versus?: Versus; lectiones: LectioMatutini[] };
+export type Nocturnus = {
+  versus?: Versus;
+  lectiones: LectioMatutini[];
+  fallback?: Fallback;
+};
 
 /** A small Hour: Terce, Sext or None. */
 export type HoraMinor = {
   capitulum?: Capitulum;
   responsorium?: Responsorium;
   versus?: VersusVelAntiphona;
+  fallback?: Fallback;
 };
 
 export type Vesperae = {
@@ -187,6 +199,7 @@ export type Vesperae = {
   hymnus?: Hymnus;
   versus?: VersusVelAntiphona;
   magnificat?: Antiphona;
+  fallback?: Fallback;
 };
 
 /**
@@ -204,6 +217,7 @@ export type Officium = {
     nocturni?: Nocturnus[];
     /** The saint's legend in one lesson, read as the last on a lesser day. */
     legenda?: RawReading;
+    fallback?: Fallback;
   };
   laudes?: {
     psalmodia?: Psalmodia;
@@ -211,14 +225,17 @@ export type Officium = {
     hymnus?: Hymnus;
     versus?: VersusVelAntiphona;
     benedictus?: Antiphona;
+    fallback?: Fallback;
   };
-  prima?: { lectioBrevis?: Capitulum };
+  prima?: { lectioBrevis?: Capitulum; fallback?: Fallback };
   tertia?: HoraMinor;
   sexta?: HoraMinor;
   nona?: HoraMinor;
   vesperae?: Vesperae;
   /** The collect, said at every Hour after Prime, and at Mass. */
   oratio?: { text?: string; closure?: string };
+  /** The collect, where it is said in another language than the one asked for. */
+  fallback?: Fallback;
 };
 
 /**
@@ -239,6 +256,8 @@ export type Martyrologium = {
   elogia: string[];
   /** The versicle that closes every reading, and its response. */
   conclusio?: { versus: string; responsum: string };
+  /** The parts said in another language than the one asked for. */
+  fallback?: Fallback;
 };
 
 // Mass Proper Types

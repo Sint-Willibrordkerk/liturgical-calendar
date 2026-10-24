@@ -27,6 +27,7 @@ export type {
   Calendar,
   Color,
   Commemoration,
+  Fallback,
   LiturgicalDay,
   Martyrologium,
   Officium,
@@ -73,11 +74,11 @@ function deleteFields(day: Partial<LiturgicalDay | Commemoration>) {
  * translations.
  *
  * Several languages may be passed, as a list. The first is the language asked
- * for, and the Office, the Martyrology and the translations are its own. The
- * rest say the Mass where it has no words for a text, the first that has them
- * first, and `mass.fallback` names the sections they said by their codes. A
- * Dutch calendar with Latin behind it is `[nl, la]`: the Dutch package carries
- * no Latin, the caller adds it.
+ * for; the translations are its own. The rest say what it has no words for — a
+ * text of the Mass, of the Office, a date of the Martyrology — the first that
+ * has it first, and a `fallback` on the part names what they said, by their
+ * codes. A Dutch calendar with Latin behind it is `[nl, la]`: the Dutch package
+ * carries no Latin, the caller adds it.
  */
 export default (
   year: number,
@@ -118,7 +119,9 @@ export default (
         undefined,
         fallbacks
       ),
-    options.officium ? (title) => loadOfficiumByTitle(title, lang) : undefined
+    options.officium
+      ? (title) => loadOfficiumByTitle(title, lang, undefined, undefined, fallbacks)
+      : undefined
   );
 
   // A fourth-class feria has no Mass of its own; it takes one from the day the
@@ -153,8 +156,15 @@ export default (
   // The Martyrology follows the date, not the celebration, so it can be laid
   // on once the days are in place.
   if (options.martyrologium) {
-    const martyrology = loadMartyrology(lang);
-    if (martyrology) applyMartyrology(calendar, year, martyrology, translations);
+    const sources = [lang, ...fallbacks]
+      .filter((each, i, all) => all.findIndex((other) => other.code === each.code) === i)
+      .flatMap((each) => {
+        const martyrology = loadMartyrology(each);
+        return martyrology
+          ? [{ code: each.code, martyrology, translations: loadTranslations(each) }]
+          : [];
+      });
+    applyMartyrology(calendar, year, sources, lang.code);
   }
 
   // A season and a color are identifiers; the language gives each its name,

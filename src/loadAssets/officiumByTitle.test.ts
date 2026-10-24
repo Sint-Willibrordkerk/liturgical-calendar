@@ -207,4 +207,73 @@ describe("the Office of a day, in a language", () => {
     expect(loadOfficiumByTitle("S. Agnetis Virginis et Martyris", NO_LANGUAGE)).toBeUndefined();
     expect(loadOfficiumByTitle("S. Nemo", latin)).toBeUndefined();
   });
+
+  describe("with fallback languages", () => {
+    const dutch: Language = {
+      code: "nl",
+      assets: {
+        "mass-propers/nl/oratio.yml": {
+          "omnipotens-1": { text: "Almachtige, eeuwige God", closure: "Door onze Heer" },
+        },
+        "mass-propers/nl/antiphona.yml": {
+          "haec-est-virgo-1": {
+            antiphonae: [{ text: "Dit is de wijze maagd, * en één.", psalmus: "109" }],
+          },
+        },
+        "mass-propers/nl/lectio.yml": {
+          "1-cor-7-25-31": { ref: "1 Kor 7:25-31", verses: ["Over de maagden"] },
+        },
+        "mass-propers/nl/nomen.yml": { agnetis: "Agnes" },
+      },
+    };
+    const agnes = "S. Agnetis Virginis et Martyris";
+
+    it("says what the language lacks in the fallback, and names it on the part that holds it", () => {
+      const officium = loadOfficiumByTitle(agnes, dutch, undefined, [], [latin])!;
+      expect(officium.laudes).toEqual({
+        psalmodia: { antiphonae: [{ text: "Dit is de wijze maagd, * en één.", psalmus: "109" }] },
+        capitulum: { ref: "Sir 51:1-3", text: "Confitébor tibi, Dómine, Rex." },
+        versus: { versus: "Diffúsa est grátia in lábiis tuis.", responsum: "Inténde." },
+        benedictus: { text: "Ecce, quod concupívi, * jam vídeo." },
+        fallback: { capitulum: "la", versus: "la", benedictus: "la" },
+      });
+      // The first lesson of Matins is Dutch; its responsory is not.
+      const [first, second] = officium.matutinum!.nocturni![0]!.lectiones;
+      expect(first).toMatchObject({
+        lectio: { ref: "1 Kor 7:25-31" },
+        responsorium: { responsum: "Diem festum * Quia solum." },
+        fallback: { responsorium: "la" },
+      });
+      expect(second).toMatchObject({ fallback: { lectio: "la" } });
+      // The collect is the Dutch one and so is not named.
+      expect(officium.oratio).toEqual({ text: "Almachtige, eeuwige God", closure: "Door onze Heer" });
+      expect(officium).not.toHaveProperty("fallback");
+    });
+
+    it("carries no marker where the language says the whole Office itself", () => {
+      expect(JSON.stringify(loadOfficiumByTitle(agnes, latin, undefined, [], [dutch]))).not.toContain(
+        "fallback"
+      );
+    });
+
+    it("leaves out what the language lacks when no fallback is given", () => {
+      const officium = loadOfficiumByTitle(agnes, dutch)!;
+      expect(officium.laudes).toEqual({
+        psalmodia: { antiphonae: [{ text: "Dit is de wijze maagd, * en één.", psalmus: "109" }] },
+      });
+      expect(JSON.stringify(officium)).not.toContain("fallback");
+    });
+
+    it("says an Office the language has nothing of wholly in the fallback", () => {
+      const officium = loadOfficiumByTitle(agnes, { code: "nl", assets: {} }, undefined, [], [latin])!;
+      expect(officium.oratio).toEqual({ text: "Omnípotens sempitérne Deus", closure: "Per Dominum" });
+      expect(officium.fallback).toEqual({ oratio: "la" });
+      expect(officium.laudes!.fallback).toEqual({
+        psalmodia: "la",
+        capitulum: "la",
+        versus: "la",
+        benedictus: "la",
+      });
+    });
+  });
 });

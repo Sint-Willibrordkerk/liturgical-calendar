@@ -336,7 +336,7 @@ function storeFor(key: string, stores: Stores): Record<string, unknown> | undefi
  * It is handed in by the caller and never bundled with the language it backs,
  * so a language carries only its own words.
  */
-export type Fallback = { code: string; stores: Stores };
+export type Backup = { code: string; stores: Stores };
 
 /** The sections a fallback supplied, by the code of the language it said them in. */
 export type FellBack = Record<string, string>;
@@ -357,7 +357,7 @@ export function resolveMassProper(
   document: Record<string, unknown>,
   rubrics: ReadonlySet<string>,
   stores: Stores,
-  fallbacks: readonly Fallback[] = []
+  fallbacks: readonly Backup[] = []
 ): { proper: Record<string, unknown>; fellBack: FellBack } {
   const proper: Record<string, unknown> = {};
   const fellBack: FellBack = {};

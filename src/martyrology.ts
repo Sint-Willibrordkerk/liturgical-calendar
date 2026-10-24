@@ -12,7 +12,7 @@
  * tables; which movable day is announced, from the date of Easter and Advent;
  * and which date's text is read at all in a leap year.
  */
-import type { Calendar, Martyrologium } from "./types";
+import type { Calendar, Fallback, Martyrologium } from "./types";
 import { calculateAdvent, calculateEaster, eachDay } from "./utils";
 
 /** A date of the Martyrology as published: its date line and its entries. */
@@ -170,32 +170,70 @@ export function movableDayOf(year: number, month: number, day: number): string |
   return week < 23 ? `pent${pad(week)}-${weekday}` : undefined;
 }
 
+/** A language's Martyrology, with the language's code and its names for the moon. */
+export type MartyrologySource = {
+  code: string;
+  martyrology: Martyrology;
+  translations: Record<string, string>;
+};
+
 /**
  * Give each day of the year the Martyrology printed under its date. A day whose
- * date the language's Martyrology does not carry is left without one.
+ * date none of the languages' Martyrologies carries is left without one.
+ *
+ * `sources` are the languages in order, the language asked for first. A date is
+ * read from the first that prints it, whole, so a reading stays in one language;
+ * what that language lacks of it — the name of the moon, the announcement of a
+ * movable day, the conclusion — is taken from the next that has it. Whatever is
+ * said in a language other than `asked` is named in the reading's `fallback`.
  */
 export function applyMartyrology(
   calendar: Calendar,
   year: number,
-  martyrology: Martyrology,
-  translations: Record<string, string>
+  sources: readonly MartyrologySource[],
+  asked: string
 ): void {
   eachDay(year, ({ month, day }) => {
     const liturgicalDay = calendar[month]?.[day];
-    const printed = martyrology.days[martyrologyDateOf(year, month, day)];
-    if (liturgicalDay === undefined || printed?.titulus === undefined) return;
+    const date = martyrologyDateOf(year, month, day);
+    const printedIn = sources.find(({ martyrology }) => martyrology.days[date]?.titulus !== undefined);
+    if (liturgicalDay === undefined || printedIn === undefined) return;
+    const printed = printedIn.martyrology.days[date]!;
 
-    const reading: Martyrologium = { titulus: printed.titulus, elogia: printed.elogia ?? [] };
+    // The language the date is printed in first, then the others as given.
+    const order = [printedIn, ...sources.filter((source) => source !== printedIn)];
+    const fallback: Fallback = {};
+    const said = <T>(field: string, find: (source: MartyrologySource) => T | undefined): T | undefined => {
+      for (const source of order) {
+        const found = find(source);
+        if (found === undefined) continue;
+        if (source.code !== asked) fallback[field] = source.code;
+        return found;
+      }
+      return undefined;
+    };
+
+    const reading: Martyrologium = { titulus: printed.titulus!, elogia: printed.elogia ?? [] };
+    if (printedIn.code !== asked) {
+      fallback.titulus = printedIn.code;
+      if (reading.elogia.length > 0) fallback.elogia = printedIn.code;
+    }
+
     const luna = lunaOf(year, month, day);
     if (luna !== undefined) {
       reading.luna = luna;
-      const lunaName = translations[`luna-${luna}`];
+      const lunaName = said("lunaName", ({ translations }) => translations[`luna-${luna}`]);
       if (lunaName !== undefined) reading.lunaName = lunaName;
     }
     const movable = movableDayOf(year, month, day);
-    const mobile = movable === undefined ? undefined : martyrology.mobile[movable];
+    const mobile =
+      movable === undefined
+        ? undefined
+        : said("mobile", ({ martyrology }) => martyrology.mobile[movable]);
     if (mobile !== undefined) reading.mobile = mobile;
-    if (martyrology.conclusio !== undefined) reading.conclusio = martyrology.conclusio;
+    const conclusio = said("conclusio", ({ martyrology }) => martyrology.conclusio);
+    if (conclusio !== undefined) reading.conclusio = conclusio;
+    if (Object.keys(fallback).length > 0) reading.fallback = fallback;
 
     liturgicalDay.martyrologium = reading;
   });

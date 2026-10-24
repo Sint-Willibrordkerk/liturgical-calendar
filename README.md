@@ -102,12 +102,27 @@ mass.oratio;   // the Latin collect
 mass.fallback; // { oratio: 'la', lectio: 'la', secreta: 'la', ... }
 ```
 
-The first language is the one asked for: the translations, the Martyrology and
-the Office are its own. The others only say the Mass, the first that has a text
-first. `mass.fallback` names the sections said in another language, each by the
-code of the language it was said in, so a site can label them; it is absent when
-the whole Mass is in the first. Every language is a package the caller imports:
-the Dutch package carries no Latin.
+The first language is the one asked for: the translations, such as the names of
+the seasons and colors, are its own. The others say what it lacks, the first that
+has it first. That reaches the Mass, the [Office](#the-office) and the
+[Martyrology](#the-martyrology) alike, and a calendar of `[nl, la]` reads Latin
+where the Dutch package has no Martyrology at all.
+
+Whatever is said in another language is named in a `fallback` on the part that
+holds it, each by the code of the language it was said in, so a site can label
+it. It is absent where everything is in the first language:
+
+- the Mass: `mass.fallback`, by section (`oratio`, `lectio`, …);
+- the Office: `officium.fallback` for the collect, and on each Hour and each
+  part that holds others, by field: `officium.laudes.fallback` is
+  `{ capitulum: 'la', benedictus: 'la' }`, and a lesson of Matins carries
+  `{ lectio: 'la' }`;
+- the Martyrology: `martyrologium.fallback`, by field (`titulus`, `elogia`,
+  `lunaName`, `mobile`, `conclusio`). A date is read whole from the first
+  language that prints it; only what that one lacks is taken from the next.
+
+Every language is a package the caller imports: the Dutch package carries no
+Latin.
 
 ### Calendar Structure
 

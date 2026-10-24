@@ -133,5 +133,25 @@ describe.skipIf(!generated)("the Utrecht local proper as published", () => {
       expect(mass.evangelium).toEqual((dutch as Record<string, unknown>).evangelium);
       expect(mass.fallback).not.toHaveProperty("evangelium");
     });
+
+    it("says the Office the Dutch lacks in Latin too, and names it Hour by Hour", () => {
+      const options = { officium: true };
+      const dutchOnly = generateCalendar(2026, ["ultrajectum"], languages.nl!, options)[11]![7]!;
+      const both = generateCalendar(2026, ["ultrajectum"], [languages.nl!, languages.la!], options)[11]![7]!;
+      expect(JSON.stringify(dutchOnly.officium ?? {})).not.toContain('"fallback"');
+      expect(both.officium?.laudes?.fallback).toBeDefined();
+      expect(Object.values(both.officium!.laudes!.fallback!)).toEqual(
+        expect.arrayContaining(["la"])
+      );
+    });
+
+    it("reads the Martyrology in Latin where the Dutch package has none", () => {
+      const options = { martyrologium: true };
+      const dutchOnly = generateCalendar(2026, ["ultrajectum"], languages.nl!, options)[11]![7]!;
+      expect(dutchOnly.martyrologium).toBeUndefined();
+      const both = generateCalendar(2026, ["ultrajectum"], [languages.nl!, languages.la!], options)[11]![7]!;
+      expect(both.martyrologium?.titulus).toBeTruthy();
+      expect(both.martyrologium?.fallback).toMatchObject({ titulus: "la", elogia: "la" });
+    });
   });
 });
