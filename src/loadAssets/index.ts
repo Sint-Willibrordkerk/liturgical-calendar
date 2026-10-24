@@ -140,11 +140,23 @@ function loadStores(language: Language): Stores {
   };
 }
 
-/** The day filed under a liturgical title, holding keys, or undefined. */
-function dayByTitle(title: string): Record<string, unknown> | undefined {
+/**
+ * The day filed under a liturgical title, holding keys, or undefined.
+ *
+ * The local calendars named are searched first, in their order — the most
+ * particular first — and the general trees after them. Only a local proper's
+ * own days name them, so a general day keeps its propers.
+ */
+function dayByTitle(
+  title: string,
+  local: readonly string[] = []
+): Record<string, unknown> | undefined {
   const fileName = titleToFileName(title);
   const at = (tree: string) => findAsset(`mass-propers/${tree}/${fileName}.yml`);
-  const data = at("Sancti") ?? at("Tempora");
+  const data =
+    local.map((calendar) => at(`Sancti/${calendar}`)).find((day) => day !== undefined) ??
+    at("Sancti") ??
+    at("Tempora");
   return data && typeof data === "object" ? (data as Record<string, unknown>) : undefined;
 }
 
@@ -184,9 +196,10 @@ export function loadMassPropersByTitle(
   title: string,
   language: Language,
   rubrics: ReadonlySet<string> = DEFAULT_RUBRICS,
-  season?: { date: Date; easter: Date }
+  season?: { date: Date; easter: Date },
+  local: readonly string[] = []
 ): RawMassProper | undefined {
-  const document = dayByTitle(title);
+  const document = dayByTitle(title, local);
   if (document === undefined) return undefined;
 
   const selected = properOf(document, language, rubrics, isMassSection);
@@ -210,11 +223,12 @@ export function loadMassPropersByTitle(
 export function loadOfficiumByTitle(
   title: string,
   language: Language,
-  rubrics: ReadonlySet<string> = DEFAULT_RUBRICS
+  rubrics: ReadonlySet<string> = DEFAULT_RUBRICS,
+  local: readonly string[] = []
 ): Officium | undefined {
-  const own = dayByTitle(title);
+  const own = dayByTitle(title, local);
   const elsewhere = OFFICE_FILED_WITH[titleToFileName(title)];
-  const document = elsewhere === undefined ? own : dayByTitle(elsewhere);
+  const document = elsewhere === undefined ? own : dayByTitle(elsewhere, local);
   if (document === undefined) return undefined;
 
   // The collect is the day's own, said at Mass and at the Hours alike.

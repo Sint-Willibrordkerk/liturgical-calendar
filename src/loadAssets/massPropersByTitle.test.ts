@@ -83,3 +83,68 @@ describe("the Mass of a day, in a language", () => {
     expect(loadMassPropersByTitle("S. Nemini", latin)).toBeUndefined();
   });
 });
+
+/**
+ * A local calendar's days are published at its own path, beside the general
+ * day of the same name. A calendar reads them only where its local proper names
+ * that local calendar, the most particular first.
+ */
+describe("the Mass of a day kept in a local calendar", () => {
+  beforeAll(() => {
+    (globalThis as Record<string, unknown>).bundledAssets = {
+      "mass-propers/Sancti/martini-episcopi-et-confessoris.yml": {
+        title: "S. Martini",
+        oratio: "generalis",
+      },
+      "mass-propers/Sancti/Neerlandia/Ultrajectum/martini-episcopi-et-confessoris.yml": {
+        title: "S. Martini, Patroni",
+        oratio: "ultrajectensis",
+      },
+      "mass-propers/Sancti/Neerlandia/gertrudis-virginis.yml": {
+        title: "S. Gertrudis",
+        oratio: "neerlandica",
+      },
+      "mass-propers/Sancti/Neerlandia/martini-episcopi-et-confessoris.yml": {
+        title: "S. Martini, in Neerlandia",
+        oratio: "neerlandica",
+      },
+    };
+  });
+
+  const latin: Language = {
+    code: "la",
+    assets: {
+      "mass-propers/la/oratio.yml": {
+        generalis: { text: "Deus", closure: "Per Dominum" },
+        ultrajectensis: { text: "Deus, Ultrajecti", closure: "Per Dominum" },
+        neerlandica: { text: "Deus, in Neerlandia", closure: "Per Dominum" },
+      },
+    },
+  };
+  const UTRECHT = ["Neerlandia/Ultrajectum", "Neerlandia"];
+
+  it("reads the general day where no local calendar is named", () => {
+    expect(
+      loadMassPropersByTitle("martini-episcopi-et-confessoris", latin)?.title
+    ).toBe("S. Martini");
+    expect(loadMassPropersByTitle("gertrudis-virginis", latin)).toBeUndefined();
+  });
+
+  it("reads the most particular local calendar that keeps the day", () => {
+    expect(
+      loadMassPropersByTitle("martini-episcopi-et-confessoris", latin, undefined, undefined, UTRECHT)
+        ?.title
+    ).toBe("S. Martini, Patroni");
+  });
+
+  it("falls back to the wider local calendar, then to the general day", () => {
+    expect(
+      loadMassPropersByTitle("gertrudis-virginis", latin, undefined, undefined, UTRECHT)?.title
+    ).toBe("S. Gertrudis");
+    expect(
+      loadMassPropersByTitle("martini-episcopi-et-confessoris", latin, undefined, undefined, [
+        "Neerlandia/Groningen",
+      ])?.title
+    ).toBe("S. Martini");
+  });
+});

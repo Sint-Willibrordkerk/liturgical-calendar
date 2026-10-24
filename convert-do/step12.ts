@@ -477,24 +477,32 @@ export function chooseRenderings(
 const DAY_TREES = new Set(["Sancti", "Tempora"]);
 
 /**
- * The local calendars kept even though they are nested. `aliquibus locis` — "in
- * some places" — is a universal option, part of the general calendar; the rest
- * (`Urbis`, `Bavaria`, `Brasilia`, …) are the propers of a particular place,
- * outside the calendar being published and shadowing its own days.
+ * The local calendars kept even though they are nested, each by its whole path
+ * below the day tree. `aliquibus locis` — "in some places" — is a universal
+ * option, part of the general calendar; the Netherlands and the archdiocese of
+ * Utrecht are read by the Utrecht local proper. The rest (`Urbis`, `Bavaria`,
+ * `Neerlandia/Groningen`, …) are the propers of a place no local proper reads.
+ *
+ * A kept local calendar is published at its own path, beside the general day
+ * of the same name, so it reaches only a calendar that names it.
  */
-const KEPT_LOCAL_CALENDARS = new Set(["aliquibus locis"]);
+const KEPT_LOCAL_CALENDARS = new Set([
+  "aliquibus locis",
+  "Neerlandia",
+  "Neerlandia/Ultrajectum",
+]);
 
 /**
  * True when a document is published: a day directly under a day tree, or one
- * under a kept local calendar. A day nested under any other local calendar is a
- * regional proper, not part of the general calendar, and is dropped.
+ * directly under a kept local calendar. A day of any other local calendar is a
+ * regional proper no calendar reads, and is dropped.
  */
 export function isPublishedTree(relPath: string): boolean {
   const parts = relPath.split(/[/\\]/);
   const tree = parts[1];
   if (tree === undefined || !DAY_TREES.has(tree)) return false;
   const subdirs = parts.slice(2, -1);
-  return subdirs.length === 0 || KEPT_LOCAL_CALENDARS.has(subdirs[0]!);
+  return subdirs.length === 0 || KEPT_LOCAL_CALENDARS.has(subdirs.join("/"));
 }
 
 /**

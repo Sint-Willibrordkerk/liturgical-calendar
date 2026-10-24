@@ -224,10 +224,11 @@ describe("the saints", () => {
   });
 
   it("take their color from a local proper as from the calendar", () => {
-    expect(day(11, 7)).toMatchObject({ title: "S. Willibrordi", color: "white" });
-    expect(day(7, 9)).toMatchObject({
-      title: "SS. Martyrum Gorcomiensium",
-      color: "red",
+    expect(day(11, 7)).toMatchObject({
+      title:
+        "willibrordi-episcopi-et-confessoris-titularis-ecclesiae-metropolitanae-et-patroni-principalis-archidioecesis",
+      color: "white",
     });
+    expect(day(7, 9)).toMatchObject({ title: "martyrum-gorcomiensium", color: "red" });
   });
 });
