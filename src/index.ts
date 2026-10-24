@@ -21,12 +21,13 @@ import {
 } from "./ferias";
 import { applyResumedSundays } from "./resumedSundays";
 import { applyMartyrology } from "./martyrology";
-import { asLanguage, type Language } from "./language";
+import { asLanguages, type Language } from "./language";
 export { type Language } from "./language";
 export type {
   Calendar,
   Color,
   Commemoration,
+  Fallback,
   LiturgicalDay,
   Martyrologium,
   Officium,
@@ -71,21 +72,29 @@ function deleteFields(day: Partial<LiturgicalDay | Commemoration>) {
  * in, so a caller carries only the languages they read. Omit it and the
  * calendar comes out with the days in place but no propers and no
  * translations.
+ *
+ * Several languages may be passed, as a list. The first is the language asked
+ * for; the translations are its own. The rest say what it has no words for — a
+ * text of the Mass, of the Office, a date of the Martyrology — the first that
+ * has it first, and a `fallback` on the part names what they said, by their
+ * codes. A Dutch calendar with Latin behind it is `[nl, la]`: the Dutch package
+ * carries no Latin, the caller adds it.
  */
 export default (
   year: number,
   propers: string[] = [],
-  language?: Language,
+  language?: Language | Language[],
   options: Options = {}
 ) => {
-  const lang = asLanguage(language);
+  const [lang, ...fallbacks] = asLanguages(language);
   const translations = loadTranslations(lang);
   const calendar = parseCalendarData(
     year,
     propers,
     lang,
     translations,
-    options.officium === true
+    options.officium === true,
+    fallbacks
   );
 
   // A year with more Sundays after Pentecost than the missal numbers resumes
@@ -102,11 +111,17 @@ export default (
     calculateAdvent(year),
     epiphanySundaysKept,
     (title) =>
-      loadMassPropersByTitle(title, lang, undefined, {
-        date: septuagesima,
-        easter,
-      }),
-    options.officium ? (title) => loadOfficiumByTitle(title, lang) : undefined
+      loadMassPropersByTitle(
+        title,
+        lang,
+        undefined,
+        { date: septuagesima, easter },
+        undefined,
+        fallbacks
+      ),
+    options.officium
+      ? (title) => loadOfficiumByTitle(title, lang, undefined, undefined, fallbacks)
+      : undefined
   );
 
   // A fourth-class feria has no Mass of its own; it takes one from the day the
@@ -120,23 +135,36 @@ export default (
   applyFerialMass(
     calendar,
     year,
-    loadMassPropersByTitle(SUNDAY_AFTER_EPIPHANY_MASS, lang, undefined, {
-      date: new Date(year, 0, 12),
-      easter,
-    }),
+    loadMassPropersByTitle(
+      SUNDAY_AFTER_EPIPHANY_MASS,
+      lang,
+      undefined,
+      { date: new Date(year, 0, 12), easter },
+      undefined,
+      fallbacks
+    ),
     loadMassPropersByTitle(
       SUNDAY_AFTER_PENTECOST_MASS,
       lang,
       new Set([...DEFAULT_RUBRICS, SUNDAY_AFTER_PENTECOST_VARIANT]),
-      { date: afterTrinity, easter }
+      { date: afterTrinity, easter },
+      undefined,
+      fallbacks
     )
   );
 
   // The Martyrology follows the date, not the celebration, so it can be laid
   // on once the days are in place.
   if (options.martyrologium) {
-    const martyrology = loadMartyrology(lang);
-    if (martyrology) applyMartyrology(calendar, year, martyrology, translations);
+    const sources = [lang, ...fallbacks]
+      .filter((each, i, all) => all.findIndex((other) => other.code === each.code) === i)
+      .flatMap((each) => {
+        const martyrology = loadMartyrology(each);
+        return martyrology
+          ? [{ code: each.code, martyrology, translations: loadTranslations(each) }]
+          : [];
+      });
+    applyMartyrology(calendar, year, sources, lang.code);
   }
 
   // A season and a color are identifiers; the language gives each its name,

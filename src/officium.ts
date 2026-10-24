@@ -10,6 +10,8 @@
 import type {
   Antiphona,
   Capitulum,
+  Fallback,
+  HoraMinor,
   Hymnus,
   LectioMatutini,
   Nocturnus,
@@ -18,6 +20,7 @@ import type {
   RawReading,
   Responsorium,
   Versus,
+  Vesperae,
 } from "./types";
 
 /** The antiphons of the Office, filed in the chant store with the Mass's. */
@@ -228,80 +231,126 @@ function oratioOf(value: unknown): Officium["oratio"] {
     : { text };
 }
 
+/** A part of an Hour, and the code of the other language it is said in, if it is. */
+type Taken<T> = { value: T; code?: string };
+
+/**
+ * An Hour, or any part with fields: the fields it has, and a `fallback` naming
+ * those said in another language. Undefined where it has none.
+ */
+function part<T extends object>(
+  fields: { [K in keyof T]?: Taken<T[K]> | undefined }
+): (T & { fallback?: Fallback }) | undefined {
+  const values: Record<string, unknown> = {};
+  const fallback: Fallback = {};
+  for (const [field, taken] of Object.entries(fields) as [string, Taken<unknown> | undefined][]) {
+    if (taken === undefined) continue;
+    values[field] = taken.value;
+    if (taken.code !== undefined) fallback[field] = taken.code;
+  }
+  if (Object.keys(values).length === 0) return undefined;
+  return (
+    Object.keys(fallback).length > 0 ? { ...values, fallback } : values
+  ) as T & { fallback?: Fallback };
+}
+
 /**
  * A day's Office, Hour by Hour, from its sections as the language says them.
  * Undefined where the day says nothing of the Office.
+ *
+ * `fellBack` names the sections said in another language than the one asked
+ * for, by the code of the one they are said in; each Hour, and each part that
+ * holds others, carries a `fallback` naming its own fields among them.
  *
  * The sources give Vespers once for both: the antiphons and the hymn are said
  * at first and second Vespers alike unless the day gives second Vespers their
  * own; and second Vespers, given no versicle or antiphon at the *Magnificat*,
  * say first Vespers'.
  */
-export function buildOfficium(proper: Record<string, unknown>): Officium | undefined {
-  /** What a section holds, where it holds the shape `guard` says. */
-  const at = <T>(key: string, guard: Guard<T>): T | undefined =>
-    guard(proper[key]) ? (proper[key] as T) : undefined;
+export function buildOfficium(
+  proper: Record<string, unknown>,
+  fellBack: Readonly<Record<string, string>> = {}
+): Officium | undefined {
+  /** What the first of the sections holds in the shape `guard` says, and where it was said. */
+  const at = <T>(guard: Guard<T>, ...keys: string[]): Taken<T> | undefined => {
+    for (const key of keys) {
+      if (guard(proper[key])) {
+        const code = fellBack[key];
+        return code === undefined ? { value: proper[key] as T } : { value: proper[key] as T, code };
+      }
+    }
+    return undefined;
+  };
 
   const nocturni: Nocturnus[] = [];
   for (const nocturn of [1, 2, 3]) {
     const lectiones: LectioMatutini[] = [];
     for (const n of LESSONS.slice((nocturn - 1) * 3, nocturn * 3)) {
-      const lectio = at(`lectio${n}`, isLectio);
+      const lectio = at(isLectio, `lectio${n}`);
       if (lectio === undefined) continue;
-      const responsorium = at(`responsory${n}`, isResponsorium);
       lectiones.push(
-        responsorium === undefined ? { numerus: n, lectio } : { numerus: n, lectio, responsorium }
+        part<LectioMatutini>({
+          numerus: { value: n },
+          lectio,
+          responsorium: at(isResponsorium, `responsory${n}`),
+        })!
       );
     }
-    const versus = at(`nocturn-${nocturn}-versum`, isVersus);
+    const versus = at(isVersus, `nocturn-${nocturn}-versum`);
     if (lectiones.length > 0 || versus !== undefined) {
-      nocturni.push(versus === undefined ? { lectiones } : { versus, lectiones });
+      nocturni.push(part<Nocturnus>({ versus, lectiones: { value: lectiones } })!);
     }
   }
 
   const minor = (hour: string) =>
-    present({
-      capitulum: at(`capitulum-${hour}`, isCapitulum),
-      responsorium: at(`responsory-breve-${hour}`, isResponsorium),
-      versus: at(`versum-${hour}`, isVersusOrAntiphona),
+    part<HoraMinor>({
+      capitulum: at(isCapitulum, `capitulum-${hour}`),
+      responsorium: at(isResponsorium, `responsory-breve-${hour}`),
+      versus: at(isVersusOrAntiphona, `versum-${hour}`),
     });
 
-  const hours = present<Omit<Officium, "oratio">>({
-    primaeVesperae: present({
-      psalmodia: at("ant-vespera", isPsalmodia),
-      capitulum: at("capitulum-vespera", isCapitulum),
-      hymnus: at("hymnus-vespera", isHymnus),
-      versus: at("versum-1", isVersusOrAntiphona),
-      magnificat: at("ant-1", isAntiphona),
+  const hours = present<Omit<Officium, "oratio" | "fallback">>({
+    primaeVesperae: part<Vesperae>({
+      psalmodia: at(isPsalmodia, "ant-vespera"),
+      capitulum: at(isCapitulum, "capitulum-vespera"),
+      hymnus: at(isHymnus, "hymnus-vespera"),
+      versus: at(isVersusOrAntiphona, "versum-1"),
+      magnificat: at(isAntiphona, "ant-1"),
     }),
-    matutinum: present({
-      invitatorium: at("invit", isAntiphona),
-      hymnus: at("hymnus-matutinum", isHymnus),
-      psalmodia: at("ant-matutinum", isPsalmodia),
-      nocturni: nocturni.length > 0 ? nocturni : undefined,
-      legenda: at("lectio94", isReading),
+    matutinum: part<NonNullable<Officium["matutinum"]>>({
+      invitatorium: at(isAntiphona, "invit"),
+      hymnus: at(isHymnus, "hymnus-matutinum"),
+      psalmodia: at(isPsalmodia, "ant-matutinum"),
+      nocturni: nocturni.length > 0 ? { value: nocturni } : undefined,
+      legenda: at(isReading, "lectio94"),
     }),
-    laudes: present({
-      psalmodia: at("ant-laudes", isPsalmodia),
-      capitulum: at("capitulum-laudes", isCapitulum),
-      hymnus: at("hymnus-laudes", isHymnus),
-      versus: at("versum-2", isVersusOrAntiphona),
-      benedictus: at("ant-2", isAntiphona),
+    laudes: part<NonNullable<Officium["laudes"]>>({
+      psalmodia: at(isPsalmodia, "ant-laudes"),
+      capitulum: at(isCapitulum, "capitulum-laudes"),
+      hymnus: at(isHymnus, "hymnus-laudes"),
+      versus: at(isVersusOrAntiphona, "versum-2"),
+      benedictus: at(isAntiphona, "ant-2"),
     }),
-    prima: present({ lectioBrevis: at("lectio-prima", isCapitulum) }),
+    prima: part<NonNullable<Officium["prima"]>>({
+      lectioBrevis: at(isCapitulum, "lectio-prima"),
+    }),
     tertia: minor("tertia"),
     sexta: minor("sexta"),
     nona: minor("nona"),
-    vesperae: present({
-      psalmodia: at("ant-vespera-3", isPsalmodia) ?? at("ant-vespera", isPsalmodia),
-      capitulum: at("capitulum-vespera", isCapitulum),
-      hymnus: at("hymnus-vespera-3", isHymnus) ?? at("hymnus-vespera", isHymnus),
-      versus: at("versum-3", isVersusOrAntiphona) ?? at("versum-1", isVersusOrAntiphona),
-      magnificat: at("ant-3", isAntiphona) ?? at("ant-1", isAntiphona),
+    vesperae: part<Vesperae>({
+      psalmodia: at(isPsalmodia, "ant-vespera-3", "ant-vespera"),
+      capitulum: at(isCapitulum, "capitulum-vespera"),
+      hymnus: at(isHymnus, "hymnus-vespera-3", "hymnus-vespera"),
+      versus: at(isVersusOrAntiphona, "versum-3", "versum-1"),
+      magnificat: at(isAntiphona, "ant-3", "ant-1"),
     }),
   });
   // The collect is the Mass's too, so on its own it says nothing of the Office.
   if (hours === undefined) return undefined;
   const oratio = oratioOf(proper.oratio);
-  return oratio === undefined ? hours : { ...hours, oratio };
+  if (oratio === undefined) return hours;
+  const code = fellBack.oratio;
+  return code === undefined
+    ? { ...hours, oratio }
+    : { ...hours, oratio, fallback: { oratio: code } };
 }

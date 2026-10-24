@@ -1,11 +1,12 @@
 import { findAsset, loadAsset } from "./assert/utils";
 import type { Language } from "../language";
 import {
-  selectMassProper,
+  resolveMassProper,
   applySeason,
   nameSaint,
   isMassSection,
   selectVariant,
+  type FellBack,
   type Stores,
 } from "../massPropers";
 import type { CalendarData, Officium, RawMassProper } from "../types";
@@ -167,18 +168,26 @@ const DESIGNATIONS = new Set(["title", "name", "prefatio"]);
  * The sections of a day `belongs` selects, reduced to the rubric in force and
  * with their texts said in the language; undefined where the language has words
  * for none of them, whatever empty section the day carries inline.
+ *
+ * With `fallbacks`, a text the language lacks is said in the first of them that
+ * has it, and `fellBack` names those sections. A day the language says nothing
+ * of is then said entirely in the fallbacks.
  */
 function properOf(
   document: Record<string, unknown>,
   language: Language,
   rubrics: ReadonlySet<string>,
-  belongs: (key: string) => boolean
-): Record<string, unknown> | undefined {
+  belongs: (key: string) => boolean,
+  fallbacks: readonly Language[] = []
+): { proper: Record<string, unknown>; fellBack: FellBack } | undefined {
   const own = Object.fromEntries(
     Object.entries(document).filter(([key]) => belongs(key) || DESIGNATIONS.has(key))
   );
-  const selected = selectMassProper(own, rubrics, loadStores(language));
-  const says = Object.keys(selected).some(
+  const backups = fallbacks
+    .filter((other) => other.code !== language.code)
+    .map((other) => ({ code: other.code, stores: loadStores(other) }));
+  const selected = resolveMassProper(own, rubrics, loadStores(language), backups);
+  const says = Object.keys(selected.proper).some(
     (key) => belongs(key) && typeof selectVariant(document[key], rubrics) === "string"
   );
   return says ? selected : undefined;
@@ -191,28 +200,38 @@ function properOf(
  * The day is the same in every language and is bundled here, holding keys
  * alone; the language supplies what each key says. A day the language says
  * nothing of has no Mass in it — nor has any day without a language.
+ *
+ * The `fallbacks` say the texts the language has none for, the first that has
+ * one first, and `fallback` on the Mass names the sections they said, by their
+ * codes — absent when the Mass is wholly the language's own.
  */
 export function loadMassPropersByTitle(
   title: string,
   language: Language,
   rubrics: ReadonlySet<string> = DEFAULT_RUBRICS,
   season?: { date: Date; easter: Date },
-  local: readonly string[] = []
+  local: readonly string[] = [],
+  fallbacks: readonly Language[] = []
 ): RawMassProper | undefined {
   const document = dayByTitle(title, local);
   if (document === undefined) return undefined;
 
-  const selected = properOf(document, language, rubrics, isMassSection);
+  const selected = properOf(document, language, rubrics, isMassSection, fallbacks);
   if (selected === undefined) return undefined;
   const seasonal = season
-    ? applySeason(selected, season.date, season.easter)
-    : selected;
+    ? applySeason(selected.proper, season.date, season.easter)
+    : selected.proper;
   // The commons leave the saint's name open; the day supplies it.
   const proper = nameSaint(seasonal);
+  if (!Object.keys(proper).some(isMassSection)) return undefined;
 
-  return Object.keys(proper).some(isMassSection)
-    ? (proper as RawMassProper)
-    : undefined;
+  // The season may have set a chant aside; the marker names only what is said.
+  const said = Object.fromEntries(
+    Object.entries(selected.fellBack).filter(([key]) => key in proper)
+  );
+  return (
+    Object.keys(said).length > 0 ? { ...proper, fallback: said } : proper
+  ) as RawMassProper;
 }
 
 /**
@@ -224,7 +243,8 @@ export function loadOfficiumByTitle(
   title: string,
   language: Language,
   rubrics: ReadonlySet<string> = DEFAULT_RUBRICS,
-  local: readonly string[] = []
+  local: readonly string[] = [],
+  fallbacks: readonly Language[] = []
 ): Officium | undefined {
   const own = dayByTitle(title, local);
   const elsewhere = OFFICE_FILED_WITH[titleToFileName(title)];
@@ -237,10 +257,11 @@ export function loadOfficiumByTitle(
     office,
     language,
     rubrics,
-    (key) => isOfficeSection(key) || key === "oratio"
+    (key) => isOfficeSection(key) || key === "oratio",
+    fallbacks
   );
   if (selected === undefined) return undefined;
-  return buildOfficium(nameSaint(selected));
+  return buildOfficium(nameSaint(selected.proper), selected.fellBack);
 }
 
 /**

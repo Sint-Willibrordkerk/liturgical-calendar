@@ -58,10 +58,12 @@ they fall — but no day carries a Mass and nothing is translated.
 
 - `year` (number): The year for which to generate the calendar
 - `propers` (string[]): Array of proper names to include (e.g., `['ultrajectum', 'fsspx']`)
-- `language` (Language): A language package —
+- `language` (Language | Language[]): A language package —
   `@sint-willibrordkerk/liturgical-calendar-la`, `…-nl` — imported and passed
-  in. It supplies the words of the Mass propers and the translations. Optional;
-  omit it for the bare calendar, whose days have no Mass.
+  in. It supplies the words of the Mass propers and the translations. Pass
+  several, as a list, to say a Mass text in the next where the first has none;
+  see [Several languages](#several-languages). Optional; omit it for the bare
+  calendar, whose days have no Mass.
 - `options` (Options): Optional.
   - `martyrologium` (boolean): give each day the Roman Martyrology; see
     [The Martyrology](#the-martyrology).
@@ -80,6 +82,47 @@ const calendar = generateCalendar(2026, ['ultrajectum'], nl);
 const november7 = calendar[11][7];
 console.log(november7.title); // "H. Willibrordus" (in Dutch)
 ```
+
+### Several languages
+
+A language may have no words for a text a day refers to. Divinum Officium has
+no Dutch for the days of a local calendar, for one, so the Dutch Mass of
+7 November, the feast of H. Willibrordus, has no collect, epistle, secret or
+postcommunion. With one language such a text is left out. Pass a list and it is
+said in the next language that has it:
+
+```javascript
+import la from '@sint-willibrordkerk/liturgical-calendar-la';
+import nl from '@sint-willibrordkerk/liturgical-calendar-nl';
+
+const calendar = generateCalendar(2026, ['ultrajectum'], [nl, la]);
+
+const { mass } = calendar[11][7];
+mass.oratio;   // the Latin collect
+mass.fallback; // { oratio: 'la', lectio: 'la', secreta: 'la', ... }
+```
+
+The first language is the one asked for: the translations, such as the names of
+the seasons and colors, are its own. The others say what it lacks, the first that
+has it first. That reaches the Mass, the [Office](#the-office) and the
+[Martyrology](#the-martyrology) alike, and a calendar of `[nl, la]` reads Latin
+where the Dutch package has no Martyrology at all.
+
+Whatever is said in another language is named in a `fallback` on the part that
+holds it, each by the code of the language it was said in, so a site can label
+it. It is absent where everything is in the first language:
+
+- the Mass: `mass.fallback`, by section (`oratio`, `lectio`, …);
+- the Office: `officium.fallback` for the collect, and on each Hour and each
+  part that holds others, by field: `officium.laudes.fallback` is
+  `{ capitulum: 'la', benedictus: 'la' }`, and a lesson of Matins carries
+  `{ lectio: 'la' }`;
+- the Martyrology: `martyrologium.fallback`, by field (`titulus`, `elogia`,
+  `lunaName`, `mobile`, `conclusio`). A date is read whole from the first
+  language that prints it; only what that one lacks is taken from the next.
+
+Every language is a package the caller imports: the Dutch package carries no
+Latin.
 
 ### Calendar Structure
 

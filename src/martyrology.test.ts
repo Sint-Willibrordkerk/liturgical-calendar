@@ -181,4 +181,62 @@ describe("the Martyrology in the calendar", () => {
     const bare = generateCalendar(2026, [], { code: "nl", assets: {} }, { martyrologium: true });
     expect(bare[1]![21]!.martyrologium).toBeUndefined();
   });
+
+  describe("with fallback languages", () => {
+    const dutch: Language = {
+      code: "nl",
+      assets: {
+        "martyrologium/nl/01-21.yml": {
+          titulus: "Twaalfde dag voor de Kalenden van februari",
+          elogia: ["Te Rome het lijden van de heilige Agnes."],
+        },
+        "translations/nl/luna.yml": { "luna-2": "Maan twee" },
+      },
+    };
+    const options = { martyrologium: true };
+
+    it("reads a date whole from the first language that prints it, and names the rest", () => {
+      const reading = generateCalendar(2026, [], [dutch, martyrology], options)[1]![21]!.martyrologium;
+      expect(reading).toEqual({
+        titulus: "Twaalfde dag voor de Kalenden van februari",
+        luna: 2,
+        lunaName: "Maan twee",
+        elogia: ["Te Rome het lijden van de heilige Agnes."],
+        conclusio: { versus: "Et álibi aliórum.", responsum: "Deo grátias." },
+        fallback: { conclusio: "la" },
+      });
+    });
+
+    it("reads a date only a fallback prints in that language, and names what it said", () => {
+      const reading = generateCalendar(2026, [], [dutch, martyrology], options)[1]![20]!.martyrologium;
+      expect(reading).toMatchObject({
+        titulus: "Tertiodécimo Kaléndas Februárii",
+        elogia: ["Romæ natális sancti Fabiáni."],
+        fallback: { titulus: "la", elogia: "la", conclusio: "la" },
+      });
+    });
+
+    it("says the whole Martyrology in the fallback where the language has none", () => {
+      const calendar = generateCalendar(2026, [], [{ code: "nl", assets: {} }, martyrology], options);
+      expect(calendar[1]![21]!.martyrologium).toMatchObject({
+        titulus: "Duodécimo Kaléndas Februárii",
+        lunaName: "Luna secúnda",
+        fallback: { titulus: "la", elogia: "la", lunaName: "la", conclusio: "la" },
+      });
+      expect(calendar[4]![6]!.martyrologium).toMatchObject({
+        mobile: ["Hac die quam fecit Dóminus."],
+        fallback: { mobile: "la" },
+      });
+    });
+
+    it("carries no marker where the language says the whole reading itself", () => {
+      const calendar = generateCalendar(2026, [], [martyrology, dutch], options);
+      expect(calendar[1]![21]!.martyrologium).not.toHaveProperty("fallback");
+    });
+
+    it("leaves a date none of them prints without a reading", () => {
+      const calendar = generateCalendar(2026, [], [dutch, martyrology], options);
+      expect(calendar[8]![15]!.martyrologium).toBeUndefined();
+    });
+  });
 });

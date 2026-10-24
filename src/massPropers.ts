@@ -330,24 +330,79 @@ function storeFor(key: string, stores: Stores): Record<string, unknown> | undefi
 }
 
 /**
+ * Another language to read a text in where the first has no words for it: its
+ * code, which marks the sections it supplied, and its stores.
+ *
+ * It is handed in by the caller and never bundled with the language it backs,
+ * so a language carries only its own words.
+ */
+export type Backup = { code: string; stores: Stores };
+
+/** The sections a fallback supplied, by the code of the language it said them in. */
+export type FellBack = Record<string, string>;
+
+/**
  * Reduce a shipped document to the sections that apply under `rubrics`, with
  * readings, prayers, chants and the name resolved against their stores. A
  * section with nothing applicable, or a key the language has no words for, is
  * left out entirely rather than carried as undefined.
+ *
+ * Where `fallbacks` are given, a key the language has no words for is read from
+ * the first of them that has, and the section is recorded in what is returned
+ * beside the proper. The saint's name is not: it is a name in the language, and
+ * a Latin one set in a Dutch prayer would be Latin declined in Dutch. A text
+ * said in a fallback has its `N.` filled with that fallback's own name.
  */
+export function resolveMassProper(
+  document: Record<string, unknown>,
+  rubrics: ReadonlySet<string>,
+  stores: Stores,
+  fallbacks: readonly Backup[] = []
+): { proper: Record<string, unknown>; fellBack: FellBack } {
+  const proper: Record<string, unknown> = {};
+  const fellBack: FellBack = {};
+
+  for (const [key, section] of Object.entries(document)) {
+    const value = selectVariant(section, rubrics);
+    if (value === undefined) continue;
+    const store = storeFor(key, stores);
+    let resolved = store ? resolveStored(value, store) : value;
+
+    if (resolved === undefined && !NAME_SECTIONS.has(key)) {
+      for (const fallback of fallbacks) {
+        const backup = storeFor(key, fallback.stores);
+        const text = backup && resolveStored(value, backup);
+        if (text === undefined) continue;
+        const name = nameIn(document, rubrics, fallback.stores);
+        resolved = name === undefined ? text : nameSaint({ name, [key]: text })[key];
+        fellBack[key] = fallback.code;
+        break;
+      }
+    }
+
+    if (resolved === undefined) continue;
+    proper[key] = resolved;
+  }
+  return { proper, fellBack };
+}
+
+/** The saint's name as `stores` say it, where the day names one. */
+function nameIn(
+  document: Record<string, unknown>,
+  rubrics: ReadonlySet<string>,
+  stores: Stores
+): string | undefined {
+  const key = selectVariant(document.name, rubrics);
+  if (typeof key !== "string") return undefined;
+  const name = stores.names[key];
+  return typeof name === "string" ? name : undefined;
+}
+
+/** {@link resolveMassProper} without a fallback: only the language's own words. */
 export function selectMassProper(
   document: Record<string, unknown>,
   rubrics: ReadonlySet<string>,
   stores: Stores
 ): Record<string, unknown> {
-  const out: Record<string, unknown> = {};
-  for (const [key, section] of Object.entries(document)) {
-    const value = selectVariant(section, rubrics);
-    if (value === undefined) continue;
-    const store = storeFor(key, stores);
-    const resolved = store ? resolveStored(value, store) : value;
-    if (resolved === undefined) continue;
-    out[key] = resolved;
-  }
-  return out;
+  return resolveMassProper(document, rubrics, stores).proper;
 }

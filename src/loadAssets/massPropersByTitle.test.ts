@@ -148,3 +148,152 @@ describe("the Mass of a day kept in a local calendar", () => {
     ).toBe("S. Martini");
   });
 });
+
+/**
+ * A language may lack words for a text the day refers to. A fallback language,
+ * handed in beside it, says that text instead, and the Mass names the sections
+ * it said so a reader can tell which language each came in. The fallback is
+ * never part of the language it backs.
+ */
+describe("the Mass of a day, with fallback languages", () => {
+  beforeAll(() => {
+    (globalThis as Record<string, unknown>).bundledAssets = {
+      "mass-propers/Sancti/willibrordi.yml": {
+        title: "S. Willibrordi",
+        name: "willibrordo",
+        introitus: "eccli-45-30",
+        oratio: "deus-qui-beatum",
+        lectio: "hebr-13-7-9-13-15-17",
+        secreta: "munera-1",
+        postcommunio: "hostia-1",
+      },
+      "mass-propers/Sancti/nemini.yml": {
+        title: "S. Nemini",
+        oratio: "deus-qui-beatum",
+      },
+    };
+  });
+
+  const language = (code: string, stores: Record<string, unknown>): Language => ({
+    code,
+    assets: Object.fromEntries(
+      Object.entries(stores).map(([file, store]) => [
+        `mass-propers/${code}/${file}.yml`,
+        store,
+      ])
+    ),
+  });
+
+  const latin = language("la", {
+    antiphona: { "eccli-45-30": { antiphon: { text: "Státuit" } } },
+    oratio: {
+      "deus-qui-beatum": { text: "Deus, qui beátum", closure: "Per Dominum" },
+      "munera-1": { text: "Múnera N.", closure: "Per Dominum" },
+      "hostia-1": { text: "Omnípotens Deus", closure: "Per Dominum" },
+    },
+    lectio: { "hebr-13-7-9-13-15-17": { ref: "Hebr 13:7-9", verses: ["Fratres"] } },
+    nomen: { willibrordo: "Willibrórdo" },
+  });
+
+  const dutch = language("nl", {
+    antiphona: { "eccli-45-30": { antiphon: { text: "De Heer" } } },
+    oratio: { "hostia-1": { text: "Almachtige God", closure: "Door Christus" } },
+  });
+
+  it("says what the language lacks in the fallback and names the sections", () => {
+    expect(
+      loadMassPropersByTitle("S. Willibrordi", dutch, undefined, undefined, [], [latin])
+    ).toEqual({
+      title: "S. Willibrordi",
+      introitus: { antiphon: { text: "De Heer" } },
+      oratio: { text: "Deus, qui beátum", closure: "Per Dominum" },
+      lectio: { ref: "Hebr 13:7-9", verses: ["Fratres"] },
+      secreta: { text: "Múnera Willibrórdo", closure: "Per Dominum" },
+      postcommunio: { text: "Almachtige God", closure: "Door Christus" },
+      fallback: { oratio: "la", lectio: "la", secreta: "la" },
+    });
+  });
+
+  it("leaves out what the language lacks when no fallback is given", () => {
+    const mass = loadMassPropersByTitle("S. Willibrordi", dutch);
+    expect(mass).toEqual({
+      title: "S. Willibrordi",
+      introitus: { antiphon: { text: "De Heer" } },
+      postcommunio: { text: "Almachtige God", closure: "Door Christus" },
+    });
+    expect(mass).not.toHaveProperty("fallback");
+  });
+
+  it("carries no marker where the language says the whole Mass itself", () => {
+    expect(
+      loadMassPropersByTitle("S. Willibrordi", latin, undefined, undefined, [], [dutch])
+    ).not.toHaveProperty("fallback");
+  });
+
+  it("does not read a language as its own fallback", () => {
+    expect(
+      loadMassPropersByTitle("S. Willibrordi", dutch, undefined, undefined, [], [dutch])
+    ).not.toHaveProperty("fallback");
+  });
+
+  it("says a day wholly in the fallback where the language has no words for it", () => {
+    expect(
+      loadMassPropersByTitle("S. Nemini", language("nl", {}), undefined, undefined, [], [latin])
+    ).toEqual({
+      title: "S. Nemini",
+      oratio: { text: "Deus, qui beátum", closure: "Per Dominum" },
+      fallback: { oratio: "la" },
+    });
+  });
+
+  it("has no Mass where neither language says anything of the day", () => {
+    expect(
+      loadMassPropersByTitle("S. Nemini", language("nl", {}), undefined, undefined, [], [language("la", {})])
+    ).toBeUndefined();
+  });
+
+  it("reads each text from the first fallback that has it", () => {
+    const german = language("de", {
+      oratio: { "deus-qui-beatum": { text: "Gott, der du", closure: "Durch Christus" } },
+    });
+    const mass = loadMassPropersByTitle(
+      "S. Willibrordi", dutch, undefined, undefined, [], [german, latin]
+    );
+    expect(mass).toMatchObject({
+      oratio: { text: "Gott, der du" },
+      lectio: { ref: "Hebr 13:7-9" },
+      fallback: { oratio: "de", lectio: "la", secreta: "la" },
+    });
+  });
+
+  it("names only the sections the season leaves", () => {
+    // Before Easter the alleluia gives way to the tract; a marker for the one
+    // set aside would name a text the Mass no longer holds.
+    (globalThis as Record<string, unknown>).bundledAssets = {
+      "mass-propers/Sancti/cantus.yml": {
+        title: "Cantus",
+        alleluia: "alleluia-1",
+        tractus: "tractus-1",
+      },
+    };
+    const la = language("la", {
+      antiphona: {
+        "alleluia-1": { text: "Allelúja" },
+        "tractus-1": { verses: [{ text: "Laudáte" }] },
+      },
+    });
+    const easter = new Date(2026, 3, 5);
+    const lent = new Date(2026, 2, 1);
+    const mass = loadMassPropersByTitle(
+      "cantus",
+      language("nl", {}),
+      undefined,
+      { date: lent, easter },
+      [],
+      [la]
+    );
+    expect(mass).toMatchObject({ fallback: { tractus: "la" } });
+    expect(mass).not.toHaveProperty("alleluia");
+    expect(mass?.fallback).not.toHaveProperty("alleluia");
+  });
+});
