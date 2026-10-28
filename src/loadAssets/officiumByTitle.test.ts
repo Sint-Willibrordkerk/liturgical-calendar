@@ -66,8 +66,8 @@ describe("the Office of a day, in a language", () => {
   const versicle = (versus: string) => ({ versus, responsum: "Inténde." });
   const latin: Language = {
     code: "la",
-    assets: Object.fromEntries(
-      Object.entries({
+    assets: {
+      masspropers: {
         lectio: {
           "eccli-51-1-8": { ref: "Eccli 51:1-8", verses: ["Confitébor tibi"] },
           "1-cor-7-25-31": { ref: "1 Cor 7:25-31", verses: ["De virgínibus"] },
@@ -103,8 +103,8 @@ describe("the Office of a day, in a language", () => {
           "diffusa-est-1": versicle("Diffúsa est grátia in lábiis tuis."),
         },
         nomen: { agnetis: "Agnétis", pauli: "Pauli" },
-      }).map(([file, store]) => [`mass-propers/la/${file}.yml`, store])
-    ),
+      },
+    },
   };
 
   it("reads the Office Hour by Hour", () => {
@@ -212,18 +212,20 @@ describe("the Office of a day, in a language", () => {
     const dutch: Language = {
       code: "nl",
       assets: {
-        "mass-propers/nl/oratio.yml": {
-          "omnipotens-1": { text: "Almachtige, eeuwige God", closure: "Door onze Heer" },
-        },
-        "mass-propers/nl/antiphona.yml": {
-          "haec-est-virgo-1": {
-            antiphonae: [{ text: "Dit is de wijze maagd, * en één.", psalmus: "109" }],
+        masspropers: {
+          oratio: {
+            "omnipotens-1": { text: "Almachtige, eeuwige God", closure: "Door onze Heer" },
           },
+          antiphona: {
+            "haec-est-virgo-1": {
+              antiphonae: [{ text: "Dit is de wijze maagd, * en één.", psalmus: "109" }],
+            },
+          },
+          lectio: {
+            "1-cor-7-25-31": { ref: "1 Kor 7:25-31", verses: ["Over de maagden"] },
+          },
+          nomen: { agnetis: "Agnes" },
         },
-        "mass-propers/nl/lectio.yml": {
-          "1-cor-7-25-31": { ref: "1 Kor 7:25-31", verses: ["Over de maagden"] },
-        },
-        "mass-propers/nl/nomen.yml": { agnetis: "Agnes" },
       },
     };
     const agnes = "S. Agnetis Virginis et Martyris";

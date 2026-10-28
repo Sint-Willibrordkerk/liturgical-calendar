@@ -18,13 +18,13 @@ const ASSETS = "assets";
 /** A language package as built from `languages/<code>`, translations only. */
 function language(code: string): Language {
   const dir = join("languages", code, "assets", "translations", code);
-  const assets: Record<string, unknown> = {};
+  const translations: Record<string, Record<string, string>> = {};
   for (const file of readdirSync(dir)) {
-    assets[`translations/${code}/${file}`] = parse(
+    translations[file.replace(/\.ya?ml$/, "")] = parse(
       readFileSync(join(dir, file), "utf-8")
     );
   }
-  return { code, assets };
+  return { code, assets: { translations } };
 }
 
 beforeAll(() => {
@@ -45,7 +45,7 @@ let calendar: Calendar;
 const day = (month: number, date: number) => calendar[month]![date]!;
 
 beforeAll(() => {
-  calendar = generateCalendar(2026, ["ultrajectum"]);
+  calendar = generateCalendar({ year: 2026, propers: ["ultrajectum"] });
 });
 
 describe("every day of the year", () => {
@@ -63,7 +63,7 @@ describe("every day of the year", () => {
   });
 
   it("comes out the same when the calendar is generated twice", () => {
-    expect(generateCalendar(2026, ["ultrajectum"])).toEqual(calendar);
+    expect(generateCalendar({ year: 2026, propers: ["ultrajectum"] })).toEqual(calendar);
   });
 });
 
@@ -75,7 +75,7 @@ describe("the names of the seasons and the colors", () => {
   });
 
   it("come from the language, beside the identifiers", () => {
-    const dutch = generateCalendar(2026, [], language("nl"));
+    const dutch = generateCalendar({ year: 2026, languages: [language("nl")] });
     expect(dutch[12]![13]).toMatchObject({
       season: "adventus",
       seasonName: "Advent",
@@ -90,7 +90,7 @@ describe("the names of the seasons and the colors", () => {
     });
     expect(dutch[6]![14]).not.toHaveProperty("alternativeColorName");
 
-    const latin = generateCalendar(2026, [], language("la"));
+    const latin = generateCalendar({ year: 2026, languages: [language("la")] });
     expect(latin[4]![3]).toMatchObject({
       seasonName: "Tempus Passionis",
       colorName: "niger",
@@ -179,8 +179,8 @@ describe("the Sunday a feast takes", () => {
     // Trinity on Dominica I post Pentecosten, Christ the King on Dominica XXII.
     for (const cal of [
       calendar,
-      generateCalendar(2026, [], language("la")),
-      generateCalendar(2026, [], language("nl")),
+      generateCalendar({ year: 2026, languages: [language("la")] }),
+      generateCalendar({ year: 2026, languages: [language("nl")] }),
     ]) {
       expect(commemorated(cal, 5, 31)).not.toContain("dominica");
       expect(commemorated(cal, 10, 25)).not.toContain("dominica");

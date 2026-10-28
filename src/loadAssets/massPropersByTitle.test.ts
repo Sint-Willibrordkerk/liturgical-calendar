@@ -25,12 +25,7 @@ describe("the Mass of a day, in a language", () => {
 
   const language = (code: string, stores: Record<string, unknown>): Language => ({
     code,
-    assets: Object.fromEntries(
-      Object.entries(stores).map(([file, store]) => [
-        `mass-propers/${code}/${file}.yml`,
-        store,
-      ])
-    ),
+    assets: { masspropers: stores },
   });
 
   const latin = language("la", {
@@ -114,10 +109,12 @@ describe("the Mass of a day kept in a local calendar", () => {
   const latin: Language = {
     code: "la",
     assets: {
-      "mass-propers/la/oratio.yml": {
-        generalis: { text: "Deus", closure: "Per Dominum" },
-        ultrajectensis: { text: "Deus, Ultrajecti", closure: "Per Dominum" },
-        neerlandica: { text: "Deus, in Neerlandia", closure: "Per Dominum" },
+      masspropers: {
+        oratio: {
+          generalis: { text: "Deus", closure: "Per Dominum" },
+          ultrajectensis: { text: "Deus, Ultrajecti", closure: "Per Dominum" },
+          neerlandica: { text: "Deus, in Neerlandia", closure: "Per Dominum" },
+        },
       },
     },
   };
@@ -176,12 +173,7 @@ describe("the Mass of a day, with fallback languages", () => {
 
   const language = (code: string, stores: Record<string, unknown>): Language => ({
     code,
-    assets: Object.fromEntries(
-      Object.entries(stores).map(([file, store]) => [
-        `mass-propers/${code}/${file}.yml`,
-        store,
-      ])
-    ),
+    assets: { masspropers: stores },
   });
 
   const latin = language("la", {

@@ -7,7 +7,7 @@ import {
   sundayMasses,
 } from "./resumedSundays";
 import type { Calendar, LiturgicalDay } from "./types";
-import { calculateAdvent, calculateEaster } from "./utils";
+import { calculateEaster } from "./utils";
 
 describe("applyResumedSundays", () => {
   // 2027: the Trinity is the 23rd of May, Advent begins the 28th of November;
@@ -15,7 +15,7 @@ describe("applyResumedSundays", () => {
   // are resumed on the 31st of October, the 7th and the 14th of November.
   const year = 2027;
   const sundayOf = (title: string): LiturgicalDay =>
-    ({ type: "dominica", title, mass: { title }, commemorations: [] }) as never;
+    ({ type: "dominica", title, proper: { title }, commemorations: [] }) as never;
 
   /** Every Sunday after Pentecost of 2027, Christ the King on the 31st. */
   function calendar2027(): Calendar {
@@ -29,37 +29,48 @@ describe("applyResumedSundays", () => {
     out[10]![31] = {
       type: "festum",
       title: "Christ the King",
-      mass: { title: "Christ the King" },
+      proper: { title: "Christ the King" },
       commemorations: [sundayOf("numbered 10-31")],
     } as never;
     return out;
   }
 
-  const apply = (calendar: Calendar) =>
-    applyResumedSundays(
-      calendar,
-      year,
-      calculateEaster(year),
-      calculateAdvent(year),
-      2,
-      (title) => ({ title })
-    );
+  // The resumed Masses are read in the season they were left in.
+  const septuagesima = calculateEaster(year);
+  septuagesima.setDate(septuagesima.getDate() - 63);
 
   it("gives a Sunday beyond the count its resumed Mass", () => {
     const calendar = calendar2027();
-    apply(calendar);
-    expect(calendar[11]![7]!.mass).toEqual({ title: resumedSundayMass(5) });
-    expect(calendar[11]![21]!.mass).toEqual({ title: LAST_SUNDAY_MASS });
+    applyResumedSundays(calendar, year);
+    expect(calendar[11]![7]!.title).toBe(resumedSundayMass(5));
+    expect(calendar[11]![7]!.proper).toEqual({
+      title: resumedSundayMass(5),
+      season: septuagesima,
+    });
+    expect(calendar[11]![21]!.proper?.title).toBe(LAST_SUNDAY_MASS);
+  });
+
+  it("leaves a Sunday within the count its own", () => {
+    const calendar = calendar2027();
+    applyResumedSundays(calendar, year);
+    expect(calendar[10]![24]!.proper).toEqual({ title: "numbered 10-24" });
   });
 
   it("gives a Sunday kept as a feast its Mass in the commemoration", () => {
     const calendar = calendar2027();
-    apply(calendar);
+    applyResumedSundays(calendar, year);
     const kept = calendar[10]![31]!;
-    expect(kept.mass).toEqual({ title: "Christ the King" });
+    expect(kept.proper).toEqual({ title: "Christ the King" });
     expect(kept.title).toBe("Christ the King");
     expect(kept.commemorations[0]!.title).toBe(resumedSundayMass(4));
-    expect(kept.commemorations[0]!.mass).toEqual({ title: resumedSundayMass(4) });
+    expect(kept.commemorations[0]!.proper?.title).toBe(resumedSundayMass(4));
+  });
+
+  it("names the Sunday for good, so no language renames it", () => {
+    const calendar = calendar2027();
+    calendar[11]![7]!.naming = { template: "dominica-$count-post-pentecosten", count: 1 };
+    applyResumedSundays(calendar, year);
+    expect(calendar[11]![7]!.naming).toBeUndefined();
   });
 });
 

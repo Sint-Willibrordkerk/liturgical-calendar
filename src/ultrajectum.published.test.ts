@@ -2,6 +2,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { existsSync, readdirSync, readFileSync, statSync } from "fs";
 import { join } from "path";
 import { parse } from "yaml";
+import { languageAssets } from "../scripts/language-assets.mjs";
 import generateCalendar, { type Language, type LiturgicalDay } from "./index";
 
 /**
@@ -52,7 +53,7 @@ describe.skipIf(!generated)("the Utrecht local proper as published", () => {
   beforeAll(() => {
     (globalThis as Record<string, unknown>).bundledAssets = readAssets("assets");
     for (const code of ["la", "nl"]) {
-      languages[code] = { code, assets: readAssets(join("languages", code, "assets")) };
+      languages[code] = { code, assets: languageAssets(join("languages", code, "assets"), code) };
     }
   });
 
@@ -60,8 +61,8 @@ describe.skipIf(!generated)("the Utrecht local proper as published", () => {
   function kept(code: string): { label: string; local: LiturgicalDay; general: LiturgicalDay }[] {
     const out = [];
     for (const year of YEARS) {
-      const local = generateCalendar(year, ["ultrajectum"], languages[code]!);
-      const general = generateCalendar(year, [], languages[code]!);
+      const local = generateCalendar({ year, propers: ["ultrajectum"], languages: [languages[code]!] });
+      const general = generateCalendar({ year, languages: [languages[code]!] });
       for (const [month, day] of utrechtDates()) {
         const l = local[month]![day]!;
         const g = general[month]![day]!;
@@ -93,8 +94,8 @@ describe.skipIf(!generated)("the Utrecht local proper as published", () => {
     // Gertrude the Great, of the general calendar, and Gertrude of Nivelles, of
     // the Netherlands, are both filed as `gertrudis-virginis`.
     const latin = languages.la!;
-    const local = generateCalendar(2026, ["ultrajectum"], latin);
-    const general = generateCalendar(2026, [], latin);
+    const local = generateCalendar({ year: 2026, propers: ["ultrajectum"], languages: [latin] });
+    const general = generateCalendar({ year: 2026, languages: [latin] });
     expect(local[11]![16]!.mass).toEqual(general[11]![16]!.mass);
     expect(local[3]![17]!.mass).toBeDefined();
     expect(local[3]![17]!.mass).not.toEqual(local[11]![16]!.mass);
@@ -106,7 +107,7 @@ describe.skipIf(!generated)("the Utrecht local proper as published", () => {
     const NOVEMBER = [11, 7] as const;
 
     it("leaves out the texts the Dutch lacks", () => {
-      const nl = generateCalendar(2026, ["ultrajectum"], languages.nl!);
+      const nl = generateCalendar({ year: 2026, propers: ["ultrajectum"], languages: [languages.nl!] });
       const mass = nl[NOVEMBER[0]]![NOVEMBER[1]]!.mass as Record<string, unknown>;
       expect(mass).toBeDefined();
       expect(mass).toHaveProperty("evangelium");
@@ -116,7 +117,7 @@ describe.skipIf(!generated)("the Utrecht local proper as published", () => {
     });
 
     it("says them in Latin when Latin is passed after it, and names them", () => {
-      const nl = generateCalendar(2026, ["ultrajectum"], [languages.nl!, languages.la!]);
+      const nl = generateCalendar({ year: 2026, propers: ["ultrajectum"], languages: [languages.nl!, languages.la!] });
       const mass = nl[NOVEMBER[0]]![NOVEMBER[1]]!.mass as Record<string, unknown>;
       for (const section of ["oratio", "lectio", "secreta", "communio", "postcommunio"]) {
         expect(mass, section).toHaveProperty(section);
@@ -129,15 +130,15 @@ describe.skipIf(!generated)("the Utrecht local proper as published", () => {
         postcommunio: "la",
       });
       // What the Dutch does say stays Dutch and is not marked.
-      const dutch = generateCalendar(2026, ["ultrajectum"], languages.nl!)[11]![7]!.mass;
+      const dutch = generateCalendar({ year: 2026, propers: ["ultrajectum"], languages: [languages.nl!] })[11]![7]!.mass;
       expect(mass.evangelium).toEqual((dutch as Record<string, unknown>).evangelium);
       expect(mass.fallback).not.toHaveProperty("evangelium");
     });
 
     it("says the Office the Dutch lacks in Latin too, and names it Hour by Hour", () => {
       const options = { officium: true };
-      const dutchOnly = generateCalendar(2026, ["ultrajectum"], languages.nl!, options)[11]![7]!;
-      const both = generateCalendar(2026, ["ultrajectum"], [languages.nl!, languages.la!], options)[11]![7]!;
+      const dutchOnly = generateCalendar({ year: 2026, propers: ["ultrajectum"], languages: [languages.nl!], ...options })[11]![7]!;
+      const both = generateCalendar({ year: 2026, propers: ["ultrajectum"], languages: [languages.nl!, languages.la!], ...options })[11]![7]!;
       expect(JSON.stringify(dutchOnly.officium ?? {})).not.toContain('"fallback"');
       expect(both.officium?.laudes?.fallback).toBeDefined();
       expect(Object.values(both.officium!.laudes!.fallback!)).toEqual(
@@ -147,9 +148,9 @@ describe.skipIf(!generated)("the Utrecht local proper as published", () => {
 
     it("reads the Martyrology in Latin where the Dutch package has none", () => {
       const options = { martyrologium: true };
-      const dutchOnly = generateCalendar(2026, ["ultrajectum"], languages.nl!, options)[11]![7]!;
+      const dutchOnly = generateCalendar({ year: 2026, propers: ["ultrajectum"], languages: [languages.nl!], ...options })[11]![7]!;
       expect(dutchOnly.martyrologium).toBeUndefined();
-      const both = generateCalendar(2026, ["ultrajectum"], [languages.nl!, languages.la!], options)[11]![7]!;
+      const both = generateCalendar({ year: 2026, propers: ["ultrajectum"], languages: [languages.nl!, languages.la!], ...options })[11]![7]!;
       expect(both.martyrologium?.titulus).toBeTruthy();
       expect(both.martyrologium?.fallback).toMatchObject({ titulus: "la", elogia: "la" });
     });

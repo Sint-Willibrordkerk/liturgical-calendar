@@ -17,6 +17,8 @@ export class CalendarBuilder {
       color: liturgicalDayProp.color,
       mass: liturgicalDayProp.mass,
       officium: liturgicalDayProp.officium,
+      proper: liturgicalDayProp.proper,
+      naming: liturgicalDayProp.naming,
       season: liturgicalDayProp.season,
       alternativeColor: liturgicalDayProp.alternativeColor,
     };

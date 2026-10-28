@@ -1,25 +1,11 @@
 import { Commemoration, LiturgicalDay } from "./types";
-import {
-  eachDay,
-  calculateEaster,
-  calculateAdvent,
-  dayNumber,
-} from "./utils";
+import { eachDay } from "./utils";
 import { parseCalendarData } from "./parseCalendarData";
-import {
-  DEFAULT_RUBRICS,
-  loadTranslations,
-  loadMassPropersByTitle,
-  loadOfficiumByTitle,
-  loadMartyrology,
-} from "./loadAssets";
-import {
-  applyFerialMass,
-  SUNDAY_AFTER_EPIPHANY_MASS,
-  SUNDAY_AFTER_PENTECOST_MASS,
-  SUNDAY_AFTER_PENTECOST_VARIANT,
-} from "./ferias";
+import { loadTranslations, loadMartyrology } from "./loadAssets";
+import { applyFerialMass } from "./ferias";
 import { applyResumedSundays } from "./resumedSundays";
+import { applyPropers } from "./propers";
+import { nameDays } from "./naming";
 import { applyMartyrology } from "./martyrology";
 import { asLanguages, type Language } from "./language";
 export { type Language } from "./language";
@@ -36,6 +22,9 @@ export type {
 
 /** Options that shape the calendar beyond the days themselves. */
 export type Options = {
+  year?: number;
+  propers?: string[];
+  languages?: Language[];
   /**
    * Give each day the Roman Martyrology printed under its date, in the
    * language passed in where it has one. It is read at Prime on the day
@@ -61,7 +50,8 @@ function deleteFields(day: Partial<LiturgicalDay | Commemoration>) {
 
   delete day.commemorationType;
   delete day.acceptCommemorationTypes;
-  // Note: mass field is preserved and not deleted
+  delete day.proper;
+  delete day.naming;
 }
 
 /**
@@ -80,127 +70,48 @@ function deleteFields(day: Partial<LiturgicalDay | Commemoration>) {
  * codes. A Dutch calendar with Latin behind it is `[nl, la]`: the Dutch package
  * carries no Latin, the caller adds it.
  */
-export default (
-  year: number,
-  propers: string[] = [],
-  language?: Language | Language[],
-  options: Options = {}
-) => {
-  const [lang, ...fallbacks] = asLanguages(language);
-  const translations = loadTranslations(lang);
-  const calendar = parseCalendarData(
-    year,
-    propers,
-    lang,
-    translations,
-    options.officium === true,
-    fallbacks
-  );
+export default ({
+  year = new Date().getFullYear(),
+  propers = [],
+  languages = [],
+  martyrologium,
+  officium,
+}: Options = {}) => {
+  // The days, which are the same in every language: which is kept and which
+  // commemorated, and where the Mass of each is filed.
+  const calendar = parseCalendarData(year, propers);
+  applyResumedSundays(calendar, year);
+  applyFerialMass(calendar, year);
 
-  // A year with more Sundays after Pentecost than the missal numbers resumes
-  // the Sundays after the Epiphany that Septuagesima cut short. Which of those
-  // were kept decides which are left to resume.
-  const easter = calculateEaster(year);
-  const septuagesima = new Date(easter);
-  septuagesima.setDate(septuagesima.getDate() - 63);
-  const epiphanySundaysKept = countSundays(new Date(year, 0, 6), septuagesima);
-  applyResumedSundays(
-    calendar,
-    year,
-    easter,
-    calculateAdvent(year),
-    epiphanySundaysKept,
-    (title) =>
-      loadMassPropersByTitle(
-        title,
-        lang,
-        undefined,
-        { date: septuagesima, easter },
-        undefined,
-        fallbacks
-      ),
-    options.officium
-      ? (title) => loadOfficiumByTitle(title, lang, undefined, undefined, fallbacks)
-      : undefined
-  );
-
-  // A fourth-class feria has no Mass of its own; it takes one from the day the
-  // rubrics point at, which needs the whole year built first, the resumed
-  // Sundays included. The ferias after the First Sundays after the Epiphany and
-  // after Pentecost take those Sundays' own Masses, which no day of the calendar
-  // carries — the Sundays themselves are kept as the Holy Family and the Holy
-  // Trinity.
-  const afterTrinity = new Date(easter);
-  afterTrinity.setDate(afterTrinity.getDate() + 57);
-  applyFerialMass(
-    calendar,
-    year,
-    loadMassPropersByTitle(
-      SUNDAY_AFTER_EPIPHANY_MASS,
-      lang,
-      undefined,
-      { date: new Date(year, 0, 12), easter },
-      undefined,
-      fallbacks
-    ),
-    loadMassPropersByTitle(
-      SUNDAY_AFTER_PENTECOST_MASS,
-      lang,
-      new Set([...DEFAULT_RUBRICS, SUNDAY_AFTER_PENTECOST_VARIANT]),
-      { date: afterTrinity, easter },
-      undefined,
-      fallbacks
-    )
-  );
-
-  // The Martyrology follows the date, not the celebration, so it can be laid
-  // on once the days are in place.
-  if (options.martyrologium) {
-    const sources = [lang, ...fallbacks]
-      .filter((each, i, all) => all.findIndex((other) => other.code === each.code) === i)
-      .flatMap((each) => {
-        const martyrology = loadMartyrology(each);
-        return martyrology
-          ? [{ code: each.code, martyrology, translations: loadTranslations(each) }]
-          : [];
-      });
-    applyMartyrology(calendar, year, sources, lang.code);
+  // What the languages say of them.
+  const translations = loadTranslations(languages);
+  applyPropers(calendar, year, languages, { officium: officium === true });
+  if (martyrologium) {
+    applyMartyrology(calendar, year, martyrologySources(languages), asLanguages(languages)[0].code);
   }
-
-  // A season and a color are identifiers; the language gives each its name,
-  // where it carries one, beside it.
-  const nameOf = (key: string | undefined): string | undefined =>
-    key === undefined ? undefined : translations[key];
+  nameDays(calendar, year, translations);
 
   eachDay(year, ({ month, day }) => {
     const dayData = calendar[month]![day]!;
-    const seasonName = nameOf(dayData.season);
-    const colorName = nameOf(dayData.color);
-    const alternativeColorName = nameOf(dayData.alternativeColor);
-    if (seasonName !== undefined) dayData.seasonName = seasonName;
-    if (colorName !== undefined) dayData.colorName = colorName;
-    if (alternativeColorName !== undefined) {
-      dayData.alternativeColorName = alternativeColorName;
-    }
-    dayData.commemorations = dayData.commemorations.filter(
-      (commemoration: Commemoration) =>
-        dayData.acceptCommemorationTypes?.includes(
-          commemoration.commemorationType!
-        )
+    dayData.commemorations = dayData.commemorations.filter((commemoration: Commemoration) =>
+      dayData.acceptCommemorationTypes?.includes(commemoration.commemorationType!),
     );
     deleteFields(dayData);
   });
   return calendar;
 };
 
-/** The Sundays falling strictly after `from` and strictly before `until`. */
-function countSundays(from: Date, until: Date): number {
-  let count = 0;
-  const date = new Date(from);
-  date.setDate(date.getDate() + 1);
-  const last = dayNumber(until);
-  for (; dayNumber(date) < last; date.setDate(date.getDate() + 1)) {
-    if (date.getDay() === 0) count++;
-  }
-  return count;
+/**
+ * The languages that print a Martyrology, each once, in the order asked for,
+ * with the translations that name its dates.
+ */
+function martyrologySources(languages: Language[]) {
+  return asLanguages(languages)
+    .filter((each, i, all) => all.findIndex((other) => other.code === each.code) === i)
+    .flatMap((each) => {
+      const martyrology = loadMartyrology(each);
+      return martyrology
+        ? [{ code: each.code, martyrology, translations: loadTranslations([each]) }]
+        : [];
+    });
 }

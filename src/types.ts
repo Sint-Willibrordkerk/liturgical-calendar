@@ -83,12 +83,42 @@ export type RawMassProper = {
   postcommunio?: { text?: string; closure?: string };
 };
 
+/**
+ * Where a day's Mass is read from, and how: the same in every language. The
+ * days are settled from these alone, and the propers read through them after.
+ */
+export type ProperReference = {
+  /** The title the propers are filed under. */
+  title: string;
+  /** The local calendars searched before the general ones, most particular first. */
+  local?: string[];
+  /** The date whose season decides what is sung; the day's own where absent. */
+  season?: Date;
+  /** A variant of the file read beside the rubric in force. */
+  variant?: string;
+  /**
+   * The Preface said in place of the Mass's own: always, or only where the
+   * Mass names one.
+   */
+  prefatio?: { name: string; always: boolean };
+  /** Borrowed from another day: the Mass is said, but not that day's Office. */
+  borrowed?: true;
+};
+
 export type Commemoration = {
   title?: string;
   type?: string;
   liturgicalClass: number;
   commemorationType?: string;
   acceptCommemorationTypes?: string[];
+  /** Where the Mass is read from. Gone once it is read. */
+  proper?: ProperReference;
+  /**
+   * The title as the calendar writes it, `$count` and `$day` still to fill,
+   * and the count to fill them with: named in the language once the Mass is
+   * read. Absent where the day is named for good. Gone once it is named.
+   */
+  naming?: { template: string; count: number };
   mass?: MassProper | MassProper[] | RawMassProper;
   /**
    * The propers of the Office, Hour by Hour. Present only when asked for, and

@@ -2,6 +2,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { existsSync, readdirSync, readFileSync, statSync } from "fs";
 import { join } from "path";
 import { parse } from "yaml";
+import { languageAssets } from "../scripts/language-assets.mjs";
 import generateCalendar, { type Language, type LiturgicalDay } from "./index";
 
 /**
@@ -118,7 +119,7 @@ describe.skipIf(!generated)("the Office as published", () => {
   beforeAll(() => {
     (globalThis as Record<string, unknown>).bundledAssets = readAssets("assets");
     for (const code of ["la", "nl"]) {
-      languages[code] = { code, assets: readAssets(join("languages", code, "assets")) };
+      languages[code] = { code, assets: languageAssets(join("languages", code, "assets"), code) };
     }
   });
 
@@ -129,7 +130,7 @@ describe.skipIf(!generated)("the Office as published", () => {
       const wrong: string[] = [];
       let offices = 0;
       for (const year of YEARS) {
-        const calendar = generateCalendar(year, [], languages[code]!, { officium: true });
+        const calendar = generateCalendar({ year, languages: [languages[code]!], officium: true });
         for (const [month, days] of Object.entries(calendar)) {
           for (const [day, entry] of Object.entries(days ?? {})) {
             if (entry?.officium) {
@@ -147,7 +148,7 @@ describe.skipIf(!generated)("the Office as published", () => {
 
   it("carries the Office of the celebration kept, and none on a commemoration", () => {
     for (const code of ["la", "nl"]) {
-      const calendar = generateCalendar(2026, [], languages[code]!, { officium: true });
+      const calendar = generateCalendar({ year: 2026, languages: [languages[code]!], officium: true });
       const commemorations = Object.values(calendar).flatMap((days) =>
         Object.values(days ?? {}).flatMap((entry) => entry?.commemorations ?? [])
       );
@@ -159,7 +160,7 @@ describe.skipIf(!generated)("the Office as published", () => {
   describe("days whose texts the sources once left unresolved", () => {
     let latin: ReturnType<typeof generateCalendar>;
     beforeAll(() => {
-      latin = generateCalendar(2026, [], languages.la!, { officium: true });
+      latin = generateCalendar({ year: 2026, languages: [languages.la!], officium: true });
     });
 
     it("gives the Tuesday in the Easter octave its three antiphons and the versicle that closes them", () => {
