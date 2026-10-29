@@ -14,8 +14,8 @@ describe("applyResumedSundays", () => {
   // 27 Sundays after Pentecost, two kept after the Epiphany, so IV, V and VI
   // are resumed on the 31st of October, the 7th and the 14th of November.
   const year = 2027;
-  const sundayOf = (title: string): LiturgicalDay =>
-    ({ type: "dominica", title, proper: { title }, commemorations: [] }) as never;
+  const sundayOf = (id: string): LiturgicalDay =>
+    ({ type: "dominica", id, proper: { id }, commemorations: [] }) as never;
 
   /** Every Sunday after Pentecost of 2027, Christ the King on the 31st. */
   function calendar2027(): Calendar {
@@ -24,13 +24,13 @@ describe("applyResumedSundays", () => {
     for (; date < new Date(year, 10, 28); date.setDate(date.getDate() + 7)) {
       const [m, d] = [date.getMonth() + 1, date.getDate()];
       out[m] ??= {};
-      out[m]![d] = sundayOf(`numbered ${m}-${d}`);
+      out[m]![d] = sundayOf(`numbered-${m}-${d}`);
     }
     out[10]![31] = {
       type: "festum",
-      title: "Christ the King",
-      proper: { title: "Christ the King" },
-      commemorations: [sundayOf("numbered 10-31")],
+      id: "christ-the-king",
+      proper: { id: "christ-the-king" },
+      commemorations: [sundayOf("numbered-10-31")],
     } as never;
     return out;
   }
@@ -42,35 +42,40 @@ describe("applyResumedSundays", () => {
   it("gives a Sunday beyond the count its resumed Mass", () => {
     const calendar = calendar2027();
     applyResumedSundays(calendar, year);
-    expect(calendar[11]![7]!.title).toBe(resumedSundayMass(5));
     expect(calendar[11]![7]!.proper).toEqual({
-      title: resumedSundayMass(5),
+      id: resumedSundayMass(5),
       season: septuagesima,
     });
-    expect(calendar[11]![21]!.proper?.title).toBe(LAST_SUNDAY_MASS);
+    expect(calendar[11]![21]!.proper?.id).toBe(LAST_SUNDAY_MASS);
   });
 
   it("leaves a Sunday within the count its own", () => {
     const calendar = calendar2027();
     applyResumedSundays(calendar, year);
-    expect(calendar[10]![24]!.proper).toEqual({ title: "numbered 10-24" });
+    expect(calendar[10]![24]!.proper).toEqual({ id: "numbered-10-24" });
   });
 
   it("gives a Sunday kept as a feast its Mass in the commemoration", () => {
     const calendar = calendar2027();
     applyResumedSundays(calendar, year);
     const kept = calendar[10]![31]!;
-    expect(kept.proper).toEqual({ title: "Christ the King" });
-    expect(kept.title).toBe("Christ the King");
-    expect(kept.commemorations[0]!.title).toBe(resumedSundayMass(4));
-    expect(kept.commemorations[0]!.proper?.title).toBe(resumedSundayMass(4));
+    expect(kept.proper).toEqual({ id: "christ-the-king" });
+    expect(kept.id).toBe("christ-the-king");
+    expect(kept.commemorations[0]!.proper?.id).toBe(resumedSundayMass(4));
   });
 
-  it("names the Sunday for good, so no language renames it", () => {
+  it("leaves the Sunday its own name, the one it says the Mass on", () => {
+    // The twenty-fifth Sunday after Pentecost is still called so; only the
+    // Mass said on it is another Sunday's.
     const calendar = calendar2027();
-    calendar[11]![7]!.naming = { template: "dominica-$count-post-pentecosten", count: 1 };
+    const naming = { template: "dominica-$count-post-pentecosten", count: 25 };
+    calendar[11]![7]!.naming = naming;
+    calendar[10]![31]!.commemorations[0]!.naming = { ...naming, count: 24 };
     applyResumedSundays(calendar, year);
-    expect(calendar[11]![7]!.naming).toBeUndefined();
+    expect(calendar[11]![7]!.id).toBe("numbered-11-7");
+    expect(calendar[11]![7]!.naming).toEqual(naming);
+    expect(calendar[10]![31]!.commemorations[0]!.id).toBe("numbered-10-31");
+    expect(calendar[10]![31]!.commemorations[0]!.naming).toEqual({ ...naming, count: 24 });
   });
 });
 

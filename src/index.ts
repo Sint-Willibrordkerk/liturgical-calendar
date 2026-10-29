@@ -52,6 +52,8 @@ function deleteFields(day: Partial<LiturgicalDay | Commemoration>) {
   delete day.acceptCommemorationTypes;
   delete day.proper;
   delete day.naming;
+  // Nothing named the day: its id says which it is.
+  if (day.title === undefined) delete day.title;
 }
 
 /**

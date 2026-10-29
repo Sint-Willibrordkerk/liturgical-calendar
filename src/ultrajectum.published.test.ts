@@ -50,12 +50,14 @@ const YEARS = [2026, 2027, 2028, 2029];
 describe.skipIf(!generated)("the Utrecht local proper as published", () => {
   const languages: Record<string, Language> = {};
 
+  // Every generated file is read and parsed, some ten seconds' work: more than
+  // a hook is given by default once other files run beside it.
   beforeAll(() => {
     (globalThis as Record<string, unknown>).bundledAssets = readAssets("assets");
     for (const code of ["la", "nl"]) {
       languages[code] = { code, assets: languageAssets(join("languages", code, "assets"), code) };
     }
-  });
+  }, 60_000);
 
   /** The Utrecht days kept in the years, beside the general day each displaced. */
   function kept(code: string): { label: string; local: LiturgicalDay; general: LiturgicalDay }[] {

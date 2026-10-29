@@ -17,8 +17,7 @@ import { calculateEaster, dayNumber, eachDay } from "./utils";
  * instead; the Sunday-as-such Mass is the one the ferias of its week carry, and
  * every day of that week carries the same one.
  */
-export const SUNDAY_AFTER_EPIPHANY_MASS =
-  "Feria II infra Hebdomadam I post Epiphaniam";
+export const SUNDAY_AFTER_EPIPHANY_MASS = "feria-ii-infra-hebdomadam-i-post-epiphaniam";
 
 /**
  * The Mass of the First Sunday after Pentecost, *Domine, in tua misericordia*,
@@ -28,7 +27,7 @@ export const SUNDAY_AFTER_EPIPHANY_MASS =
  * texts unless asked for the Sunday's own: they are filed as its variant
  * {@link SUNDAY_AFTER_PENTECOST_VARIANT}.
  */
-export const SUNDAY_AFTER_PENTECOST_MASS = "Dominica I post Pentecosten";
+export const SUNDAY_AFTER_PENTECOST_MASS = "dominica-i-post-pentecosten";
 
 /** The variant of that Sunday's file that holds the Sunday's own texts. */
 export const SUNDAY_AFTER_PENTECOST_VARIANT = "special-a";
@@ -44,12 +43,12 @@ const SUNDAY_TYPE = "dominica";
 const SUNDAY = 0;
 
 /**
- * A day that must borrow: a feria with neither a Mass nor a title of its own.
+ * A day that must borrow: a feria with neither a Mass nor an id of its own.
  *
- * A title names the day's own celebration — Our Lady on Saturday, say — and that
+ * An id names the day's own celebration — Our Lady on Saturday, say — and that
  * celebration has a Mass whether or not this build managed to find its file. So
- * a titled day never borrows; where its propers are missing it stays without a
- * Mass rather than saying the wrong one.
+ * a day with an id never borrows; where its propers are missing it stays
+ * without a Mass rather than saying the wrong one.
  *
  * The class is not asked about. Most ferias that lack a Mass are of the fourth
  * class, but the ferias of Advent are of the second and third and lack one just
@@ -61,7 +60,7 @@ export function borrowsItsMass(day: LiturgicalDay | undefined): boolean {
     day != null &&
     day.type === FERIA &&
     day.proper === undefined &&
-    day.title === undefined
+    day.id === undefined
   );
 }
 
@@ -119,13 +118,13 @@ export function applyFerialMass(calendar: Calendar, year: number): void {
   // Those ferias say the Preface of the Epiphany, whatever the Mass itself
   // names.
   const afterEpiphanySunday: ProperReference = {
-    title: SUNDAY_AFTER_EPIPHANY_MASS,
+    id: SUNDAY_AFTER_EPIPHANY_MASS,
     season: new Date(year, 0, 12),
     prefatio: { name: EPIPHANY_PREFACE, always: true },
     borrowed: true,
   };
   const afterPentecostSunday: ProperReference = {
-    title: SUNDAY_AFTER_PENTECOST_MASS,
+    id: SUNDAY_AFTER_PENTECOST_MASS,
     variant: SUNDAY_AFTER_PENTECOST_VARIANT,
     season: afterTrinity,
     borrowed: true,

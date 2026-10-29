@@ -9,7 +9,7 @@
 import type { Calendar, ProperReference, RawMassProper } from "./types";
 import type { Language } from "./language";
 import { asLanguages } from "./language";
-import { DEFAULT_RUBRICS, loadMassPropersByTitle, loadOfficiumByTitle } from "./loadAssets";
+import { DEFAULT_RUBRICS, loadMassPropersById, loadOfficiumById } from "./loadAssets";
 import { calculateEaster, eachDay } from "./utils";
 
 /**
@@ -31,8 +31,8 @@ export function applyPropers(
     if (proper === undefined) return undefined;
     const rubrics =
       proper.variant === undefined ? undefined : new Set([...DEFAULT_RUBRICS, proper.variant]);
-    const mass = loadMassPropersByTitle(
-      proper.title,
+    const mass = loadMassPropersById(
+      proper.id,
       language,
       rubrics,
       { date: proper.season ?? date, easter },
@@ -49,8 +49,8 @@ export function applyPropers(
 
     entry.mass = massOf(proper, date);
     if (officium && proper !== undefined && !proper.borrowed) {
-      entry.officium = loadOfficiumByTitle(
-        proper.title,
+      entry.officium = loadOfficiumById(
+        proper.id,
         language,
         undefined,
         proper.local,

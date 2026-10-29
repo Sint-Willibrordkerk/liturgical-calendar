@@ -9,6 +9,7 @@ export class CalendarBuilder {
     liturgicalDayProp: Omit<LiturgicalDay, "commemorations">
   ) {
     const liturgicalDay = {
+      id: liturgicalDayProp.id,
       title: liturgicalDayProp.title,
       type: liturgicalDayProp.type,
       liturgicalClass: liturgicalDayProp.liturgicalClass,

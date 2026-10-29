@@ -1,23 +1,51 @@
 import { describe, expect, it } from "vitest";
-import { nameDay, nameDays } from "./naming";
+import { idOf, nameDay, nameDays } from "./naming";
 import type { Calendar, LiturgicalDay } from "./types";
 
-describe("nameDay", () => {
-  // 29 November 2026 is a Sunday.
-  const sunday = new Date(2026, 10, 29);
+// 29 November 2026 is a Sunday; 19 February a Thursday; 30 March a Monday.
+const sunday = new Date(2026, 10, 29);
 
-  it("fills a slug in with the Latin, so it stays a slug", () => {
-    expect(nameDay("dominica-$count-adventus", 1, sunday)).toBe("dominica-i-adventus");
+describe("idOf", () => {
+  it("fills the count in with the Latin numeral, lowercase, so it stays a slug", () => {
+    expect(idOf("dominica-$count-adventus", 1, sunday)).toBe("dominica-i-adventus");
+    expect(idOf("dominica-$count-post-pentecosten", 25, sunday)).toBe("dominica-xxv-post-pentecosten");
   });
 
-  it("takes the translation of the filled slug", () => {
+  it("fills a weekday in by its numeral, or by its ordinal spelled out", () => {
+    expect(idOf("$day-post-cineres", 1, new Date(2026, 1, 19))).toBe("feria-v-post-cineres");
+    expect(idOf("$feria-majoris-hebdomadae", 1, new Date(2026, 2, 30))).toBe(
+      "feria-secunda-majoris-hebdomadae"
+    );
+  });
+
+  it("leaves an id with nothing to fill as it is", () => {
+    expect(idOf("andreae-apostoli", 1, sunday)).toBe("andreae-apostoli");
+  });
+});
+
+describe("nameDay", () => {
+  it("is the language's name for the day", () => {
     expect(
       nameDay("dominica-$count-adventus", 1, sunday, { "dominica-i-adventus": "Eerste zondag van de Advent" })
     ).toBe("Eerste zondag van de Advent");
   });
 
-  it("fills a written title in with the language's numerals and weekdays", () => {
-    expect(nameDay("$day post $count", 2, sunday, { Dominica: "Zondag", II: "2" })).toBe("Zondag post 2");
+  it("fills a translated template in with the language's numerals and weekdays", () => {
+    expect(
+      nameDay("dominica-$count-post-pentecosten", 2, sunday, {
+        "dominica-$count-post-pentecosten": "$count zondag na Pinksteren",
+        II: "Tweede",
+      })
+    ).toBe("Tweede zondag na Pinksteren");
+    expect(nameDay("$day-post-cineres", 1, new Date(2026, 1, 19), {
+      "$day-post-cineres": "$day na Aswoensdag",
+      "Feria V": "Donderdag",
+    })).toBe("Donderdag na Aswoensdag");
+  });
+
+  it("is nothing where the language has no name for the day", () => {
+    expect(nameDay("dominica-$count-adventus", 1, sunday, {})).toBeUndefined();
+    expect(nameDay("dominica-$count-adventus", 1, sunday)).toBeUndefined();
   });
 });
 
@@ -26,13 +54,17 @@ describe("nameDays", () => {
     ({ 11: { 29: { commemorations: [], ...day } } }) as never;
 
   it("names a day in the language", () => {
-    const calendar = dayOf({ naming: { template: "dominica-$count-adventus", count: 1 } });
+    const calendar = dayOf({
+      id: "dominica-i-adventus",
+      naming: { template: "dominica-$count-adventus", count: 1 },
+    });
     nameDays(calendar, 2026, { "dominica-i-adventus": "Eerste zondag van de Advent" });
     expect(calendar[11]![29]!.title).toBe("Eerste zondag van de Advent");
   });
 
-  it("gives a slug the language has no name for the title of its Mass", () => {
+  it("names a day the language has no name for by its Mass", () => {
     const calendar = dayOf({
+      id: "dominica-i-adventus",
       naming: { template: "dominica-$count-adventus", count: 1 },
       mass: { title: "Dominica I Adventus" },
     });
@@ -40,24 +72,21 @@ describe("nameDays", () => {
     expect(calendar[11]![29]!.title).toBe("Dominica I Adventus");
   });
 
-  it("keeps a slug where there is no Mass to name it", () => {
-    const calendar = dayOf({ naming: { template: "sabbato-sancto", count: 1 } });
+  it("gives a day nothing names no title, leaving it its id", () => {
+    const calendar = dayOf({ id: "sabbato-sancto", naming: { template: "sabbato-sancto", count: 1 } });
     nameDays(calendar, 2026, {});
-    expect(calendar[11]![29]!.title).toBe("sabbato-sancto");
+    expect(calendar[11]![29]).not.toHaveProperty("title");
+    expect(calendar[11]![29]!.id).toBe("sabbato-sancto");
   });
 
   it("names the commemorations as the day", () => {
     const calendar = dayOf({
-      commemorations: [{ liturgicalClass: 3, naming: { template: "andreae-apostoli", count: 1 } }],
+      commemorations: [
+        { id: "andreae-apostoli", liturgicalClass: 3, naming: { template: "andreae-apostoli", count: 1 } },
+      ],
     });
     nameDays(calendar, 2026, { "andreae-apostoli": "H. Andreas" });
     expect(calendar[11]![29]!.commemorations[0]!.title).toBe("H. Andreas");
-  });
-
-  it("leaves a day named for good as it is", () => {
-    const calendar = dayOf({ title: "Dominica XXIV et ultima post Pentecosten" });
-    nameDays(calendar, 2026, { "Dominica XXIV et ultima post Pentecosten": "anders" });
-    expect(calendar[11]![29]!.title).toBe("Dominica XXIV et ultima post Pentecosten");
   });
 
   it("names the season and the colors beside their identifiers", () => {

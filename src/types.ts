@@ -88,8 +88,8 @@ export type RawMassProper = {
  * days are settled from these alone, and the propers read through them after.
  */
 export type ProperReference = {
-  /** The title the propers are filed under. */
-  title: string;
+  /** The id the propers are filed under: the day's own, or another's it borrows. */
+  id: string;
   /** The local calendars searched before the general ones, most particular first. */
   local?: string[];
   /** The date whose season decides what is sung; the day's own where absent. */
@@ -106,6 +106,17 @@ export type ProperReference = {
 };
 
 export type Commemoration = {
+  /**
+   * What the day is, the same in every language: a slug such as
+   * `dominica-i-adventus`, to compare and to look up by. Absent on a feria
+   * the calendar names nothing for.
+   */
+  id?: string;
+  /**
+   * What the day is called in the language: its name there, or, where the
+   * language has none, the Latin title of its Mass. Absent where nothing
+   * names it; the id still says which day it is.
+   */
   title?: string;
   type?: string;
   liturgicalClass: number;
@@ -114,9 +125,9 @@ export type Commemoration = {
   /** Where the Mass is read from. Gone once it is read. */
   proper?: ProperReference;
   /**
-   * The title as the calendar writes it, `$count` and `$day` still to fill,
-   * and the count to fill them with: named in the language once the Mass is
-   * read. Absent where the day is named for good. Gone once it is named.
+   * The id as the calendar writes it, `$count` and `$day` still to fill, and
+   * the count to fill them with: named in the language once the Mass is read.
+   * Gone once it is named.
    */
   naming?: { template: string; count: number };
   mass?: MassProper | MassProper[] | RawMassProper;
@@ -356,10 +367,10 @@ export type Calendar = Record<
 >;
 
 /**
- * A day of a `calendar` map: its title, or the title with the color its Mass
- * wears where that is not the default.
+ * A day of a `calendar` map: its id, or the id with the color its Mass wears
+ * where that is not the default.
  */
-export type CalendarEntry = string | { title: string; color?: string };
+export type CalendarEntry = string | { id: string; color?: string };
 
 export type CalendarData = {
   "valid-types"?: string[];
@@ -373,7 +384,8 @@ export type CalendarData = {
    */
   "local-calendars"?: string[];
 
-  title?: string;
+  /** The day's id, a slug; `$count`, `$day` and `$feria` filled in by date. */
+  id?: string;
   type?: string;
   "liturgical-class"?: number;
   "commemoration-type"?: string;

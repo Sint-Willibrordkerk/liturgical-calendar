@@ -119,17 +119,18 @@ function loadStores(language: Language): Stores {
 }
 
 /**
- * The day filed under a liturgical title, holding keys, or undefined.
+ * The day filed under an id, holding keys, or undefined.
  *
  * The local calendars named are searched first, in their order — the most
  * particular first — and the general trees after them. Only a local proper's
  * own days name them, so a general day keeps its propers.
  */
-function dayByTitle(
-  title: string,
+function dayById(
+  id: string,
   local: readonly string[] = [],
 ): Record<string, unknown> | undefined {
-  const fileName = titleToFileName(title);
+  // An id is filed as itself; a title is folded to the file it names.
+  const fileName = titleToFileName(id);
   const at = (tree: string) => findAsset(`mass-propers/${tree}/${fileName}.yml`);
   const data =
     local.map((calendar) => at(`Sancti/${calendar}`)).find((day) => day !== undefined) ??
@@ -171,8 +172,8 @@ function properOf(
 }
 
 /**
- * The mass proper for a liturgical title, reduced to the rubric in force and
- * with its texts said in the language.
+ * The mass proper filed under an id, reduced to the rubric in force and with
+ * its texts said in the language.
  *
  * The day is the same in every language and is bundled here, holding keys
  * alone; the language supplies what each key says. A day the language says
@@ -182,15 +183,15 @@ function properOf(
  * one first, and `fallback` on the Mass names the sections they said, by their
  * codes — absent when the Mass is wholly the language's own.
  */
-export function loadMassPropersByTitle(
-  title: string,
+export function loadMassPropersById(
+  id: string,
   language: Language,
   rubrics: ReadonlySet<string> = DEFAULT_RUBRICS,
   season?: { date: Date; easter: Date },
   local: readonly string[] = [],
   fallbacks: readonly Language[] = [],
 ): RawMassProper | undefined {
-  const document = dayByTitle(title, local);
+  const document = dayById(id, local);
   if (document === undefined) return undefined;
 
   const selected = properOf(document, language, rubrics, isMassSection, fallbacks);
@@ -210,20 +211,20 @@ export function loadMassPropersByTitle(
 }
 
 /**
- * The propers of the Office for a liturgical title, Hour by Hour, reduced to the
+ * The propers of the Office filed under an id, Hour by Hour, reduced to the
  * rubric in force and said in the language. Undefined where the language says
  * nothing of the day's Office, and without a language.
  */
-export function loadOfficiumByTitle(
-  title: string,
+export function loadOfficiumById(
+  id: string,
   language: Language,
   rubrics: ReadonlySet<string> = DEFAULT_RUBRICS,
   local: readonly string[] = [],
   fallbacks: readonly Language[] = [],
 ): Officium | undefined {
-  const own = dayByTitle(title, local);
-  const elsewhere = OFFICE_FILED_WITH[titleToFileName(title)];
-  const document = elsewhere === undefined ? own : dayByTitle(elsewhere, local);
+  const own = dayById(id, local);
+  const elsewhere = OFFICE_FILED_WITH[titleToFileName(id)];
+  const document = elsewhere === undefined ? own : dayById(elsewhere, local);
   if (document === undefined) return undefined;
 
   // The collect is the day's own, said at Mass and at the Hours alike.
@@ -246,5 +247,5 @@ export function loadOfficiumByTitle(
  * which the Hours say from Lauds on.
  */
 const OFFICE_FILED_WITH: Record<string, string> = {
-  "in-die-nativitatis-domini": "In Nativitate Domini",
+  "in-die-nativitatis-domini": "in-nativitate-domini",
 };

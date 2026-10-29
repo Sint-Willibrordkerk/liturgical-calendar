@@ -42,8 +42,8 @@ describe("applyPropers", () => {
     },
   };
 
-  const adrian = { title: "S. Adriani, Martyris" };
-  const paul = { title: "S. Pauli Primi Eremitæ" };
+  const adrian = { id: "adriani-martyris" };
+  const paul = { id: "pauli-primi-eremitae" };
 
   const dayOf = (day: Partial<LiturgicalDay>): Calendar =>
     ({ 3: { 4: { commemorations: [], ...day } } }) as never;

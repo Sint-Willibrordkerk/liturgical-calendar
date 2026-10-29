@@ -11,12 +11,12 @@ import { CalendarBuilder } from "./parse";
 import { calculateAdvent, calculateEaster, getDate } from "./utils";
 import { weekdays } from "./constants";
 import { loadCalendarData, loadPropers } from "./loadAssets";
-import { filedAs, nameDay } from "./naming";
+import { idOf } from "./naming";
 import { defaultColor, mayWearRose, seasonOf } from "./seasons";
 
 type ParsedCalendarData = {
   type: string;
-  title?: string;
+  id?: string;
   liturgicalClass: number;
   commemorationType: string;
   acceptCommemorationTypes: string[];
@@ -41,7 +41,7 @@ function flattenCalendarData(
 ) {
   const list: ParsedCalendarData[] = [];
   const merged: Partial<ParsedCalendarData> = {
-    title: item.title ?? parent.title,
+    id: item.id ?? parent.id,
     type: item.type ?? parent.type,
     liturgicalClass: item["liturgical-class"] ?? parent.liturgicalClass,
     commemorationType: item["commemoration-type"] ?? parent.commemorationType,
@@ -74,11 +74,11 @@ function flattenCalendarData(
       // from it, and reversing it in place would flip the order each time.
       const entries = Array.isArray(value) ? [...value] : [value];
       entries.reverse().forEach((entry) => {
-        const { title, color } =
-          typeof entry === "string" ? { title: entry, color: undefined } : entry;
+        const { id, color } =
+          typeof entry === "string" ? { id: entry, color: undefined } : entry;
         list.push({
           ...(merged as ParsedCalendarData),
-          title,
+          id,
           color: color ?? merged.color,
           occurence: { date: date as DateString },
         });
@@ -140,9 +140,9 @@ function getDates(
  * calendar: which is kept on each date and which commemorated, its color and
  * its season, and where each one's Mass is filed.
  *
- * The days are the same in every language, so none is asked for. Each is
- * titled as the calendar writes it, and carries what a language needs to name
- * it and to read its propers after.
+ * The days are the same in every language, so none is asked for. Each has the
+ * id the calendar gives it, and carries what a language needs to name it and
+ * to read its propers after.
  */
 export function parseCalendarData(year: number, propers: readonly string[]) {
   const calendarData = loadCalendarData();
@@ -168,7 +168,7 @@ export function parseCalendarData(year: number, propers: readonly string[]) {
       const dates = getDates(item.occurence, advent, easter, year);
       dates.forEach((date, index) => {
         const count = index + 1;
-        const filed = item.title === undefined ? "" : filedAs(item.title, count, date);
+        const id = item.id === undefined ? undefined : idOf(item.id, count, date);
 
         // The season belongs to the date; the color to the day's own Mass,
         // where the calendar names one, and to the season otherwise.
@@ -182,13 +182,13 @@ export function parseCalendarData(year: number, propers: readonly string[]) {
 
         calendarBuilder.add(date.getMonth() + 1, date.getDate(), {
           ...item,
-          title: item.title === undefined ? undefined : nameDay(item.title, count, date),
-          proper: filed
+          id,
+          proper: id
             ? item.localCalendars === undefined
-              ? { title: filed }
-              : { title: filed, local: item.localCalendars }
+              ? { id }
+              : { id, local: item.localCalendars }
             : undefined,
-          naming: item.title === undefined ? undefined : { template: item.title, count },
+          naming: item.id === undefined ? undefined : { template: item.id, count },
           color,
           season,
           alternativeColor,

@@ -37,8 +37,8 @@ function calendarOf(days: Record<string, LiturgicalDay>): Calendar {
   return out;
 }
 
-/** The title a day's Mass is read from. */
-const titleOf = (day: LiturgicalDay | undefined) => day?.proper?.title;
+/** The id a day's Mass is read from. */
+const filedUnder = (day: LiturgicalDay | undefined) => day?.proper?.id;
 
 describe("borrowsItsMass", () => {
   it("is a fourth-class feria with no Mass of its own", () => {
@@ -46,12 +46,12 @@ describe("borrowsItsMass", () => {
   });
 
   it("is not a feria that already has one", () => {
-    expect(borrowsItsMass(withProper("feria", 4, { title: "x" }))).toBe(false);
+    expect(borrowsItsMass(withProper("feria", 4, { id: "x" }))).toBe(false);
   });
 
   it("is not a feria that names a celebration of its own", () => {
     const titled = feria();
-    titled.title = "sanctæ-mariæ-sabbato";
+    titled.id = "sanctae-mariae-sabbato";
     expect(borrowsItsMass(titled)).toBe(false);
   });
 
@@ -82,9 +82,9 @@ describe("firstSundayAfterEpiphany", () => {
 });
 
 describe("applyFerialMass", () => {
-  const circumcision = { title: "In Circumcisione Domini" };
-  const epiphany = { title: "In Epiphania Domini" };
-  const sunday = { title: "Dominica" };
+  const circumcision = { id: "in-circumcisione-domini" };
+  const epiphany = { id: "in-epiphania-domini" };
+  const sunday = { id: "dominica" };
 
   it("gives the days after the Circumcision its Mass", () => {
     const calendar = calendarOf({
@@ -93,8 +93,8 @@ describe("applyFerialMass", () => {
       "1-5": feria(),
     });
     applyFerialMass(calendar, 2026);
-    expect(titleOf(calendar[1]![2])).toBe(circumcision.title);
-    expect(titleOf(calendar[1]![5])).toBe(circumcision.title);
+    expect(filedUnder(calendar[1]![2])).toBe(circumcision.id);
+    expect(filedUnder(calendar[1]![5])).toBe(circumcision.id);
   });
 
   it("reads a borrowed Mass in the season of the day that owns it", () => {
@@ -104,11 +104,11 @@ describe("applyFerialMass", () => {
     });
     applyFerialMass(calendar, 2026);
     expect(calendar[1]![2]!.proper).toEqual({
-      title: circumcision.title,
+      id: circumcision.id,
       season: new Date(2026, 0, 1),
       borrowed: true,
     });
-    expect(circumcision).toEqual({ title: "In Circumcisione Domini" });
+    expect(circumcision).toEqual({ id: "in-circumcisione-domini" });
   });
 
   it("gives the days after the Epiphany its Mass, up to the First Sunday", () => {
@@ -120,10 +120,10 @@ describe("applyFerialMass", () => {
       "1-12": feria(),
     });
     applyFerialMass(calendar, 2026);
-    expect(titleOf(calendar[1]![7])).toBe(epiphany.title);
-    expect(titleOf(calendar[1]![10])).toBe(epiphany.title);
+    expect(filedUnder(calendar[1]![7])).toBe(epiphany.id);
+    expect(filedUnder(calendar[1]![10])).toBe(epiphany.id);
     // The twelfth falls after that Sunday, so it says that Sunday's own Mass.
-    expect(titleOf(calendar[1]![12])).toBe(SUNDAY_AFTER_EPIPHANY_MASS);
+    expect(filedUnder(calendar[1]![12])).toBe(SUNDAY_AFTER_EPIPHANY_MASS);
   });
 
   it("gives every other feria the Mass of the Sunday just past", () => {
@@ -133,8 +133,8 @@ describe("applyFerialMass", () => {
       "8-29": feria(),
     });
     applyFerialMass(calendar, 2026);
-    expect(titleOf(calendar[8]![26])).toBe(sunday.title);
-    expect(titleOf(calendar[8]![29])).toBe(sunday.title);
+    expect(filedUnder(calendar[8]![26])).toBe(sunday.id);
+    expect(filedUnder(calendar[8]![29])).toBe(sunday.id);
   });
 
   it("borrows the Mass alone, not the Office", () => {
@@ -148,7 +148,7 @@ describe("applyFerialMass", () => {
   });
 
   it("moves on to the next Sunday once it comes", () => {
-    const later = { title: "Dominica XIV" };
+    const later = { id: "dominica-xiv" };
     const calendar = calendarOf({
       "8-23": withProper("dominica", 2, sunday),
       "8-26": feria(),
@@ -156,13 +156,13 @@ describe("applyFerialMass", () => {
       "9-1": feria(),
     });
     applyFerialMass(calendar, 2026);
-    expect(titleOf(calendar[8]![26])).toBe(sunday.title);
-    expect(titleOf(calendar[9]![1])).toBe(later.title);
+    expect(filedUnder(calendar[8]![26])).toBe(sunday.id);
+    expect(filedUnder(calendar[9]![1])).toBe(later.id);
   });
 
   it("leaves a titled feria without the Sunday's Mass", () => {
     const titled = feria();
-    titled.title = "sanctæ-mariæ-sabbato";
+    titled.id = "sanctae-mariae-sabbato";
     const calendar = calendarOf({
       "8-23": withProper("dominica", 2, sunday),
       "8-29": titled,
@@ -172,7 +172,7 @@ describe("applyFerialMass", () => {
   });
 
   it("leaves a feria that already has a Mass alone", () => {
-    const own = { title: "its own" };
+    const own = { id: "its-own" };
     const calendar = calendarOf({
       "8-23": withProper("dominica", 2, sunday),
       "8-26": withProper("feria", 4, own),
@@ -196,7 +196,7 @@ describe("applyFerialMass", () => {
     applyFerialMass(calendar, 2026);
     expect(calendar[8]![30]!.proper).toBeUndefined();
     // The Sunday had none to give, so the feria keeps the one before it.
-    expect(titleOf(calendar[8]![31])).toBe(sunday.title);
+    expect(filedUnder(calendar[8]![31])).toBe(sunday.id);
   });
 });
 
@@ -216,8 +216,8 @@ describe("the ferias of a week whose Sunday a feast took", () => {
       ],
     }) as never;
 
-  const christTheKing = { title: "In festo Domini Nostri Jesu Christi Regis" };
-  const dominicaXXII = { title: "Dominica XXII post Pentecosten" };
+  const christTheKing = { id: "in-festo-domini-nostri-jesu-christi-regis" };
+  const dominicaXXII = { id: "dominica-xxii-post-pentecosten" };
 
   it("say the Mass of the Sunday, not of the feast", () => {
     // In 2026 Christ the King takes the twenty-fifth of October, the Twenty-
@@ -229,28 +229,28 @@ describe("the ferias of a week whose Sunday a feast took", () => {
     });
     applyFerialMass(calendar, 2026);
     expect(calendar[10]![25]!.proper).toBe(christTheKing);
-    expect(titleOf(calendar[10]![26])).toBe(dominicaXXII.title);
-    expect(titleOf(calendar[10]![30])).toBe(dominicaXXII.title);
+    expect(filedUnder(calendar[10]![26])).toBe(dominicaXXII.id);
+    expect(filedUnder(calendar[10]![30])).toBe(dominicaXXII.id);
   });
 
   it("say it whatever feast it was, a saint's as well", () => {
     // All Saints falls on a Sunday in 2026, the Twenty-third after Pentecost.
-    const allSaints = { title: "Omnium Sanctorum" };
-    const dominicaXXIII = { title: "Dominica XXIII post Pentecosten" };
+    const allSaints = { id: "omnium-sanctorum" };
+    const dominicaXXIII = { id: "dominica-xxiii-post-pentecosten" };
     const calendar = calendarOf({
       "11-1": keptOnSunday(allSaints, dominicaXXIII),
       "11-3": feria(),
     });
     applyFerialMass(calendar, 2026);
-    expect(titleOf(calendar[11]![3])).toBe(dominicaXXIII.title);
+    expect(filedUnder(calendar[11]![3])).toBe(dominicaXXIII.id);
   });
 
   it("say the Mass of the First Sunday after Pentecost after the Trinity", () => {
     // The Trinity is the thirty-first of May in 2026. That Sunday's file gives
     // the Trinity texts unless asked for its variant, which holds its own.
-    const trinity = { title: "Festum Sanctissimæ Trinitatis" };
+    const trinity = { id: "festum-sanctissimae-trinitatis" };
     const calendar = calendarOf({
-      "5-31": keptOnSunday(trinity, { title: SUNDAY_AFTER_PENTECOST_MASS }),
+      "5-31": keptOnSunday(trinity, { id: SUNDAY_AFTER_PENTECOST_MASS }),
       "6-3": feria(),
     });
     applyFerialMass(calendar, 2026);
@@ -260,7 +260,7 @@ describe("the ferias of a week whose Sunday a feast took", () => {
     afterTrinity.setDate(afterTrinity.getDate() + 57);
     expect(calendar[5]![31]!.proper).toBe(trinity);
     expect(calendar[6]![3]!.proper).toMatchObject({
-      title: SUNDAY_AFTER_PENTECOST_MASS,
+      id: SUNDAY_AFTER_PENTECOST_MASS,
       variant: SUNDAY_AFTER_PENTECOST_VARIANT,
       season: afterTrinity,
       borrowed: true,
@@ -278,30 +278,30 @@ describe("the ferias of a week whose Sunday a feast took", () => {
 
   it("say the feast's Mass where it commemorates no Sunday", () => {
     // Easter is kept as a feast and stands for its Sunday.
-    const easter = { title: "Dominica Resurrectionis" };
+    const easter = { id: "dominica-resurrectionis" };
     const calendar = calendarOf({
       "4-5": withProper("festum", 1, easter),
       "4-13": feria(),
     });
     applyFerialMass(calendar, 2026);
-    expect(titleOf(calendar[4]![13])).toBe(easter.title);
+    expect(filedUnder(calendar[4]![13])).toBe(easter.id);
   });
 
   it("keep the Mass before it where the Sunday has none to give", () => {
-    const dominicaXXI = { title: "Dominica XXI post Pentecosten" };
+    const dominicaXXI = { id: "dominica-xxi-post-pentecosten" };
     const calendar = calendarOf({
       "10-18": withProper("dominica", 2, dominicaXXI),
       "10-25": keptOnSunday(christTheKing, undefined),
       "10-26": feria(),
     });
     applyFerialMass(calendar, 2026);
-    expect(titleOf(calendar[10]![26])).toBe(dominicaXXI.title);
+    expect(filedUnder(calendar[10]![26])).toBe(dominicaXXI.id);
   });
 });
 
 describe("the Preface of a feria that says its Sunday's Mass", () => {
   const prefatioOf = (day: LiturgicalDay | undefined) => day?.proper?.prefatio;
-  const dominicaXIII = { title: "Dominica XIII post Pentecosten" };
+  const dominicaXIII = { id: "dominica-xiii-post-pentecosten" };
 
   it("is the common Preface in place of any the Sunday names", () => {
     // 26 August 2026 falls in the week of the Thirteenth Sunday after
@@ -321,9 +321,9 @@ describe("the Preface of a feria that says its Sunday's Mass", () => {
       "10-25": {
         type: "festum",
         liturgicalClass: 1,
-        proper: { title: "In festo Domini Nostri Jesu Christi Regis" },
+        proper: { id: "in-festo-domini-nostri-jesu-christi-regis" },
         commemorations: [
-          { type: "dominica", liturgicalClass: 2, proper: { title: "Dominica XXII post Pentecosten" } },
+          { type: "dominica", liturgicalClass: 2, proper: { id: "dominica-xxii-post-pentecosten" } },
         ],
       } as never,
       "10-27": feria(),
@@ -335,7 +335,7 @@ describe("the Preface of a feria that says its Sunday's Mass", () => {
 
   it("is the common Preface after the Trinity", () => {
     const calendar = calendarOf({
-      "5-31": withProper("festum", 1, { title: "Festum Sanctissimæ Trinitatis" }),
+      "5-31": withProper("festum", 1, { id: "festum-sanctissimae-trinitatis" }),
       "6-3": feria(),
     });
     applyFerialMass(calendar, 2026);
@@ -349,7 +349,7 @@ describe("the Preface of a feria that says its Sunday's Mass", () => {
     });
     applyFerialMass(calendar, 2026);
     expect(prefatioOf(calendar[8]![23])).toBeUndefined();
-    expect(dominicaXIII).toEqual({ title: "Dominica XIII post Pentecosten" });
+    expect(dominicaXIII).toEqual({ id: "dominica-xiii-post-pentecosten" });
   });
 
   it("is one Mass for all the ferias of the week", () => {
@@ -364,8 +364,8 @@ describe("the Preface of a feria that says its Sunday's Mass", () => {
 });
 
 describe("the ferias after the First Sunday after the Epiphany", () => {
-  const epiphany = { title: "In Epiphania Domini" };
-  const holyFamily = { title: "Sanctæ Familiæ" };
+  const epiphany = { id: "in-epiphania-domini" };
+  const holyFamily = { id: "sanctae-familiae" };
 
   it("says that Sunday's own Mass, not the Sunday's celebration", () => {
     // In 2026 the First Sunday after the Epiphany is the eleventh, kept as the
@@ -377,8 +377,8 @@ describe("the ferias after the First Sunday after the Epiphany", () => {
       "1-12": feria(),
     });
     applyFerialMass(calendar, 2026);
-    expect(titleOf(calendar[1]![7])).toBe(epiphany.title);
-    expect(titleOf(calendar[1]![12])).toBe(SUNDAY_AFTER_EPIPHANY_MASS);
+    expect(filedUnder(calendar[1]![7])).toBe(epiphany.id);
+    expect(filedUnder(calendar[1]![12])).toBe(SUNDAY_AFTER_EPIPHANY_MASS);
   });
 
   it("says the Preface of the Epiphany, whatever the Mass names", () => {
@@ -388,7 +388,7 @@ describe("the ferias after the First Sunday after the Epiphany", () => {
     });
     applyFerialMass(calendar, 2026);
     expect(calendar[1]![12]!.proper).toEqual({
-      title: SUNDAY_AFTER_EPIPHANY_MASS,
+      id: SUNDAY_AFTER_EPIPHANY_MASS,
       season: new Date(2026, 0, 12),
       prefatio: { name: "epi", always: true },
       borrowed: true,

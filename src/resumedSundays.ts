@@ -20,13 +20,13 @@ export const NUMBERED_SUNDAYS = 23;
 const EPIPHANY_SUNDAYS = 6;
 
 /** The last Sunday before Advent, whatever its number. */
-export const LAST_SUNDAY_MASS = "Dominica XXIV et ultima post Pentecosten";
+export const LAST_SUNDAY_MASS = "dominica-xxiv-et-ultima-post-pentecosten";
 
-const ROMAN = ["", "I", "II", "III", "IV", "V", "VI"];
+const ROMAN = ["", "i", "ii", "iii", "iv", "v", "vi"];
 
 /** The Mass of the nth Sunday after the Epiphany, resumed after Pentecost. */
 export function resumedSundayMass(n: number): string {
-  return `Dominica ${ROMAN[n]} quæ superfuit post Epiphaniam`;
+  return `dominica-${ROMAN[n]}-quae-superfuit-post-epiphaniam`;
 }
 
 /**
@@ -68,8 +68,9 @@ export function sundayMasses(
  * ferias of its week say.
  *
  * Which Sundays were kept after the Epiphany decides which are left to resume,
- * and those are read in the season they were left in, before Septuagesima. A
- * resumed Sunday is named by its Mass, in every language alike.
+ * and those are read in the season they were left in, before Septuagesima.
+ * Only the Mass changes: the Sunday is still the twenty-fifth after Pentecost,
+ * say, and keeps that name.
  */
 export function applyResumedSundays(calendar: Calendar, year: number): void {
   const easter = calculateEaster(year);
@@ -94,7 +95,7 @@ export function applyResumedSundays(calendar: Calendar, year: number): void {
     if (entry !== undefined) sundays.push(entry);
   });
 
-  sundayMasses(sundays.length, epiphanySundaysKept).forEach((title, i) => {
+  sundayMasses(sundays.length, epiphanySundaysKept).forEach((mass, i) => {
     // The count runs over every Sunday, but a Sunday kept as a feast — Christ
     // the King, say — celebrates the feast; the Sunday it commemorates takes
     // the Mass named here instead.
@@ -105,10 +106,8 @@ export function applyResumedSundays(calendar: Calendar, year: number): void {
         : entry.commemorations?.find(
             (commemoration) => commemoration.type === "dominica"
           );
-    if (title === undefined || sunday === undefined) return;
-    sunday.title = title;
-    sunday.proper = { title, season: septuagesima };
-    delete sunday.naming;
+    if (mass === undefined || sunday === undefined) return;
+    sunday.proper = { id: mass, season: septuagesima };
   });
 }
 

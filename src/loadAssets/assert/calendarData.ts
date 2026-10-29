@@ -32,10 +32,19 @@ const occurenceSchema: z.ZodType<Occurence> = z.union([
   }),
 ]);
 
-/** A day of a `calendar` map: a title, or a title with a color of its own. */
+/**
+ * A day's id: a slug — lowercase, digits and hyphens — with `$count`, `$day`
+ * or `$feria` where the date fills it in. It names the day; what the day is
+ * called is the language's to say.
+ */
+const idSchema = z
+  .string()
+  .regex(/^[a-z0-9$]+(?:-[a-z0-9$]+)*$/, "an id is a slug: lowercase, digits and hyphens");
+
+/** A day of a `calendar` map: an id, or an id with a color of its own. */
 const calendarEntrySchema: z.ZodType<CalendarEntry> = z.union([
-  z.string(),
-  z.object({ title: z.string(), color: z.string().optional() }),
+  idSchema,
+  z.object({ id: idSchema, color: z.string().optional() }),
 ]);
 
 // This needs to be a function because it's recursive and uses context
@@ -50,7 +59,7 @@ export function createCalendarDataSchema(
       "valid-colors": z.array(z.string()).optional(),
       "local-calendars": z.array(z.string()).optional(),
       type: z.string().optional(),
-      title: z.string().optional(),
+      id: idSchema.optional(),
       "liturgical-class": z.number().optional(),
       "commemoration-type": z.string().optional(),
       "accept-commemoration-types": z.array(z.string()).optional(),

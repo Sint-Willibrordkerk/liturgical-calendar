@@ -31,9 +31,9 @@ const WHITE_APOSTLES = new Set([
   "in-dedicatione-basilicarum-ss-apostolorum-petri-et-pauli",
 ]);
 
-type Entry = { title: string; color?: string; type?: string };
+type Entry = { id: string; color?: string; type?: string };
 
-/** Every titled item of the calendar, with the color and type it inherits. */
+/** Every item of the calendar that has an id, with the color and type it inherits. */
 function entries(
   node: unknown,
   inherited: { color?: string; type?: string } = {},
@@ -45,15 +45,15 @@ function entries(
     color: (item.color as string | undefined) ?? inherited.color,
     type: (item.type as string | undefined) ?? inherited.type,
   };
-  if (typeof item.title === "string") out.push({ title: item.title, ...own });
+  if (typeof item.id === "string") out.push({ id: item.id, ...own });
   for (const value of Object.values(
     (item.calendar as Record<string, unknown>) ?? {}
   )) {
     for (const day of Array.isArray(value) ? value : [value]) {
-      if (typeof day === "string") out.push({ title: day, ...own });
+      if (typeof day === "string") out.push({ id: day, ...own });
       else if (day && typeof day === "object") {
-        const d = day as { title: string; color?: string };
-        out.push({ title: d.title, ...own, color: d.color ?? own.color });
+        const d = day as { id: string; color?: string };
+        out.push({ id: d.id, ...own, color: d.color ?? own.color });
       }
     }
   }
@@ -66,31 +66,31 @@ describe("the colors of the calendar", () => {
 
   it("mark every martyr, apostle and evangelist red", () => {
     const forgotten = all
-      .filter(({ title, type }) => SAYS_RED.test(title) && type !== "vigilia")
-      .filter(({ title }) => !WHITE_APOSTLES.has(title))
+      .filter(({ id, type }) => SAYS_RED.test(id) && type !== "vigilia")
+      .filter(({ id }) => !WHITE_APOSTLES.has(id))
       .filter(({ color }) => color !== "red")
-      .map(({ title }) => title);
+      .map(({ id }) => id);
     expect(forgotten).toEqual([]);
   });
 
-  it("mark the martyrs of a local proper red, where its title says so", () => {
+  it("mark the martyrs of a local proper red, where its id says so", () => {
     // A proper names its saints as it shows them, so a martyr whose title does
     // not say so (`S. Frederici`) is beyond this guard.
     for (const file of readdirSync(PROPERS)) {
       if (!file.endsWith(".yml")) continue;
       const proper = entries(parse(readFileSync(join(PROPERS, file), "utf-8")));
       const forgotten = proper
-        .filter(({ title, color }) => SAYS_RED.test(title) && color !== "red")
-        .map(({ title }) => title);
+        .filter(({ id, color }) => SAYS_RED.test(id) && color !== "red")
+        .map(({ id }) => id);
       expect(forgotten, file).toEqual([]);
     }
   });
 
   it("keep the apostles' feasts the rubrics make white", () => {
-    for (const title of WHITE_APOSTLES) {
-      const entry = all.find((e) => e.title === title);
-      expect(entry, title).toBeDefined();
-      expect(entry!.color, title).toBeUndefined();
+    for (const id of WHITE_APOSTLES) {
+      const entry = all.find((e) => e.id === id);
+      expect(entry, id).toBeDefined();
+      expect(entry!.color, id).toBeUndefined();
     }
   });
 
@@ -98,8 +98,8 @@ describe("the colors of the calendar", () => {
     const valid = (parse(readFileSync(CALENDAR, "utf-8")) as {
       "valid-colors": string[];
     })["valid-colors"];
-    for (const { title, color } of all) {
-      if (color !== undefined) expect(valid, title).toContain(color);
+    for (const { id, color } of all) {
+      if (color !== undefined) expect(valid, id).toContain(color);
     }
   });
 });

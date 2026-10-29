@@ -163,7 +163,7 @@ describe("the days the rubrics single out", () => {
   it("wear white for Our Lady on Saturday, whatever the season", () => {
     // A Saturday after Pentecost with no feast of its own: the season is green.
     expect(day(6, 27)).toMatchObject({
-      title:
+      id:
         "maria-in-sabbato-a-festo-trinitatis-usque-ad-sabbatum-ante-dominicam-i-adventus",
       season: "per-annum",
       color: "white",
@@ -218,17 +218,17 @@ describe("the saints", () => {
     const hilary = day(1, 14);
     expect(hilary.color).toBe("white");
     expect(hilary.commemorations).toContainEqual(
-      expect.objectContaining({ title: "felicis-presbyteri-et-martyris" })
+      expect.objectContaining({ id: "felicis-presbyteri-et-martyris" })
     );
     expect(hilary.commemorations[0]).not.toHaveProperty("color");
   });
 
   it("take their color from a local proper as from the calendar", () => {
     expect(day(11, 7)).toMatchObject({
-      title:
+      id:
         "willibrordi-episcopi-et-confessoris-titularis-ecclesiae-metropolitanae-et-patroni-principalis-archidioecesis",
       color: "white",
     });
-    expect(day(7, 9)).toMatchObject({ title: "martyrum-gorcomiensium", color: "red" });
+    expect(day(7, 9)).toMatchObject({ id: "martyrum-gorcomiensium", color: "red" });
   });
 });

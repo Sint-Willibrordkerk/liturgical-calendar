@@ -116,12 +116,14 @@ function misshapen(officium: NonNullable<LiturgicalDay["officium"]>): string[] {
 describe.skipIf(!generated)("the Office as published", () => {
   const languages: Record<string, Language> = {};
 
+  // Every generated file is read and parsed, some ten seconds' work: more than
+  // a hook is given by default once other files run beside it.
   beforeAll(() => {
     (globalThis as Record<string, unknown>).bundledAssets = readAssets("assets");
     for (const code of ["la", "nl"]) {
       languages[code] = { code, assets: languageAssets(join("languages", code, "assets"), code) };
     }
-  });
+  }, 60_000);
 
   const YEARS = [2026, 2027, 2029, 2038];
 

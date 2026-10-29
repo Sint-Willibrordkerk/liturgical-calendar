@@ -43,13 +43,13 @@ function names(node: unknown, out: string[] = []): string[] {
   }
   if (typeof node !== "object") return out;
   for (const [key, value] of Object.entries(node)) {
-    if (key === "title" && typeof value === "string") out.push(value);
+    if (key === "id" && typeof value === "string") out.push(value);
     else if (key === "calendar" && value && typeof value === "object") {
       for (const day of Object.values(value)) {
         for (const entry of Array.isArray(day) ? day : [day]) {
           if (typeof entry === "string") out.push(entry);
-          else if (entry && typeof entry === "object" && "title" in entry)
-            out.push(String(entry.title));
+          else if (entry && typeof entry === "object" && "id" in entry)
+            out.push(String(entry.id));
         }
       }
     } else names(value, out);
@@ -67,8 +67,8 @@ function keysOf(file: string): string[] {
 }
 
 // A day is named by the base calendar or by a local propers calendar, so a
-// key that reaches either is reachable — the Utrecht propers name their own
-// days by title, and the Dutch keys on those titles.
+// key that reaches either is reachable — the Utrecht propers give their own
+// days ids, and the Dutch keys on those ids.
 const calendarNames = new Set(names(parse(readFileSync(CALENDAR, "utf-8"))));
 for (const file of readdirSync(PROPERS)) {
   if (!file.endsWith(".yml")) continue;
