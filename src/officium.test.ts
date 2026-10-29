@@ -9,11 +9,13 @@ describe("the Office in the calendar", () => {
   const latin: Language = {
     code: "la",
     assets: {
-      "mass-propers/la/oratio.yml": {
-        "omnipotens-1": { text: "Omnípotens sempitérne Deus", closure: "Per Dominum" },
-      },
-      "mass-propers/la/antiphona.yml": {
-        "ecce-quod-1": { text: "Ecce, quod concupívi, * jam vídeo." },
+      masspropers: {
+        oratio: {
+          "omnipotens-1": { text: "Omnípotens sempitérne Deus", closure: "Per Dominum" },
+        },
+        antiphona: {
+          "ecce-quod-1": { text: "Ecce, quod concupívi, * jam vídeo." },
+        },
       },
     },
   };
@@ -30,13 +32,13 @@ describe("the Office in the calendar", () => {
   });
 
   it("is read only when asked for", () => {
-    const calendar = generateCalendar(2026, [], latin);
+    const calendar = generateCalendar({ year: 2026, languages: [latin] });
     expect(calendar[1]![21]!.officium).toBeUndefined();
     expect(calendar[1]![21]!.mass).toBeDefined();
   });
 
   it("gives a day the Office of its celebration", () => {
-    const calendar = generateCalendar(2026, [], latin, { officium: true });
+    const calendar = generateCalendar({ year: 2026, languages: [latin], officium: true });
     expect(calendar[1]![21]!.officium).toEqual({
       laudes: { benedictus: { text: "Ecce, quod concupívi, * jam vídeo." } },
       oratio: { text: "Omnípotens sempitérne Deus", closure: "Per Dominum" },
@@ -44,7 +46,7 @@ describe("the Office in the calendar", () => {
   });
 
   it("leaves a day whose file the calendar does not find without one", () => {
-    const calendar = generateCalendar(2026, [], latin, { officium: true });
+    const calendar = generateCalendar({ year: 2026, languages: [latin], officium: true });
     expect(calendar[8]![15]!.officium).toBeUndefined();
   });
 });
@@ -145,11 +147,13 @@ describe("the Office of a commemoration", () => {
   const latin: Language = {
     code: "la",
     assets: {
-      "mass-propers/la/oratio.yml": {
-        "omnipotens-1": { text: "Omnípotens sempitérne Deus", closure: "Per Dominum" },
-      },
-      "mass-propers/la/antiphona.yml": {
-        "ecce-quod-1": { text: "Ecce, quod concupívi, * jam vídeo." },
+      masspropers: {
+        oratio: {
+          "omnipotens-1": { text: "Omnípotens sempitérne Deus", closure: "Per Dominum" },
+        },
+        antiphona: {
+          "ecce-quod-1": { text: "Ecce, quod concupívi, * jam vídeo." },
+        },
       },
     },
   };
@@ -166,7 +170,7 @@ describe("the Office of a commemoration", () => {
   });
 
   it("is none: the day keeps the Office of the celebration, and the commemoration is a collect", () => {
-    const calendar = generateCalendar(2026, [], latin, { officium: true });
+    const calendar = generateCalendar({ year: 2026, languages: [latin], officium: true });
     const commemorations = Object.values(calendar).flatMap((days) =>
       Object.values(days ?? {}).flatMap((day) => day?.commemorations ?? [])
     );

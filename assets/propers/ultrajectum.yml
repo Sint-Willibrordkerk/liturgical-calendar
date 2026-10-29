@@ -9,7 +9,7 @@ items:
 - slot-name: cathedralis-dedicationis
   calendar: { 23-08: in-dedicatione-ecclesiae-metropolitanae }
 - slot-name: dioecesis-2
-  calendar: { 05-06: { title: bonifatii-episcopi-et-sociorum-martyrum, color: red } }
+  calendar: { 05-06: { id: bonifatii-episcopi-et-sociorum-martyrum, color: red } }
 - slot-name: dioecesis-3
   calendar:
     01-03: switberti-episcopi-et-confessoris
@@ -21,10 +21,10 @@ items:
     12-05: aufridi-episcopi-et-confessoris
     12-06: odulphi-confessoris
     25-06: adelberti-confessoris
-    09-07: { title: martyrum-gorcomiensium, color: red }
+    09-07: { id: martyrum-gorcomiensium, color: red }
     14-07: marcellini-confessoris
     15-07: plechelmi-episcopi-et-confessoris
-    18-07: { title: frederici-episcopi-et-martyris, color: red }
+    18-07: { id: frederici-episcopi-et-martyris, color: red }
     19-07: bernulphi-episcopi-et-confessoris
     18-08: werenfridi-confessoris
     25-08: gregorii-episcopi-et-confessoris

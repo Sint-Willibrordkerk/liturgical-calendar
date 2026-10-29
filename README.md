@@ -43,32 +43,40 @@ import generateCalendar from '@sint-willibrordkerk/liturgical-calendar';
 import la from '@sint-willibrordkerk/liturgical-calendar-la';
 
 // Generate calendar for 2026
-const calendar = generateCalendar(2026, [], la);
+const calendar = generateCalendar({ year: 2026, languages: [la] });
 
 // Access a specific day
 const january1 = calendar[1][1]; // January 1st
-console.log(january1.title); // "in-circumcisione-domini"
+console.log(january1.id); // "in-circumcisione-domini"
+console.log(january1.title); // "In Circumcisione Domini"
 console.log(january1.mass.introitus); // the Introit, in Latin
 ```
 
+Every day the calendar names has an `id`, the same in every language, to
+compare and look up by. Its `title` is what the language calls it — or, where
+the language has no name for the day, the Latin title of its Mass — and is
+absent where nothing names it.
+
 Called without a language the calendar is still generated — the days fall where
-they fall — but no day carries a Mass and nothing is translated.
+they fall, each with its id — but no day carries a Mass or a title.
 
-### Parameters
+### Options
 
-- `year` (number): The year for which to generate the calendar
+`generateCalendar` takes one object, every field of it optional:
+
+- `year` (number): The year for which to generate the calendar; this year by
+  default.
 - `propers` (string[]): Array of proper names to include (e.g., `['ultrajectum', 'fsspx']`)
-- `language` (Language | Language[]): A language package —
+- `languages` (Language[]): Language packages —
   `@sint-willibrordkerk/liturgical-calendar-la`, `…-nl` — imported and passed
-  in. It supplies the words of the Mass propers and the translations. Pass
-  several, as a list, to say a Mass text in the next where the first has none;
-  see [Several languages](#several-languages). Optional; omit it for the bare
-  calendar, whose days have no Mass.
-- `options` (Options): Optional.
-  - `martyrologium` (boolean): give each day the Roman Martyrology; see
-    [The Martyrology](#the-martyrology).
-  - `officium` (boolean): give each day the propers of its Office; see
-    [The Office](#the-office).
+  in. The first supplies the words of the Mass propers and the names of the
+  days; the rest say a text where the first has none; see
+  [Several languages](#several-languages). Omit it for the bare calendar, whose
+  days have no Mass.
+- `martyrologium` (boolean): give each day the Roman Martyrology; see
+  [The Martyrology](#the-martyrology).
+- `officium` (boolean): give each day the propers of its Office; see
+  [The Office](#the-office).
 
 ### With Local Propers
 
@@ -76,7 +84,7 @@ they fall — but no day carries a Mass and nothing is translated.
 import nl from '@sint-willibrordkerk/liturgical-calendar-nl';
 
 // Generate calendar with local propers (e.g., Utrecht diocese)
-const calendar = generateCalendar(2026, ['ultrajectum'], nl);
+const calendar = generateCalendar({ year: 2026, propers: ['ultrajectum'], languages: [nl] });
 
 // November 7th will show local feast
 const november7 = calendar[11][7];
@@ -95,7 +103,7 @@ said in the next language that has it:
 import la from '@sint-willibrordkerk/liturgical-calendar-la';
 import nl from '@sint-willibrordkerk/liturgical-calendar-nl';
 
-const calendar = generateCalendar(2026, ['ultrajectum'], [nl, la]);
+const calendar = generateCalendar({ year: 2026, propers: ['ultrajectum'], languages: [nl, la] });
 
 const { mass } = calendar[11][7];
 mass.oratio;   // the Latin collect
@@ -138,7 +146,8 @@ type Calendar = Record<
 >;
 
 type LiturgicalDay = {
-  title?: string;
+  id?: string; // what the day is: a slug, the same in every language
+  title?: string; // what the language calls it, where anything names it
   type?: string;
   liturgicalClass: number;
   season: Season;
@@ -208,7 +217,7 @@ Ask for it and each day carries the Roman Martyrology printed under its date,
 as the 1960 rubrics have it:
 
 ```javascript
-const calendar = generateCalendar(2026, [], la, { martyrologium: true });
+const calendar = generateCalendar({ year: 2026, languages: [la], martyrologium: true });
 const reading = calendar[1][21].martyrologium;
 console.log(reading.titulus); // "Duodécimo Kaléndas Februárii"
 console.log(reading.lunaName); // "Luna secúnda"
@@ -250,7 +259,7 @@ Ask for it and each day carries the propers of its Office — what the Breviary
 gives the day of its own, or takes from its common — Hour by Hour:
 
 ```javascript
-const calendar = generateCalendar(2026, [], la, { officium: true });
+const calendar = generateCalendar({ year: 2026, languages: [la], officium: true });
 const agnes = calendar[1][21].officium;
 console.log(agnes.laudes.benedictus.text); // "Ecce, quod concupívi, * jam vídeo: …"
 console.log(agnes.matutinum.nocturni[1].lectiones[0].lectio.ref); // "Liber 1, post initium"
@@ -302,7 +311,7 @@ Matins is the reader's: the lesson ends without it.
 
 What the propers cannot yet say:
 
-- **Ferias with no title** — most ferias of the year — have no Office: the
+- **Ferias with no id** — most ferias of the year — have no Office: the
   lessons of the occurring Scripture are not yet laid on them, and their collect
   is the Sunday's (`mass.oratio`).
 - **The resumed Sundays** after Pentecost have none either.
@@ -319,13 +328,13 @@ day, which is why it is left out unless asked for.
 ### Colors in Local Propers
 
 A day in a local proper is white unless it says otherwise. Give a martyr's day
-its color beside its title:
+its color beside its id:
 
 ```yaml
 - slot-name: dioecesis-3
   calendar:
     15-07: plechelmi-episcopi-et-confessoris
-    18-07: { title: frederici-episcopi-et-martyris, color: red }
+    18-07: { id: frederici-episcopi-et-martyris, color: red }
 ```
 
 ### The Propers of a Local Calendar

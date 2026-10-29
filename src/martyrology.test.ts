@@ -120,17 +120,19 @@ describe("the Martyrology in the calendar", () => {
   const martyrology: Language = {
     code: "la",
     assets: {
-      "martyrologium/la/01-20.yml": { titulus: "Tertiodécimo Kaléndas Februárii", elogia: ["Romæ natális sancti Fabiáni."] },
-      "martyrologium/la/01-21.yml": {
-        titulus: "Duodécimo Kaléndas Februárii",
-        elogia: ["Romæ pássio sanctæ Agnétis.", "Athénis natális sancti Públii."],
+      martyrologium: {
+        "01-20": { titulus: "Tertiodécimo Kaléndas Februárii", elogia: ["Romæ natális sancti Fabiáni."] },
+        "01-21": {
+          titulus: "Duodécimo Kaléndas Februárii",
+          elogia: ["Romæ pássio sanctæ Agnétis.", "Athénis natális sancti Públii."],
+        },
+        "04-06": { titulus: "Octávo Idus Aprílis", elogia: ["In Ægýpto sancti Timóthei."] },
+        "02-29": { titulus: "Sexto Kaléndas Mártii" },
+        "02-24": { titulus: "Sexto Kaléndas Mártii", elogia: ["In Judǽa natális sancti Matthíæ."] },
+        mobile: { "pasc0-1": ["Hac die quam fecit Dóminus."] },
+        conclusio: { versus: "Et álibi aliórum.", responsum: "Deo grátias." },
       },
-      "martyrologium/la/04-06.yml": { titulus: "Octávo Idus Aprílis", elogia: ["In Ægýpto sancti Timóthei."] },
-      "martyrologium/la/02-29.yml": { titulus: "Sexto Kaléndas Mártii" },
-      "martyrologium/la/02-24.yml": { titulus: "Sexto Kaléndas Mártii", elogia: ["In Judǽa natális sancti Matthíæ."] },
-      "martyrologium/la/mobile.yml": { "pasc0-1": ["Hac die quam fecit Dóminus."] },
-      "martyrologium/la/conclusio.yml": { versus: "Et álibi aliórum.", responsum: "Deo grátias." },
-      "translations/la/luna.yml": { "luna-2": "Luna secúnda" },
+      translations: { luna: { "luna-2": "Luna secúnda" } },
     },
   };
 
@@ -147,12 +149,12 @@ describe("the Martyrology in the calendar", () => {
   });
 
   it("is read only when asked for", () => {
-    const calendar = generateCalendar(2026, [], martyrology);
+    const calendar = generateCalendar({ year: 2026, languages: [martyrology] });
     expect(calendar[1]![21]!.martyrologium).toBeUndefined();
   });
 
   it("gives a day the reading printed under its date", () => {
-    const calendar = generateCalendar(2026, [], martyrology, { martyrologium: true });
+    const calendar = generateCalendar({ year: 2026, languages: [martyrology], martyrologium: true });
     expect(calendar[1]![21]!.martyrologium).toEqual({
       titulus: "Duodécimo Kaléndas Februárii",
       luna: 2,
@@ -163,22 +165,22 @@ describe("the Martyrology in the calendar", () => {
   });
 
   it("puts a movable day's announcement before the entries", () => {
-    const calendar = generateCalendar(2026, [], martyrology, { martyrologium: true });
+    const calendar = generateCalendar({ year: 2026, languages: [martyrology], martyrologium: true });
     expect(calendar[4]![6]!.martyrologium!.mobile).toEqual(["Hac die quam fecit Dóminus."]);
     expect(calendar[1]![20]!.martyrologium!.mobile).toBeUndefined();
   });
 
   it("reads the doubled day in a leap year", () => {
-    const calendar = generateCalendar(2028, [], martyrology, { martyrologium: true });
+    const calendar = generateCalendar({ year: 2028, languages: [martyrology], martyrologium: true });
     expect(calendar[2]![24]!.martyrologium!.titulus).toBe("Sexto Kaléndas Mártii");
     expect(calendar[2]![24]!.martyrologium!.elogia).toEqual([]);
     expect(calendar[2]![25]!.martyrologium!.elogia).toEqual(["In Judǽa natális sancti Matthíæ."]);
   });
 
   it("leaves a day the language has no Martyrology for without one", () => {
-    const calendar = generateCalendar(2026, [], martyrology, { martyrologium: true });
+    const calendar = generateCalendar({ year: 2026, languages: [martyrology], martyrologium: true });
     expect(calendar[8]![15]!.martyrologium).toBeUndefined();
-    const bare = generateCalendar(2026, [], { code: "nl", assets: {} }, { martyrologium: true });
+    const bare = generateCalendar({ year: 2026, languages: [{ code: "nl", assets: {} }], martyrologium: true });
     expect(bare[1]![21]!.martyrologium).toBeUndefined();
   });
 
@@ -186,17 +188,19 @@ describe("the Martyrology in the calendar", () => {
     const dutch: Language = {
       code: "nl",
       assets: {
-        "martyrologium/nl/01-21.yml": {
-          titulus: "Twaalfde dag voor de Kalenden van februari",
-          elogia: ["Te Rome het lijden van de heilige Agnes."],
+        martyrologium: {
+          "01-21": {
+            titulus: "Twaalfde dag voor de Kalenden van februari",
+            elogia: ["Te Rome het lijden van de heilige Agnes."],
+          },
         },
-        "translations/nl/luna.yml": { "luna-2": "Maan twee" },
+        translations: { luna: { "luna-2": "Maan twee" } },
       },
     };
     const options = { martyrologium: true };
 
     it("reads a date whole from the first language that prints it, and names the rest", () => {
-      const reading = generateCalendar(2026, [], [dutch, martyrology], options)[1]![21]!.martyrologium;
+      const reading = generateCalendar({ year: 2026, languages: [dutch, martyrology], ...options })[1]![21]!.martyrologium;
       expect(reading).toEqual({
         titulus: "Twaalfde dag voor de Kalenden van februari",
         luna: 2,
@@ -208,7 +212,7 @@ describe("the Martyrology in the calendar", () => {
     });
 
     it("reads a date only a fallback prints in that language, and names what it said", () => {
-      const reading = generateCalendar(2026, [], [dutch, martyrology], options)[1]![20]!.martyrologium;
+      const reading = generateCalendar({ year: 2026, languages: [dutch, martyrology], ...options })[1]![20]!.martyrologium;
       expect(reading).toMatchObject({
         titulus: "Tertiodécimo Kaléndas Februárii",
         elogia: ["Romæ natális sancti Fabiáni."],
@@ -217,7 +221,7 @@ describe("the Martyrology in the calendar", () => {
     });
 
     it("says the whole Martyrology in the fallback where the language has none", () => {
-      const calendar = generateCalendar(2026, [], [{ code: "nl", assets: {} }, martyrology], options);
+      const calendar = generateCalendar({ year: 2026, languages: [{ code: "nl", assets: {} }, martyrology], ...options });
       expect(calendar[1]![21]!.martyrologium).toMatchObject({
         titulus: "Duodécimo Kaléndas Februárii",
         lunaName: "Luna secúnda",
@@ -230,12 +234,12 @@ describe("the Martyrology in the calendar", () => {
     });
 
     it("carries no marker where the language says the whole reading itself", () => {
-      const calendar = generateCalendar(2026, [], [martyrology, dutch], options);
+      const calendar = generateCalendar({ year: 2026, languages: [martyrology, dutch], ...options });
       expect(calendar[1]![21]!.martyrologium).not.toHaveProperty("fallback");
     });
 
     it("leaves a date none of them prints without a reading", () => {
-      const calendar = generateCalendar(2026, [], [dutch, martyrology], options);
+      const calendar = generateCalendar({ year: 2026, languages: [dutch, martyrology], ...options });
       expect(calendar[8]![15]!.martyrologium).toBeUndefined();
     });
   });

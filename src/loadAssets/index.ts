@@ -16,19 +16,6 @@ import type { Martyrology, MartyrologyDay } from "../martyrology";
 export type { RawMassProper };
 import { assertCalendarData } from "./assert/calendarData";
 
-/**
- * An asset the language carries, or `undefined` where it carries none.
- *
- * A language is handed in rather than bundled here, so this is the only way the
- * calendar reaches anything language-specific. Paths are matched with either
- * separator, since a packager may have written them in the platform's own.
- */
-function fromLanguage(language: Language, path: string): unknown {
-  const assets = language.assets;
-  if (assets == null) return undefined;
-  return assets[path] ?? assets[path.replace(/\//g, "\\")];
-}
-
 export function loadCalendarData() {
   const calendarData = loadAsset("calendar1962.yml");
   assertCalendarData(calendarData);
@@ -58,19 +45,15 @@ export function loadPropers(name: string) {
 }
 
 /** Every translation the language carries, read as one table. */
-export function loadTranslations(language: Language): Record<string, string> {
+export function loadTranslations(languages: Language[]): Record<string, string> {
   const translations: Record<string, string> = {};
-  const prefix = `translations/${language.code}/`;
-
-  for (const [path, data] of Object.entries(language.assets ?? {})) {
-    const normalized = path.replace(/\\/g, "/");
-    if (!normalized.startsWith(prefix)) continue;
-    if (!normalized.endsWith(".yml") && !normalized.endsWith(".yaml")) continue;
-    if (typeof data === "object" && data !== null) {
-      Object.assign(translations, data);
+  for (const language of languages.toReversed()) {
+    for (const data of Object.values(language.assets?.translations ?? {})) {
+      if (typeof data === "object" && data !== null) {
+        Object.assign(translations, data);
+      }
     }
   }
-
   return translations;
 }
 
@@ -106,17 +89,12 @@ export function titleToFileName(title: string): string {
  * prints, the movable days' announcements and the conclusion.
  */
 export function loadMartyrology(language: Language): Martyrology | undefined {
-  const prefix = `martyrologium/${language.code}/`;
   const days: Martyrology["days"] = {};
   let mobile: Martyrology["mobile"] = {};
   let conclusio: Martyrology["conclusio"];
 
-  for (const [path, data] of Object.entries(language.assets ?? {})) {
-    const normalized = path.replace(/\\/g, "/");
-    if (!normalized.startsWith(prefix) || typeof data !== "object" || data === null) {
-      continue;
-    }
-    const name = normalized.slice(prefix.length).replace(/\.ya?ml$/, "");
+  for (const [name, data] of Object.entries(language.assets?.martyrologium ?? {})) {
+    if (typeof data !== "object" || data === null) continue;
     if (/^\d\d-\d\d$/.test(name)) days[name] = data as MartyrologyDay;
     else if (name === "mobile") mobile = data as Martyrology["mobile"];
     else if (name === "conclusio") conclusio = data as Martyrology["conclusio"];
@@ -127,8 +105,7 @@ export function loadMartyrology(language: Language): Martyrology | undefined {
 }
 
 function loadStores(language: Language): Stores {
-  const store = (file: string) =>
-    fromLanguage(language, `mass-propers/${language.code}/${file}.yml`) ?? {};
+  const store = (name: string) => language.assets?.masspropers?.[name] ?? {};
   return {
     readings: store("lectio") as Stores["readings"],
     prayers: store("oratio") as Stores["prayers"],
@@ -142,17 +119,18 @@ function loadStores(language: Language): Stores {
 }
 
 /**
- * The day filed under a liturgical title, holding keys, or undefined.
+ * The day filed under an id, holding keys, or undefined.
  *
  * The local calendars named are searched first, in their order — the most
  * particular first — and the general trees after them. Only a local proper's
  * own days name them, so a general day keeps its propers.
  */
-function dayByTitle(
-  title: string,
-  local: readonly string[] = []
+function dayById(
+  id: string,
+  local: readonly string[] = [],
 ): Record<string, unknown> | undefined {
-  const fileName = titleToFileName(title);
+  // An id is filed as itself; a title is folded to the file it names.
+  const fileName = titleToFileName(id);
   const at = (tree: string) => findAsset(`mass-propers/${tree}/${fileName}.yml`);
   const data =
     local.map((calendar) => at(`Sancti/${calendar}`)).find((day) => day !== undefined) ??
@@ -178,24 +156,24 @@ function properOf(
   language: Language,
   rubrics: ReadonlySet<string>,
   belongs: (key: string) => boolean,
-  fallbacks: readonly Language[] = []
+  fallbacks: readonly Language[] = [],
 ): { proper: Record<string, unknown>; fellBack: FellBack } | undefined {
   const own = Object.fromEntries(
-    Object.entries(document).filter(([key]) => belongs(key) || DESIGNATIONS.has(key))
+    Object.entries(document).filter(([key]) => belongs(key) || DESIGNATIONS.has(key)),
   );
   const backups = fallbacks
     .filter((other) => other.code !== language.code)
     .map((other) => ({ code: other.code, stores: loadStores(other) }));
   const selected = resolveMassProper(own, rubrics, loadStores(language), backups);
   const says = Object.keys(selected.proper).some(
-    (key) => belongs(key) && typeof selectVariant(document[key], rubrics) === "string"
+    (key) => belongs(key) && typeof selectVariant(document[key], rubrics) === "string",
   );
   return says ? selected : undefined;
 }
 
 /**
- * The mass proper for a liturgical title, reduced to the rubric in force and
- * with its texts said in the language.
+ * The mass proper filed under an id, reduced to the rubric in force and with
+ * its texts said in the language.
  *
  * The day is the same in every language and is bundled here, holding keys
  * alone; the language supplies what each key says. A day the language says
@@ -205,15 +183,15 @@ function properOf(
  * one first, and `fallback` on the Mass names the sections they said, by their
  * codes — absent when the Mass is wholly the language's own.
  */
-export function loadMassPropersByTitle(
-  title: string,
+export function loadMassPropersById(
+  id: string,
   language: Language,
   rubrics: ReadonlySet<string> = DEFAULT_RUBRICS,
   season?: { date: Date; easter: Date },
   local: readonly string[] = [],
-  fallbacks: readonly Language[] = []
+  fallbacks: readonly Language[] = [],
 ): RawMassProper | undefined {
-  const document = dayByTitle(title, local);
+  const document = dayById(id, local);
   if (document === undefined) return undefined;
 
   const selected = properOf(document, language, rubrics, isMassSection, fallbacks);
@@ -227,28 +205,26 @@ export function loadMassPropersByTitle(
 
   // The season may have set a chant aside; the marker names only what is said.
   const said = Object.fromEntries(
-    Object.entries(selected.fellBack).filter(([key]) => key in proper)
+    Object.entries(selected.fellBack).filter(([key]) => key in proper),
   );
-  return (
-    Object.keys(said).length > 0 ? { ...proper, fallback: said } : proper
-  ) as RawMassProper;
+  return (Object.keys(said).length > 0 ? { ...proper, fallback: said } : proper) as RawMassProper;
 }
 
 /**
- * The propers of the Office for a liturgical title, Hour by Hour, reduced to the
+ * The propers of the Office filed under an id, Hour by Hour, reduced to the
  * rubric in force and said in the language. Undefined where the language says
  * nothing of the day's Office, and without a language.
  */
-export function loadOfficiumByTitle(
-  title: string,
+export function loadOfficiumById(
+  id: string,
   language: Language,
   rubrics: ReadonlySet<string> = DEFAULT_RUBRICS,
   local: readonly string[] = [],
-  fallbacks: readonly Language[] = []
+  fallbacks: readonly Language[] = [],
 ): Officium | undefined {
-  const own = dayByTitle(title, local);
-  const elsewhere = OFFICE_FILED_WITH[titleToFileName(title)];
-  const document = elsewhere === undefined ? own : dayByTitle(elsewhere, local);
+  const own = dayById(id, local);
+  const elsewhere = OFFICE_FILED_WITH[titleToFileName(id)];
+  const document = elsewhere === undefined ? own : dayById(elsewhere, local);
   if (document === undefined) return undefined;
 
   // The collect is the day's own, said at Mass and at the Hours alike.
@@ -258,7 +234,7 @@ export function loadOfficiumByTitle(
     language,
     rubrics,
     (key) => isOfficeSection(key) || key === "oratio",
-    fallbacks
+    fallbacks,
   );
   if (selected === undefined) return undefined;
   return buildOfficium(nameSaint(selected.proper), selected.fellBack);
@@ -271,5 +247,5 @@ export function loadOfficiumByTitle(
  * which the Hours say from Lauds on.
  */
 const OFFICE_FILED_WITH: Record<string, string> = {
-  "in-die-nativitatis-domini": "In Nativitate Domini",
+  "in-die-nativitatis-domini": "in-nativitate-domini",
 };

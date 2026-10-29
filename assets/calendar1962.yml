@@ -16,43 +16,43 @@ items:
     accept-commemoration-types: [privileged, domini]
     items:
     - calendar: { 25-12: [in-nativitate-domini-in-nocte, in-nativitate-domini-in-aurora, in-die-nativitatis-domini] } #91.1
-    - title: dominica-resurrectionis #91.1 11d
+    - id: dominica-resurrectionis #91.1 11d
       occurence: { date: easter }
-    - title: dominica-pentecostes #91.1 11f
+    - id: dominica-pentecostes #91.1 11f
       color: red
       occurence: { date: easter, difference: 49 }
     - type: feria #91.2
       items:
-      - title: feria-quinta-in-coena-domini-quad6-4
+      - id: feria-quinta-in-coena-domini-quad6-4
         color: white
         occurence: { date: easter, difference: -3 }
-      - title: feria-sexta-in-passione-et-morte-domini
+      - id: feria-sexta-in-passione-et-morte-domini
         color: black
         occurence: { date: easter, difference: -2 }
-      - title: Sabbato sancto
+      - id: sabbato-sancto
         occurence: { date: easter, difference: -1 }
       # Monday to Wednesday of Holy Week, named for the week itself.
-      - title: $feria-majoris-hebdomadae
+      - id: $feria-majoris-hebdomadae
         occurence:
           start: { date: easter, difference: -6 }
           end: { date: easter, difference: -4 }
     - commemoration-type: domini #91.3 16
       items:
       - calendar: { 06-01: in-epiphania-domini }
-      - title: in-ascensione-domini-pasc5-4
+      - id: in-ascensione-domini-pasc5-4
         occurence: { date: easter, difference: 39 }
       # The Trinity and Christ the King, kept on a Sunday by their own date, take
       # the Sunday's place and commemorate no Sunday (n. 17), as the Holy Name and
       # the Holy Family do. The Sunday is still built under them: the ferias of
       # its week say its Mass.
-      - title: festum-sanctissimae-trinitatis #17c
+      - id: festum-sanctissimae-trinitatis #17c
         accept-commemoration-types: [privileged]
         occurence: { date: easter, difference: 56 }
-      - title: festum-sanctissimi-corporis-christi
+      - id: festum-sanctissimi-corporis-christi
         occurence: { date: easter, difference: 60 }
-      - title: sacratissimi-cordis-domini-nostri-jesu-christi-pent02-5
+      - id: sacratissimi-cordis-domini-nostri-jesu-christi-pent02-5
         occurence: { date: easter, difference: 68 }
-      - title: in-festo-domini-nostri-jesu-christi-regis-10-du #17d
+      - id: in-festo-domini-nostri-jesu-christi-regis-10-du #17d
         accept-commemoration-types: [privileged]
         occurence: { type: dominica, start: 25-10, end: 31-10 }
     - calendar: #91.4
@@ -67,27 +67,27 @@ items:
         01-01: in-circumcisione-domini
     - type: dominica #91.6 11
       items:
-        - title: dominica-$count-adventus #11a
+        - id: dominica-$count-adventus #11a
           occurence: { type: dominica, start: 27-11, end: 24-12 }
-        - title: dominica-$count-in-quadragesima #11b
+        - id: dominica-$count-in-quadragesima #11b
           occurence:
             type: dominica
             start: { date: easter, difference: -42 }
             end: { date: easter, difference: -21 }
-        - title: dominica-i-passionis #11c
+        - id: dominica-i-passionis #11c
           occurence: { date: easter, difference: -14 }
-        - title: dominica-ii-passionis-seu-in-palmis #11c
+        - id: dominica-ii-passionis-seu-in-palmis #11c
           occurence: { date: easter, difference: -7 }
-        - title: dominica-in-albis-in-octava-paschae #11e
+        - id: dominica-in-albis-in-octava-paschae #11e
           occurence: { date: easter, difference: 7 }
     - type: feria #91.7 23
       items:
-      - title: feria-iv-cinerum #23a
+      - id: feria-iv-cinerum #23a
         occurence: { date: easter, difference: -46 }
       - occurence: #23b
           start: { date: easter, difference: -6 }
           end: { date: easter, difference: -4 }
-    - title: in-commemoratione-omnium-fidelium-defunctorum-11-02 #91.8
+    - id: in-commemoratione-omnium-fidelium-defunctorum-11-02 #91.8
       color: black
       type: feria
       occurence:
@@ -95,7 +95,7 @@ items:
         start: 02-11
         end: 02-11
         default: 03-11
-    - title: sabbato-in-vigilia-pentecostes #91.9 30b
+    - id: sabbato-in-vigilia-pentecostes #91.9 30b
       color: red
       type: vigilia
       accept-commemoration-types: [] #30
@@ -104,37 +104,37 @@ items:
       items:
       # The sources name these by the day of the octave, not the weekday, and
       # the Saturday by the white garments laid aside on it.
-      - title: die-ii-infra-octavam-paschae
+      - id: die-ii-infra-octavam-paschae
         occurence: { date: easter, difference: 1 }
-      - title: die-iii-infra-octavam-paschae
+      - id: die-iii-infra-octavam-paschae
         occurence: { date: easter, difference: 2 }
-      - title: die-iv-infra-octavam-paschae
+      - id: die-iv-infra-octavam-paschae
         occurence: { date: easter, difference: 3 }
-      - title: die-v-infra-octavam-paschae
+      - id: die-v-infra-octavam-paschae
         occurence: { date: easter, difference: 4 }
-      - title: die-vi-infra-octavam-paschae
+      - id: die-vi-infra-octavam-paschae
         occurence: { date: easter, difference: 5 }
-      - title: sabbato-in-albis
+      - id: sabbato-in-albis
         occurence: { date: easter, difference: 6 }
-      - title: feria-quarta-quattuor-temporum-pentecostes
+      - id: feria-quarta-quattuor-temporum-pentecostes
         occurence: { date: easter, difference: 52 }
-      - title: feria-sexta-quattuor-temporum-pentecostes
+      - id: feria-sexta-quattuor-temporum-pentecostes
         occurence: { date: easter, difference: 54 }
-      - title: sabbato-quattuor-temporum-pentecostes
+      - id: sabbato-quattuor-temporum-pentecostes
         occurence: { date: easter, difference: 55 }
-      - title: die-ii-infra-octavam-pentecostes
+      - id: die-ii-infra-octavam-pentecostes
         occurence: { date: easter, difference: 50 }
-      - title: die-iii-infra-octavam-pentecostes
+      - id: die-iii-infra-octavam-pentecostes
         occurence: { date: easter, difference: 51 }
-      - title: die-quinta-infra-octavam-pentecostes
+      - id: die-quinta-infra-octavam-pentecostes
         occurence: { date: easter, difference: 53 }
     - calendar: #91.11
         19-03: joseph-sponsi-bmv-confessoris-03-19
         25-03: in-annuntiatione-beatae-mariae-virginis
         01-05: joseph-opificis
         24-06: in-nativitate-s-joannis-baptistae
-        29-06: { title: apostolorum-petri-et-pauli, color: red }
-        01-07: { title: pretiosissimi-sanguinis-domini-nostri-jesu-christi-07-01, color: red }
+        29-06: { id: apostolorum-petri-et-pauli, color: red }
+        01-07: { id: pretiosissimi-sanguinis-domini-nostri-jesu-christi-07-01, color: red }
         29-09: in-dedicatione-s-michaelis-archangelis
         01-11: omnium-sanctorum
     - slot: nationis-patroni-principalis #91.12 42a
@@ -156,46 +156,46 @@ items:
       - calendar:
           13-01: commemoratio-baptismatis-domini-nostri-jesu-christi
           06-08: in-transfiguratione-domini-nostri-jesu-christi
-          14-09: { title: in-exaltatione-sanctae-crucis, color: red }
+          14-09: { id: in-exaltatione-sanctae-crucis, color: red }
           09-11: in-dedicatione-archibasilicae-ss-salvatoris
-      - title: sanctissimi-nominis-jesu #17a
+      - id: sanctissimi-nominis-jesu #17a
         occurence: { type: dominica, start: 02-01, end: 05-01, default: 02-01 }
-      - title: sanctae-familiae-jesu-mariae-joseph #17b
+      - id: sanctae-familiae-jesu-mariae-joseph #17b
         occurence: { type: dominica, start: 07-01, end: 13-01 }
     - type: dominica #91.15 12
       commemoration-type: domini
       accept-commemoration-types: [privileged]
       items:
-      - title: dominica-infra-octavam-nativitatis
+      - id: dominica-infra-octavam-nativitatis
         occurence: { type: dominica, start: 26-12, end: 31-12 }
       # The fourth Sunday shares its name with a document differing only in
       # wanting no Preface of the Trinity, so it is named outright rather than
       # counted. It always falls in this week: the first Sunday after the
       # Epiphany falls between the 7th and the 13th of January.
-      - title: dominica-iv-post-epiphaniam-epi4-0
+      - id: dominica-iv-post-epiphaniam-epi4-0
         occurence:
           type: dominica
           start: 28-01
           end: 03-02
-      - title: dominica-$count-post-epiphaniam
+      - id: dominica-$count-post-epiphaniam
         occurence:
           type: dominica
           start: 07-01
           end: { date: easter, difference: -70 }
-      - title: dominica-in-septuagesima
+      - id: dominica-in-septuagesima
         occurence: { date: easter, difference: -63 }
-      - title: dominica-in-sexagesima
+      - id: dominica-in-sexagesima
         occurence: { date: easter, difference: -56 }
-      - title: dominica-in-quinquagesima
+      - id: dominica-in-quinquagesima
         occurence: { date: easter, difference: -49 }
-      - title: dominica-$count-post-pascha
+      - id: dominica-$count-post-pascha
         occurence:
           type: dominica
           start: { date: easter, difference: 7 }
           end: { date: easter, difference: 35 }
-      - title: dominica-post-ascensionem
+      - id: dominica-post-ascensionem
         occurence: { date: easter, difference: 42 }
-      - title: dominica-$count-post-pentecosten
+      - id: dominica-$count-post-pentecosten
         occurence:
           type: dominica
           start: { date: easter, difference: 56 }
@@ -203,29 +203,29 @@ items:
     - calendar: #91.16
         02-02: in-purificatione-beatae-mariae-virginis
         22-02: in-cathedra-s-petri-apostoli-antiochiae
-        24-02: { title: matthiae-apostoli, color: red }
-        25-04: { title: marci-evangelistae, color: red }
-        11-05: { title: philippi-et-jacobi-apostolorum-05-11, color: red }
+        24-02: { id: matthiae-apostoli, color: red }
+        25-04: { id: marci-evangelistae, color: red }
+        11-05: { id: philippi-et-jacobi-apostolorum-05-11, color: red }
         31-05: beatae-mariae-virginis-reginae
         02-07: in-visitatione-b-mariae-virginis
-        25-07: { title: jacobi-apostoli, color: red }
+        25-07: { id: jacobi-apostoli, color: red }
         26-07: annae-matris-bmv
-        10-08: { title: laurentii-martyris, color: red }
+        10-08: { id: laurentii-martyris, color: red }
         16-08: joachim-confessoris-patris-b-m-v
         22-08: immaculati-cordis-beatae-mariae-virginis
-        24-08: { title: bartholomaei-apostoli, color: red }
+        24-08: { id: bartholomaei-apostoli, color: red }
         08-09: in-nativitate-beatae-mariae-virginis
         15-09: septem-dolorum-beatae-mariae-virginis
-        21-09: { title: matthaei-apostoli-et-evangelistae, color: red }
+        21-09: { id: matthaei-apostoli-et-evangelistae, color: red }
         07-10: beatae-mariae-virginis-a-rosario-10-07
         11-10: maternitatis-beatae-mariae-virginis
-        18-10: { title: lucae-evangelistae, color: red }
-        28-10: { title: simonis-et-judae-apostolorum, color: red }
-        30-11: { title: andreae-apostoli, color: red }
-        21-12: { title: thomae-apostoli, color: red }
-        26-12: { title: stephani-protomartyris, color: red }
+        18-10: { id: lucae-evangelistae, color: red }
+        28-10: { id: simonis-et-judae-apostolorum, color: red }
+        30-11: { id: andreae-apostoli, color: red }
+        21-12: { id: thomae-apostoli, color: red }
+        26-12: { id: stephani-protomartyris, color: red }
         27-12: joannis-apostoli-et-evangelistae
-        28-12: { title: innocentium-12-28, color: red } # red since 1960 (n. 124); violet before
+        28-12: { id: innocentium-12-28, color: red } # red since 1960 (n. 124); violet before
     - type: octava #91.17
       items:
       - calendar:
@@ -236,25 +236,25 @@ items:
     - type: feria #91.18 24
       items:
       - occurence: { start: 17-12, end: 23-12 } #24a
-      - title: feria-iv-quattuor-temporum-adventus #24b
+      - id: feria-iv-quattuor-temporum-adventus #24b
         occurence: { date: advent, difference: 17 }
-      - title: feria-vi-quattuor-temporum-adventus #24b
+      - id: feria-vi-quattuor-temporum-adventus #24b
         occurence: { date: advent, difference: 19 }
-      - title: sabbato-quattuor-temporum-adventus #24b
+      - id: sabbato-quattuor-temporum-adventus #24b
         occurence: { date: advent, difference: 20 }
-      - title: feria-quarta-quatuor-temporum-quadragesimae #24b
+      - id: feria-quarta-quatuor-temporum-quadragesimae #24b
         occurence: { date: easter, difference: -39 }
-      - title: feria-sexta-quattuor-temporum #24b
+      - id: feria-sexta-quattuor-temporum #24b
         occurence: { date: easter, difference: -37 }
-      - title: sabbato-quattuor-temporum-quadrageismae #24b
+      - id: sabbato-quattuor-temporum-quadrageismae #24b
         occurence: { date: easter, difference: -36 }
-      - title: feria-quarta-quattuor-temporum-septembris #24b
+      - id: feria-quarta-quattuor-temporum-septembris #24b
         color: violet
         occurence: { type: feriaIV, start: 18-09, end: 24-09 }
-      - title: feria-sexta-quattuor-temporum-septembris #24b
+      - id: feria-sexta-quattuor-temporum-septembris #24b
         color: violet
         occurence: { type: feriaVI, start: 20-09, end: 26-09 }
-      - title: sabbato-quattuor-temporum-septembris #24b
+      - id: sabbato-quattuor-temporum-septembris #24b
         color: violet
         occurence: { type: sabbato, start: 21-09, end: 27-09 }
     - slot: nationis-patroni-secundarii #91.19.1a 42b
@@ -269,7 +269,7 @@ items:
     - slot: indulta-2 #91.20
     - type: vigilia #91.21 31
       items:
-        - title: in-vigilia-ascensionis #31a
+        - id: in-vigilia-ascensionis #31a
           occurence: { date: easter, difference: 38 }
         - calendar:
             23-06: in-vigilia-s-joannis-baptistae #31c
@@ -283,27 +283,27 @@ items:
       # The ferias of Lent have Masses of their own, named for the week they
       # fall in. The sources spell the weekday's ordinal out — `$feria` — and
       # count the week in Roman numerals.
-      - title: $day-post-cineres
+      - id: $day-post-cineres
         occurence:
           start: { date: easter, difference: -45 }
           end: { date: easter, difference: -43 }
-      - title: $feria-infra-hebdomadam-i-in-quadragesima
+      - id: $feria-infra-hebdomadam-i-in-quadragesima
         occurence:
           start: { date: easter, difference: -41 }
           end: { date: easter, difference: -36 }
-      - title: $feria-infra-hebdomadam-ii-in-quadragesima
+      - id: $feria-infra-hebdomadam-ii-in-quadragesima
         occurence:
           start: { date: easter, difference: -34 }
           end: { date: easter, difference: -29 }
-      - title: $feria-infra-hebdomadam-iii-in-quadragesima
+      - id: $feria-infra-hebdomadam-iii-in-quadragesima
         occurence:
           start: { date: easter, difference: -27 }
           end: { date: easter, difference: -22 }
-      - title: $feria-infra-hebdomadam-iv-in-quadragesima
+      - id: $feria-infra-hebdomadam-iv-in-quadragesima
         occurence:
           start: { date: easter, difference: -20 }
           end: { date: easter, difference: -15 }
-      - title: $feria-infra-hebdomadam-passionis
+      - id: $feria-infra-hebdomadam-passionis
         occurence:
           start: { date: easter, difference: -13 }
           end: { date: easter, difference: -8 }
@@ -317,23 +317,23 @@ items:
     - calendar:
         14-01: hilarii-episcopi-confessoris-ecclesiae-doctoris
         15-01: pauli-primi-eremitae-et-confessoris
-        16-01: { title: marcelli-papae-et-martyris, color: red }
+        16-01: { id: marcelli-papae-et-martyris, color: red }
         17-01: antonii-abbatis
-        20-01: { title: fabiani-et-sebastiani-martyrum, color: red }
-        21-01: { title: agnetis-virginis-et-martyris, color: red }
-        22-01: { title: vincentii-et-anastasii-martyrum, color: red }
+        20-01: { id: fabiani-et-sebastiani-martyrum, color: red }
+        21-01: { id: agnetis-virginis-et-martyris, color: red }
+        22-01: { id: vincentii-et-anastasii-martyrum, color: red }
         23-01: raymundi-de-penafort-confessoris
-        24-01: { title: timothei-episcopi-et-martyris, color: red }
+        24-01: { id: timothei-episcopi-et-martyris, color: red }
         25-01: in-conversione-s-pauli-apostoli
-        26-01: { title: polycarpi-episcopi-et-martyris, color: red }
+        26-01: { id: polycarpi-episcopi-et-martyris, color: red }
         27-01: joannis-chrysostomi-episcopi-confessoris-et-ecclesiae-doctoris
         28-01: petri-nolasci-confessoris
         29-01: francisci-salesii-episcopi-confessoris-et-ecclesiae-doctoris
-        30-01: { title: martinae-virginis-et-martyris, color: red }
+        30-01: { id: martinae-virginis-et-martyris, color: red }
         31-01: joannis-bosco-confessoris
-        01-02: { title: ignatii-episcopi-et-martyris, color: red }
+        01-02: { id: ignatii-episcopi-et-martyris, color: red }
         04-02: andreae-corsini-episcopi-et-confessoris
-        05-02: { title: agathae-virginis-et-martyris, color: red }
+        05-02: { id: agathae-virginis-et-martyris, color: red }
         06-02: titi-episcopi-et-confessoris
         07-02: romualdi-abbatis
         08-02: joannis-de-matha-confessoris
@@ -344,11 +344,11 @@ items:
         23-02: petri-damiani-episcopi-confessoris-et-ecclesiae-doctoris
         27-02: gabrielis-a-virgine-perdolente-confessoris
         04-03: casimiri-confessoris
-        06-03: { title: perpetuae-et-felicitatis-martyrum, color: red }
+        06-03: { id: perpetuae-et-felicitatis-martyrum, color: red }
         07-03: thomae-de-aquino-confessoris-et-ecclesiae-doctoris
         08-03: joannis-de-deo-confessoris
         09-03: franciscae-romanae-viduae
-        10-03: { title: quadraginta-martyrum-03-10, color: red }
+        10-03: { id: quadraginta-martyrum-03-10, color: red }
         12-03: gregorii-i-magni-i-papae-confessoris-et-ecclesiae-doctoris
         17-03: patricii-episcopi-et-confessoris
         18-03: cyrilli-episcopi-hierosolymitani-confessoris-et-ecclesiae-doctoris
@@ -360,28 +360,28 @@ items:
         04-04: isidori-episcopi-confessoris-et-ecclesiae-doctoris
         05-04: vincentii-ferrerii-confessoris
         11-04: leonis-i-papae-confessoris-et-ecclesiae-doctoris
-        13-04: { title: hermenegildi-martyris, color: red }
-        14-04: { title: justini-martyris, color: red }
+        13-04: { id: hermenegildi-martyris, color: red }
+        14-04: { id: justini-martyris, color: red }
         21-04: anselmi-episcopi-confessoris-et-ecclesiae-doctoris
-        22-04: { title: soteris-et-caji-summorum-pontificum-et-martyrum, color: red }
-        24-04: { title: fidelis-de-sigmaringa-martyris, color: red }
-        26-04: { title: cleti-et-marcellini-summorum-pontificum-et-martyrum, color: red }
+        22-04: { id: soteris-et-caji-summorum-pontificum-et-martyrum, color: red }
+        24-04: { id: fidelis-de-sigmaringa-martyris, color: red }
+        26-04: { id: cleti-et-marcellini-summorum-pontificum-et-martyrum, color: red }
         27-04: petri-canisii-confessoris-et-ecclesiae-doctoris
         28-04: pauli-a-cruce-confessoris
-        29-04: { title: petri-martyris, color: red }
+        29-04: { id: petri-martyris, color: red }
         30-04: catharinae-senensis-virginis
         02-05: athanasii-episcopi-confessoris-et-ecclesiae-doctoris-05-02
         04-05: monicae-viduae
         05-05: pii-v-papae-et-confessoris
-        07-05: { title: stanislai-episcopi-et-martyris, color: red }
+        07-05: { id: stanislai-episcopi-et-martyris, color: red }
         09-05: gregorii-nazianzeni-episcopi-confessoris
         10-05: antonini-episcopi-et-confessoris
-        12-05: { title: nerei-achillei-et-domitillae-virg-atque-pancratii-martyrum, color: red }
+        12-05: { id: nerei-achillei-et-domitillae-virg-atque-pancratii-martyrum, color: red }
         13-05: roberti-bellarmino-episcopi-confessoris-et-ecclesiae-doctoris
         15-05: joannis-baptistae-de-la-salle-confessoris
         16-05: ubaldi-episcopi-et-confessoris
         17-05: paschalis-baylon-confessoris
-        18-05: { title: venantii-martyris, color: red }
+        18-05: { id: venantii-martyris, color: red }
         19-05: petri-celestini-papae-et-confessoris
         20-05: bernardini-senensis-confessoris
         25-05: gregorii-vii-papae-et-confessoris
@@ -391,10 +391,10 @@ items:
         29-05: mariae-magdalenae-de-pazzis-virginis
         01-06: angelae-mericiae-virginis
         04-06: francisci-caracciolo-confessoris
-        05-06: { title: bonifatii-episcopi-et-martyris, color: red }
+        05-06: { id: bonifatii-episcopi-et-martyris, color: red }
         06-06: norberti-episcopi-et-confessoris
         10-06: margaritae-reginae-viduae
-        11-06: { title: barnabae-apostoli, color: red }
+        11-06: { id: barnabae-apostoli, color: red }
         12-06: joannis-a-s-facundo-confessoris
         13-06: antonii-de-padua-confessoris
         14-06: basilii-magni-confessoris-et-ecclesiae-doctoris
@@ -404,13 +404,13 @@ items:
         21-06: aloisii-gonzagae-confessoris
         22-06: paulini-episcopi-et-confessoris
         25-06: gulielmi
-        26-06: { title: joannis-et-pauli-martyrum, color: red }
-        30-06: { title: in-commemoratione-s-pauli-apostoli, color: red }
-        03-07: { title: irenaei-episcopi-et-martyris-07-03, color: red }
+        26-06: { id: joannis-et-pauli-martyrum, color: red }
+        30-06: { id: in-commemoratione-s-pauli-apostoli, color: red }
+        03-07: { id: irenaei-episcopi-et-martyris-07-03, color: red }
         05-07: antonii-mariae-zaccaria-confessoris
         07-07: cyrilli-et-methodii-pont-et-conf-07-07
         08-07: elisabeth-reg-portugaliae-viduae
-        10-07: { title: septem-fratrum-martyrum-ac-rufinae-et-secundae-virginum-et-martyrum, color: red }
+        10-07: { id: septem-fratrum-martyrum-ac-rufinae-et-secundae-virginum-et-martyrum, color: red }
         12-07: joannis-gualberti-abbatis
         14-07: bonaventurae-episcopi-confessoris-et-ecclesiae-doctoris
         15-07: henrici-imperatoris-confessoris
@@ -419,8 +419,8 @@ items:
         20-07: hieronymi-aemiliani-confessoris
         21-07: laurentii-a-brundusio-confessoris-et-ecclesiae-doctoris
         22-07: mariae-magdalenae
-        23-07: { title: apollinaris-episcopi-et-martyris, color: red }
-        28-07: { title: nazarii-et-celsi-martyrum-victoris-i-papae-et-martyris-ac-innocentii-i-papae-et-confessoris, color: red }
+        23-07: { id: apollinaris-episcopi-et-martyris, color: red }
+        28-07: { id: nazarii-et-celsi-martyrum-victoris-i-papae-et-martyris-ac-innocentii-i-papae-et-confessoris, color: red }
         29-07: marthae-virginis
         31-07: ignatii-confessoris
         02-08: alfonsi-mariae-de-ligorio-episc-conf-et-eccles-doct
@@ -437,7 +437,7 @@ items:
         25-08: ludovici-regis-franciae-confessoris
         27-08: josephi-calasanctii-confessoris
         28-08: augustini-episcopi-et-confessoris-et-ecclesiae-doctoris
-        29-08: { title: in-decollatione-s-joannis-baptistae, color: red }
+        29-08: { id: in-decollatione-s-joannis-baptistae, color: red }
         30-08: rosae-a-sancta-maria-limange-virginis
         31-08: raymundi-nonnati-confessoris
         02-09: stephani-regis-hungariae-et-confessoris
@@ -445,13 +445,13 @@ items:
         05-09: laurentii-justiniani-episcopi-et-confessoris
         10-09: nicolai-de-tolentino-confessoris
         12-09: nominis-beatae-mariae-virginis
-        16-09: { title: cornelii-papae-et-cypriani-episcopi-martyrum, color: red }
+        16-09: { id: cornelii-papae-et-cypriani-episcopi-martyrum, color: red }
         18-09: josephi-de-cupertino-confessoris
-        19-09: { title: januarii-episcopi-et-sociorum-martyrum, color: red }
+        19-09: { id: januarii-episcopi-et-sociorum-martyrum, color: red }
         22-09: thomae-de-villanova-episcopi-et-confessoris
-        23-09: { title: lini-papae-et-martyris, color: red }
-        27-09: { title: cosmae-et-damiani-martyrum, color: red }
-        28-09: { title: wenceslai-ducis-et-martyris, color: red }
+        23-09: { id: lini-papae-et-martyris, color: red }
+        27-09: { id: cosmae-et-damiani-martyrum, color: red }
+        28-09: { id: wenceslai-ducis-et-martyris, color: red }
         30-09: hieronymi-presbyteris-confessoris-et-ecclesiae-doctoris
         02-10: angelorum-custodum
         03-10: theresiae-a-jesu-infante-virginis
@@ -461,7 +461,7 @@ items:
         09-10: joannis-leonardi-confessoris
         10-10: francisci-borgiae-confessoris
         13-10: eduardi-regis-confessoris
-        14-10: { title: callisti-papae-et-martyris, color: red }
+        14-10: { id: callisti-papae-et-martyris, color: red }
         15-10: teresiae-virginis
         16-10: hedwigis-viduae
         17-10: margaritae-mariae-alaquoque-virginis
@@ -472,9 +472,9 @@ items:
         04-11: caroli-episcopi-et-confessoris
         10-11: andreae-avellini-confessoris
         11-11: martini-episcopi-et-confessoris
-        12-11: { title: martini-papae-et-martyris, color: red }
+        12-11: { id: martini-papae-et-martyris, color: red }
         13-11: didaci-confessoris
-        14-11: { title: josaphat-episcopi-et-martyris, color: red }
+        14-11: { id: josaphat-episcopi-et-martyris, color: red }
         15-11: alberti-magni-episcopi-confessoris-et-ecclesiae-doctoris
         16-11: gertrudis-virginis
         17-11: gregorii-thaumaturgi-episcopi-et-confessoris
@@ -482,19 +482,19 @@ items:
         19-11: elisabeth-viduae
         20-11: felicis-de-valois-confessoris
         21-11: in-presentatione-beatae-mariae-virginis
-        22-11: { title: caeciliae-virginis-et-martyris, color: red }
-        23-11: { title: clementis-papae-et-martyris, color: red }
+        22-11: { id: caeciliae-virginis-et-martyris, color: red }
+        23-11: { id: clementis-papae-et-martyris, color: red }
         24-11: joannis-a-cruce-confessoris-et-ecclesiae-doctoris
-        25-11: { title: catharinae-virginis-et-martyris, color: red }
+        25-11: { id: catharinae-virginis-et-martyris, color: red }
         26-11: silvestri-abbatis
-        02-12: { title: bibianae-virginis-et-martyris, color: red }
+        02-12: { id: bibianae-virginis-et-martyris, color: red }
         03-12: francisci-xaverii-confessoris
         04-12: petri-chrysologi-episcopi-confessoris-et-ecclesiae-doctoris
         06-12: nicolai-episcopi-et-confessoris
         07-12: ambrosii-episcopi-confessoris-et-ecclesiae-doctoris
         11-12: damasi-papae-et-confessoris
-        13-12: { title: luciae-virginis-et-martyris, color: red }
-        16-12: { title: eusebii-episcopi-et-martyris, color: red }
+        13-12: { id: luciae-virginis-et-martyris, color: red }
+        16-12: { id: eusebii-episcopi-et-martyris, color: red }
     - type: feria #91.25 25b
       occurence: { start: advent, end: 25-12 }
     - type: vigilia #91.26 32
@@ -506,15 +506,15 @@ items:
       color: white
       commemoration-type: none
       items:
-      - title: maria-in-sabbato-in-tempore-adventus
+      - id: maria-in-sabbato-in-tempore-adventus
         occurence: { type: sabbato, start: advent, end: 24-12 }
-      - title: maria-in-sabbato-a-nativitate-domini-usque-ad-purificationem
+      - id: maria-in-sabbato-a-nativitate-domini-usque-ad-purificationem
         occurence: { type: sabbato, start: 01-01, end: 02-02 } # Start at 01-01 for the correct year
-      - title: maria-in-sabbato-a-die-3-februari-usque-ad-feriam-iv-hebdomadae-sanctae
+      - id: maria-in-sabbato-a-die-3-februari-usque-ad-feriam-iv-hebdomadae-sanctae
         occurence: { type: sabbato, start: 03-02, end: { date: easter, difference: -4 } }
-      - title: maria-in-sabbato-in-tempore-paschali
+      - id: maria-in-sabbato-in-tempore-paschali
         occurence: { type: sabbato, start: easter, end: { date: easter, difference: 49 } }
-      - title: maria-in-sabbato-a-festo-trinitatis-usque-ad-sabbatum-ante-dominicam-i-adventus
+      - id: maria-in-sabbato-a-festo-trinitatis-usque-ad-sabbatum-ante-dominicam-i-adventus
         occurence: { type: sabbato, start: { date: easter, difference: 56 }, end: advent }
     - type: feria #91.28 26
       commemoration-type: none #26
@@ -523,110 +523,110 @@ items:
     - slot: ecclesiae-4
     - slot: congregationis-4
     - calendar:
-        05-01: { title: telesphori-papae-et-martyris, color: red }
-        11-01: { title: hygini-papae-et-martyris, color: red }
-        14-01: { title: felicis-presbyteri-et-martyris, color: red }
+        05-01: { id: telesphori-papae-et-martyris, color: red }
+        11-01: { id: hygini-papae-et-martyris, color: red }
+        14-01: { id: felicis-presbyteri-et-martyris, color: red }
         15-01: mauri-abbatis-01-15
-        18-01: { title: priscae-virginis, color: red }
+        18-01: { id: priscae-virginis, color: red }
         19-01:
-          - { title: marii-marthae-audifacis-et-abachum, color: red }
-          - { title: canuti, color: red }
-        23-01: { title: emerentianae-virgini-et-martyris, color: red }
-        25-01: { title: petri, color: red }
-        28-01: { title: agnetis-virginis-et-martyris-secundo, color: red }
-        03-02: { title: blasii-episcopi-et-martyris, color: red }
-        06-02: { title: dorotheae, color: red }
-        09-02: { title: apolloniae, color: red }
-        14-02: { title: valentini-presbyteri-et-martyris, color: red }
-        15-02: { title: faustini-et-jovitae, color: red }
-        18-02: { title: simeonis-episcopi-et-martyris, color: red }
-        04-03: { title: lucii-i-papae-et-martyris, color: red }
-        14-04: { title: tiburtii-valeriani-et-maximi-martyrum, color: red }
-        17-04: { title: aniceti-papae-et-martyris, color: red }
-        23-04: { title: georgii, color: red }
-        03-05: { title: alexandri-i-papae-eventii-et-theoduli-mm-ac-juvenalis-ep-et-conf, color: red }
-        10-05: { title: gordiani-et-epimachi-martyrum, color: red }
-        14-05: { title: bonifatii-martyris, color: red }
+          - { id: marii-marthae-audifacis-et-abachum, color: red }
+          - { id: canuti, color: red }
+        23-01: { id: emerentianae-virgini-et-martyris, color: red }
+        25-01: { id: petri, color: red }
+        28-01: { id: agnetis-virginis-et-martyris-secundo, color: red }
+        03-02: { id: blasii-episcopi-et-martyris, color: red }
+        06-02: { id: dorotheae, color: red }
+        09-02: { id: apolloniae, color: red }
+        14-02: { id: valentini-presbyteri-et-martyris, color: red }
+        15-02: { id: faustini-et-jovitae, color: red }
+        18-02: { id: simeonis-episcopi-et-martyris, color: red }
+        04-03: { id: lucii-i-papae-et-martyris, color: red }
+        14-04: { id: tiburtii-valeriani-et-maximi-martyrum, color: red }
+        17-04: { id: aniceti-papae-et-martyris, color: red }
+        23-04: { id: georgii, color: red }
+        03-05: { id: alexandri-i-papae-eventii-et-theoduli-mm-ac-juvenalis-ep-et-conf, color: red }
+        10-05: { id: gordiani-et-epimachi-martyrum, color: red }
+        14-05: { id: bonifatii-martyris, color: red }
         19-05: pudentianae-virginis
-        25-05: { title: urbanis-i, color: red }
-        26-05: { title: eleutherii-papae-et-martyris, color: red }
-        27-05: { title: joannis-i, color: red }
-        30-05: { title: felicis-i-papae-et-martyris, color: red }
+        25-05: { id: urbanis-i, color: red }
+        26-05: { id: eleutherii-papae-et-martyris, color: red }
+        27-05: { id: joannis-i, color: red }
+        30-05: { id: felicis-i-papae-et-martyris, color: red }
         31-05: petronillae-virginis
-        02-06: { title: marcellini-petri-atque-erasmi-episcopi-martyrum, color: red }
-        09-06: { title: primi-et-feliciani-martyrum, color: red }
-        12-06: { title: basilidis-cyrini-naboris-and-nazarii-martyrum, color: red }
-        15-06: { title: viti-modesti-atque-crescentiae-martyrum, color: red }
-        18-06: { title: marci-et-marcelliani-martyrum, color: red }
-        19-06: { title: gervasii-et-protasii-martyrum, color: red }
-        20-06: { title: silverii-papae-et-martyris, color: red }
-        30-06: { title: petri, color: red }
-        02-07: { title: processi-et-martiniani-martyrum, color: red }
-        11-07: { title: pii-i-papae-et-martyris, color: red }
-        12-07: { title: naboris-et-felicis-martyrum, color: red }
+        02-06: { id: marcellini-petri-atque-erasmi-episcopi-martyrum, color: red }
+        09-06: { id: primi-et-feliciani-martyrum, color: red }
+        12-06: { id: basilidis-cyrini-naboris-and-nazarii-martyrum, color: red }
+        15-06: { id: viti-modesti-atque-crescentiae-martyrum, color: red }
+        18-06: { id: marci-et-marcelliani-martyrum, color: red }
+        19-06: { id: gervasii-et-protasii-martyrum, color: red }
+        20-06: { id: silverii-papae-et-martyris, color: red }
+        30-06: { id: petri, color: red }
+        02-07: { id: processi-et-martiniani-martyrum, color: red }
+        11-07: { id: pii-i-papae-et-martyris, color: red }
+        12-07: { id: naboris-et-felicis-martyrum, color: red }
         16-07: beatae-mariae-virginis-de-monte-carmelo
         17-07: alexii-confessoris
-        18-07: { title: symphorosae-et-septem-filiorum-martyrum, color: red }
-        20-07: { title: margaritae-virg-et-mart, color: red }
+        18-07: { id: symphorosae-et-septem-filiorum-martyrum, color: red }
+        20-07: { id: margaritae-virg-et-mart, color: red }
         21-07: praxedis-virginis
         23-07: liborii
-        24-07: { title: christinae-virginis-et-martyris, color: red }
-        25-07: { title: christophori-martyris, color: red }
-        27-07: { title: pantaleonis-martyris, color: red }
-        29-07: { title: felicis-simplicii-faustini-et-beatricis-martyrum, color: red }
-        30-07: { title: abdon-et-sennen-martyrum, color: red }
-        01-08: { title: martyrum-machabaeorum, color: red }
-        02-08: { title: stephani-i, color: red }
-        06-08: { title: xysti-ii-papae-felicissimi-et-agapiti-martyrum, color: red }
-        07-08: { title: donati-episcopi-et-martyris, color: red }
-        08-08: { title: cyriaci-largi-et-smaragdi-martyrum-08-08, color: red }
-        09-08: { title: romani-martyris-08-09, color: red }
-        11-08: { title: tiburtii-et-susannae-virginis-martyrum, color: red }
-        13-08: { title: hippolyti-et-cassiani-martyrum, color: red }
+        24-07: { id: christinae-virginis-et-martyris, color: red }
+        25-07: { id: christophori-martyris, color: red }
+        27-07: { id: pantaleonis-martyris, color: red }
+        29-07: { id: felicis-simplicii-faustini-et-beatricis-martyrum, color: red }
+        30-07: { id: abdon-et-sennen-martyrum, color: red }
+        01-08: { id: martyrum-machabaeorum, color: red }
+        02-08: { id: stephani-i, color: red }
+        06-08: { id: xysti-ii-papae-felicissimi-et-agapiti-martyrum, color: red }
+        07-08: { id: donati-episcopi-et-martyris, color: red }
+        08-08: { id: cyriaci-largi-et-smaragdi-martyrum-08-08, color: red }
+        09-08: { id: romani-martyris-08-09, color: red }
+        11-08: { id: tiburtii-et-susannae-virginis-martyrum, color: red }
+        13-08: { id: hippolyti-et-cassiani-martyrum, color: red }
         14-08: eusebii-confessoris
-        18-08: { title: agapiti-martyris, color: red }
-        22-08: { title: timothei-hippolyti-et-symphoriani, color: red }
-        26-08: { title: zephirini, color: red }
-        28-08: { title: hermetis-martyris, color: red }
-        29-08: { title: sabina, color: red }
-        30-08: { title: felicis-et-adaucti-martyrum, color: red }
+        18-08: { id: agapiti-martyris, color: red }
+        22-08: { id: timothei-hippolyti-et-symphoriani, color: red }
+        26-08: { id: zephirini, color: red }
+        28-08: { id: hermetis-martyris, color: red }
+        29-08: { id: sabina, color: red }
+        30-08: { id: felicis-et-adaucti-martyrum, color: red }
         01-09:
           - aegidii
-          - { title: duodecim-fratrum-martyrum, color: red }
-        08-09: { title: adriani-martyris, color: red }
-        09-09: { title: gorgonii-martyris, color: red }
-        11-09: { title: proti-et-hyacinthi-martyrum, color: red }
-        15-09: { title: nicomedis-martyris, color: red }
-        16-09: { title: euphemiae-luciae-et-geminiani-martyrum, color: red }
+          - { id: duodecim-fratrum-martyrum, color: red }
+        08-09: { id: adriani-martyris, color: red }
+        09-09: { id: gorgonii-martyris, color: red }
+        11-09: { id: proti-et-hyacinthi-martyrum, color: red }
+        15-09: { id: nicomedis-martyris, color: red }
+        16-09: { id: euphemiae-luciae-et-geminiani-martyrum, color: red }
         17-09: impressionis-stigmatum-s-francisci
-        20-09: { title: eustachii-et-sociorum-martyrum, color: red }
-        22-09: { title: mauritii-et-sociorum-martyrum, color: red }
-        23-09: { title: theclae-virginis-et-martyris, color: red }
+        20-09: { id: eustachii-et-sociorum-martyrum, color: red }
+        22-09: { id: mauritii-et-sociorum-martyrum, color: red }
+        23-09: { id: theclae-virginis-et-martyris, color: red }
         24-09: beatae-mariae-virginis-de-mercede
-        26-09: { title: cypriani-et-justinae-virginis-martyrum, color: red }
+        26-09: { id: cypriani-et-justinae-virginis-martyrum, color: red }
         01-10: remigii-episcopi-et-confessoris
-        05-10: { title: placidi-et-sociorum-martyrum, color: red }
+        05-10: { id: placidi-et-sociorum-martyrum, color: red }
         07-10: marci-i
-        08-10: { title: sergii-bacchi-marcelli-et-apuleji-martyrum, color: red }
-        09-10: { title: dionysii-episcopi-rustici-et-eleutherii-martyrum, color: red }
+        08-10: { id: sergii-bacchi-marcelli-et-apuleji-martyrum, color: red }
+        09-10: { id: dionysii-episcopi-rustici-et-eleutherii-martyrum, color: red }
         21-10:
           - hilarionis
-          - { title: ursulae-et-sociarum-vv-et-mm, color: red }
-        25-10: { title: chrysanthi-et-dariae-martyrum, color: red }
-        26-10: { title: evaristi-papae-et-martyris, color: red }
-        04-11: { title: vitalis-et-agricola, color: red }
-        08-11: { title: quatuor-coronatorum-martyrum, color: red }
-        09-11: { title: theodori-martyris, color: red }
-        10-11: { title: tryphone-respicio-et-nympha-virg, color: red }
-        11-11: { title: mennae-martyris, color: red }
-        19-11: { title: pontiani-papae-et-martyris, color: red }
-        23-11: { title: felicitatis-martyris, color: red }
-        24-11: { title: chrysogoni-martyris, color: red }
-        26-11: { title: petri-alexandrini-martyris, color: red }
-        29-11: { title: saturnini-martyris, color: red }
-        04-12: { title: barbarae-virginis-et-martyris, color: red }
+          - { id: ursulae-et-sociarum-vv-et-mm, color: red }
+        25-10: { id: chrysanthi-et-dariae-martyrum, color: red }
+        26-10: { id: evaristi-papae-et-martyris, color: red }
+        04-11: { id: vitalis-et-agricola, color: red }
+        08-11: { id: quatuor-coronatorum-martyrum, color: red }
+        09-11: { id: theodori-martyris, color: red }
+        10-11: { id: tryphone-respicio-et-nympha-virg, color: red }
+        11-11: { id: mennae-martyris, color: red }
+        19-11: { id: pontiani-papae-et-martyris, color: red }
+        23-11: { id: felicitatis-martyris, color: red }
+        24-11: { id: chrysogoni-martyris, color: red }
+        26-11: { id: petri-alexandrini-martyris, color: red }
+        29-11: { id: saturnini-martyris, color: red }
+        04-12: { id: barbarae-virginis-et-martyris, color: red }
         05-12: sabbae-abbatis
-        10-12: { title: melchiadis-papae-et-martyris, color: red }
-        25-12: { title: anastasiae, color: red }
-        29-12: { title: thomae-de-cantuariae, color: red }
+        10-12: { id: melchiadis-papae-et-martyris, color: red }
+        25-12: { id: anastasiae, color: red }
+        29-12: { id: thomae-de-cantuariae, color: red }
         31-12: silvestri-papae-et-confessoris

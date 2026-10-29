@@ -9,7 +9,7 @@
  * out when there is not room for all.
  */
 import type { Calendar, LiturgicalDay } from "./types";
-import { dayNumber, eachDay } from "./utils";
+import { calculateAdvent, calculateEaster, dayNumber, eachDay } from "./utils";
 
 const SUNDAY = 0;
 
@@ -20,13 +20,13 @@ export const NUMBERED_SUNDAYS = 23;
 const EPIPHANY_SUNDAYS = 6;
 
 /** The last Sunday before Advent, whatever its number. */
-export const LAST_SUNDAY_MASS = "Dominica XXIV et ultima post Pentecosten";
+export const LAST_SUNDAY_MASS = "dominica-xxiv-et-ultima-post-pentecosten";
 
-const ROMAN = ["", "I", "II", "III", "IV", "V", "VI"];
+const ROMAN = ["", "i", "ii", "iii", "iv", "v", "vi"];
 
 /** The Mass of the nth Sunday after the Epiphany, resumed after Pentecost. */
 export function resumedSundayMass(n: number): string {
-  return `Dominica ${ROMAN[n]} quæ superfuit post Epiphaniam`;
+  return `dominica-${ROMAN[n]}-quae-superfuit-post-epiphaniam`;
 }
 
 /**
@@ -67,26 +67,24 @@ export function sundayMasses(
  * that takes the Mass named here: it is the Sunday as such, whose Mass the
  * ferias of its week say.
  *
- * `massFor` reads a Mass by title, so this stays a question of which Mass a day
- * says rather than of how one is loaded; `officeFor`, where given, reads the
- * Office of the same title, which the Sunday says with it.
+ * Which Sundays were kept after the Epiphany decides which are left to resume,
+ * and those are read in the season they were left in, before Septuagesima.
+ * Only the Mass changes: the Sunday is still the twenty-fifth after Pentecost,
+ * say, and keeps that name.
  */
-export function applyResumedSundays(
-  calendar: Calendar,
-  year: number,
-  easter: Date,
-  advent: Date,
-  epiphanySundaysKept: number,
-  massFor: (title: string) => LiturgicalDay["mass"],
-  officeFor?: (title: string) => LiturgicalDay["officium"]
-): void {
+export function applyResumedSundays(calendar: Calendar, year: number): void {
+  const easter = calculateEaster(year);
+  const septuagesima = new Date(easter);
+  septuagesima.setDate(septuagesima.getDate() - 63);
+  const epiphanySundaysKept = countSundays(new Date(year, 0, 6), septuagesima);
+
   const firstSunday = new Date(easter);
   firstSunday.setDate(firstSunday.getDate() + 56);
   // Compared as calendar days rather than instants: the two dates are not
   // built in the same way, and an hour of offset between them would take in a
   // Sunday of Advent and shift every Mass along by one.
   const from = dayNumber(firstSunday);
-  const until = dayNumber(advent);
+  const until = dayNumber(calculateAdvent(year));
 
   const sundays: LiturgicalDay[] = [];
   eachDay(year, ({ date, month, day }) => {
@@ -97,7 +95,7 @@ export function applyResumedSundays(
     if (entry !== undefined) sundays.push(entry);
   });
 
-  sundayMasses(sundays.length, epiphanySundaysKept).forEach((title, i) => {
+  sundayMasses(sundays.length, epiphanySundaysKept).forEach((mass, i) => {
     // The count runs over every Sunday, but a Sunday kept as a feast — Christ
     // the King, say — celebrates the feast; the Sunday it commemorates takes
     // the Mass named here instead.
@@ -108,12 +106,19 @@ export function applyResumedSundays(
         : entry.commemorations?.find(
             (commemoration) => commemoration.type === "dominica"
           );
-    if (title === undefined || sunday === undefined) return;
-    const mass = massFor(title);
-    if (mass !== undefined) {
-      sunday.title = title;
-      sunday.mass = mass;
-      if (officeFor !== undefined) sunday.officium = officeFor(title);
-    }
+    if (mass === undefined || sunday === undefined) return;
+    sunday.proper = { id: mass, season: septuagesima };
   });
+}
+
+/** The Sundays falling strictly after `from` and strictly before `until`. */
+function countSundays(from: Date, until: Date): number {
+  let count = 0;
+  const date = new Date(from);
+  date.setDate(date.getDate() + 1);
+  const last = dayNumber(until);
+  for (; dayNumber(date) < last; date.setDate(date.getDate() + 1)) {
+    if (date.getDay() === 0) count++;
+  }
+  return count;
 }

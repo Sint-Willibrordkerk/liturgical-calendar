@@ -8,13 +8,19 @@
  * its translations and its Martyrology, and handed to the generator by whoever
  * wants it, so a caller pays for the languages they ask for and no others.
  *
- * `assets` is keyed by the path the asset is filed under, exactly as the
- * pipeline lays it out: `mass-propers/nl/oratio.yml`,
- * `translations/nl/sanctorum.yml`. `code` is the segment those paths use.
+ * `assets` holds them by kind and then by name: the store the pipeline files
+ * as `mass-propers/nl/oratio.yml` is `assets.masspropers.oratio`, the
+ * translations filed as `translations/nl/sanctorum.yml` are
+ * `assets.translations.sanctorum`, and the Martyrology's dates are
+ * `assets.martyrologium["01-21"]`. `code` is the language they are in.
  */
 export type Language = {
   code: string;
-  assets: Record<string, unknown>;
+  assets: {
+    masspropers?: Record<string, unknown>;
+    translations?: Record<string, Record<string, string>>;
+    martyrologium?: Record<string, unknown>;
+  };
 };
 
 /**
@@ -38,23 +44,8 @@ export const NO_LANGUAGE: Language = { code: "la", assets: {} };
  * language, or with an empty list, the calendar has none.
  */
 export function asLanguages(
-  language: Language | readonly Language[] | string | undefined
+  language: Language[]
 ): [Language, ...Language[]] {
-  const named: readonly unknown[] = Array.isArray(language)
-    ? language
-    : language === undefined
-      ? []
-      : [language];
-  for (const each of named) {
-    if (typeof each === "string") {
-      throw new TypeError(
-        `Expected a language package, not the code "${each}". ` +
-          `Each language is published separately now: ` +
-          `import ${each} from "@sint-willibrordkerk/liturgical-calendar-${each}" ` +
-          `and pass it in.`
-      );
-    }
-  }
-  const [first = NO_LANGUAGE, ...rest] = named as Language[];
+  const [first = NO_LANGUAGE, ...rest] = language;
   return [first, ...rest];
 }
