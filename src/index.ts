@@ -1,9 +1,10 @@
 import { Commemoration, LiturgicalDay } from "./types";
 import { eachDay } from "./utils";
 import { parseCalendarData } from "./parseCalendarData";
-import { loadTranslations, loadMartyrology } from "./loadAssets";
+import { loadTranslations, loadMartyrology, loadCommemorationRules } from "./loadAssets";
 import { applyFerialMass } from "./ferias";
 import { applyResumedSundays } from "./resumedSundays";
+import { applyCommemorations } from "./commemorations";
 import { applyPropers } from "./propers";
 import { nameDays } from "./naming";
 import { applyMartyrology } from "./martyrology";
@@ -48,8 +49,11 @@ function deleteFields(day: Partial<LiturgicalDay | Commemoration>) {
     }
   }
 
-  delete day.commemorationType;
-  delete day.acceptCommemorationTypes;
+  delete day.commemorated;
+  delete day.admits;
+  delete day.omittedOn;
+  delete day.honours;
+  delete day.ofTheSeason;
   delete day.proper;
   delete day.naming;
   // Nothing named the day: its id says which it is.
@@ -84,6 +88,10 @@ export default ({
   const calendar = parseCalendarData(year, propers);
   applyResumedSundays(calendar, year);
   applyFerialMass(calendar, year);
+  // Of the days given way, those commemorated, by the calendar's rules. After
+  // the ferias: a feria takes the Mass of the Sunday as such, which a feast
+  // kept on it may exclude from its commemorations.
+  applyCommemorations(calendar, year, loadCommemorationRules());
 
   // What the languages say of them.
   const translations = loadTranslations(languages);
@@ -94,11 +102,7 @@ export default ({
   nameDays(calendar, year, translations);
 
   eachDay(year, ({ month, day }) => {
-    const dayData = calendar[month]![day]!;
-    dayData.commemorations = dayData.commemorations.filter((commemoration: Commemoration) =>
-      dayData.acceptCommemorationTypes?.includes(commemoration.commemorationType!),
-    );
-    deleteFields(dayData);
+    deleteFields(calendar[month]![day]!);
   });
   return calendar;
 };

@@ -1,8 +1,11 @@
 import type {
+  Admits,
   CalendarData,
   CalendarEntry,
   Color,
+  Commemorated,
   DateString,
+  Matcher,
   Occurence,
   RelativeDate,
   Weekday,
@@ -18,8 +21,11 @@ type ParsedCalendarData = {
   type: string;
   id?: string;
   liturgicalClass: number;
-  commemorationType: string;
-  acceptCommemorationTypes: string[];
+  commemorated?: Commemorated;
+  admits?: Admits;
+  omittedOn?: Matcher[];
+  honours?: string[];
+  ofTheSeason?: boolean;
   color?: string;
   occurence?: Occurence;
   calendar?: Record<DateString, CalendarEntry[] | CalendarEntry | undefined>;
@@ -44,9 +50,11 @@ function flattenCalendarData(
     id: item.id ?? parent.id,
     type: item.type ?? parent.type,
     liturgicalClass: item["liturgical-class"] ?? parent.liturgicalClass,
-    commemorationType: item["commemoration-type"] ?? parent.commemorationType,
-    acceptCommemorationTypes:
-      item["accept-commemoration-types"] ?? parent.acceptCommemorationTypes,
+    commemorated: item.commemorated ?? parent.commemorated,
+    admits: item.admits ?? parent.admits,
+    omittedOn: item["omitted-on"] ?? parent.omittedOn,
+    honours: item.honours ?? parent.honours,
+    ofTheSeason: item["of-the-season"] ?? parent.ofTheSeason,
     color: item.color ?? parent.color,
     occurence: item.occurence ?? parent.occurence,
     slotName: item["slot-name"] ?? parent.slotName,
@@ -74,12 +82,13 @@ function flattenCalendarData(
       // from it, and reversing it in place would flip the order each time.
       const entries = Array.isArray(value) ? [...value] : [value];
       entries.reverse().forEach((entry) => {
-        const { id, color } =
-          typeof entry === "string" ? { id: entry, color: undefined } : entry;
+        const { id, color, honours } =
+          typeof entry === "string" ? { id: entry, color: undefined, honours: undefined } : entry;
         list.push({
           ...(merged as ParsedCalendarData),
           id,
           color: color ?? merged.color,
+          honours: honours ?? merged.honours,
           occurence: { date: date as DateString },
         });
       });
@@ -164,6 +173,14 @@ export function parseCalendarData(year: number, propers: readonly string[]) {
   const easter = calculateEaster(year);
 
   list.reverse().forEach((item) => {
+    // Every day says how it is commemorated and what it admits, itself or by
+    // its group: nothing is assumed (nn. 108, 111).
+    if (item.occurence && (item.commemorated === undefined || item.admits === undefined)) {
+      throw new Error(
+        `${item.id ?? `a ${item.type}`} of class ${item.liturgicalClass} does not say ` +
+          `how it is commemorated (n. 108) and what it admits (n. 111)`
+      );
+    }
     if (item.occurence) {
       const dates = getDates(item.occurence, advent, easter, year);
       dates.forEach((date, index) => {

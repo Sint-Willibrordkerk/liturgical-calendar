@@ -17,10 +17,7 @@ export const loadAsset = (path: string) => {
   throw new Error(`Asset ${path} not found`);
 };
 
-export function zRegex<T extends string>(
-  expr: string,
-  type: string
-): z.ZodType<T> {
+export function zRegex<T extends string>(expr: string, type: string): z.ZodType<T> {
   return z.string().regex(new RegExp(expr), {
     message: `invalid ${type}`,
   }) as unknown as z.ZodType<T>;
@@ -30,7 +27,7 @@ export function issueOption<T extends readonly unknown[]>(
   ctx: z.RefinementCtx,
   name: string,
   options: T,
-  value?: unknown
+  value?: unknown,
 ) {
   if (value && options.length === 0) {
     ctx.addIssue({
@@ -55,6 +52,6 @@ export function maybeArraySchema<T extends z.ZodTypeAny>(itemSchema: T) {
     itemSchema,
     z
       .array(itemSchema)
-      .min(2, "Array is empty or array is used where a simple value could be used.")
+      .min(2, "Array is empty or array is used where a simple value could be used."),
   ]);
 }

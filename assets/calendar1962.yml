@@ -1,26 +1,71 @@
+# The calendar of the 1962 Missal, under the general rubrics of 1960
+# (Rubricae generales, cited here by number).
+#
+# Every day is a Sunday, a feria, a vigil, a feast or a day within an octave
+# (n. 6), of the first to fourth class (n. 8). Which is kept when several fall
+# on one date is settled by the table of precedence alone (nn. 7, 91), and this
+# file is laid out as that table: of two entries on the same date, the one
+# written first is kept, and the other gives way to it (nn. 92-93). A day that
+# gives way is commemorated, or omitted, as the day kept allows.
+#
+# Not done here: a first-class feast impeded on its date is transferred to the
+# next day not of the first or second class (nn. 95-99), the Annunciation after
+# Easter to the Monday after Low Sunday (n. 96a).
 valid-types: [dominica, feria, vigilia, festum, octava] #6
 valid-liturgical-classes: [1, 2, 3, 4] #8
-valid-commemoration-types: [default, none, privileged, domini]
+# How a day is commemorated when it gives way (nn. 107-108): as privileged — a
+# Sunday, a first-class day, the days within the octave of Christmas, the ember
+# days of September, the ferias of Advent, Lent and Passiontide; as ordinary —
+# every other; or never, as a fourth-class feria (n. 26). Every day says which,
+# itself or by the group it is written in: nothing is assumed.
+valid-commemorated: [privileged, ordinary, never]
 # The colors of the vestments (rubricae generales nn. 117-134). A feast that
 # names none is white; a vigil outside paschaltide is violet; any other day
 # wears its season's. Red is set on the martyrs, the apostles and evangelists,
 # and the feasts of the Cross and the Precious Blood; the rest is set by hand.
 valid-colors: [white, red, green, violet, rose, black]
 
+# The rules of the commemorations that hold for every day alike (n. 106). What
+# a day admits it says itself, under `admits` (n. 111).
+commemorations:
+  excludes: #112
+    # A day excludes another that honours the same divine Person, or Our Lady,
+    # or the same saint (n. 112a, d); a Sunday honours the Lord, so it and a
+    # feast of the Lord exclude each other (n. 112b). Of two feasts of one saint
+    # falling together, likewise, the one lower in precedence is left out
+    # (n. 95). A feria honours no one: a collect of a Sunday or feria that names
+    # a saint is never excluded for it (n. 112d).
+    - honours
+    # One commemoration of the season excludes another (n. 112c).
+    - [{ of-the-season: true }, { of-the-season: true }]
+  # The commemoration of the season is said first, the others in the order of
+  # the table of precedence (n. 113).
+  order: [{ of-the-season: true }, precedence]
+  # A commemoration beyond what the day admits is left out (n. 114).
+  over-the-count: omitted
+
 type: festum
-commemoration-type: default
-accept-commemoration-types: [default, privileged, domini]
 items:
+  # Days of the first class (n. 91, I). They admit no commemoration but a
+  # privileged one (n. 111a), and are commemorated as privileged when they give
+  # way (n. 108b).
   - liturgical-class: 1
-    commemoration-type: privileged
-    accept-commemoration-types: [privileged, domini]
+    commemorated: privileged #108b
+    admits: { of: [{ commemorated: privileged }], count: 1 } #111a
     items:
-    - calendar: { 25-12: [in-nativitate-domini-in-nocte, in-nativitate-domini-in-aurora, in-die-nativitatis-domini] } #91.1
+    # Christmas, Easter and Pentecost, each a first-class feast with an octave
+    # (nn. 11, 91.1).
+    - honours: [domini]
+      calendar: { 25-12: [in-nativitate-domini-in-nocte, in-nativitate-domini-in-aurora, in-die-nativitatis-domini] } #91.1
     - id: dominica-resurrectionis #91.1 11d
+      honours: [domini]
       occurence: { date: easter }
     - id: dominica-pentecostes #91.1 11f
+      honours: [domini]
       color: red
       occurence: { date: easter, difference: 49 }
+    # The sacred triduum (nn. 75, 91.2): Thursday, Friday and Saturday of Holy
+    # Week, ferias of the first class, kept over any feast (n. 23b).
     - type: feria #91.2
       items:
       - id: feria-quinta-in-coena-domini-quad6-4
@@ -31,12 +76,10 @@ items:
         occurence: { date: easter, difference: -2 }
       - id: sabbato-sancto
         occurence: { date: easter, difference: -1 }
-      # Monday to Wednesday of Holy Week, named for the week itself.
-      - id: $feria-majoris-hebdomadae
-        occurence:
-          start: { date: easter, difference: -6 }
-          end: { date: easter, difference: -4 }
-    - commemoration-type: domini #91.3 16
+    # The first-class feasts of the Lord (n. 91.3). One falling on a Sunday of
+    # the second class takes its place, and that Sunday is not commemorated
+    # (n. 16a).
+    - honours: [domini] #91.3 16
       items:
       - calendar: { 06-01: in-epiphania-domini }
       - id: in-ascensione-domini-pasc5-4
@@ -46,26 +89,40 @@ items:
       # the Holy Family do. The Sunday is still built under them: the ferias of
       # its week say its Mass.
       - id: festum-sanctissimae-trinitatis #17c
-        accept-commemoration-types: [privileged]
         occurence: { date: easter, difference: 56 }
       - id: festum-sanctissimi-corporis-christi
         occurence: { date: easter, difference: 60 }
       - id: sacratissimi-cordis-domini-nostri-jesu-christi-pent02-5
         occurence: { date: easter, difference: 68 }
       - id: in-festo-domini-nostri-jesu-christi-regis-10-du #17d
-        accept-commemoration-types: [privileged]
         occurence: { type: dominica, start: 25-10, end: 31-10 }
-    - calendar: #91.4
+    # The Immaculate Conception and the Assumption (n. 91.4). The Immaculate
+    # Conception is kept over the Sunday of Advent it falls on, the one feast
+    # preferred to a first-class Sunday (n. 15).
+    - honours: [beatae-mariae-virginis] #112d
+      calendar: #91.4
         15-08: in-assumptione-beatae-mariae-virginis
         08-12: in-conceptione-immaculata-beatae-mariae-virginis #15
+    # The vigil of Christmas (n. 91.5), a vigil of the first class: kept over
+    # any feast, admitting no commemoration, and on the Fourth Sunday of Advent
+    # taking that Sunday's place without commemorating it (n. 30a).
     - type: vigilia #91.5
-      accept-commemoration-types: []
+      honours: [domini]
+      admits: { count: 0 } #30a
       calendar:
         24-12: in-vigilia-nativitatis-domini #30a
+    # The octave day of Christmas, of the first class though the days within
+    # the octave are of the second (nn. 67, 91.5).
     - type: octava #91.5
+      honours: [domini]
       calendar:
         01-01: in-circumcisione-domini
+    # The Sundays of the first class (nn. 11, 91.6): of Advent, of Lent, of the
+    # Passion, and Low Sunday. A Sunday of the first class is kept over any feast
+    # (n. 15). The First Sunday of Advent is the Sunday nearest the 30th of
+    # November (n. 20).
     - type: dominica #91.6 11
+      honours: [domini] #9, 112b
       items:
         - id: dominica-$count-adventus #11a
           occurence: { type: dominica, start: 27-11, end: 24-12 }
@@ -80,13 +137,19 @@ items:
           occurence: { date: easter, difference: -7 }
         - id: dominica-in-albis-in-octava-paschae #11e
           occurence: { date: easter, difference: 7 }
+    # The other ferias of the first class (nn. 23, 91.7): Ash Wednesday, and
+    # Monday to Wednesday of Holy Week.
     - type: feria #91.7 23
       items:
       - id: feria-iv-cinerum #23a
         occurence: { date: easter, difference: -46 }
-      - occurence: #23b
+      # Named for the week itself.
+      - id: $feria-majoris-hebdomadae #23b
+        occurence:
           start: { date: easter, difference: -6 }
           end: { date: easter, difference: -4 }
+    # All Souls (n. 91.8). A Sunday on its date is kept, being preferred to it
+    # (n. 16b), and All Souls goes to the Monday as its own day (n. 96b).
     - id: in-commemoratione-omnium-fidelium-defunctorum-11-02 #91.8
       color: black
       type: feria
@@ -95,12 +158,19 @@ items:
         start: 02-11
         end: 02-11
         default: 03-11
+    # The vigil of Pentecost (n. 91.9), a vigil of the first class: kept over any
+    # feast and admitting no commemoration (n. 30b).
     - id: sabbato-in-vigilia-pentecostes #91.9 30b
       color: red
       type: vigilia
-      accept-commemoration-types: [] #30
+      honours: [domini]
+      admits: { count: 0 } #30b
       occurence: { date: easter, difference: 48 }
+    # The days within the octaves of Easter and Pentecost (n. 91.10), which are
+    # of the first class (n. 66). Of all octaves only these and Christmas's are
+    # kept (n. 64). The ember days of Pentecost fall within its octave.
     - type: octava #91.10
+      honours: [domini]
       items:
       # The sources name these by the day of the octave, not the weekday, and
       # the Saturday by the white garments laid aside on it.
@@ -128,15 +198,22 @@ items:
         occurence: { date: easter, difference: 51 }
       - id: die-quinta-infra-octavam-pentecostes
         occurence: { date: easter, difference: 53 }
+    # The other first-class feasts of the universal Church (n. 91.11).
     - calendar: #91.11
-        19-03: joseph-sponsi-bmv-confessoris-03-19
-        25-03: in-annuntiatione-beatae-mariae-virginis
-        01-05: joseph-opificis
-        24-06: in-nativitate-s-joannis-baptistae
-        29-06: { id: apostolorum-petri-et-pauli, color: red }
-        01-07: { id: pretiosissimi-sanguinis-domini-nostri-jesu-christi-07-01, color: red }
-        29-09: in-dedicatione-s-michaelis-archangelis
+        19-03: { id: joseph-sponsi-bmv-confessoris-03-19, honours: [joseph] }
+        25-03: { id: in-annuntiatione-beatae-mariae-virginis, honours: [beatae-mariae-virginis] }
+        01-05: { id: joseph-opificis, honours: [joseph] }
+        24-06: { id: in-nativitate-s-joannis-baptistae, honours: [joannis-baptistae] }
+        29-06: { id: apostolorum-petri-et-pauli, color: red, honours: [petri, pauli] }
+        01-07: { id: pretiosissimi-sanguinis-domini-nostri-jesu-christi-07-01, color: red, honours: [domini] }
+        29-09: { id: in-dedicatione-s-michaelis-archangelis, honours: [michaelis] }
         01-11: omnium-sanctorum
+    # The proper first-class feasts (n. 91.12), in the order the table gives
+    # them: the principal patrons of the nation, the region and the diocese
+    # (nn. 42a, 43a), the dedication of the cathedral (n. 43b), the principal
+    # patron of the place (n. 44a), the dedication and title of the church itself
+    # (n. 45), and the title, canonized founder and principal patron of an order
+    # (n. 46). A local proper fills these slots with its own days.
     - slot: nationis-patroni-principalis #91.12 42a
     - slot: regionis-patroni-principalis #91.12 42a
     - slot: dioecesis-patroni-principalis #91.12 43a
@@ -147,25 +224,50 @@ items:
     - slot: congregationis-tituli #91.12 46a
     - slot: congregationis-fundatoris-canonizati #91.12 46b
     - slot: congregationis-patroni-principalis #91.12 46c
+    # The first-class feasts kept by indult (n. 91.13).
     - slot: indulta-1 #91.13
+  # Days of the second class (n. 91, II). A second-class Sunday admits one
+  # commemoration, of a second-class feast, unless a privileged one is to be
+  # made (n. 111b); any other second-class day admits one (n. 111c). They are
+  # commemorated as ordinary, but for those named below (n. 108).
   - liturgical-class: 2
+    commemorated: ordinary #108
+    admits: { count: 1 } #111c
     items:
-    - commemoration-type: domini #91.14 16
-      accept-commemoration-types: [privileged]
+    # The second-class feasts of the Lord (n. 91.14). One falling on a Sunday of
+    # the second class takes its place, with all its rights, and the Sunday is
+    # not commemorated (n. 16a).
+    - honours: [domini] #91.14 16
       items:
       - calendar:
           13-01: commemoratio-baptismatis-domini-nostri-jesu-christi
           06-08: in-transfiguratione-domini-nostri-jesu-christi
           14-09: { id: in-exaltatione-sanctae-crucis, color: red }
           09-11: in-dedicatione-archibasilicae-ss-salvatoris
+      # A Sunday is assigned no feast of its own, but for these (n. 17): the Holy
+      # Name on the Sunday from the 2nd to the 5th of January, or else on the 2nd;
+      # the Holy Family on the First Sunday after the Epiphany; and, of the first
+      # class above, the Trinity and Christ the King. Each takes the Sunday's
+      # place and the Sunday is not commemorated.
       - id: sanctissimi-nominis-jesu #17a
         occurence: { type: dominica, start: 02-01, end: 05-01, default: 02-01 }
       - id: sanctae-familiae-jesu-mariae-joseph #17b
         occurence: { type: dominica, start: 07-01, end: 13-01 }
+    # The Sundays of the second class: all not of the first (nn. 12, 91.15). A
+    # second-class Sunday is kept over second-class feasts not of the Lord
+    # (n. 16), and an impeded Sunday is neither anticipated nor resumed (n. 14).
+    # Of the Sundays after the Epiphany, those Septuagesima cuts short are said
+    # after the Twenty-third after Pentecost (n. 18), which is done in the code.
     - type: dominica #91.15 12
-      commemoration-type: domini
-      accept-commemoration-types: [privileged]
+      honours: [domini] #9, 112b
+      commemorated: privileged #108a
+      admits: #111b
+        count: 1
+        of: [{ commemorated: privileged }, { class: 2, type: festum }]
+        privileged-first: true
       items:
+      # The Sunday within the octave of Christmas, from the 26th to the 31st of
+      # December, is always kept, commemorating the feast it falls on (n. 69).
       - id: dominica-infra-octavam-nativitatis
         occurence: { type: dominica, start: 26-12, end: 31-12 }
       # The fourth Sunday shares its name with a document differing only in
@@ -195,30 +297,33 @@ items:
           end: { date: easter, difference: 35 }
       - id: dominica-post-ascensionem
         occurence: { date: easter, difference: 42 }
+      # The Sundays after Pentecost run to the Saturday before Advent (n. 77),
+      # however many that makes: from twenty-three to twenty-eight.
       - id: dominica-$count-post-pentecosten
         occurence:
           type: dominica
           start: { date: easter, difference: 56 }
-          end: { date: easter, difference: 245 }
+          end: { date: advent, difference: -1 }
+    # The second-class feasts of the universal Church not of the Lord (n. 91.16).
     - calendar: #91.16
-        02-02: in-purificatione-beatae-mariae-virginis
-        22-02: in-cathedra-s-petri-apostoli-antiochiae
+        02-02: { id: in-purificatione-beatae-mariae-virginis, honours: [beatae-mariae-virginis] }
+        22-02: { id: in-cathedra-s-petri-apostoli-antiochiae, honours: [petri] }
         24-02: { id: matthiae-apostoli, color: red }
         25-04: { id: marci-evangelistae, color: red }
         11-05: { id: philippi-et-jacobi-apostolorum-05-11, color: red }
-        31-05: beatae-mariae-virginis-reginae
-        02-07: in-visitatione-b-mariae-virginis
+        31-05: { id: beatae-mariae-virginis-reginae, honours: [beatae-mariae-virginis] }
+        02-07: { id: in-visitatione-b-mariae-virginis, honours: [beatae-mariae-virginis] }
         25-07: { id: jacobi-apostoli, color: red }
         26-07: annae-matris-bmv
-        10-08: { id: laurentii-martyris, color: red }
+        10-08: { id: laurentii-martyris, color: red, honours: [laurentii] }
         16-08: joachim-confessoris-patris-b-m-v
-        22-08: immaculati-cordis-beatae-mariae-virginis
+        22-08: { id: immaculati-cordis-beatae-mariae-virginis, honours: [beatae-mariae-virginis] }
         24-08: { id: bartholomaei-apostoli, color: red }
-        08-09: in-nativitate-beatae-mariae-virginis
-        15-09: septem-dolorum-beatae-mariae-virginis
+        08-09: { id: in-nativitate-beatae-mariae-virginis, honours: [beatae-mariae-virginis] }
+        15-09: { id: septem-dolorum-beatae-mariae-virginis, honours: [beatae-mariae-virginis] }
         21-09: { id: matthaei-apostoli-et-evangelistae, color: red }
-        07-10: beatae-mariae-virginis-a-rosario-10-07
-        11-10: maternitatis-beatae-mariae-virginis
+        07-10: { id: beatae-mariae-virginis-a-rosario-10-07, honours: [beatae-mariae-virginis] }
+        11-10: { id: maternitatis-beatae-mariae-virginis, honours: [beatae-mariae-virginis] }
         18-10: { id: lucae-evangelistae, color: red }
         28-10: { id: simonis-et-judae-apostolorum, color: red }
         30-11: { id: andreae-apostoli, color: red }
@@ -226,16 +331,31 @@ items:
         26-12: { id: stephani-protomartyris, color: red }
         27-12: joannis-apostoli-et-evangelistae
         28-12: { id: innocentium-12-28, color: red } # red since 1960 (n. 124); violet before
+    # The days within the octave of Christmas, of the second class (nn. 67,
+    # 91.17). St Stephen, St John and the Holy Innocents are kept on the 26th to
+    # 28th as second-class feasts, above; St Thomas of Canterbury on the 29th and
+    # St Sylvester on the 31st are commemorated (n. 68).
     - type: octava #91.17
+      honours: [domini]
+      commemorated: privileged #108c
       items:
       - calendar:
           29-12: die-v-infra-octavam-nativitatis
           30-12: die-vi-infra-octavam-nativitatis
           31-12: die-vii-infra-octavam-nativitatis
       - occurence: { start: 26-12, end: 31-12 }
+    # The ferias of the second class (nn. 24, 91.18): those of Advent from the
+    # 17th to the 23rd of December, and the ember days of Advent, Lent and
+    # September. They are kept over particular second-class feasts, and are
+    # commemorated when impeded — as privileged, being ferias of Advent or Lent
+    # or the ember days of September (n. 108d-e), and as of the season. The
+    # ember days of September wear violet (n. 128c). The ember days of Advent
+    # come before the ferias of the 17th to the 23rd they fall among, so they
+    # are kept: the first written is kept.
     - type: feria #91.18 24
+      commemorated: privileged #108d-e
+      of-the-season: true
       items:
-      - occurence: { start: 17-12, end: 23-12 } #24a
       - id: feria-iv-quattuor-temporum-adventus #24b
         occurence: { date: advent, difference: 17 }
       - id: feria-vi-quattuor-temporum-adventus #24b
@@ -257,6 +377,12 @@ items:
       - id: sabbato-quattuor-temporum-septembris #24b
         color: violet
         occurence: { type: sabbato, start: 21-09, end: 27-09 }
+      - occurence: { type: "!dominica", start: 17-12, end: 23-12 } #24a
+    # The proper second-class feasts (n. 91.19): the secondary patrons of the
+    # nation, region, diocese and place (nn. 42b, 43c, 44b), the saints and
+    # blessed with a bond to the diocese (n. 43d), the saints whose bodies a
+    # church keeps (n. 45c), and an order's beatified founder, secondary patron
+    # and own saints (n. 46). A local proper fills these slots with its own days.
     - slot: nationis-patroni-secundarii #91.19.1a 42b
     - slot: regionis-patroni-secundarii #91.19.1b 42b
     - slot: dioecesis-patroni-secundarii #91.19.1c 43c
@@ -266,19 +392,39 @@ items:
     - slot: congregationis-fundatoris-beatificati #91.19.4 46b
     - slot: congregationis-patroni-secundarii #91.19.5 46d
     - slot: congregationis-2 #91.19.6 46e
+    # The second-class feasts kept by indult (n. 91.20).
     - slot: indulta-2 #91.20
+    # The vigils of the second class (nn. 31, 91.21): of the Ascension, the
+    # Assumption, St John the Baptist, and SS Peter and Paul. They are kept over
+    # days of the third and fourth class and are commemorated when impeded; on a
+    # Sunday or a first-class feast they are left out altogether (n. 33). Outside
+    # paschaltide they wear violet (n. 128d).
     - type: vigilia #91.21 31
+      omitted-on: [{ type: dominica }, { class: 1, type: festum }] #33
       items:
         - id: in-vigilia-ascensionis #31a
+          honours: [domini]
           occurence: { date: easter, difference: 38 }
         - calendar:
-            23-06: in-vigilia-s-joannis-baptistae #31c
-            14-08: in-vigilia-assumptionis-bmv #31b
-            28-06: in-vigilia-ss-petri-et-pauli-apostolorum #31d
+            23-06: { id: in-vigilia-s-joannis-baptistae, honours: [joannis-baptistae] } #31c
+            14-08: { id: in-vigilia-assumptionis-bmv, honours: [beatae-mariae-virginis] } #31b
+            28-06: { id: in-vigilia-ss-petri-et-pauli-apostolorum, honours: [petri, pauli] } #31d
+  # Days of the third class (n. 91, III). They admit two commemorations
+  # (n. 111d), and are commemorated as ordinary, but for those named below
+  # (n. 108).
   - liturgical-class: 3
+    commemorated: ordinary #108
+    admits: { count: 2 } #111d
     items:
+    # The ferias of Lent and Passiontide, from the Thursday after Ash Wednesday
+    # to the Saturday before Palm Sunday, but for the ember days (nn. 25a,
+    # 91.22). They are kept over third-class feasts and commemorated as
+    # privileged when impeded (n. 108e), and as of the season. The ember days,
+    # written above, are kept over the feria of their week, which as another
+    # commemoration of the season they exclude (n. 112c).
     - type: feria #25a
-      commemoration-type: privileged
+      commemorated: privileged #108e
+      of-the-season: true
       items:
       # The ferias of Lent have Masses of their own, named for the week they
       # fall in. The sources spell the weekday's ordinal out — `$feria` — and
@@ -307,13 +453,17 @@ items:
         occurence:
           start: { date: easter, difference: -13 }
           end: { date: easter, difference: -8 }
-      - occurence:
-          start: { date: easter, difference: -46 }
-          end: easter
+    # The third-class feasts of particular calendars (n. 91.23), the proper ones
+    # first: the saints and blessed with a bond to the diocese (n. 43d), the
+    # blessed whose bodies a church keeps (n. 45d), an order's own saints and
+    # blessed (n. 46e), and then those kept by indult.
     - slot: dioecesis-3 #91.23.1
     - slot: ecclesiae-3 #91.23.2
     - slot: congregationis-3 #91.23.3
     - slot: indulta-3 #91.23.3
+    # The third-class feasts of the universal calendar (n. 91.24). A martyr, an
+    # apostle or an evangelist on his birthday wears red (n. 124); every other
+    # saint white (n. 120e).
     - calendar:
         14-01: hilarii-episcopi-confessoris-ecclesiae-doctoris
         15-01: pauli-primi-eremitae-et-confessoris
@@ -324,7 +474,7 @@ items:
         22-01: { id: vincentii-et-anastasii-martyrum, color: red }
         23-01: raymundi-de-penafort-confessoris
         24-01: { id: timothei-episcopi-et-martyris, color: red }
-        25-01: in-conversione-s-pauli-apostoli
+        25-01: { id: in-conversione-s-pauli-apostoli, honours: [pauli] }
         26-01: { id: polycarpi-episcopi-et-martyris, color: red }
         27-01: joannis-chrysostomi-episcopi-confessoris-et-ecclesiae-doctoris
         28-01: petri-nolasci-confessoris
@@ -339,7 +489,7 @@ items:
         08-02: joannis-de-matha-confessoris
         09-02: cyrilli-episc-alexandrini-confessoris-et-ecclesiae-doctoris
         10-02: scholasticae-virginis
-        11-02: in-apparitione-beatae-mariae-virginis
+        11-02: { id: in-apparitione-beatae-mariae-virginis, honours: [beatae-mariae-virginis] }
         12-02: septem-fundatorum-ordinis-servorum-b-m-v
         23-02: petri-damiani-episcopi-confessoris-et-ecclesiae-doctoris
         27-02: gabrielis-a-virgine-perdolente-confessoris
@@ -405,7 +555,7 @@ items:
         22-06: paulini-episcopi-et-confessoris
         25-06: gulielmi
         26-06: { id: joannis-et-pauli-martyrum, color: red }
-        30-06: { id: in-commemoratione-s-pauli-apostoli, color: red }
+        30-06: { id: in-commemoratione-s-pauli-apostoli, color: red, honours: [pauli] }
         03-07: { id: irenaei-episcopi-et-martyris-07-03, color: red }
         05-07: antonii-mariae-zaccaria-confessoris
         07-07: cyrilli-et-methodii-pont-et-conf-07-07
@@ -425,7 +575,7 @@ items:
         31-07: ignatii-confessoris
         02-08: alfonsi-mariae-de-ligorio-episc-conf-et-eccles-doct
         04-08: dominici-confessoris
-        05-08: mariae-ad-nives
+        05-08: { id: mariae-ad-nives, honours: [beatae-mariae-virginis] }
         07-08: cajetani-confessoris
         08-08: joannis-mariae-vianney-confessoris
         12-08: clarae-virginis
@@ -437,14 +587,14 @@ items:
         25-08: ludovici-regis-franciae-confessoris
         27-08: josephi-calasanctii-confessoris
         28-08: augustini-episcopi-et-confessoris-et-ecclesiae-doctoris
-        29-08: { id: in-decollatione-s-joannis-baptistae, color: red }
+        29-08: { id: in-decollatione-s-joannis-baptistae, color: red, honours: [joannis-baptistae] }
         30-08: rosae-a-sancta-maria-limange-virginis
         31-08: raymundi-nonnati-confessoris
         02-09: stephani-regis-hungariae-et-confessoris
         03-09: pii-x-papae-confessoris
         05-09: laurentii-justiniani-episcopi-et-confessoris
         10-09: nicolai-de-tolentino-confessoris
-        12-09: nominis-beatae-mariae-virginis
+        12-09: { id: nominis-beatae-mariae-virginis, honours: [beatae-mariae-virginis] }
         16-09: { id: cornelii-papae-et-cypriani-episcopi-martyrum, color: red }
         18-09: josephi-de-cupertino-confessoris
         19-09: { id: januarii-episcopi-et-sociorum-martyrum, color: red }
@@ -478,10 +628,10 @@ items:
         15-11: alberti-magni-episcopi-confessoris-et-ecclesiae-doctoris
         16-11: gertrudis-virginis
         17-11: gregorii-thaumaturgi-episcopi-et-confessoris
-        18-11: in-dedicatione-basilicarum-ss-apostolorum-petri-et-pauli
+        18-11: { id: in-dedicatione-basilicarum-ss-apostolorum-petri-et-pauli, honours: [petri, pauli] }
         19-11: elisabeth-viduae
         20-11: felicis-de-valois-confessoris
-        21-11: in-presentatione-beatae-mariae-virginis
+        21-11: { id: in-presentatione-beatae-mariae-virginis, honours: [beatae-mariae-virginis] }
         22-11: { id: caeciliae-virginis-et-martyris, color: red }
         23-11: { id: clementis-papae-et-martyris, color: red }
         24-11: joannis-a-cruce-confessoris-et-ecclesiae-doctoris
@@ -495,16 +645,34 @@ items:
         11-12: damasi-papae-et-confessoris
         13-12: { id: luciae-virginis-et-martyris, color: red }
         16-12: { id: eusebii-episcopi-et-martyris, color: red }
+    # The ferias of Advent up to the 16th of December, but for the ember days
+    # (nn. 25b, 91.25). They give way to third-class feasts and are commemorated
+    # as privileged when impeded (n. 108e), and as of the season.
     - type: feria #91.25 25b
-      occurence: { start: advent, end: 25-12 }
+      commemorated: privileged #108e
+      of-the-season: true
+      occurence: { type: "!dominica", start: advent, end: 16-12 }
+    # The vigil of the third class, that of St Lawrence (nn. 32, 91.26): kept
+    # over fourth-class days, commemorated when impeded, and left out on a Sunday
+    # or a first-class feast (n. 33).
     - type: vigilia #91.26 32
-      calendar: 
-        09-08: in-vigilia-s-laurentii-mart
+      omitted-on: [{ type: dominica }, { class: 1, type: festum }] #33
+      calendar:
+        09-08: { id: in-vigilia-s-laurentii-mart, honours: [laurentii] }
+  # Days of the fourth class (n. 91, IV). They admit two commemorations
+  # (n. 111d), and are commemorated as ordinary, but for the ferias and Our
+  # Lady on Saturday, which are never commemorated (nn. 26, 108).
   - liturgical-class: 4
+    commemorated: ordinary #108
+    admits: { count: 2 } #111d
     items:
+    # Our Lady on Saturday, kept on a Saturday that would otherwise be a feria of
+    # the fourth class (nn. 78, 91.27). Its Mass is of the season of the year it
+    # falls in. A fourth-class day, it is not commemorated when impeded.
     - type: feria #91.27
       color: white
-      commemoration-type: none
+      commemorated: never #26
+      honours: [beatae-mariae-virginis] #112d
       items:
       - id: maria-in-sabbato-in-tempore-adventus
         occurence: { type: sabbato, start: advent, end: 24-12 }
@@ -516,12 +684,19 @@ items:
         occurence: { type: sabbato, start: easter, end: { date: easter, difference: 49 } }
       - id: maria-in-sabbato-a-festo-trinitatis-usque-ad-sabbatum-ante-dominicam-i-adventus
         occurence: { type: sabbato, start: { date: easter, difference: 56 }, end: advent }
+    # The ferias of the fourth class: every one not named above (nn. 26,
+    # 91.28). They are never commemorated.
     - type: feria #91.28 26
-      commemoration-type: none #26
+      commemorated: never #26
       occurence: { start: 01-01, end: 31-12 }
+    # The commemorations of particular calendars, below every liturgical day:
+    # they are said only within the office and Mass of the day (n. 5).
     - slot: dioecesis-4
     - slot: ecclesiae-4
     - slot: congregationis-4
+    # The commemorations of the universal calendar. The 1960 calendar keeps these
+    # saints by a commemoration within the day's office and Mass (n. 5), not by
+    # a day of their own; a martyr's wears red (n. 124e).
     - calendar:
         05-01: { id: telesphori-papae-et-martyris, color: red }
         11-01: { id: hygini-papae-et-martyris, color: red }
@@ -532,7 +707,7 @@ items:
           - { id: marii-marthae-audifacis-et-abachum, color: red }
           - { id: canuti, color: red }
         23-01: { id: emerentianae-virgini-et-martyris, color: red }
-        25-01: { id: petri, color: red }
+        25-01: { id: petri, color: red, honours: [petri] }
         28-01: { id: agnetis-virginis-et-martyris-secundo, color: red }
         03-02: { id: blasii-episcopi-et-martyris, color: red }
         06-02: { id: dorotheae, color: red }
@@ -560,11 +735,11 @@ items:
         18-06: { id: marci-et-marcelliani-martyrum, color: red }
         19-06: { id: gervasii-et-protasii-martyrum, color: red }
         20-06: { id: silverii-papae-et-martyris, color: red }
-        30-06: { id: petri, color: red }
+        30-06: { id: petri, color: red, honours: [petri] }
         02-07: { id: processi-et-martiniani-martyrum, color: red }
         11-07: { id: pii-i-papae-et-martyris, color: red }
         12-07: { id: naboris-et-felicis-martyrum, color: red }
-        16-07: beatae-mariae-virginis-de-monte-carmelo
+        16-07: { id: beatae-mariae-virginis-de-monte-carmelo, honours: [beatae-mariae-virginis] }
         17-07: alexii-confessoris
         18-07: { id: symphorosae-et-septem-filiorum-martyrum, color: red }
         20-07: { id: margaritae-virg-et-mart, color: red }
@@ -602,7 +777,7 @@ items:
         20-09: { id: eustachii-et-sociorum-martyrum, color: red }
         22-09: { id: mauritii-et-sociorum-martyrum, color: red }
         23-09: { id: theclae-virginis-et-martyris, color: red }
-        24-09: beatae-mariae-virginis-de-mercede
+        24-09: { id: beatae-mariae-virginis-de-mercede, honours: [beatae-mariae-virginis] }
         26-09: { id: cypriani-et-justinae-virginis-martyrum, color: red }
         01-10: remigii-episcopi-et-confessoris
         05-10: { id: placidi-et-sociorum-martyrum, color: red }

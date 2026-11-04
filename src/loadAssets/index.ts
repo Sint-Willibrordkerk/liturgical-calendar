@@ -14,12 +14,18 @@ import { buildOfficium, isOfficeSection } from "../officium";
 import type { Martyrology, MartyrologyDay } from "../martyrology";
 
 export type { RawMassProper };
-import { assertCalendarData } from "./assert/calendarData";
+import { createCalendarDataSchema } from "./assert/calendarData";
 
 export function loadCalendarData() {
   const calendarData = loadAsset("calendar1962.yml");
-  assertCalendarData(calendarData);
-  return calendarData;
+  return createCalendarDataSchema().parse(calendarData);
+}
+
+/** The rules of the commemorations the calendar gives at its head (nn. 112-114). */
+export function loadCommemorationRules() {
+  const { commemorations } = loadCalendarData();
+  if (commemorations === undefined) throw new Error("calendar1962.yml gives no rules of commemoration");
+  return commemorations;
 }
 
 /**
@@ -33,15 +39,14 @@ function validity(): Partial<CalendarData> {
   return {
     "valid-types": base["valid-types"],
     "valid-liturgical-classes": base["valid-liturgical-classes"],
-    "valid-commemoration-types": base["valid-commemoration-types"],
+    "valid-commemorated": base["valid-commemorated"],
     "valid-colors": base["valid-colors"],
   };
 }
 
 export function loadPropers(name: string) {
   const propers = loadAsset(`propers/${name}.yml`);
-  assertCalendarData(propers, validity());
-  return propers;
+  return createCalendarDataSchema(validity()).parse(propers);
 }
 
 /** Every translation the language carries, read as one table. */
@@ -125,10 +130,7 @@ function loadStores(language: Language): Stores {
  * particular first — and the general trees after them. Only a local proper's
  * own days name them, so a general day keeps its propers.
  */
-function dayById(
-  id: string,
-  local: readonly string[] = [],
-): Record<string, unknown> | undefined {
+function dayById(id: string, local: readonly string[] = []): Record<string, unknown> | undefined {
   // An id is filed as itself; a title is folded to the file it names.
   const fileName = titleToFileName(id);
   const at = (tree: string) => findAsset(`mass-propers/${tree}/${fileName}.yml`);

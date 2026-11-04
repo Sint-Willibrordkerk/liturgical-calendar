@@ -120,8 +120,16 @@ export type Commemoration = {
   title?: string;
   type?: string;
   liturgicalClass: number;
-  commemorationType?: string;
-  acceptCommemorationTypes?: string[];
+  /** How the day is commemorated when it gives way (nn. 107-108). Gone once applied. */
+  commemorated?: Commemorated;
+  /** What the day admits when it is kept (n. 111). Gone once applied. */
+  admits?: Admits;
+  /** The days it is left out on, not commemorated (n. 33). Gone once applied. */
+  omittedOn?: Matcher[];
+  /** Whom it honours, where it says so (n. 112). Gone once applied. */
+  honours?: string[];
+  /** Whether it is of the season (nn. 112c, 113). Gone once applied. */
+  ofTheSeason?: boolean;
   /** Where the Mass is read from. Gone once it is read. */
   proper?: ProperReference;
   /**
@@ -370,13 +378,48 @@ export type Calendar = Record<
  * A day of a `calendar` map: its id, or the id with the color its Mass wears
  * where that is not the default.
  */
-export type CalendarEntry = string | { id: string; color?: string };
+export type CalendarEntry = string | { id: string; color?: string; honours?: string[] };
+
+/** How a day is commemorated when it gives way (nn. 107-108, 26). */
+export type Commemorated = "privileged" | "ordinary" | "never";
+
+/**
+ * A kind of day, by its own fields: a day matches when every field named
+ * matches it, a list matching any of its values.
+ */
+export type Matcher = {
+  type?: string | string[];
+  class?: number | number[];
+  commemorated?: Commemorated | Commemorated[];
+  "of-the-season"?: boolean;
+};
+
+/** What a day admits when it is kept (n. 111). */
+export type Admits = {
+  /** The most commemorations it admits; absent, any number. */
+  count?: number;
+  /** The kinds of commemoration it admits; absent, any. */
+  of?: Matcher[];
+  /** A privileged commemoration is said before, and so in place of, the others. */
+  "privileged-first"?: boolean;
+};
+
+/** The rules of the commemorations that hold for every day alike (nn. 112-114). */
+export type CommemorationRules = {
+  /** `honours`: days honouring someone in common; a pair: days matching it. */
+  excludes: ("honours" | [Matcher, Matcher])[];
+  /** Commemorations matching an earlier entry first; `precedence` for the rest. */
+  order: (Matcher | "precedence")[];
+  "over-the-count": "omitted";
+};
 
 export type CalendarData = {
   "valid-types"?: string[];
   "valid-liturgical-classes"?: number[];
-  "valid-commemoration-types"?: string[];
+  "valid-commemorated"?: Commemorated[];
   "valid-colors"?: string[];
+
+  commemorations?: CommemorationRules;
 
   /**
    * A local proper's: the local calendars of the sources its days are read
@@ -388,10 +431,13 @@ export type CalendarData = {
   id?: string;
   type?: string;
   "liturgical-class"?: number;
-  "commemoration-type"?: string;
   color?: string;
 
-  "accept-commemoration-types"?: string[];
+  commemorated?: Commemorated;
+  admits?: Admits;
+  "omitted-on"?: Matcher[];
+  honours?: string[];
+  "of-the-season"?: boolean;
 
   occurence?: Occurence;
 
