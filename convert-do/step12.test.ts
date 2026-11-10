@@ -80,7 +80,7 @@ describe("step12 — which trees are published", () => {
   });
 
   it("publishes the local calendars the Utrecht proper reads", () => {
-    expect(isPublishedTree("la/Sancti/Neerlandia/gertrudis-virginis.json")).toBe(true);
+    expect(isPublishedTree("la/Sancti/Neerlandia/gertrudis-virginis.json")).toBe(false);
     expect(
       isPublishedTree("la/Sancti/Neerlandia/Ultrajectum/lebuini-confessoris.json")
     ).toBe(true);

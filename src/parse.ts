@@ -9,14 +9,20 @@ export class CalendarBuilder {
     liturgicalDayProp: Omit<LiturgicalDay, "commemorations">
   ) {
     const liturgicalDay = {
+      id: liturgicalDayProp.id,
       title: liturgicalDayProp.title,
       type: liturgicalDayProp.type,
       liturgicalClass: liturgicalDayProp.liturgicalClass,
-      commemorationType: liturgicalDayProp.commemorationType,
-      acceptCommemorationTypes: liturgicalDayProp.acceptCommemorationTypes,
+      commemorated: liturgicalDayProp.commemorated,
+      admits: liturgicalDayProp.admits,
+      omittedOn: liturgicalDayProp.omittedOn,
+      honours: liturgicalDayProp.honours,
+      ofTheSeason: liturgicalDayProp.ofTheSeason,
       color: liturgicalDayProp.color,
       mass: liturgicalDayProp.mass,
       officium: liturgicalDayProp.officium,
+      proper: liturgicalDayProp.proper,
+      naming: liturgicalDayProp.naming,
       season: liturgicalDayProp.season,
       alternativeColor: liturgicalDayProp.alternativeColor,
     };

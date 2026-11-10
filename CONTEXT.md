@@ -6,7 +6,7 @@ commemorated with, which season it falls in and which color its Mass wears.
 
 ## Language
 
-Liturgical identifiers — the types of day, the seasons, the titles of
+Liturgical identifiers — the types of day, the seasons, the ids of
 celebrations — are Latin, in the words the rubrics use, written as lowercase
 hyphenated slugs. Colors are plain English: they name what a reader shows, not a
 rite.
@@ -28,10 +28,22 @@ A color the rubrics permit in place of the prescribed one: rose on Gaudete and
 Laetare Sunday (n. 127), and nowhere else. The prescribed color stays violet.
 _Avoid_: optional color, secondary color
 
+**Id**:
+What a day is, the same in every language: the slug the calendar gives it, such
+as `dominica-i-adventus`, which its propers are filed under and its names keyed
+on. A feria the calendar names nothing for has none.
+_Avoid_: title (for the slug), key, name
+
+**Title**:
+What a day is called in a language: the name the language gives its id, or,
+where it has none, the Latin title of the day's Mass. A day nothing names has
+no title; its id still says which day it is.
+_Avoid_: id, name (of a day)
+
 **Name**:
 What a language calls a thing the calendar identifies: the Dutch "Advent" for
-the season `adventus`, "paars" for the color `violet`, a translated title for a
-slug. A language supplies names; it never changes an identifier.
+the season `adventus`, "paars" for the color `violet`, a day's **Title**. A
+language supplies names; it never changes an identifier.
 _Avoid_: label, translation (of an identifier)
 
 **Martyrology**:
@@ -107,7 +119,7 @@ _Avoid_: diocesan calendar, supplement
   rubrics that assemble an Hour from them are the reader's; a part of an Hour
   the day says nothing of is said from the psalter.
 - The **Seasons** are the rubrics' ten and nothing finer. Holy Week and the
-  Triduum are the last days of `passionis`, recognisable by their titles; the
+  Triduum are the last days of `passionis`, recognisable by their ids; the
   octaves show through the day's type. No field names a period within a
   season.
 

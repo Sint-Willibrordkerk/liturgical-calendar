@@ -43,7 +43,7 @@ sabbato-quattuor-temporum-pentecostes: Quatertemperzaterdag in het octaaf van Pi
 $day infra octavam Paschæ: $day in het octaaf van Pasen
 feria-quinta-in-coena-domini-quad6-4: Witte Donderdag
 feria-sexta-in-passione-et-morte-domini: Goede Vrijdag
-Sabbato sancto: Paaszaterdag
+sabbato-sancto: Paaszaterdag
 dominica-resurrectionis: Hoogfeest van Pasen
 dominica-pentecostes: Hoogfeest van Pinksteren
 $feria-infra-hebdomadam-$count-in-quadragesima: $feria in de $count week van de Vasten

@@ -83,12 +83,61 @@ export type RawMassProper = {
   postcommunio?: { text?: string; closure?: string };
 };
 
+/**
+ * Where a day's Mass is read from, and how: the same in every language. The
+ * days are settled from these alone, and the propers read through them after.
+ */
+export type ProperReference = {
+  /** The id the propers are filed under: the day's own, or another's it borrows. */
+  id: string;
+  /** The local calendars searched before the general ones, most particular first. */
+  local?: string[];
+  /** The date whose season decides what is sung; the day's own where absent. */
+  season?: Date;
+  /** A variant of the file read beside the rubric in force. */
+  variant?: string;
+  /**
+   * The Preface said in place of the Mass's own: always, or only where the
+   * Mass names one.
+   */
+  prefatio?: { name: string; always: boolean };
+  /** Borrowed from another day: the Mass is said, but not that day's Office. */
+  borrowed?: true;
+};
+
 export type Commemoration = {
+  /**
+   * What the day is, the same in every language: a slug such as
+   * `dominica-i-adventus`, to compare and to look up by. Absent on a feria
+   * the calendar names nothing for.
+   */
+  id?: string;
+  /**
+   * What the day is called in the language: its name there, or, where the
+   * language has none, the Latin title of its Mass. Absent where nothing
+   * names it; the id still says which day it is.
+   */
   title?: string;
   type?: string;
   liturgicalClass: number;
-  commemorationType?: string;
-  acceptCommemorationTypes?: string[];
+  /** How the day is commemorated when it gives way (nn. 107-108). Gone once applied. */
+  commemorated?: Commemorated;
+  /** What the day admits when it is kept (n. 111). Gone once applied. */
+  admits?: Admits;
+  /** The days it is left out on, not commemorated (n. 33). Gone once applied. */
+  omittedOn?: Matcher[];
+  /** Whom it honours, where it says so (n. 112). Gone once applied. */
+  honours?: string[];
+  /** Whether it is of the season (nn. 112c, 113). Gone once applied. */
+  ofTheSeason?: boolean;
+  /** Where the Mass is read from. Gone once it is read. */
+  proper?: ProperReference;
+  /**
+   * The id as the calendar writes it, `$count` and `$day` still to fill, and
+   * the count to fill them with: named in the language once the Mass is read.
+   * Gone once it is named.
+   */
+  naming?: { template: string; count: number };
   mass?: MassProper | MassProper[] | RawMassProper;
   /**
    * The propers of the Office, Hour by Hour. Present only when asked for, and
@@ -326,36 +375,79 @@ export type Calendar = Record<
 >;
 
 /**
- * A day of a `calendar` map: its title, or the title with the color its Mass
- * wears where that is not the default.
+ * A day of a `calendar` map: its id, or the id with the color its Mass wears
+ * where that is not the default.
  */
-export type CalendarEntry = string | { title: string; color?: string };
+export type CalendarEntry = string | { id: string; color?: string; honours?: string[] };
 
+/** How a day is commemorated when it gives way (nn. 107-108, 26). */
+export type Commemorated = "privileged" | "ordinary" | "never";
+
+/**
+ * A kind of day, by its own fields: a day matches when every field named
+ * matches it, a list matching any of its values. As written, so its values
+ * are checked only once the calendar is merged.
+ */
+export type Matcher = {
+  type?: string | string[];
+  class?: number | number[];
+  commemorated?: string | string[];
+  "of-the-season"?: boolean;
+};
+
+/** What a day admits when it is kept (n. 111). */
+export type Admits = {
+  /** The most commemorations it admits; absent, any number. */
+  count?: number;
+  /** The kinds of commemoration it admits; absent, any. */
+  of?: Matcher[];
+  /** A privileged commemoration is said before, and so in place of, the others. */
+  "privileged-first"?: boolean;
+};
+
+/** The rules of the commemorations that hold for every day alike (nn. 112-113). */
+export type CommemorationRules = {
+  /** `honours`: days honouring someone in common; a pair: days matching it. */
+  excludes: ("honours" | [Matcher, Matcher])[];
+  /** Commemorations matching an earlier entry first; `precedence` for the rest. */
+  order: (Matcher | "precedence")[];
+};
+
+/**
+ * A calendar or a proper as written. Its values are any of their kind until
+ * the propers are merged into the calendar and checked against its lists.
+ */
 export type CalendarData = {
   "valid-types"?: string[];
   "valid-liturgical-classes"?: number[];
-  "valid-commemoration-types"?: string[];
+  "valid-commemorated"?: string[];
   "valid-colors"?: string[];
 
-  /**
-   * A local proper's: the local calendars of the sources its days are read
-   * from, by their path below the day tree, the most particular first.
-   */
-  "local-calendars"?: string[];
+  commemorations?: CommemorationRules;
 
-  title?: string;
+  /** The day's id, a slug; `$count`, `$day` and `$feria` filled in by date. */
+  id?: string;
   type?: string;
   "liturgical-class"?: number;
-  "commemoration-type"?: string;
   color?: string;
 
-  "accept-commemoration-types"?: string[];
+  commemorated?: string;
+  admits?: Admits;
+  "omitted-on"?: Matcher[];
+  honours?: string[];
+  "of-the-season"?: boolean;
 
   occurence?: Occurence;
 
-  calendar?: Record<DateString, CalendarEntry[] | CalendarEntry | undefined>;
+  calendar?: Partial<Record<DateString, CalendarEntry[] | CalendarEntry>>;
   slot?: string;
   "slot-name"?: string;
+
+  /**
+   * The local calendar a proper's day is read from, set as the day is put in
+   * its slot, from the proper's path. Never written in the YAML.
+   */
+  "local-calendar"?: string;
 
   items?: CalendarData[];
 };

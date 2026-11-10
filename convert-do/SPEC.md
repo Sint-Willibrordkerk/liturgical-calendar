@@ -1882,19 +1882,19 @@ that calendar is one of these:
 | Local calendar         | |
 | ---------------------- | - |
 | `aliquibus locis`      | "in some places" — a universal option of the general calendar |
-| `Neerlandia`           | the Netherlands, which the Utrecht local proper reads |
 | `Neerlandia/Ultrajectum` | the archdiocese of Utrecht, which the Utrecht local proper reads |
 
 A local calendar is named by its whole path below the day tree, so keeping
-`Neerlandia` keeps the days directly in it and not those of the calendars nested
-in it: `Neerlandia/Groningen` is not kept. The other regional ones (`Urbis`,
-`Bavaria`, `Brasilia`, …) are the propers of a place no local proper of the
-calendar reads; they are dropped rather than shipped unreachable.
+`Neerlandia/Ultrajectum` keeps neither the days directly in `Neerlandia` nor
+those of the calendars beside it: `Neerlandia/Groningen` is not kept. The other
+regional ones (`Urbis`, `Bavaria`, `Brasilia`, …) are the propers of a place no
+local proper of the calendar reads; they are dropped rather than shipped
+unreachable.
 
 A kept local calendar is published **at its own path** —
 `Sancti/Neerlandia/Ultrajectum/willibrordi-….yml` — beside the general day of
 the same name, never in its place. A local day is reached only by a calendar
-generated with a local proper that names its local calendar, so it cannot
+generated with the local proper filed at the same path, so it cannot
 shadow the general day for anyone else — nor, in that calendar, for a day the
 local proper does not keep itself.
 

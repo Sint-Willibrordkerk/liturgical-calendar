@@ -1,8 +1,11 @@
 import type {
+  Admits,
   CalendarData,
   CalendarEntry,
   Color,
+  Commemorated,
   DateString,
+  Matcher,
   Occurence,
   RelativeDate,
   Weekday,
@@ -10,48 +13,23 @@ import type {
 import { CalendarBuilder } from "./parse";
 import { calculateAdvent, calculateEaster, getDate } from "./utils";
 import { weekdays } from "./constants";
-import {
-  loadCalendarData,
-  loadPropers,
-  loadMassPropersByTitle,
-  loadOfficiumByTitle,
-  type RawMassProper,
-} from "./loadAssets";
-import { ordinals, days, feriae } from "./ordinals";
-import type { Language } from "./language";
+import { loadCalendar, loadPropers } from "./loadAssets";
+import { idOf } from "./naming";
 import { defaultColor, mayWearRose, seasonOf } from "./seasons";
-
-type Translations = Record<string, string>;
-/** A filing slug — all lowercase, digits and hyphens — not a name to show. */
-const IS_SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-
-/** A slug, or a slug with `$count`/`$day`/`$feria` still to be filled in. */
-const IS_SLUG_TEMPLATE = /^[a-z0-9$]+(?:-[a-z0-9$]+)*$/;
-
-/** A value spliced into a slug, kept lowercase and hyphenated so it stays one. */
-function slugPart(value: string): string {
-  return value.toLowerCase().replace(/\s+/g, "-");
-}
-
-function translate(
-  str: string | undefined,
-  translations?: Translations
-): string | undefined {
-  if (!str || !translations) return str;
-  return translations[str] || str;
-}
 
 type ParsedCalendarData = {
   type: string;
-  title?: string;
+  id?: string;
   liturgicalClass: number;
-  commemorationType: string;
-  acceptCommemorationTypes: string[];
+  /** As written; checked against the calendar's list once merged. */
+  commemorated?: string;
+  admits?: Admits;
+  omittedOn?: Matcher[];
+  honours?: string[];
+  ofTheSeason?: boolean;
   color?: string;
   occurence?: Occurence;
-  calendar?: Record<DateString, CalendarEntry[] | CalendarEntry | undefined>;
-  slot?: string;
-  slotName?: string;
+  calendar?: Partial<Record<DateString, CalendarEntry[] | CalendarEntry>>;
   /**
    * The local calendars of the sources a local proper's own day is read from,
    * before the general ones. A day of the base calendar reads only the general
@@ -61,38 +39,26 @@ type ParsedCalendarData = {
   localCalendars?: string[];
 };
 
-function flattenCalendarData(
-  item: CalendarData,
-  parent: Partial<ParsedCalendarData>,
-  slots: Record<string, ParsedCalendarData[]> = {}
-) {
+function flattenCalendarData(item: CalendarData, parent: Partial<ParsedCalendarData>) {
   const list: ParsedCalendarData[] = [];
   const merged: Partial<ParsedCalendarData> = {
-    title: item.title ?? parent.title,
+    id: item.id ?? parent.id,
     type: item.type ?? parent.type,
     liturgicalClass: item["liturgical-class"] ?? parent.liturgicalClass,
-    commemorationType: item["commemoration-type"] ?? parent.commemorationType,
-    acceptCommemorationTypes:
-      item["accept-commemoration-types"] ?? parent.acceptCommemorationTypes,
+    commemorated: item.commemorated ?? parent.commemorated,
+    admits: item.admits ?? parent.admits,
+    omittedOn: item["omitted-on"] ?? parent.omittedOn,
+    honours: item.honours ?? parent.honours,
+    ofTheSeason: item["of-the-season"] ?? parent.ofTheSeason,
     color: item.color ?? parent.color,
     occurence: item.occurence ?? parent.occurence,
-    slotName: item["slot-name"] ?? parent.slotName,
+    localCalendars:
+      item["local-calendar"] === undefined ? parent.localCalendars : [item["local-calendar"]],
   };
 
-  if (item.slot) {
+  if (item.items?.length)
     list.push(
-      ...((slots[item.slot]?.map((slot) => ({
-        ...merged,
-        ...Object.fromEntries(
-          Object.entries(slot).filter(([_, value]) => value !== undefined)
-        ),
-      })) ?? []) as ParsedCalendarData[])
-    );
-  } else if (item.items?.length)
-    list.push(
-      ...item.items.flatMap((subItem) =>
-        flattenCalendarData(subItem, merged as ParsedCalendarData, slots)
-      )
+      ...item.items.flatMap((subItem) => flattenCalendarData(subItem, merged as ParsedCalendarData))
     );
   else if (Object.keys(item.calendar ?? {}).length) {
     Object.entries(item.calendar!).forEach(([date, value]) => {
@@ -101,12 +67,13 @@ function flattenCalendarData(
       // from it, and reversing it in place would flip the order each time.
       const entries = Array.isArray(value) ? [...value] : [value];
       entries.reverse().forEach((entry) => {
-        const { title, color } =
-          typeof entry === "string" ? { title: entry, color: undefined } : entry;
+        const { id, color, honours } =
+          typeof entry === "string" ? { id: entry, color: undefined, honours: undefined } : entry;
         list.push({
           ...(merged as ParsedCalendarData),
-          title,
+          id,
           color: color ?? merged.color,
+          honours: honours ?? merged.honours,
           occurence: { date: date as DateString },
         });
       });
@@ -162,29 +129,21 @@ function getDates(
   return dates;
 }
 
-export function parseCalendarData(
-  year: number,
-  propers: string[],
-  language: Language,
-  translations?: Translations,
-  officium = false,
-  fallbacks: readonly Language[] = []
-) {
-  const calendarData = loadCalendarData();
+/**
+ * The days of `year`, with the local `propers` named laid over the general
+ * calendar: which is kept on each date and which commemorated, its color and
+ * its season, and where each one's Mass is filed.
+ *
+ * The days are the same in every language, so none is asked for. Each has the
+ * id the calendar gives it, and carries what a language needs to name it and
+ * to read its propers after.
+ */
+export function parseCalendarData(year: number, propers: readonly string[]) {
+  // The propers are put in their slots, and every day checked, as it loads.
+  const local = propers.map((name) => ({ name, data: loadPropers(name) }));
+  const list = flattenCalendarData(loadCalendar(local), {});
   const calendarBuilder = new CalendarBuilder();
 
-  const slots: Record<string, ParsedCalendarData[]> = {};
-  propers.reverse().forEach((proper) => {
-    const data = loadPropers(proper);
-    const localCalendars = data["local-calendars"];
-    const properData = flattenCalendarData(data, {});
-    properData.forEach(({ slotName, ...item }) => {
-      slots[slotName!] ??= [];
-      slots[slotName!]!.push({ ...item, localCalendars });
-    });
-  });
-
-  const list = flattenCalendarData(calendarData, {}, slots);
   const advent = calculateAdvent(year);
   const easter = calculateEaster(year);
 
@@ -192,68 +151,8 @@ export function parseCalendarData(
     if (item.occurence) {
       const dates = getDates(item.occurence, advent, easter, year);
       dates.forEach((date, index) => {
-        const originalTitle = translate(item.title, translations);
-        const ordinal = translate(
-          ordinals[(index + 1) as keyof typeof ordinals],
-          translations
-        );
-        const day = translate(
-          days[(date.getDay() + 1) as keyof typeof days],
-          translations
-        );
-
-        // Build title with variable substitution for mass proper matching
-        const latinOrdinal =
-          ordinals[(index + 1) as keyof typeof ordinals] || "";
-        const latinDay = days[(date.getDay() + 1) as keyof typeof days] || "";
-        // `$feria` spells the weekday's ordinal out, which is how the propers
-        // are filed; `$day` gives the Roman numeral the calendar reads by.
-        const latinFeria =
-          feriae[(date.getDay() + 1) as keyof typeof feriae] || "";
-        const titleWithSubstitution = item.title
-          ?.replace("$count", latinOrdinal)
-          .replace("$day", latinDay)
-          .replace("$feria", latinFeria);
-
-        // Load mass proper by title and language. A proper carries every chant
-        // the year might call for; the season decides which the day sings.
-        const mass: RawMassProper | undefined = titleWithSubstitution
-          ? loadMassPropersByTitle(
-              titleWithSubstitution,
-              language,
-              undefined,
-              { date, easter },
-              item.localCalendars,
-              fallbacks
-            )
-          : undefined;
-
-        // Fill the parametric parts to build the name shown. A slug stays a
-        // slug — `$count` spliced in lowercase so `dominica-$count-adventus`
-        // becomes `dominica-i-adventus`, still a lookup key; a translated or
-        // written title takes the ordinary weekday name and numeral. `$feria`
-        // exists only to file the propers, so it is never shown: the day is
-        // called by its weekday like any other.
-        const intoSlug =
-          originalTitle != null && IS_SLUG_TEMPLATE.test(originalTitle);
-        let title = translate(
-          originalTitle
-            ?.replace("$count", intoSlug ? slugPart(latinOrdinal) : ordinal!)
-            .replace("$day", intoSlug ? slugPart(latinDay) : day!)
-            .replace("$feria", intoSlug ? slugPart(latinFeria) : day!),
-          translations
-        );
-
-        // A slug is a lookup key, not a name. Where the day resolved a proper,
-        // that proper carries the real Latin title (from its officium), so the
-        // reader sees `Festum Sanctissimæ Trinitatis` rather than
-        // `festum-sanctissimae-trinitatis`. A translated title has already
-        // become a name and is left alone; so is a day with no proper to draw
-        // on, such as Holy Saturday, and a written title like a numbered Sunday
-        // the calendar spells out rather than files under a slug.
-        if (title && mass?.title && IS_SLUG.test(title)) {
-          title = mass.title;
-        }
+        const count = index + 1;
+        const id = item.id === undefined ? undefined : idOf(item.id, count, date);
 
         // The season belongs to the date; the color to the day's own Mass,
         // where the calendar names one, and to the season otherwise.
@@ -267,18 +166,15 @@ export function parseCalendarData(
 
         calendarBuilder.add(date.getMonth() + 1, date.getDate(), {
           ...item,
-          title,
-          mass,
-          officium:
-            officium && titleWithSubstitution
-              ? loadOfficiumByTitle(
-                  titleWithSubstitution,
-                  language,
-                  undefined,
-                  item.localCalendars,
-                  fallbacks
-                )
-              : undefined,
+          // Checked against the calendar's list as it loaded.
+          commemorated: item.commemorated as Commemorated | undefined,
+          id,
+          proper: id
+            ? item.localCalendars === undefined
+              ? { id }
+              : { id, local: item.localCalendars }
+            : undefined,
+          naming: item.id === undefined ? undefined : { template: item.id, count },
           color,
           season,
           alternativeColor,
