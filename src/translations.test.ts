@@ -70,7 +70,7 @@ function keysOf(file: string): string[] {
 // key that reaches either is reachable — the Utrecht propers give their own
 // days ids, and the Dutch keys on those ids.
 const calendarNames = new Set(names(parse(readFileSync(CALENDAR, "utf-8"))));
-for (const file of readdirSync(PROPERS)) {
+for (const file of (readdirSync(PROPERS, { recursive: true }) as string[]).map((f) => f.replace(/\\/g, "/"))) {
   if (!file.endsWith(".yml")) continue;
   for (const name of names(parse(readFileSync(join(PROPERS, file), "utf-8")))) {
     calendarNames.add(name);

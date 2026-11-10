@@ -66,7 +66,7 @@ they fall, each with its id — but no day carries a Mass or a title.
 
 - `year` (number): The year for which to generate the calendar; this year by
   default.
-- `propers` (string[]): Array of proper names to include (e.g., `['ultrajectum', 'fsspx']`)
+- `propers` (string[]): Array of proper names to include (e.g., `['neerlandia/ultrajectum', 'fsspx']`)
 - `languages` (Language[]): Language packages —
   `@sint-willibrordkerk/liturgical-calendar-la`, `…-nl` — imported and passed
   in. The first supplies the words of the Mass propers and the names of the
@@ -84,7 +84,7 @@ they fall, each with its id — but no day carries a Mass or a title.
 import nl from '@sint-willibrordkerk/liturgical-calendar-nl';
 
 // Generate calendar with local propers (e.g., Utrecht diocese)
-const calendar = generateCalendar({ year: 2026, propers: ['ultrajectum'], languages: [nl] });
+const calendar = generateCalendar({ year: 2026, propers: ['neerlandia/ultrajectum'], languages: [nl] });
 
 // November 7th will show local feast
 const november7 = calendar[11][7];
@@ -103,7 +103,7 @@ said in the next language that has it:
 import la from '@sint-willibrordkerk/liturgical-calendar-la';
 import nl from '@sint-willibrordkerk/liturgical-calendar-nl';
 
-const calendar = generateCalendar({ year: 2026, propers: ['ultrajectum'], languages: [nl, la] });
+const calendar = generateCalendar({ year: 2026, propers: ['neerlandia/ultrajectum'], languages: [nl, la] });
 
 const { mass } = calendar[11][7];
 mass.oratio;   // the Latin collect
@@ -340,21 +340,15 @@ its color beside its id:
 ### The Propers of a Local Calendar
 
 Divinum Officium keeps the days of some places in local calendars of their own.
-A local proper names the ones it reads, the most particular first, and its days
-are named as the sources file them:
+A local proper is filed as the sources file its calendar, slugified:
+`assets/propers/neerlandia/ultrajectum.yml` is their `Neerlandia/Ultrajectum`,
+and is asked for as `neerlandia/ultrajectum`.
 
-```yaml
-local-calendars:
-  - Neerlandia/Ultrajectum
-  - Neerlandia
-```
-
-The proper's own days look for their propers in those local calendars before
-the general ones. The days of the base calendar keep their own, with or without
-the proper: a local calendar may file a different saint under the same name, as
-the Netherlands' Gertrude of Nivelles shares hers with Gertrude the Great. Only the local calendars
-a local proper reads are published: today the Netherlands and the archdiocese of
-Utrecht.
+The proper's own days look for their propers in that local calendar before the
+general ones. The days of the base calendar keep their own, with or without the
+proper: a local calendar may file a different saint under the same name. Only
+the local calendars a local proper reads are published: today the archdiocese
+of Utrecht.
 
 ## Development
 

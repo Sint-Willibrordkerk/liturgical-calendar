@@ -10,7 +10,9 @@ import type {
 } from "../../types";
 import { weekdays } from "../../constants";
 import { dateStringSchema, liturgicalDateSchema, relativeDateSchema } from "./relativeDate";
-import { issueOption, maybeArraySchema, zRegex } from "./utils";
+import { maybeArraySchema, zRegex } from "./utils";
+import { insertPropers, type LocalProper } from "../insertPropers";
+import { problemsOf } from "../../calendarValidity";
 
 const weekdayKeys = Object.keys(weekdays);
 
@@ -54,19 +56,17 @@ const calendarEntrySchema: z.ZodType<CalendarEntry> = z.union([
     .strict(),
 ]);
 
-const commemoratedSchema = z.enum(["privileged", "ordinary", "never"]);
-
 const oneOrMany = <T extends z.ZodTypeAny>(schema: T) => z.union([schema, z.array(schema)]);
 
 /**
  * A kind of day, by its own fields. Strict, so a field misspelt is refused
- * rather than never matching.
+ * rather than never matching; its values are checked once merged.
  */
 const matcherSchema: z.ZodType<Matcher> = z
   .object({
     type: oneOrMany(z.string()).optional(),
     class: oneOrMany(z.number()).optional(),
-    commemorated: oneOrMany(commemoratedSchema).optional(),
+    commemorated: oneOrMany(z.string()).optional(),
     "of-the-season": z.boolean().optional(),
   })
   .strict();
@@ -83,118 +83,59 @@ const commemorationRulesSchema: z.ZodType<CommemorationRules> = z
   .object({
     excludes: z.array(z.union([z.literal("honours"), z.tuple([matcherSchema, matcherSchema])])),
     order: z.array(z.union([matcherSchema, z.literal("precedence")])),
-    "over-the-count": z.literal("omitted"),
   })
   .strict();
 
-/** The matchers a day holds, wherever they are, to be checked against the lists. */
-function matchersOf(data: CalendarData): [string, Matcher][] {
-  const out: [string, Matcher][] = [];
-  data.admits?.of?.forEach((m, i) => out.push([`admits.of.${i}`, m]));
-  data["omitted-on"]?.forEach((m, i) => out.push([`omitted-on.${i}`, m]));
-  data.commemorations?.excludes.forEach((rule, i) => {
-    if (rule !== "honours")
-      rule.forEach((m, j) => out.push([`commemorations.excludes.${i}.${j}`, m]));
-  });
-  data.commemorations?.order.forEach((m, i) => {
-    if (m !== "precedence") out.push([`commemorations.order.${i}`, m]);
-  });
-  return out;
-}
-
-// This needs to be a function because it's recursive and uses context
-export function createCalendarDataSchema(parent?: Partial<CalendarData>): z.ZodType<CalendarData> {
-  return z
+/**
+ * The shape of a calendar or a proper: which fields it has, at any depth, and
+ * what kind of value each holds. Any type, class, color or commemoration is
+ * taken here; whether the calendar declares it is asked once the propers are
+ * merged into it, against the calendar's own lists.
+ */
+export const calendarDataSchema: z.ZodType<CalendarData> = z.lazy(() =>
+  z
     .object({
       "valid-types": z.array(z.string()).optional(),
       "valid-liturgical-classes": z.array(z.number()).optional(),
-      "valid-commemorated": z.array(commemoratedSchema).optional(),
+      "valid-commemorated": z.array(z.string()).optional(),
       "valid-colors": z.array(z.string()).optional(),
+      commemorations: commemorationRulesSchema.optional(),
 
       id: idSchema.optional(),
       type: z.string().optional(),
       "liturgical-class": z.number().optional(),
       color: z.string().optional(),
 
-      commemorations: commemorationRulesSchema.optional(),
-      "local-calendars": z.array(z.string()).optional(),
-      commemorated: commemoratedSchema.optional(),
+      commemorated: z.string().optional(),
       admits: admitsSchema.optional(),
       "omitted-on": z.array(matcherSchema).optional(),
       honours: honoursSchema.optional(),
       "of-the-season": z.boolean().optional(),
+
       occurence: occurenceSchema.optional(),
       calendar: z
         .record(dateStringSchema as z.ZodString, maybeArraySchema(calendarEntrySchema))
         .optional(),
       slot: z.string().optional(),
       "slot-name": z.string().optional(),
-      items: z.array(z.unknown()).optional() as z.ZodType<CalendarData[]>,
+      items: z.array(calendarDataSchema).optional(),
     })
-    .superRefine((data, ctx) => {
-      const {
-        "valid-types": validTypes,
-        "valid-liturgical-classes": validLiturgicalClasses,
-        "valid-commemorated": validCommemorated,
-        "valid-colors": validColors,
-      } = {
-        "valid-types": [],
-        "valid-liturgical-classes": [],
-        "valid-commemorated": [],
-        "valid-colors": [],
-        ...parent,
-        ...data,
-      };
+    .strict()
+);
 
-      issueOption(ctx, "type", validTypes, data.type);
-      issueOption(ctx, "liturgical-class", validLiturgicalClasses, data["liturgical-class"]);
-      issueOption(ctx, "commemorated", validCommemorated, data.commemorated);
-      for (const [path, matcher] of matchersOf(data)) {
-        [matcher.type ?? []]
-          .flat()
-          .forEach((type) => issueOption(ctx, `${path}.type`, validTypes, type));
-        [matcher.class ?? []]
-          .flat()
-          .forEach((c) => issueOption(ctx, `${path}.class`, validLiturgicalClasses, c));
-        [matcher.commemorated ?? []]
-          .flat()
-          .forEach((c) => issueOption(ctx, `${path}.commemorated`, validCommemorated, c));
-      }
-
-      issueOption(ctx, "color", validColors, data.color);
-      Object.entries(data.calendar ?? {}).forEach(([date, value]) => {
-        const entries = Array.isArray(value) ? value : [value];
-        entries.forEach((entry, index) => {
-          if (typeof entry === "string") return;
-          const path = Array.isArray(value) ? [date, index] : [date];
-          issueOption(ctx, ["calendar", ...path, "color"].join("."), validColors, entry.color);
-        });
-      });
-
-      if (data.items) {
-        const { items: _items, ...childData } = data;
-        const childSchema = createCalendarDataSchema({
-          ...parent,
-          ...childData,
-        });
-        data.items.forEach((item, index) => {
-          const result = childSchema.safeParse(item);
-          if (!result.success) {
-            result.error.issues.forEach((issue) => {
-              ctx.addIssue({
-                ...issue,
-                path: ["items", index, ...issue.path],
-              });
-            });
-          }
-        });
-      }
+/**
+ * The calendar, its propers inserted and checked: its shape read, the
+ * propers' days put in the slots they name, and every day then checked against
+ * the lists the calendar declares.
+ */
+export function calendarSchema(propers: readonly LocalProper[]): z.ZodType<CalendarData> {
+  return calendarDataSchema
+    .transform((calendar, ctx) => {
+      const inserted = insertPropers(calendar, propers);
+      for (const message of inserted.problems) ctx.addIssue({ code: "custom", message });
+      return inserted.calendar;
+    })
+    .superRefine((calendar, ctx) => {
+      for (const message of problemsOf(calendar)) ctx.addIssue({ code: "custom", message });
     });
-}
-
-export function assertCalendarData(
-  calendarData: any,
-  parent?: any,
-): asserts calendarData is CalendarData {
-  createCalendarDataSchema(parent).parse(calendarData);
 }

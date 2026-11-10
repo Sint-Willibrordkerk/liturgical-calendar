@@ -76,7 +76,7 @@ describe("the colors of the calendar", () => {
   it("mark the martyrs of a local proper red, where its id says so", () => {
     // A proper names its saints as it shows them, so a martyr whose title does
     // not say so (`S. Frederici`) is beyond this guard.
-    for (const file of readdirSync(PROPERS)) {
+    for (const file of (readdirSync(PROPERS, { recursive: true }) as string[]).map((f) => f.replace(/\\/g, "/"))) {
       if (!file.endsWith(".yml")) continue;
       const proper = entries(parse(readFileSync(join(PROPERS, file), "utf-8")));
       const forgotten = proper

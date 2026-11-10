@@ -140,7 +140,7 @@ describe("the Martyrology in the calendar", () => {
     const bundled: Record<string, unknown> = {
       "calendar1962.yml": parse(readFileSync(join("assets", "calendar1962.yml"), "utf-8")),
     };
-    for (const file of readdirSync(join("assets", "propers"))) {
+    for (const file of (readdirSync(join("assets", "propers"), { recursive: true }) as string[]).map((f) => f.replace(/\\/g, "/"))) {
       if (file.endsWith(".yml")) {
         bundled[`propers/${file}`] = parse(readFileSync(join("assets", "propers", file), "utf-8"));
       }

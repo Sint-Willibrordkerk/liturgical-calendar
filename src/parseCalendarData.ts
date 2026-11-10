@@ -13,7 +13,7 @@ import type {
 import { CalendarBuilder } from "./parse";
 import { calculateAdvent, calculateEaster, getDate } from "./utils";
 import { weekdays } from "./constants";
-import { loadCalendarData, loadPropers } from "./loadAssets";
+import { loadCalendar, loadPropers } from "./loadAssets";
 import { idOf } from "./naming";
 import { defaultColor, mayWearRose, seasonOf } from "./seasons";
 
@@ -21,16 +21,15 @@ type ParsedCalendarData = {
   type: string;
   id?: string;
   liturgicalClass: number;
-  commemorated?: Commemorated;
+  /** As written; checked against the calendar's list once merged. */
+  commemorated?: string;
   admits?: Admits;
   omittedOn?: Matcher[];
   honours?: string[];
   ofTheSeason?: boolean;
   color?: string;
   occurence?: Occurence;
-  calendar?: Record<DateString, CalendarEntry[] | CalendarEntry | undefined>;
-  slot?: string;
-  slotName?: string;
+  calendar?: Partial<Record<DateString, CalendarEntry[] | CalendarEntry>>;
   /**
    * The local calendars of the sources a local proper's own day is read from,
    * before the general ones. A day of the base calendar reads only the general
@@ -40,11 +39,7 @@ type ParsedCalendarData = {
   localCalendars?: string[];
 };
 
-function flattenCalendarData(
-  item: CalendarData,
-  parent: Partial<ParsedCalendarData>,
-  slots: Record<string, ParsedCalendarData[]> = {}
-) {
+function flattenCalendarData(item: CalendarData, parent: Partial<ParsedCalendarData>) {
   const list: ParsedCalendarData[] = [];
   const merged: Partial<ParsedCalendarData> = {
     id: item.id ?? parent.id,
@@ -57,23 +52,13 @@ function flattenCalendarData(
     ofTheSeason: item["of-the-season"] ?? parent.ofTheSeason,
     color: item.color ?? parent.color,
     occurence: item.occurence ?? parent.occurence,
-    slotName: item["slot-name"] ?? parent.slotName,
+    localCalendars:
+      item["local-calendar"] === undefined ? parent.localCalendars : [item["local-calendar"]],
   };
 
-  if (item.slot) {
+  if (item.items?.length)
     list.push(
-      ...((slots[item.slot]?.map((slot) => ({
-        ...merged,
-        ...Object.fromEntries(
-          Object.entries(slot).filter(([_, value]) => value !== undefined)
-        ),
-      })) ?? []) as ParsedCalendarData[])
-    );
-  } else if (item.items?.length)
-    list.push(
-      ...item.items.flatMap((subItem) =>
-        flattenCalendarData(subItem, merged as ParsedCalendarData, slots)
-      )
+      ...item.items.flatMap((subItem) => flattenCalendarData(subItem, merged as ParsedCalendarData))
     );
   else if (Object.keys(item.calendar ?? {}).length) {
     Object.entries(item.calendar!).forEach(([date, value]) => {
@@ -154,33 +139,15 @@ function getDates(
  * to read its propers after.
  */
 export function parseCalendarData(year: number, propers: readonly string[]) {
-  const calendarData = loadCalendarData();
+  // The propers are put in their slots, and every day checked, as it loads.
+  const local = propers.map((name) => ({ name, data: loadPropers(name) }));
+  const list = flattenCalendarData(loadCalendar(local), {});
   const calendarBuilder = new CalendarBuilder();
 
-  const slots: Record<string, ParsedCalendarData[]> = {};
-  [...propers].reverse().forEach((proper) => {
-    const data = loadPropers(proper);
-    const localCalendars = data["local-calendars"];
-    const properData = flattenCalendarData(data, {});
-    properData.forEach(({ slotName, ...item }) => {
-      slots[slotName!] ??= [];
-      slots[slotName!]!.push({ ...item, localCalendars });
-    });
-  });
-
-  const list = flattenCalendarData(calendarData, {}, slots);
   const advent = calculateAdvent(year);
   const easter = calculateEaster(year);
 
   list.reverse().forEach((item) => {
-    // Every day says how it is commemorated and what it admits, itself or by
-    // its group: nothing is assumed (nn. 108, 111).
-    if (item.occurence && (item.commemorated === undefined || item.admits === undefined)) {
-      throw new Error(
-        `${item.id ?? `a ${item.type}`} of class ${item.liturgicalClass} does not say ` +
-          `how it is commemorated (n. 108) and what it admits (n. 111)`
-      );
-    }
     if (item.occurence) {
       const dates = getDates(item.occurence, advent, easter, year);
       dates.forEach((date, index) => {
@@ -199,6 +166,8 @@ export function parseCalendarData(year: number, propers: readonly string[]) {
 
         calendarBuilder.add(date.getMonth() + 1, date.getDate(), {
           ...item,
+          // Checked against the calendar's list as it loaded.
+          commemorated: item.commemorated as Commemorated | undefined,
           id,
           proper: id
             ? item.localCalendars === undefined

@@ -20,7 +20,6 @@ const RULES: CommemorationRules = {
     [{ "of-the-season": true }, { "of-the-season": true }],
   ],
   order: [{ "of-the-season": true }, "precedence"],
-  "over-the-count": "omitted",
 };
 
 const day = (fields: Partial<Commemoration>): Commemoration =>
@@ -165,7 +164,7 @@ describe("the commemorations of the calendar", () => {
     const bundled: Record<string, unknown> = {
       "calendar1962.yml": parse(readFileSync(join("assets", "calendar1962.yml"), "utf-8")),
     };
-    for (const file of readdirSync(join("assets", "propers"))) {
+    for (const file of (readdirSync(join("assets", "propers"), { recursive: true }) as string[]).map((f) => f.replace(/\\/g, "/"))) {
       if (!file.endsWith(".yml")) continue;
       bundled[`propers/${file}`] = parse(readFileSync(join("assets", "propers", file), "utf-8"));
     }
@@ -264,7 +263,7 @@ describe("the commemorations of the calendar", () => {
     ]);
     const met = new Set<string>();
     for (let year = 2020; year <= 2060; year++) {
-      for (const propers of [[], ["ultrajectum"], ["fsspx"]]) {
+      for (const propers of [[], ["neerlandia/ultrajectum"], ["fsspx"]]) {
         const calendar = parseCalendarData(year, propers);
         for (const month of Object.values(calendar)) {
           for (const entry of Object.values(month ?? {})) {

@@ -1,8 +1,5 @@
-# The days Divinum Officium keeps for the archdiocese of Utrecht, and those it
-# keeps for the Netherlands, which the archdiocese keeps too.
-local-calendars:
-  - Neerlandia/Ultrajectum
-  - Neerlandia
+# The days of the archdiocese of Utrecht. A proper is filed as Divinum Officium
+# files its calendar, slugified: its days are read from Neerlandia/Ultrajectum.
 items:
 - slot-name: regionis-patroni-principalis
   calendar: { 07-11: willibrordi-episcopi-et-confessoris-titularis-ecclesiae-metropolitanae-et-patroni-principalis-archidioecesis }

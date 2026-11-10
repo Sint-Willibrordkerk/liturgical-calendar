@@ -31,7 +31,7 @@ beforeAll(() => {
   const bundled: Record<string, unknown> = {
     "calendar1962.yml": parse(readFileSync(join(ASSETS, "calendar1962.yml"), "utf-8")),
   };
-  for (const file of readdirSync(join(ASSETS, "propers"))) {
+  for (const file of (readdirSync(join(ASSETS, "propers"), { recursive: true }) as string[]).map((f) => f.replace(/\\/g, "/"))) {
     if (!file.endsWith(".yml")) continue;
     bundled[`propers/${file}`] = parse(
       readFileSync(join(ASSETS, "propers", file), "utf-8")
@@ -45,7 +45,7 @@ let calendar: Calendar;
 const day = (month: number, date: number) => calendar[month]![date]!;
 
 beforeAll(() => {
-  calendar = generateCalendar({ year: 2026, propers: ["ultrajectum"] });
+  calendar = generateCalendar({ year: 2026, propers: ["neerlandia/ultrajectum"] });
 });
 
 describe("every day of the year", () => {
@@ -63,7 +63,7 @@ describe("every day of the year", () => {
   });
 
   it("comes out the same when the calendar is generated twice", () => {
-    expect(generateCalendar({ year: 2026, propers: ["ultrajectum"] })).toEqual(calendar);
+    expect(generateCalendar({ year: 2026, propers: ["neerlandia/ultrajectum"] })).toEqual(calendar);
   });
 });
 

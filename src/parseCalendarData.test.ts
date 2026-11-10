@@ -3,6 +3,7 @@ import { join } from "path";
 import { parse } from "yaml";
 import { beforeAll, describe, expect, it } from "vitest";
 import { parseCalendarData } from "./parseCalendarData";
+import { loadPropers } from "./loadAssets";
 import type { Calendar, LiturgicalDay } from "./types";
 
 /**
@@ -14,7 +15,7 @@ beforeAll(() => {
   const bundled: Record<string, unknown> = {
     "calendar1962.yml": parse(readFileSync(join("assets", "calendar1962.yml"), "utf-8")),
   };
-  for (const file of readdirSync(join("assets", "propers"))) {
+  for (const file of (readdirSync(join("assets", "propers"), { recursive: true }) as string[]).map((f) => f.replace(/\\/g, "/"))) {
     if (!file.endsWith(".yml")) continue;
     bundled[`propers/${file}`] = parse(readFileSync(join("assets", "propers", file), "utf-8"));
   }
@@ -25,7 +26,7 @@ let general: Calendar;
 let utrecht: Calendar;
 beforeAll(() => {
   general = parseCalendarData(2026, []);
-  utrecht = parseCalendarData(2026, ["ultrajectum"]);
+  utrecht = parseCalendarData(2026, ["neerlandia/ultrajectum"]);
 });
 
 const day = (calendar: Calendar, month: number, date: number) => calendar[month]![date]!;
@@ -146,11 +147,11 @@ describe("parseCalendarData", () => {
       });
     });
 
-    it("files its own days under its local calendars, most particular first", () => {
-      expect(day(utrecht, 11, 7).proper?.local).toEqual(["Neerlandia/Ultrajectum", "Neerlandia"]);
+    it("files its own days under the local calendar its path names", () => {
+      expect(day(utrecht, 11, 7).proper?.local).toEqual(["Neerlandia/Ultrajectum"]);
       expect(day(utrecht, 7, 9).proper).toEqual({
         id: "martyrum-gorcomiensium",
-        local: ["Neerlandia/Ultrajectum", "Neerlandia"],
+        local: ["Neerlandia/Ultrajectum"],
       });
     });
 
@@ -162,14 +163,27 @@ describe("parseCalendarData", () => {
 
   describe("its arguments and its data", () => {
     it("leaves the list of propers it was handed as it was", () => {
-      const propers = ["fsspx", "ultrajectum"];
+      const propers = ["fsspx", "neerlandia/ultrajectum"];
       parseCalendarData(2026, propers);
-      expect(propers).toEqual(["fsspx", "ultrajectum"]);
+      expect(propers).toEqual(["fsspx", "neerlandia/ultrajectum"]);
+    });
+
+    it("loads a proper whatever it says, and checks it once merged", () => {
+      const bundled = (globalThis as unknown as { bundledAssets: Record<string, unknown> }).bundledAssets;
+      bundled["propers/nemo.yml"] = {
+        items: [{ "slot-name": "dioecesis-3", type: "feast", calendar: { "02-01": "nemini" } }],
+      };
+      try {
+        expect(() => loadPropers("nemo")).not.toThrow();
+        expect(() => parseCalendarData(2026, ["nemo"])).toThrow('nemini: invalid type "feast"');
+      } finally {
+        delete bundled["propers/nemo.yml"];
+      }
     });
 
     it("gives the same days each time it is asked", () => {
       expect(parseCalendarData(2026, [])).toEqual(general);
-      expect(parseCalendarData(2026, ["ultrajectum"])).toEqual(utrecht);
+      expect(parseCalendarData(2026, ["neerlandia/ultrajectum"])).toEqual(utrecht);
     });
   });
 });

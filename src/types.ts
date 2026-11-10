@@ -385,12 +385,13 @@ export type Commemorated = "privileged" | "ordinary" | "never";
 
 /**
  * A kind of day, by its own fields: a day matches when every field named
- * matches it, a list matching any of its values.
+ * matches it, a list matching any of its values. As written, so its values
+ * are checked only once the calendar is merged.
  */
 export type Matcher = {
   type?: string | string[];
   class?: number | number[];
-  commemorated?: Commemorated | Commemorated[];
+  commemorated?: string | string[];
   "of-the-season"?: boolean;
 };
 
@@ -404,28 +405,25 @@ export type Admits = {
   "privileged-first"?: boolean;
 };
 
-/** The rules of the commemorations that hold for every day alike (nn. 112-114). */
+/** The rules of the commemorations that hold for every day alike (nn. 112-113). */
 export type CommemorationRules = {
   /** `honours`: days honouring someone in common; a pair: days matching it. */
   excludes: ("honours" | [Matcher, Matcher])[];
   /** Commemorations matching an earlier entry first; `precedence` for the rest. */
   order: (Matcher | "precedence")[];
-  "over-the-count": "omitted";
 };
 
+/**
+ * A calendar or a proper as written. Its values are any of their kind until
+ * the propers are merged into the calendar and checked against its lists.
+ */
 export type CalendarData = {
   "valid-types"?: string[];
   "valid-liturgical-classes"?: number[];
-  "valid-commemorated"?: Commemorated[];
+  "valid-commemorated"?: string[];
   "valid-colors"?: string[];
 
   commemorations?: CommemorationRules;
-
-  /**
-   * A local proper's: the local calendars of the sources its days are read
-   * from, by their path below the day tree, the most particular first.
-   */
-  "local-calendars"?: string[];
 
   /** The day's id, a slug; `$count`, `$day` and `$feria` filled in by date. */
   id?: string;
@@ -433,7 +431,7 @@ export type CalendarData = {
   "liturgical-class"?: number;
   color?: string;
 
-  commemorated?: Commemorated;
+  commemorated?: string;
   admits?: Admits;
   "omitted-on"?: Matcher[];
   honours?: string[];
@@ -441,9 +439,15 @@ export type CalendarData = {
 
   occurence?: Occurence;
 
-  calendar?: Record<DateString, CalendarEntry[] | CalendarEntry | undefined>;
+  calendar?: Partial<Record<DateString, CalendarEntry[] | CalendarEntry>>;
   slot?: string;
   "slot-name"?: string;
+
+  /**
+   * The local calendar a proper's day is read from, set as the day is put in
+   * its slot, from the proper's path. Never written in the YAML.
+   */
+  "local-calendar"?: string;
 
   items?: CalendarData[];
 };

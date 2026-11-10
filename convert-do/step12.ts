@@ -479,8 +479,8 @@ const DAY_TREES = new Set(["Sancti", "Tempora"]);
 /**
  * The local calendars kept even though they are nested, each by its whole path
  * below the day tree. `aliquibus locis` — "in some places" — is a universal
- * option, part of the general calendar; the Netherlands and the archdiocese of
- * Utrecht are read by the Utrecht local proper. The rest (`Urbis`, `Bavaria`,
+ * option, part of the general calendar; the archdiocese of Utrecht is read by
+ * the Utrecht local proper. The rest (`Urbis`, `Bavaria`, `Neerlandia`,
  * `Neerlandia/Groningen`, …) are the propers of a place no local proper reads.
  *
  * A kept local calendar is published at its own path, beside the general day
@@ -488,7 +488,6 @@ const DAY_TREES = new Set(["Sancti", "Tempora"]);
  */
 const KEPT_LOCAL_CALENDARS = new Set([
   "aliquibus locis",
-  "Neerlandia",
   "Neerlandia/Ultrajectum",
 ]);
 

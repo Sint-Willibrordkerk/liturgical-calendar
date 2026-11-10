@@ -14,39 +14,37 @@ import { buildOfficium, isOfficeSection } from "../officium";
 import type { Martyrology, MartyrologyDay } from "../martyrology";
 
 export type { RawMassProper };
-import { createCalendarDataSchema } from "./assert/calendarData";
+import { calendarDataSchema, calendarSchema } from "./assert/calendarData";
+import type { LocalProper } from "./insertPropers";
 
-export function loadCalendarData() {
-  const calendarData = loadAsset("calendar1962.yml");
-  return createCalendarDataSchema().parse(calendarData);
+/**
+ * The calendar, the local `propers` put in the slots they fill, and every day
+ * checked against the lists the calendar declares. What is wrong is thrown, a
+ * line for each thing.
+ */
+export function loadCalendar(propers: readonly LocalProper[] = []): CalendarData {
+  const result = calendarSchema(propers).safeParse(loadAsset("calendar1962.yml"));
+  if (result.success) return result.data;
+  throw new Error(
+    result.error.issues
+      .map((issue) => [issue.path.join("."), issue.message].filter(Boolean).join(": "))
+      .join("\n")
+  );
 }
 
-/** The rules of the commemorations the calendar gives at its head (nn. 112-114). */
+/** The rules of the commemorations the calendar gives at its head (nn. 112-113). */
 export function loadCommemorationRules() {
-  const { commemorations } = loadCalendarData();
+  const { commemorations } = loadCalendar();
   if (commemorations === undefined) throw new Error("calendar1962.yml gives no rules of commemoration");
   return commemorations;
 }
 
 /**
- * What a local proper may say — the types, classes, commemoration types and
- * colors the base calendar declares valid. A proper is read on its own, so it
- * is checked against the calendar it will be merged into rather than against
- * nothing.
+ * A local proper, read for its shape alone. What it says is checked once it is
+ * put in the calendar, against the calendar's own lists.
  */
-function validity(): Partial<CalendarData> {
-  const base = loadCalendarData();
-  return {
-    "valid-types": base["valid-types"],
-    "valid-liturgical-classes": base["valid-liturgical-classes"],
-    "valid-commemorated": base["valid-commemorated"],
-    "valid-colors": base["valid-colors"],
-  };
-}
-
 export function loadPropers(name: string) {
-  const propers = loadAsset(`propers/${name}.yml`);
-  return createCalendarDataSchema(validity()).parse(propers);
+  return calendarDataSchema.parse(loadAsset(`propers/${name}.yml`));
 }
 
 /** Every translation the language carries, read as one table. */

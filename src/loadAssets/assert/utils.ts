@@ -23,29 +23,6 @@ export function zRegex<T extends string>(expr: string, type: string): z.ZodType<
   }) as unknown as z.ZodType<T>;
 }
 
-export function issueOption<T extends readonly unknown[]>(
-  ctx: z.RefinementCtx,
-  name: string,
-  options: T,
-  value?: unknown,
-) {
-  if (value && options.length === 0) {
-    ctx.addIssue({
-      code: "custom",
-      message: `options array cannot be empty`,
-      path: [name],
-    });
-  }
-
-  if (value && !options.includes(value)) {
-    ctx.addIssue({
-      code: "custom",
-      message: `invalid ${name}: ${value}`,
-      path: [name],
-    });
-  }
-}
-
 // Helper function to create a maybe array schema
 export function maybeArraySchema<T extends z.ZodTypeAny>(itemSchema: T) {
   return z.union([

@@ -41,8 +41,6 @@ commemorations:
   # The commemoration of the season is said first, the others in the order of
   # the table of precedence (n. 113).
   order: [{ of-the-season: true }, precedence]
-  # A commemoration beyond what the day admits is left out (n. 114).
-  over-the-count: omitted
 
 type: festum
 items:
