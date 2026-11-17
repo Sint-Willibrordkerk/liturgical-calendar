@@ -34,11 +34,12 @@ function readAssets(dir: string, base = ""): Record<string, unknown> {
 
 /** The dates the Utrecht proper keeps a day on, as month and day. */
 function utrechtDates(): [number, number][] {
-  const propers = parse(readFileSync("assets/propers/neerlandia/ultrajectum.yml", "utf-8")) as {
-    items: { calendar?: Record<string, unknown> }[];
-  };
-  return propers.items
-    .flatMap(({ calendar }) => Object.keys(calendar ?? {}))
+  const propers = parse(readFileSync("assets/propers/neerlandia/ultrajectum.yml", "utf-8")) as Record<
+    string,
+    Record<string, unknown>
+  >;
+  return Object.values(propers)
+    .flatMap((calendar) => Object.keys(calendar))
     .map((date) => {
       const [day, month] = date.split("-").map(Number);
       return [month!, day!] as [number, number];

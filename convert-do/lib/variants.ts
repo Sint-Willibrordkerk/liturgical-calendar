@@ -9,6 +9,11 @@
 
 export type Variant<T = unknown> = { value: T; condition: string[] };
 
+/** A condition as a key: the same tokens in any order make the same key. */
+export function conditionKey(condition: string[]): string {
+  return [...condition].sort().join("|");
+}
+
 /** True when `value` is a rubric-variant list (`{ value, condition }[]`). */
 export function isVariantArray(value: unknown): value is Variant[] {
   return (

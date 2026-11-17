@@ -1,8 +1,7 @@
 import { join } from "path";
-import { writeFile } from "fs/promises";
 
 import { KEYED_RULES, type Doc } from "./lib/broad.js";
-import { DEFAULT_CONCURRENCY, ensureDir, runBatched } from "./lib/batch.js";
+import { DEFAULT_CONCURRENCY, writeTreeFile, runBatched } from "./lib/batch.js";
 import { STEP_EXT, stringifyStep } from "./lib/serialize.js";
 import { copyStores } from "./lib/stores.js";
 import { documentsOf, languageResolver, readTree, transform } from "./step4.js";
@@ -48,8 +47,7 @@ export async function run(
         // belong to the day it was borrowed from.
         const out = { ...resolved, ...transform(resolved, path, view, new Set(["rank"])) };
         const outPath = join(outputDir, language, source, path + STEP_EXT);
-        await ensureDir(outPath, mkdirCache);
-        await writeFile(outPath, stringifyStep(out), "utf-8");
+        await writeTreeFile(outPath, stringifyStep(out), mkdirCache);
       }
     );
     written += processed;

@@ -15,13 +15,12 @@ describe("insertPropers", () => {
   };
   const utrecht = {
     name: "neerlandia/ultrajectum",
-    data: {
-      items: [
-        { "slot-name": "dioecesis-patroni-principalis", calendar: { "07-11": "willibrordi" } },
-        { "slot-name": "dioecesis-3", calendar: { "01-03": "switberti" } },
-      ],
+    days: {
+      "dioecesis-patroni-principalis": { "07-11": "willibrordi" },
+      "dioecesis-3": { "01-03": "switberti" },
     },
   };
+  const fsspx = { name: "fsspx", days: { "dioecesis-3": { "03-09": "pii-x" } } };
 
   it("puts a proper's days in the slots they name, with the local calendar its path names", () => {
     const { calendar: merged, problems } = insertPropers(calendar, [utrecht]);
@@ -35,48 +34,22 @@ describe("insertPropers", () => {
     expect(merged.items![1]!.items![1]).toEqual({ calendar: { "14-01": "hilarii" } });
   });
 
-  it("gives a proper's day what its own groups say, and the slot's name to none", () => {
-    const grouped = {
-      name: "fsspx",
-      data: {
-        color: "red",
-        items: [{ "slot-name": "dioecesis-3", items: [{ calendar: { "03-09": "pii-x" } }] }],
-      },
-    };
-    const { calendar: merged } = insertPropers(calendar, [grouped]);
-    expect(merged.items![1]!.items![0]!.items).toEqual([
-      { color: "red", calendar: { "03-09": "pii-x" }, "local-calendar": "Fsspx" },
-    ]);
-  });
-
   it("leaves a slot no proper fills empty", () => {
     const { calendar: merged } = insertPropers(calendar, []);
     expect(merged.items![0]!.items![0]).toEqual({ items: [] });
   });
 
   it("puts the days of several propers in one slot, the last named first", () => {
-    const other = {
-      name: "fsspx",
-      data: { items: [{ "slot-name": "dioecesis-3", calendar: { "03-09": "pii-x" } }] },
-    };
-    const { calendar: merged } = insertPropers(calendar, [other, utrecht]);
+    const { calendar: merged } = insertPropers(calendar, [fsspx, utrecht]);
     expect(merged.items![1]!.items![0]!.items!.map((day) => day["local-calendar"])).toEqual([
       "Neerlandia/Ultrajectum",
       "Fsspx",
     ]);
   });
 
-  it("names a day in no slot, and a slot the calendar does not have", () => {
-    const lost = {
-      name: "nemo",
-      data: {
-        items: [{ calendar: { "01-02": "nemini" } }, { "slot-name": "nusquam", calendar: { "01-03": "nullius" } }],
-      },
-    };
-    expect(insertPropers(calendar, [lost]).problems).toEqual([
-      "nemo: a day in no slot",
-      'nemo: no slot "nusquam" in the calendar',
-    ]);
+  it("names a slot the calendar does not have", () => {
+    const lost = { name: "nemo", days: { nusquam: { "01-03": "nullius" } } };
+    expect(insertPropers(calendar, [lost]).problems).toEqual(['nemo: no slot "nusquam" in the calendar']);
   });
 
   it("leaves the calendar it was given as it was", () => {

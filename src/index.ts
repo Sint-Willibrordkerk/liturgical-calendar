@@ -8,7 +8,7 @@ import { applyCommemorations } from "./commemorations";
 import { applyPropers } from "./propers";
 import { nameDays } from "./naming";
 import { applyMartyrology } from "./martyrology";
-import { asLanguages, type Language } from "./language";
+import { NO_LANGUAGE, type Language } from "./language";
 export { type Language } from "./language";
 export type {
   Calendar,
@@ -97,7 +97,8 @@ export default ({
   const translations = loadTranslations(languages);
   applyPropers(calendar, year, languages, { officium: officium === true });
   if (martyrologium) {
-    applyMartyrology(calendar, year, martyrologySources(languages), asLanguages(languages)[0].code);
+    const asked = (languages[0] ?? NO_LANGUAGE).code;
+    applyMartyrology(calendar, year, martyrologySources(languages), asked);
   }
   nameDays(calendar, year, translations);
 
@@ -112,7 +113,7 @@ export default ({
  * with the translations that name its dates.
  */
 function martyrologySources(languages: Language[]) {
-  return asLanguages(languages)
+  return languages
     .filter((each, i, all) => all.findIndex((other) => other.code === each.code) === i)
     .flatMap((each) => {
       const martyrology = loadMartyrology(each);

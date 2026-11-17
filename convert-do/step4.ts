@@ -1,5 +1,5 @@
 import { join } from "path";
-import { readFile, writeFile } from "fs/promises";
+import { readFile } from "fs/promises";
 
 import {
   LINE_RULES,
@@ -10,8 +10,9 @@ import {
   type Load,
   type Variant,
 } from "./lib/broad.js";
-import { unionDocuments } from "./lib/variants.js";
-import { DEFAULT_CONCURRENCY, ensureDir, runBatched } from "./lib/batch.js";
+import { conditionKey, unionDocuments } from "./lib/variants.js";
+import { toKebabCase } from "./lib/paths.js";
+import { DEFAULT_CONCURRENCY, writeTreeFile, runBatched } from "./lib/batch.js";
 import { BASE_LANGUAGE } from "./lib/rubrics.js";
 import { STEP_EXT, parseStep, stringifyStep } from "./lib/serialize.js";
 import { collectDocumentFiles } from "./lib/stores.js";
@@ -49,11 +50,6 @@ export type ParsedReference = {
   lineRange: { start: number; end: number } | null;
   substitutions: Substitution[];
 };
-
-function toKebabCase(str: string) {
-  if (str == null) return "";
-  return String(str).trim().toLowerCase().replace(/\s+/g, "-");
-}
 
 function parseSubstitutions(substStr: string): Substitution[] {
   if (!substStr || typeof substStr !== "string") return [];
@@ -148,10 +144,6 @@ function findSectionContent(doc: Doc, sectionKey: string): Variant[] | null {
     if (key !== "__preamble" && Array.isArray(value)) return value as Variant[];
   }
   return null;
-}
-
-function conditionKey(condition: string[]) {
-  return [...condition].sort().join("|");
 }
 
 /** The target variant for a condition: an exact match, else the default, else the first. */
@@ -524,8 +516,7 @@ export async function run(
       async ({ source, path, doc }) => {
         const out = transform(doc, path, view);
         const outPath = join(outputDir, language, source, path + STEP_EXT);
-        await ensureDir(outPath, mkdirCache);
-        await writeFile(outPath, stringifyStep(out), "utf-8");
+        await writeTreeFile(outPath, stringifyStep(out), mkdirCache);
       }
     );
     written += processed;

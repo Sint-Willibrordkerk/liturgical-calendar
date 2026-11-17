@@ -14,6 +14,8 @@ import {
   RESPONSORY_SECTIONS,
   VERSICLE_SECTIONS,
 } from "./officium";
+import { SEPTUAGESIMA } from "./seasons";
+import { daysBetween } from "./utils";
 
 /**
  * A section as shipped: one entry per rubric the section varies by. A variant
@@ -123,31 +125,15 @@ function conditionOf(variant: Variant): string[] {
   return variant.condition ?? [];
 }
 
-/** Septuagesima Sunday, the ninth Sunday before Easter. */
-const SEPTUAGESIMA = -63;
-
 /** The Saturday in the octave of Pentecost, the last day of paschaltide. */
 const PASCHALTIDE_LAST_DAY = 55;
-
-/** Whole days from Easter to `date`; negative before it. */
-function daysFromEaster(date: Date, easter: Date): number {
-  return Math.round(
-    (Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) -
-      Date.UTC(
-        easter.getUTCFullYear(),
-        easter.getUTCMonth(),
-        easter.getUTCDate()
-      )) /
-      86_400_000
-  );
-}
 
 /**
  * True on a day of paschaltide: from Easter Sunday to the Saturday in the
  * octave of Pentecost.
  */
 export function isPaschaltide(date: Date, easter: Date): boolean {
-  const day = daysFromEaster(date, easter);
+  const day = daysBetween(easter, date);
   return day >= 0 && day <= PASCHALTIDE_LAST_DAY;
 }
 
@@ -156,12 +142,12 @@ export function isPaschaltide(date: Date, easter: Date): boolean {
  * Alleluia is not sung.
  */
 export function isBeforeEaster(date: Date, easter: Date): boolean {
-  const day = daysFromEaster(date, easter);
+  const day = daysBetween(easter, date);
   return day >= SEPTUAGESIMA && day < 0;
 }
 
 /** Keys that name the celebration rather than carrying its text. */
-const DESIGNATION_KEYS = new Set(["title", "name", "prefatio"]);
+export const DESIGNATION_KEYS = new Set(["title", "name", "prefatio"]);
 
 /** Rewrite every text a proper holds, leaving what designates the day alone. */
 function mapTexts(
@@ -313,9 +299,6 @@ function resolveStored(
   return store[value];
 }
 
-/** Kept for callers that only deal in readings. */
-export const resolveReading = resolveStored;
-
 /** The store a section draws on, or undefined when it holds its own content. */
 function storeFor(key: string, stores: Stores): Record<string, unknown> | undefined {
   if (READING_SECTIONS.has(key) || LESSON_SECTIONS.has(key)) return stores.readings;
@@ -396,13 +379,4 @@ function nameIn(
   if (typeof key !== "string") return undefined;
   const name = stores.names[key];
   return typeof name === "string" ? name : undefined;
-}
-
-/** {@link resolveMassProper} without a fallback: only the language's own words. */
-export function selectMassProper(
-  document: Record<string, unknown>,
-  rubrics: ReadonlySet<string>,
-  stores: Stores
-): Record<string, unknown> {
-  return resolveMassProper(document, rubrics, stores).proper;
 }

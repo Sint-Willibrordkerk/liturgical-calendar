@@ -9,7 +9,8 @@
  * out when there is not room for all.
  */
 import type { Calendar, LiturgicalDay } from "./types";
-import { calculateAdvent, calculateEaster, dayNumber, eachDay } from "./utils";
+import { SEPTUAGESIMA } from "./seasons";
+import { calculateAdvent, calculateEaster, daysBetween, eachDay } from "./utils";
 
 const SUNDAY = 0;
 
@@ -75,22 +76,17 @@ export function sundayMasses(
 export function applyResumedSundays(calendar: Calendar, year: number): void {
   const easter = calculateEaster(year);
   const septuagesima = new Date(easter);
-  septuagesima.setDate(septuagesima.getDate() - 63);
+  septuagesima.setDate(septuagesima.getDate() + SEPTUAGESIMA);
   const epiphanySundaysKept = countSundays(new Date(year, 0, 6), septuagesima);
 
   const firstSunday = new Date(easter);
   firstSunday.setDate(firstSunday.getDate() + 56);
-  // Compared as calendar days rather than instants: the two dates are not
-  // built in the same way, and an hour of offset between them would take in a
-  // Sunday of Advent and shift every Mass along by one.
-  const from = dayNumber(firstSunday);
-  const until = dayNumber(calculateAdvent(year));
+  const advent = calculateAdvent(year);
 
   const sundays: LiturgicalDay[] = [];
   eachDay(year, ({ date, month, day }) => {
     if (date.getDay() !== SUNDAY) return;
-    const on = dayNumber(date);
-    if (on < from || on >= until) return;
+    if (daysBetween(firstSunday, date) < 0 || daysBetween(date, advent) <= 0) return;
     const entry = calendar[month]?.[day];
     if (entry !== undefined) sundays.push(entry);
   });
@@ -116,8 +112,7 @@ function countSundays(from: Date, until: Date): number {
   let count = 0;
   const date = new Date(from);
   date.setDate(date.getDate() + 1);
-  const last = dayNumber(until);
-  for (; dayNumber(date) < last; date.setDate(date.getDate() + 1)) {
+  for (; daysBetween(date, until) > 0; date.setDate(date.getDate() + 1)) {
     if (date.getDay() === 0) count++;
   }
   return count;

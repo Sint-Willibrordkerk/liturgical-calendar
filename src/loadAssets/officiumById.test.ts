@@ -231,7 +231,7 @@ describe("the Office of a day, in a language", () => {
     const agnes = "agnetis-virginis-et-martyris";
 
     it("says what the language lacks in the fallback, and names it on the part that holds it", () => {
-      const officium = loadOfficiumById(agnes, dutch, undefined, [], [latin])!;
+      const officium = loadOfficiumById(agnes, dutch, undefined, undefined, [latin])!;
       expect(officium.laudes).toEqual({
         psalmodia: { antiphonae: [{ text: "Dit is de wijze maagd, * en één.", psalmus: "109" }] },
         capitulum: { ref: "Sir 51:1-3", text: "Confitébor tibi, Dómine, Rex." },
@@ -253,7 +253,7 @@ describe("the Office of a day, in a language", () => {
     });
 
     it("carries no marker where the language says the whole Office itself", () => {
-      expect(JSON.stringify(loadOfficiumById(agnes, latin, undefined, [], [dutch]))).not.toContain(
+      expect(JSON.stringify(loadOfficiumById(agnes, latin, undefined, undefined, [dutch]))).not.toContain(
         "fallback"
       );
     });
@@ -267,7 +267,7 @@ describe("the Office of a day, in a language", () => {
     });
 
     it("says an Office the language has nothing of wholly in the fallback", () => {
-      const officium = loadOfficiumById(agnes, { code: "nl", assets: {} }, undefined, [], [latin])!;
+      const officium = loadOfficiumById(agnes, { code: "nl", assets: {} }, undefined, undefined, [latin])!;
       expect(officium.oratio).toEqual({ text: "Omnípotens sempitérne Deus", closure: "Per Dominum" });
       expect(officium.fallback).toEqual({ oratio: "la" });
       expect(officium.laudes!.fallback).toEqual({

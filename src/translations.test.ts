@@ -72,7 +72,8 @@ function keysOf(file: string): string[] {
 const calendarNames = new Set(names(parse(readFileSync(CALENDAR, "utf-8"))));
 for (const file of (readdirSync(PROPERS, { recursive: true }) as string[]).map((f) => f.replace(/\\/g, "/"))) {
   if (!file.endsWith(".yml")) continue;
-  for (const name of names(parse(readFileSync(join(PROPERS, file), "utf-8")))) {
+  const days = parse(readFileSync(join(PROPERS, file), "utf-8")) as Record<string, unknown>;
+  for (const name of names(Object.values(days).map((calendar) => ({ calendar })))) {
     calendarNames.add(name);
   }
 }

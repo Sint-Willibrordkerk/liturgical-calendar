@@ -1,10 +1,10 @@
 import { join } from "path";
-import { readFile, writeFile } from "fs/promises";
+import { readFile } from "fs/promises";
 
 import { consola } from "consola";
 import {
   collectYmlFiles,
-  ensureDir,
+  writeTreeFile,
   runBatched,
   DEFAULT_CONCURRENCY,
 } from "./lib/batch";
@@ -796,12 +796,7 @@ export async function run(
         throw new Error("Expected object");
       }
       const outPath = join(outputDir, rel);
-      await ensureDir(outPath, mkdirCache);
-      await writeFile(
-        outPath,
-        stringifyStep(transform(obj as Record<string, unknown>)),
-        "utf-8"
-      );
+      await writeTreeFile(outPath, stringifyStep(transform(obj as Record<string, unknown>)), mkdirCache);
     }
   );
 

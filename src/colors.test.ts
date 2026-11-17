@@ -78,7 +78,8 @@ describe("the colors of the calendar", () => {
     // not say so (`S. Frederici`) is beyond this guard.
     for (const file of (readdirSync(PROPERS, { recursive: true }) as string[]).map((f) => f.replace(/\\/g, "/"))) {
       if (!file.endsWith(".yml")) continue;
-      const proper = entries(parse(readFileSync(join(PROPERS, file), "utf-8")));
+      const days = parse(readFileSync(join(PROPERS, file), "utf-8")) as Record<string, unknown>;
+      const proper = entries({ items: Object.values(days).map((calendar) => ({ calendar })) });
       const forgotten = proper
         .filter(({ id, color }) => SAYS_RED.test(id) && color !== "red")
         .map(({ id }) => id);

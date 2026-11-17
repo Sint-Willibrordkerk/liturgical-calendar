@@ -1,7 +1,7 @@
 import { join } from "path";
-import { readFile, writeFile } from "fs/promises";
+import { readFile } from "fs/promises";
 
-import { DEFAULT_CONCURRENCY, ensureDir, runBatched } from "./lib/batch.js";
+import { DEFAULT_CONCURRENCY, writeTreeFile, runBatched } from "./lib/batch.js";
 import { isVariantArray, type Variant } from "./lib/variants.js";
 import { parseStep, stringifyStep } from "./lib/serialize.js";
 import { collectDocumentFiles, copyStores } from "./lib/stores.js";
@@ -63,12 +63,7 @@ export async function run(
         throw new Error("Expected object");
       }
       const outPath = join(outputDir, rel);
-      await ensureDir(outPath, mkdirCache);
-      await writeFile(
-        outPath,
-        stringifyStep(collapseVariants(obj as Record<string, unknown>)),
-        "utf-8"
-      );
+      await writeTreeFile(outPath, stringifyStep(collapseVariants(obj as Record<string, unknown>)), mkdirCache);
     }
   );
   await copyStores(inputDir, outputDir);

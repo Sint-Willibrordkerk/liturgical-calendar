@@ -90,8 +90,8 @@ export type RawMassProper = {
 export type ProperReference = {
   /** The id the propers are filed under: the day's own, or another's it borrows. */
   id: string;
-  /** The local calendars searched before the general ones, most particular first. */
-  local?: string[];
+  /** The local calendar searched before the general ones. */
+  local?: string;
   /** The date whose season decides what is sung; the day's own where absent. */
   season?: Date;
   /** A variant of the file read beside the rubric in force. */
@@ -138,7 +138,7 @@ export type Commemoration = {
    * Gone once it is named.
    */
   naming?: { template: string; count: number };
-  mass?: MassProper | MassProper[] | RawMassProper;
+  mass?: RawMassProper;
   /**
    * The propers of the Office, Hour by Hour. Present only when asked for, and
    * only on the celebration kept, where the language says something of its
@@ -311,64 +311,6 @@ export type Martyrologium = {
 
 // Mass Proper Types
 
-export type VerseText = {
-  references?: string | string[]; // Single reference or array of references (e.g., "Ps 90:1" or ["Ps 90:15-16", "Ps 90:1"])
-  text: string;
-};
-
-export type IntroitProper = {
-  antiphon: VerseText;
-  verse: VerseText;
-};
-
-export type CollectProper = {
-  text: string;
-  ending: string;
-};
-
-export type EpistleProper = VerseText;
-
-export type GradualProper = {
-  antiphon: VerseText;
-  verse: VerseText;
-};
-
-export type AlleluiaProper = VerseText;
-
-export type TractProper = {
-  verses: string[];
-};
-
-export type GospelProper = VerseText;
-
-export type OffertoryProper = VerseText;
-
-export type SecretProper = {
-  text: string;
-  ending: string;
-};
-
-export type CommunionProper = VerseText;
-
-export type PostcommunionProper = {
-  text: string;
-  ending: string;
-};
-
-export type MassProper = {
-  introit?: IntroitProper;
-  collect?: CollectProper;
-  epistle?: EpistleProper;
-  gradual?: GradualProper;
-  alleluia?: AlleluiaProper;
-  tract?: TractProper;
-  gospel?: GospelProper;
-  offertory?: OffertoryProper;
-  secret?: SecretProper;
-  communion?: CommunionProper;
-  postcommunion?: PostcommunionProper;
-};
-
 export type Calendar = Record<
   number,
   Record<number, LiturgicalDay | undefined> | undefined
@@ -379,6 +321,9 @@ export type Calendar = Record<
  * where that is not the default.
  */
 export type CalendarEntry = string | { id: string; color?: string; honours?: string[] };
+
+/** Days by the date they fall on. */
+export type CalendarMap = Partial<Record<DateString, CalendarEntry[] | CalendarEntry>>;
 
 /** How a day is commemorated when it gives way (nn. 107-108, 26). */
 export type Commemorated = "privileged" | "ordinary" | "never";
@@ -439,9 +384,8 @@ export type CalendarData = {
 
   occurence?: Occurence;
 
-  calendar?: Partial<Record<DateString, CalendarEntry[] | CalendarEntry>>;
+  calendar?: CalendarMap;
   slot?: string;
-  "slot-name"?: string;
 
   /**
    * The local calendar a proper's day is read from, set as the day is put in
@@ -451,3 +395,22 @@ export type CalendarData = {
 
   items?: CalendarData[];
 };
+
+/** A day of the calendar with what its groups say of it, its values as written. */
+export type CalendarDay = {
+  id?: string;
+  type: string;
+  liturgicalClass: number;
+  commemorated?: string;
+  admits?: Admits;
+  omittedOn?: Matcher[];
+  honours?: string[];
+  ofTheSeason?: boolean;
+  color?: string;
+  occurence: Occurence;
+  /** The local calendar a proper's day is read from before the general ones. */
+  localCalendar?: string;
+};
+
+/** The calendar with its propers inserted, as a list of checked days. */
+export type LoadedCalendar = CalendarData & { days: CalendarDay[] };

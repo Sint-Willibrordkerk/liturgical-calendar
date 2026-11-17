@@ -82,7 +82,7 @@ describe("the Mass of a day, in a language", () => {
 /**
  * A local calendar's days are published at its own path, beside the general
  * day of the same name. A calendar reads them only where its local proper names
- * that local calendar, the most particular first.
+ * that local calendar.
  */
 describe("the Mass of a day kept in a local calendar", () => {
   beforeAll(() => {
@@ -95,14 +95,6 @@ describe("the Mass of a day kept in a local calendar", () => {
         title: "S. Martini, Patroni",
         oratio: "ultrajectensis",
       },
-      "mass-propers/Sancti/Neerlandia/gertrudis-virginis.yml": {
-        title: "S. Gertrudis",
-        oratio: "neerlandica",
-      },
-      "mass-propers/Sancti/Neerlandia/martini-episcopi-et-confessoris.yml": {
-        title: "S. Martini, in Neerlandia",
-        oratio: "neerlandica",
-      },
     };
   });
 
@@ -113,35 +105,29 @@ describe("the Mass of a day kept in a local calendar", () => {
         oratio: {
           generalis: { text: "Deus", closure: "Per Dominum" },
           ultrajectensis: { text: "Deus, Ultrajecti", closure: "Per Dominum" },
-          neerlandica: { text: "Deus, in Neerlandia", closure: "Per Dominum" },
         },
       },
     },
   };
-  const UTRECHT = ["Neerlandia/Ultrajectum", "Neerlandia"];
+  const UTRECHT = "Neerlandia/Ultrajectum";
 
   it("reads the general day where no local calendar is named", () => {
     expect(
       loadMassPropersById("martini-episcopi-et-confessoris", latin)?.title
     ).toBe("S. Martini");
-    expect(loadMassPropersById("gertrudis-virginis", latin)).toBeUndefined();
   });
 
-  it("reads the most particular local calendar that keeps the day", () => {
+  it("reads the local calendar that keeps the day", () => {
     expect(
       loadMassPropersById("martini-episcopi-et-confessoris", latin, undefined, undefined, UTRECHT)
         ?.title
     ).toBe("S. Martini, Patroni");
   });
 
-  it("falls back to the wider local calendar, then to the general day", () => {
+  it("falls back to the general day where the local calendar does not keep it", () => {
     expect(
-      loadMassPropersById("gertrudis-virginis", latin, undefined, undefined, UTRECHT)?.title
-    ).toBe("S. Gertrudis");
-    expect(
-      loadMassPropersById("martini-episcopi-et-confessoris", latin, undefined, undefined, [
-        "Neerlandia/Groningen",
-      ])?.title
+      loadMassPropersById("martini-episcopi-et-confessoris", latin, undefined, undefined, "Neerlandia/Groningen")
+        ?.title
     ).toBe("S. Martini");
   });
 });
@@ -194,7 +180,7 @@ describe("the Mass of a day, with fallback languages", () => {
 
   it("says what the language lacks in the fallback and names the sections", () => {
     expect(
-      loadMassPropersById("willibrordi", dutch, undefined, undefined, [], [latin])
+      loadMassPropersById("willibrordi", dutch, undefined, undefined, undefined, [latin])
     ).toEqual({
       title: "S. Willibrordi",
       introitus: { antiphon: { text: "De Heer" } },
@@ -218,19 +204,19 @@ describe("the Mass of a day, with fallback languages", () => {
 
   it("carries no marker where the language says the whole Mass itself", () => {
     expect(
-      loadMassPropersById("willibrordi", latin, undefined, undefined, [], [dutch])
+      loadMassPropersById("willibrordi", latin, undefined, undefined, undefined, [dutch])
     ).not.toHaveProperty("fallback");
   });
 
   it("does not read a language as its own fallback", () => {
     expect(
-      loadMassPropersById("willibrordi", dutch, undefined, undefined, [], [dutch])
+      loadMassPropersById("willibrordi", dutch, undefined, undefined, undefined, [dutch])
     ).not.toHaveProperty("fallback");
   });
 
   it("says a day wholly in the fallback where the language has no words for it", () => {
     expect(
-      loadMassPropersById("nemini", language("nl", {}), undefined, undefined, [], [latin])
+      loadMassPropersById("nemini", language("nl", {}), undefined, undefined, undefined, [latin])
     ).toEqual({
       title: "S. Nemini",
       oratio: { text: "Deus, qui beátum", closure: "Per Dominum" },
@@ -240,7 +226,7 @@ describe("the Mass of a day, with fallback languages", () => {
 
   it("has no Mass where neither language says anything of the day", () => {
     expect(
-      loadMassPropersById("nemini", language("nl", {}), undefined, undefined, [], [language("la", {})])
+      loadMassPropersById("nemini", language("nl", {}), undefined, undefined, undefined, [language("la", {})])
     ).toBeUndefined();
   });
 
@@ -249,7 +235,7 @@ describe("the Mass of a day, with fallback languages", () => {
       oratio: { "deus-qui-beatum": { text: "Gott, der du", closure: "Durch Christus" } },
     });
     const mass = loadMassPropersById(
-      "willibrordi", dutch, undefined, undefined, [], [german, latin]
+      "willibrordi", dutch, undefined, undefined, undefined, [german, latin]
     );
     expect(mass).toMatchObject({
       oratio: { text: "Gott, der du" },
@@ -281,7 +267,7 @@ describe("the Mass of a day, with fallback languages", () => {
       language("nl", {}),
       undefined,
       { date: lent, easter },
-      [],
+      undefined,
       [la]
     );
     expect(mass).toMatchObject({ fallback: { tractus: "la" } });

@@ -331,10 +331,9 @@ A day in a local proper is white unless it says otherwise. Give a martyr's day
 its color beside its id:
 
 ```yaml
-- slot-name: dioecesis-3
-  calendar:
-    15-07: plechelmi-episcopi-et-confessoris
-    18-07: { id: frederici-episcopi-et-martyris, color: red }
+dioecesis-3:
+  15-07: plechelmi-episcopi-et-confessoris
+  18-07: { id: frederici-episcopi-et-martyris, color: red }
 ```
 
 ### The Propers of a Local Calendar

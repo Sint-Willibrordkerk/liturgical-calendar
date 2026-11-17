@@ -1,4 +1,4 @@
-import { readdir, mkdir } from "fs/promises";
+import { readdir, mkdir, writeFile } from "fs/promises";
 import { dirname } from "path";
 import { consola } from "consola";
 import { STEP_EXT } from "./serialize.js";
@@ -56,4 +56,14 @@ export async function ensureDir(
     await mkdir(outDir, { recursive: true });
     cache.add(outDir);
   }
+}
+
+/** Write a file of a tree, making its directory first. */
+export async function writeTreeFile(
+  filePath: string,
+  content: string,
+  cache: Set<string>
+): Promise<void> {
+  await ensureDir(filePath, cache);
+  await writeFile(filePath, content, "utf-8");
 }

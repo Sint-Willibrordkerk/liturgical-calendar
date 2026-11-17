@@ -3,7 +3,9 @@ import type {
   Admits,
   CalendarData,
   CalendarEntry,
+  CalendarMap,
   CommemorationRules,
+  LoadedCalendar,
   Matcher,
   Occurence,
   OccurenceType,
@@ -11,6 +13,7 @@ import type {
 import { weekdays } from "../../constants";
 import { dateStringSchema, liturgicalDateSchema, relativeDateSchema } from "./relativeDate";
 import { maybeArraySchema, zRegex } from "./utils";
+import { flattenCalendar } from "../flattenCalendar";
 import { insertPropers, type LocalProper } from "../insertPropers";
 import { problemsOf } from "../../calendarValidity";
 
@@ -86,11 +89,19 @@ const commemorationRulesSchema: z.ZodType<CommemorationRules> = z
   })
   .strict();
 
+const calendarMapSchema = z.record(
+  dateStringSchema as z.ZodString,
+  maybeArraySchema(calendarEntrySchema)
+) as z.ZodType<CalendarMap>;
+
+/** A local proper: its days, by the slot they fill and then by date. */
+export const properSchema = z.record(z.string(), calendarMapSchema);
+
 /**
- * The shape of a calendar or a proper: which fields it has, at any depth, and
- * what kind of value each holds. Any type, class, color or commemoration is
- * taken here; whether the calendar declares it is asked once the propers are
- * merged into it, against the calendar's own lists.
+ * The shape of a calendar: which fields it has, at any depth, and what kind of
+ * value each holds. Any type, class, color or commemoration is taken here;
+ * whether the calendar declares it is asked once the propers are in it, against
+ * the calendar's own lists.
  */
 export const calendarDataSchema: z.ZodType<CalendarData> = z.lazy(() =>
   z
@@ -113,11 +124,8 @@ export const calendarDataSchema: z.ZodType<CalendarData> = z.lazy(() =>
       "of-the-season": z.boolean().optional(),
 
       occurence: occurenceSchema.optional(),
-      calendar: z
-        .record(dateStringSchema as z.ZodString, maybeArraySchema(calendarEntrySchema))
-        .optional(),
+      calendar: calendarMapSchema.optional(),
       slot: z.string().optional(),
-      "slot-name": z.string().optional(),
       items: z.array(calendarDataSchema).optional(),
     })
     .strict()
@@ -128,12 +136,12 @@ export const calendarDataSchema: z.ZodType<CalendarData> = z.lazy(() =>
  * propers' days put in the slots they name, and every day then checked against
  * the lists the calendar declares.
  */
-export function calendarSchema(propers: readonly LocalProper[]): z.ZodType<CalendarData> {
+export function calendarSchema(propers: readonly LocalProper[]): z.ZodType<LoadedCalendar> {
   return calendarDataSchema
-    .transform((calendar, ctx) => {
-      const inserted = insertPropers(calendar, propers);
-      for (const message of inserted.problems) ctx.addIssue({ code: "custom", message });
-      return inserted.calendar;
+    .transform((data, ctx) => {
+      const { calendar, problems } = insertPropers(data, propers);
+      for (const message of problems) ctx.addIssue({ code: "custom", message });
+      return { ...calendar, days: flattenCalendar(calendar) };
     })
     .superRefine((calendar, ctx) => {
       for (const message of problemsOf(calendar)) ctx.addIssue({ code: "custom", message });

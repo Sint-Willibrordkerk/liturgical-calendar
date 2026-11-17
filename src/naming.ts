@@ -7,14 +7,11 @@
  * settled and their Masses read, since a day the language has no name for is
  * called by the Latin title of its Mass.
  */
-import type { Calendar, Commemoration, LiturgicalDay, RawMassProper } from "./types";
+import type { Calendar, Commemoration, LiturgicalDay } from "./types";
 import { ordinals, days, feriae } from "./ordinals";
 import { eachDay } from "./utils";
 
 type Translations = Record<string, string>;
-
-/** A slug, or a slug with `$count`/`$day`/`$feria` still to be filled in. */
-const IS_SLUG_TEMPLATE = /^[a-z0-9$]+(?:-[a-z0-9$]+)*$/;
 
 /** A value spliced into a slug, kept lowercase and hyphenated so it stays one. */
 function slugPart(value: string): string {
@@ -30,22 +27,17 @@ function latinWords(count: number, date: Date) {
   };
 }
 
-/** A slug template filled in: `dominica-$count-adventus` becomes `dominica-i-adventus`. */
-function fillSlug(template: string, count: number, date: Date): string {
-  const words = latinWords(count, date);
-  return template
-    .replace("$count", slugPart(words.count))
-    .replace("$day", slugPart(words.day))
-    .replace("$feria", slugPart(words.feria));
-}
-
 /**
  * The id of the `count`th day of `template` on `date`: the template with its
  * count and weekday filled in, still a slug. `$day` gives the Roman numeral of
  * the weekday, `$feria` spells its ordinal out, as the propers are filed.
  */
 export function idOf(template: string, count: number, date: Date): string {
-  return fillSlug(template, count, date);
+  const words = latinWords(count, date);
+  return template
+    .replace("$count", slugPart(words.count))
+    .replace("$day", slugPart(words.day))
+    .replace("$feria", slugPart(words.feria));
 }
 
 /**
@@ -64,9 +56,7 @@ export function nameDay(
   translations: Translations = {}
 ): string | undefined {
   const own = translations[template];
-  if (own === undefined) return translations[fillSlug(template, count, date)];
-  // A template the language maps to another id is named as that day is.
-  if (IS_SLUG_TEMPLATE.test(own)) return translations[fillSlug(own, count, date)];
+  if (own === undefined) return translations[idOf(template, count, date)];
 
   const words = latinWords(count, date);
   const ordinal = translations[words.count] || words.count;
@@ -84,7 +74,7 @@ export function nameDay(
 function name(entry: Commemoration, date: Date, translations: Translations): void {
   if (entry.naming === undefined) return;
   const named = nameDay(entry.naming.template, entry.naming.count, date, translations);
-  const title = named ?? (entry.mass as RawMassProper | undefined)?.title;
+  const title = named ?? entry.mass?.title;
   if (title !== undefined) entry.title = title;
 }
 

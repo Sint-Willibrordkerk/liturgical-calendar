@@ -1,7 +1,7 @@
-import { copyFile, readFile, writeFile } from "fs/promises";
+import { copyFile, readFile } from "fs/promises";
 import { join } from "path";
 
-import { collectYmlFiles, ensureDir } from "./batch.js";
+import { collectYmlFiles, ensureDir, writeTreeFile } from "./batch.js";
 import { STEP_EXT, parseStep, stringifyStep } from "./serialize.js";
 
 /**
@@ -65,8 +65,7 @@ export async function writeStore(
   mkdirCache: Set<string>
 ): Promise<void> {
   const path = join(dirPath, language, name + STEP_EXT);
-  await ensureDir(path, mkdirCache);
-  await writeFile(path, stringifyStep(entries), "utf-8");
+  await writeTreeFile(path, stringifyStep(entries), mkdirCache);
 }
 
 /**

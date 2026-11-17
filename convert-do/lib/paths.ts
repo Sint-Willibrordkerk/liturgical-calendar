@@ -19,3 +19,8 @@ export function escapeRegExp(str: string): string {
 export function splitPath(path: string): string[] {
   return path.split(SEP_RE);
 }
+
+/** A name as a slug: lowercase, its runs of whitespace a single hyphen. */
+export function toKebabCase(str: string): string {
+  return str.toLowerCase().trim().replace(/\s+/g, "-");
+}

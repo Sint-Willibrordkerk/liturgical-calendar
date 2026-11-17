@@ -30,22 +30,3 @@ export type Language = {
  * only what a language would supply is absent.
  */
 export const NO_LANGUAGE: Language = { code: "la", assets: {} };
-
-/**
- * The language argument, checked, as the list of languages it names.
- *
- * Until version 3 this was the language's code, and the assets of every
- * language were bundled into this package. Passing a code now would silently
- * produce a calendar with no Masses and no translations, so it is refused with
- * the reason rather than accepted.
- *
- * One language or several: the first is the language asked for, and the rest
- * are said in where it has no words for a text, in their order. Without a
- * language, or with an empty list, the calendar has none.
- */
-export function asLanguages(
-  language: Language[]
-): [Language, ...Language[]] {
-  const [first = NO_LANGUAGE, ...rest] = language;
-  return [first, ...rest];
-}

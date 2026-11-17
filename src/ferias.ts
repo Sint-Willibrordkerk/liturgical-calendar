@@ -7,7 +7,7 @@
  * as such, even where a feast was kept on it in its place.
  */
 import type { Calendar, Commemoration, LiturgicalDay, ProperReference } from "./types";
-import { calculateEaster, dayNumber, eachDay } from "./utils";
+import { calculateEaster, daysBetween, eachDay } from "./utils";
 
 /**
  * The Mass of the First Sunday after the Epiphany, *In excelso throno*, said on
@@ -153,7 +153,7 @@ export function applyFerialMass(calendar: Calendar, year: number): void {
     // from the week before it.
     if (date.getDay() === SUNDAY) {
       const sunday =
-        dayNumber(date) === dayNumber(trinity)
+        daysBetween(date, trinity) === 0
           ? afterPentecostSunday
           : borrowedFrom(sundayAsSuch(entry), date);
       if (sunday !== undefined) precedingSunday = asSaidOnItsFerias(sunday);

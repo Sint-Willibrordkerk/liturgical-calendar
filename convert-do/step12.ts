@@ -1,5 +1,5 @@
 import { join, dirname } from "path";
-import { readFile, writeFile } from "fs/promises";
+import { readFile } from "fs/promises";
 import {
   STEP_EXT,
   parseStep,
@@ -7,7 +7,7 @@ import {
   toOutputPath,
 } from "./lib/serialize.js";
 import { consola } from "consola";
-import { collectYmlFiles, ensureDir } from "./lib/batch";
+import { collectYmlFiles, writeTreeFile } from "./lib/batch";
 import { isVariantArray, type Variant } from "./lib/variants";
 import {
   contentHash,
@@ -759,8 +759,7 @@ async function publishMartyrology(
   };
   const write = async (relPath: string, value: unknown) => {
     const outPath = join(outputDir, relPath);
-    await ensureDir(outPath, mkdirCache);
-    await writeFile(outPath, stringifyOutput(value), "utf-8");
+    await writeTreeFile(outPath, stringifyOutput(value), mkdirCache);
   };
 
   let written = 0;
@@ -815,21 +814,10 @@ async function massOf(
   return relPath === outRelPath ? published : keepSeason(published, season);
 }
 
-/**
- * Batch runner: reads the step 11 tree under `inputDir` and writes to
- * `outputDir` the days, once, as the base language lays them out and holding
- * keys alone; and for each language the stores those keys name, a
- * translation's keyed by the base language's.
- */
-export async function run(
-  inputDir: string,
-  outputDir: string
-): Promise<{ written: number }> {
-  const allRelPaths = await collectYmlFiles(inputDir);
-  const mkdirCache = new Set<string>();
-
+/** What is published, by language: its days, each season of a seasonal day apart. */
+function publicationsByLanguage(allRelPaths: string[]): Map<string, Publication[]> {
   const byLanguage = new Map<string, Publication[]>();
-  for (const relPath of [...allRelPaths].sort()) {
+  for (const relPath of allRelPaths) {
     // The stores are read per language and subset, not copied wholesale.
     const base = relPath.replace(/^.*[/\\]/, "");
     if (STORES.some(({ file }) => file + STEP_EXT === base)) continue;
@@ -847,39 +835,54 @@ export async function run(
     if (!byLanguage.has(lang)) byLanguage.set(lang, []);
     byLanguage.get(lang)!.push(...publications);
   }
+  return byLanguage;
+}
 
-  const readStores = async (lang: string) => {
-    const stores: Record<string, Entries> = {};
-    for (const { file } of STORES) {
-      try {
-        const raw = await readFile(join(inputDir, lang, file + STEP_EXT), "utf-8");
-        stores[file] = (parseStep(raw) ?? {}) as Entries;
-      } catch {
-        consola.warn(`Step 12: no ${file} store for ${lang}`);
-        stores[file] = {};
-      }
+async function readStores(inputDir: string, lang: string): Promise<Record<string, Entries>> {
+  const stores: Record<string, Entries> = {};
+  for (const { file } of STORES) {
+    try {
+      const raw = await readFile(join(inputDir, lang, file + STEP_EXT), "utf-8");
+      stores[file] = (parseStep(raw) ?? {}) as Entries;
+    } catch {
+      consola.warn(`Step 12: no ${file} store for ${lang}`);
+      stores[file] = {};
     }
-    return stores;
-  };
-  const writeStores = async (lang: string, stores: Record<string, Entries>) => {
-    for (const file of [...STORES.map(({ file }) => file), NAME_STORE]) {
-      const storePath = join(outputDir, lang, file + ".yml");
-      await ensureDir(storePath, mkdirCache);
-      await writeFile(storePath, stringifyOutput(stores[file] ?? {}), "utf-8");
-    }
-  };
+  }
+  return stores;
+}
 
+async function writeStores(
+  outputDir: string,
+  lang: string,
+  stores: Record<string, Entries>,
+  mkdirCache: Set<string>
+): Promise<void> {
+  for (const file of [...STORES.map(({ file }) => file), NAME_STORE]) {
+    const storePath = join(outputDir, lang, file + ".yml");
+    await writeTreeFile(storePath, stringifyOutput(stores[file] ?? {}), mkdirCache);
+  }
+}
+
+/**
+ * The days, from the base language, and the part of its stores they use. Each
+ * day is returned, keyed, for the translations to be read against.
+ */
+async function publishBaseLanguage(
+  inputDir: string,
+  outputDir: string,
+  publications: Publication[],
+  baseStores: Record<string, Entries>,
+  mkdirCache: Set<string>
+) {
+  const days = new Map<string, Step12Output>();
+  const names: Record<string, string> = {};
+  const used = new Map<string, Set<string>>(STORES.map(({ file }) => [file, new Set()]));
   let written = 0;
   let skipped = 0;
   let errors = 0;
 
-  // The days, from the base language. Each is kept, keyed, for the
-  // translations to be read against.
-  const days = new Map<string, Step12Output>();
-  const baseStores = await readStores(BASE_LANGUAGE);
-  const names: Record<string, string> = {};
-  const used = new Map<string, Set<string>>(STORES.map(({ file }) => [file, new Set()]));
-  for (const publication of byLanguage.get(BASE_LANGUAGE) ?? []) {
+  for (const publication of publications) {
     try {
       const mass = await massOf(inputDir, publication);
       if (!hasPropers(mass)) {
@@ -893,63 +896,105 @@ export async function run(
       const outRelPath = withoutLanguage(publication.outRelPath);
       days.set(outRelPath, day);
       const outPath = join(outputDir, toOutputPath(outRelPath));
-      await ensureDir(outPath, mkdirCache);
-      await writeFile(outPath, stringifyOutput(sortSections(compactSections(day))), "utf-8");
+      await writeTreeFile(outPath, stringifyOutput(sortSections(compactSections(day))), mkdirCache);
       written++;
     } catch (err) {
       errors++;
       consola.error(`Error processing ${publication.relPath}:`, (err as Error).message);
     }
   }
+
   const published: Record<string, Entries> = {
     [NAME_STORE]: storeSubset(names, new Set(Object.keys(names))),
   };
   for (const { file } of STORES) {
     published[file] = storeSubset(baseStores[file]!, used.get(file)!);
   }
-  await writeStores(BASE_LANGUAGE, published);
+  await writeStores(outputDir, BASE_LANGUAGE, published, mkdirCache);
+  return { days, written, skipped, errors };
+}
 
-  // Each translation, as stores keyed by the base language's keys.
+/** A translation, as stores keyed by the base language's keys; returns its errors. */
+async function publishTranslation(
+  inputDir: string,
+  outputDir: string,
+  lang: string,
+  publications: Publication[],
+  days: Map<string, Step12Output>,
+  baseStores: Record<string, Entries>,
+  mkdirCache: Set<string>
+): Promise<number> {
+  const stores = await readStores(inputDir, lang);
+  const renderings: Rendering[] = [];
+  let unmatched = 0;
+  let errors = 0;
+  for (const publication of publications) {
+    try {
+      const mass = await massOf(inputDir, publication);
+      const day = days.get(withoutLanguage(publication.outRelPath));
+      if (day === undefined) {
+        if (hasPropers(mass)) unmatched++;
+        continue;
+      }
+      renderings.push(...renderingsOf(day, mass, stores, baseStores));
+    } catch (err) {
+      errors++;
+      consola.error(`Error processing ${publication.relPath}:`, (err as Error).message);
+    }
+  }
+  const chosen = chooseRenderings(renderings);
+  await writeStores(outputDir, lang, chosen, mkdirCache);
+  const rendered = Object.values(chosen).reduce((n, s) => n + Object.keys(s).length, 0);
+  consola.info(
+    `Step 12: ${lang} renders ${rendered} texts; ` +
+      `${unmatched} of its days the base language does not publish`
+  );
+  return errors;
+}
+
+/**
+ * Batch runner: reads the step 11 tree under `inputDir` and writes to
+ * `outputDir` the days, once, as the base language lays them out and holding
+ * keys alone; and for each language the stores those keys name, a
+ * translation's keyed by the base language's.
+ */
+export async function run(
+  inputDir: string,
+  outputDir: string
+): Promise<{ written: number }> {
+  const allRelPaths = (await collectYmlFiles(inputDir)).sort();
+  const mkdirCache = new Set<string>();
+  const byLanguage = publicationsByLanguage(allRelPaths);
+  const baseStores = await readStores(inputDir, BASE_LANGUAGE);
+
+  const base = await publishBaseLanguage(
+    inputDir,
+    outputDir,
+    byLanguage.get(BASE_LANGUAGE) ?? [],
+    baseStores,
+    mkdirCache
+  );
+  let errors = base.errors;
   for (const [lang, publications] of byLanguage) {
     if (lang === BASE_LANGUAGE) continue;
-    const stores = await readStores(lang);
-    const renderings: Rendering[] = [];
-    let unmatched = 0;
-    for (const publication of publications) {
-      try {
-        const mass = await massOf(inputDir, publication);
-        const day = days.get(withoutLanguage(publication.outRelPath));
-        if (day === undefined) {
-          if (hasPropers(mass)) unmatched++;
-          continue;
-        }
-        renderings.push(...renderingsOf(day, mass, stores, baseStores));
-      } catch (err) {
-        errors++;
-        consola.error(`Error processing ${publication.relPath}:`, (err as Error).message);
-      }
-    }
-    const chosen = chooseRenderings(renderings);
-    await writeStores(lang, chosen);
-    const rendered = Object.values(chosen).reduce((n, s) => n + Object.keys(s).length, 0);
-    consola.info(
-      `Step 12: ${lang} renders ${rendered} texts; ` +
-        `${unmatched} of its days the base language does not publish`
+    errors += await publishTranslation(
+      inputDir,
+      outputDir,
+      lang,
+      publications,
+      base.days,
+      baseStores,
+      mkdirCache
     );
   }
 
-  const martyrology = await publishMartyrology(
-    inputDir,
-    outputDir,
-    [...allRelPaths].sort(),
-    mkdirCache
-  );
+  const martyrology = await publishMartyrology(inputDir, outputDir, allRelPaths, mkdirCache);
 
   consola.info(
-    `Step 12: ${written} days written, ${skipped} without propers, ` +
+    `Step 12: ${base.written} days written, ${base.skipped} without propers, ` +
       `${martyrology} of the Martyrology`
   );
   if (errors > 0) consola.error(`Step 12 errors: ${errors}`);
 
-  return { written: written + martyrology };
+  return { written: base.written + martyrology };
 }

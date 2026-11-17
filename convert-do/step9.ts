@@ -1,14 +1,14 @@
 import { join, dirname } from "path";
-import { readFile, writeFile } from "fs/promises";
+import { readFile } from "fs/promises";
 
 import { consola } from "consola";
 import {
-  ensureDir,
+  writeTreeFile,
   runBatched,
   DEFAULT_CONCURRENCY,
 } from "./lib/batch";
 import { type Step8Output } from "./step8.js";
-import { isVariantArray } from "./lib/variants";
+import { conditionKey, isVariantArray } from "./lib/variants";
 import { STEP_EXT, stripStepExt, parseStep, stringifyStep } from "./lib/serialize.js";
 import { collectDocumentFiles, copyStores } from "./lib/stores.js";
 import { BASE_LANGUAGE, requiresOtherEdition } from "./lib/rubrics.js";
@@ -92,10 +92,6 @@ export type NameCandidate = {
 };
 
 /** Order-independent key for a rubric condition set. */
-function conditionKey(condition: string[]): string {
-  return [...condition].sort().join("|");
-}
-
 /** How a celebration is designated under one rubric condition. */
 type Designation = {
   officium: string | null;
@@ -451,11 +447,7 @@ export async function run(
     consola.error(`Step 9 read errors: ${readErrors}`);
   }
 
-  const byDir = new Map<string, (CollisionEntry & { dir: string })[]>();
-  for (const item of shared) {
-    if (!byDir.has(item.dir)) byDir.set(item.dir, []);
-    byDir.get(item.dir)!.push(item);
-  }
+  const byDir = Map.groupBy(shared, (item) => item.dir);
 
   // Where a name is claimed twice the loser takes a suffix, and which documents
   // claim a name differs between languages: one may hold two readings of a day
@@ -488,9 +480,8 @@ export async function run(
           ? `${dir}/${finalBasename}${STEP_EXT}`
           : `${finalBasename}${STEP_EXT}`;
       const outPath = join(outputDir, outRelPath);
-      await ensureDir(outPath, mkdirCache);
       // Already selected, folded and serialized when the names were collected.
-      await writeFile(outPath, content, "utf-8");
+      await writeTreeFile(outPath, content, mkdirCache);
       written++;
     }
   }

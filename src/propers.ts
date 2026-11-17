@@ -7,8 +7,7 @@
  * the celebration kept.
  */
 import type { Calendar, ProperReference, RawMassProper } from "./types";
-import type { Language } from "./language";
-import { asLanguages } from "./language";
+import { NO_LANGUAGE, type Language } from "./language";
 import { DEFAULT_RUBRICS, loadMassPropersById, loadOfficiumById } from "./loadAssets";
 import { calculateEaster, eachDay } from "./utils";
 
@@ -24,7 +23,7 @@ export function applyPropers(
   languages: Language[],
   { officium = false }: { officium?: boolean } = {}
 ): void {
-  const [language, ...fallbacks] = asLanguages(languages);
+  const [language = NO_LANGUAGE, ...fallbacks] = languages;
   const easter = calculateEaster(year);
 
   const massOf = (proper: ProperReference | undefined, date: Date) => {

@@ -15,25 +15,22 @@ import type {
   LiturgicalDay,
   Matcher,
 } from "./types";
-import { eachDay } from "./utils";
+import { asList, eachDay } from "./utils";
 
 export type { CommemorationRules };
 
-const many = <T>(value: T | T[] | undefined): T[] | undefined =>
-  value === undefined ? undefined : Array.isArray(value) ? value : [value];
+/** Whether a matcher's field takes the day's value; a field not named takes any. */
+function takes<T>(field: T | T[] | undefined, value: T | undefined): boolean {
+  return field === undefined || (value !== undefined && asList(field).includes(value));
+}
 
 /** Whether the day is of the kind the matcher names: every field it names. */
 export function matches(day: Commemoration, matcher: Matcher): boolean {
-  const types = many(matcher.type);
-  const classes = many(matcher.class);
-  const commemorated = many(matcher.commemorated);
-  const season = matcher["of-the-season"];
   return (
-    (types === undefined || (day.type !== undefined && types.includes(day.type))) &&
-    (classes === undefined || classes.includes(day.liturgicalClass)) &&
-    (commemorated === undefined ||
-      (day.commemorated !== undefined && commemorated.includes(day.commemorated))) &&
-    (season === undefined || (day.ofTheSeason === true) === season)
+    takes(matcher.type, day.type) &&
+    takes(matcher.class, day.liturgicalClass) &&
+    takes(matcher.commemorated, day.commemorated) &&
+    takes(matcher["of-the-season"], day.ofTheSeason === true)
   );
 }
 

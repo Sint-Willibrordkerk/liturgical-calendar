@@ -1,111 +1,47 @@
-import type {
-  Admits,
-  CalendarData,
-  CalendarEntry,
-  Color,
-  Commemorated,
-  DateString,
-  Matcher,
-  Occurence,
-  RelativeDate,
-  Weekday,
-} from "./types";
-import { CalendarBuilder } from "./parse";
-import { calculateAdvent, calculateEaster, getDate } from "./utils";
+import type { Calendar, Color, Commemorated, LiturgicalDay, Occurence, RelativeDate, Weekday } from "./types";
+import { calculateAdvent, calculateEaster, daysBetween, getDate } from "./utils";
 import { weekdays } from "./constants";
 import { loadCalendar, loadPropers } from "./loadAssets";
 import { idOf } from "./naming";
 import { defaultColor, mayWearRose, seasonOf } from "./seasons";
 
-type ParsedCalendarData = {
-  type: string;
-  id?: string;
-  liturgicalClass: number;
-  /** As written; checked against the calendar's list once merged. */
-  commemorated?: string;
-  admits?: Admits;
-  omittedOn?: Matcher[];
-  honours?: string[];
-  ofTheSeason?: boolean;
-  color?: string;
-  occurence?: Occurence;
-  calendar?: Partial<Record<DateString, CalendarEntry[] | CalendarEntry>>;
-  /**
-   * The local calendars of the sources a local proper's own day is read from,
-   * before the general ones. A day of the base calendar reads only the general
-   * ones, so it keeps its own propers whatever local proper is chosen: a local
-   * calendar may file a different saint under the same name.
-   */
-  localCalendars?: string[];
-};
-
-function flattenCalendarData(item: CalendarData, parent: Partial<ParsedCalendarData>) {
-  const list: ParsedCalendarData[] = [];
-  const merged: Partial<ParsedCalendarData> = {
-    id: item.id ?? parent.id,
-    type: item.type ?? parent.type,
-    liturgicalClass: item["liturgical-class"] ?? parent.liturgicalClass,
-    commemorated: item.commemorated ?? parent.commemorated,
-    admits: item.admits ?? parent.admits,
-    omittedOn: item["omitted-on"] ?? parent.omittedOn,
-    honours: item.honours ?? parent.honours,
-    ofTheSeason: item["of-the-season"] ?? parent.ofTheSeason,
-    color: item.color ?? parent.color,
-    occurence: item.occurence ?? parent.occurence,
-    localCalendars:
-      item["local-calendar"] === undefined ? parent.localCalendars : [item["local-calendar"]],
-  };
-
-  if (item.items?.length)
-    list.push(
-      ...item.items.flatMap((subItem) => flattenCalendarData(subItem, merged as ParsedCalendarData))
-    );
-  else if (Object.keys(item.calendar ?? {}).length) {
-    Object.entries(item.calendar!).forEach(([date, value]) => {
-      if (value === undefined) return;
-      // Copied before reversing: the data is shared by every calendar built
-      // from it, and reversing it in place would flip the order each time.
-      const entries = Array.isArray(value) ? [...value] : [value];
-      entries.reverse().forEach((entry) => {
-        const { id, color, honours } =
-          typeof entry === "string" ? { id: entry, color: undefined, honours: undefined } : entry;
-        list.push({
-          ...(merged as ParsedCalendarData),
-          id,
-          color: color ?? merged.color,
-          honours: honours ?? merged.honours,
-          occurence: { date: date as DateString },
-        });
-      });
-    });
-  } else list.push(merged as ParsedCalendarData);
-
-  return list;
+/**
+ * Put a day on its date. The day already there gives way and is commemorated:
+ * the days are placed lowest first. The season belongs to the date and the
+ * color to the Mass that is said, so neither follows it down: a commemoration
+ * is a collect added to that Mass, not a Mass of its own. Nor does the Office,
+ * which is that of the celebration kept.
+ */
+function place(calendar: Calendar, date: Date, day: Omit<LiturgicalDay, "commemorations">) {
+  const month = (calendar[date.getMonth() + 1] ??= {});
+  const existing = month[date.getDate()];
+  if (existing === undefined) {
+    month[date.getDate()] = { commemorations: [], ...day };
+    return;
+  }
+  const {
+    commemorations,
+    officium: _officium,
+    season: _season,
+    color: _color,
+    alternativeColor: _alternativeColor,
+    ...commemorated
+  } = existing;
+  month[date.getDate()] = { ...day, commemorations: [commemorated, ...commemorations] };
 }
 
-function getDates(
-  occurence: Occurence,
-  advent: Date,
-  easter: Date,
-  year: number
-) {
+function getDates(occurence: Occurence, advent: Date, easter: Date, year: number) {
   const dates = [];
 
   if (typeof occurence === "object") {
-    if (
-      "start" in occurence &&
-      "end" in occurence &&
-      occurence.start &&
-      occurence.end
-    ) {
+    if ("start" in occurence && "end" in occurence && occurence.start && occurence.end) {
       const date = getDate(occurence.start, advent, easter, year);
       const end = getDate(occurence.end, advent, easter, year);
 
-      while (date.getTime() <= end.getTime()) {
+      while (daysBetween(date, end) >= 0) {
         if (
           !occurence.type ||
-          (occurence.type in weekdays &&
-            weekdays[occurence.type as Weekday] === date.getDay()) ||
+          (occurence.type in weekdays && weekdays[occurence.type as Weekday] === date.getDay()) ||
           (occurence.type &&
             occurence.type.startsWith("!") &&
             weekdays[occurence.type.slice(1) as Weekday] !== date.getDay())
@@ -138,50 +74,45 @@ function getDates(
  * id the calendar gives it, and carries what a language needs to name it and
  * to read its propers after.
  */
-export function parseCalendarData(year: number, propers: readonly string[]) {
+export function parseCalendarData(year: number, properNames: readonly string[]) {
   // The propers are put in their slots, and every day checked, as it loads.
-  const local = propers.map((name) => ({ name, data: loadPropers(name) }));
-  const list = flattenCalendarData(loadCalendar(local), {});
-  const calendarBuilder = new CalendarBuilder();
-
+  const { days } = loadCalendar(properNames.map(loadPropers));
+  const calendar: Calendar = {};
   const advent = calculateAdvent(year);
   const easter = calculateEaster(year);
 
-  list.reverse().forEach((item) => {
-    if (item.occurence) {
-      const dates = getDates(item.occurence, advent, easter, year);
-      dates.forEach((date, index) => {
-        const count = index + 1;
-        const id = item.id === undefined ? undefined : idOf(item.id, count, date);
+  days.toReversed().forEach(({ occurence, localCalendar, id: template, ...item }) => {
+    getDates(occurence, advent, easter, year).forEach((date, index) => {
+      const count = index + 1;
+      const id = template === undefined ? undefined : idOf(template, count, date);
 
-        // The season belongs to the date; the color to the day's own Mass,
-        // where the calendar names one, and to the season otherwise.
-        const season = seasonOf(date, easter, advent);
-        const color =
-          (item.color as Color | undefined) ?? defaultColor(item.type, season);
-        const alternativeColor =
-          item.type === "dominica" && mayWearRose(date, easter, advent)
-            ? ("rose" as const)
-            : undefined;
+      // The season belongs to the date; the color to the day's own Mass,
+      // where the calendar names one, and to the season otherwise.
+      const season = seasonOf(date, easter, advent);
+      const color = (item.color as Color | undefined) ?? defaultColor(item.type, season);
+      const alternativeColor =
+        item.type === "dominica" && mayWearRose(date, easter, advent)
+          ? ("rose" as const)
+          : undefined;
 
-        calendarBuilder.add(date.getMonth() + 1, date.getDate(), {
-          ...item,
-          // Checked against the calendar's list as it loaded.
-          commemorated: item.commemorated as Commemorated | undefined,
-          id,
-          proper: id
-            ? item.localCalendars === undefined
-              ? { id }
-              : { id, local: item.localCalendars }
-            : undefined,
-          naming: item.id === undefined ? undefined : { template: item.id, count },
-          color,
-          season,
-          alternativeColor,
-        });
+      // The fields a language adds later hold their place here, so that a
+      // published day reads in the same order every time.
+      place(calendar, date, {
+        id,
+        title: undefined,
+        ...item,
+        // Checked against the calendar's list as it loaded.
+        commemorated: item.commemorated as Commemorated | undefined,
+        color,
+        mass: undefined,
+        officium: undefined,
+        proper: id ? { id, ...(localCalendar && { local: localCalendar }) } : undefined,
+        naming: template === undefined ? undefined : { template, count },
+        season,
+        alternativeColor,
       });
-    }
+    });
   });
 
-  return calendarBuilder.result;
+  return calendar;
 }

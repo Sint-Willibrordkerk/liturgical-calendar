@@ -148,10 +148,10 @@ describe("parseCalendarData", () => {
     });
 
     it("files its own days under the local calendar its path names", () => {
-      expect(day(utrecht, 11, 7).proper?.local).toEqual(["Neerlandia/Ultrajectum"]);
+      expect(day(utrecht, 11, 7).proper?.local).toBe("Neerlandia/Ultrajectum");
       expect(day(utrecht, 7, 9).proper).toEqual({
         id: "martyrum-gorcomiensium",
-        local: ["Neerlandia/Ultrajectum"],
+        local: "Neerlandia/Ultrajectum",
       });
     });
 
@@ -170,12 +170,10 @@ describe("parseCalendarData", () => {
 
     it("loads a proper whatever it says, and checks it once merged", () => {
       const bundled = (globalThis as unknown as { bundledAssets: Record<string, unknown> }).bundledAssets;
-      bundled["propers/nemo.yml"] = {
-        items: [{ "slot-name": "dioecesis-3", type: "feast", calendar: { "02-01": "nemini" } }],
-      };
+      bundled["propers/nemo.yml"] = { "dioecesis-3": { "02-01": { id: "nemini", color: "gold" } } };
       try {
         expect(() => loadPropers("nemo")).not.toThrow();
-        expect(() => parseCalendarData(2026, ["nemo"])).toThrow('nemini: invalid type "feast"');
+        expect(() => parseCalendarData(2026, ["nemo"])).toThrow('nemini: invalid color "gold"');
       } finally {
         delete bundled["propers/nemo.yml"];
       }
