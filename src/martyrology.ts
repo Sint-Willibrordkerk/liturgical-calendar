@@ -13,7 +13,7 @@
  * and which date's text is read at all in a leap year.
  */
 import type { Calendar, Fallback, Martyrologium } from "./types";
-import { calculateAdvent, calculateEaster, eachDay } from "./utils";
+import { calculateAdvent, calculateEaster, dayCount, eachDay } from "./utils";
 
 /** A date of the Martyrology as published: its date line and its entries. */
 export type MartyrologyDay = { titulus?: string; elogia?: string[] };
@@ -27,16 +27,9 @@ export type Martyrology = {
   conclusio?: { versus: string; responsum: string };
 };
 
-const DAY = 86400000;
-
-/** A date as a count of days, free of the hour and the time zone. */
+/** A date as a count of days. */
 function ordinal(year: number, month: number, day: number): number {
-  return Math.round(Date.UTC(year, month - 1, day) / DAY);
-}
-
-/** A UTC date, such as Easter or Advent, as a count of days. */
-function ordinalOf(date: Date): number {
-  return ordinal(date.getUTCFullYear(), date.getUTCMonth() + 1, date.getUTCDate());
+  return dayCount(new Date(year, month - 1, day));
 }
 
 function isLeapYear(year: number): boolean {
@@ -138,7 +131,7 @@ export function lunaOf(year: number, month: number, day: number): number | undef
  */
 export function movableDayOf(year: number, month: number, day: number): string | undefined {
   const t = ordinal(year, month, day);
-  const weekday = new Date(Date.UTC(year, month - 1, day)).getUTCDay();
+  const weekday = new Date(year, month - 1, day).getDay();
 
   // The Sundays of January the calendar keeps feasts on.
   if (month === 1 && weekday === 0) {
@@ -148,20 +141,20 @@ export function movableDayOf(year: number, month: number, day: number): string |
   // The Holy Name falls on the 2nd where no Sunday comes between the 2nd and the 5th.
   if (month === 1 && day === 2) {
     const sundayIn2To5 = [2, 3, 4, 5].some(
-      (d) => new Date(Date.UTC(year, 0, d)).getUTCDay() === 0
+      (d) => new Date(year, 0, d).getDay() === 0
     );
     if (!sundayIn2To5) return "nat1-0";
   }
   // Christ the King, the last Sunday of October.
   if (month === 10 && weekday === 0 && day >= 25) return "10-du";
 
-  const advent = ordinalOf(calculateAdvent(year));
+  const advent = dayCount(calculateAdvent(year));
   const christmas = ordinal(year, 12, 25);
   if (t >= advent) {
     return t < christmas ? `adv${1 + Math.floor((t - advent) / 7)}-${weekday}` : undefined;
   }
 
-  const easter = ordinalOf(calculateEaster(year));
+  const easter = dayCount(calculateEaster(year));
   if (t < easter - 63) return undefined;
   if (t < easter - 42) return `quadp${1 + Math.floor((t - (easter - 63)) / 7)}-${weekday}`;
   if (t < easter) return `quad${1 + Math.floor((t - (easter - 42)) / 7)}-${weekday}`;

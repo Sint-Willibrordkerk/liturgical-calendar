@@ -1,8 +1,8 @@
 import { join, dirname } from "path";
-import { readFile, writeFile } from "fs/promises";
+import { readFile } from "fs/promises";
 
 import { consola } from "consola";
-import { ensureDir } from "./lib/batch.js";
+import { writeTreeFile } from "./lib/batch.js";
 import { isVariantArray, type Variant } from "./lib/variants.js";
 import { STEP_EXT, parseStep, stringifyStep } from "./lib/serialize.js";
 import {
@@ -191,8 +191,7 @@ export async function run(
       }
     }
     const outPath = join(outputDir, relPath);
-    await ensureDir(outPath, mkdirCache);
-    await writeFile(outPath, stringifyStep(withoutCommemoratioKeys(obj)), "utf-8");
+    await writeTreeFile(outPath, stringifyStep(withoutCommemoratioKeys(obj)), mkdirCache);
     written++;
   }
 
@@ -219,8 +218,7 @@ export async function run(
       secreta: filePrayers(secreta, store),
       postcommunio: filePrayers(postcommunio, store),
     };
-    await ensureDir(outPath, mkdirCache);
-    await writeFile(outPath, stringifyStep(doc), "utf-8");
+    await writeTreeFile(outPath, stringifyStep(doc), mkdirCache);
     written++;
   }
 

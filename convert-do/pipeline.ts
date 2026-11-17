@@ -27,6 +27,7 @@ import { run as runStep9 } from "./step9.js";
 import { run as runStep10 } from "./step10.js";
 import { run as runStep11 } from "./step11.js";
 import { run as runStep12 } from "./step12.js";
+import { runBatched } from "./lib/batch.js";
 import { parseStep, stringifyStep } from "./lib/serialize.js";
 
 const PROJECT_BASE = process.cwd();
@@ -179,23 +180,12 @@ async function executePipeline(
     await mkdir(outputDirectory, { recursive: true });
   }
 
-  const queue = [...byOutput.entries()];
-  let processed = 0;
-  async function worker() {
-    while (queue.length > 0) {
-      const item = queue.shift();
-      if (item === undefined) break;
-      const [outputFile, input] = item;
-      try {
-        await processInputFile(outputFile, input, fromStep, toStep);
-        processed++;
-      } catch (err) {
-        consola.error(`Error processing ${input}:`, (err as Error).message);
-        throw err;
-      }
-    }
-  }
-  await Promise.all(Array(STREAMING_CONCURRENCY).fill(0).map(worker));
+  const { processed, errors } = await runBatched(
+    [...byOutput.keys()],
+    STREAMING_CONCURRENCY,
+    (outputFile) => processInputFile(outputFile, byOutput.get(outputFile)!, fromStep, toStep)
+  );
+  if (errors > 0) throw new Error(`Streaming steps: ${errors} files failed`);
   return { processed };
 }
 

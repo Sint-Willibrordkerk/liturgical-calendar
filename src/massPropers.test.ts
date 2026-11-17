@@ -1,8 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   selectVariant,
-  resolveReading,
-  selectMassProper,
+  resolveMassProper,
   READING_SECTIONS,
   PRAYER_SECTIONS,
   CHANT_SECTIONS,
@@ -14,6 +13,9 @@ import {
 
 const v = <T>(value: T, condition: string[] = []) => ({ value, condition });
 const rubrics = (...tokens: string[]) => new Set(tokens);
+
+/** The proper resolved, in the language alone. */
+const properOf = (...args: Parameters<typeof resolveMassProper>) => resolveMassProper(...args).proper;
 
 describe("selectVariant", () => {
   it("prefers the variant matching the rubric over the unconditional one", () => {
@@ -90,29 +92,7 @@ describe("selectVariant", () => {
   });
 });
 
-describe("resolveReading", () => {
-  const store = {
-    "rom-1-1": { ref: "Rom 1:1", verses: ["Paulus", "Grátia"] },
-  };
-
-  it("replaces a key by the reading it names", () => {
-    expect(resolveReading("rom-1-1", store)).toEqual({
-      ref: "Rom 1:1",
-      verses: ["Paulus", "Grátia"],
-    });
-  });
-
-  it("leaves a reading that was shipped whole", () => {
-    const inline = { ref: "Isa 1:1", text: "Vísio" };
-    expect(resolveReading(inline, store)).toBe(inline);
-  });
-
-  it("has nothing for a key the store does not hold", () => {
-    expect(resolveReading("missing", store)).toBeUndefined();
-  });
-});
-
-describe("selectMassProper", () => {
+describe("resolveMassProper", () => {
   const stores = {
     readings: {
       "rom-1-1": { ref: "Rom 1:1", verses: ["Paulus"] },
@@ -129,7 +109,7 @@ describe("selectMassProper", () => {
 
   it("selects each section and resolves its readings", () => {
     expect(
-      selectMassProper(
+      properOf(
         {
           introitus: [v("ps-65-4"), v("nope", ["monastica"])],
           lectio: [v("rom-1-1")],
@@ -149,7 +129,7 @@ describe("selectMassProper", () => {
 
   it("leaves out a section that has nothing for this rubric", () => {
     expect(
-      selectMassProper(
+      properOf(
         {
           oratio: [v({ text: "keep" })],
           tractus: [v({ text: "drop" }, ["monastica"])],
@@ -162,7 +142,7 @@ describe("selectMassProper", () => {
 
   it("resolves the rubric before the reading, so each rubric reads its own", () => {
     expect(
-      selectMassProper(
+      properOf(
         { lectio: [v("rom-1-1"), v("matt-5-1", ["1962"])] },
         rubrics("1962"),
         stores
@@ -172,7 +152,7 @@ describe("selectMassProper", () => {
 
   it("says the name in the language, and leaves out a key it has no words for", () => {
     expect(
-      selectMassProper(
+      properOf(
         { title: "S. Adriani, Martyris", name: "adriani", lectio: [v("isa-1-1")] },
         rubrics("1962"),
         stores
@@ -183,7 +163,7 @@ describe("selectMassProper", () => {
   it("keeps a reading the pipeline left inline", () => {
     const inline = { ref: "Eccli 44:1", text: "Beátus vir" };
     expect(
-      selectMassProper({ lectio: [v(inline)] }, rubrics("1962"), stores)
+      properOf({ lectio: [v(inline)] }, rubrics("1962"), stores)
     ).toEqual({ lectio: inline });
   });
 });
@@ -202,7 +182,7 @@ describe("the store contract", () => {
     const document = Object.fromEntries(
       [...CHANT_SECTIONS].map((key) => [key, [v(`k-${key}`)]])
     );
-    const out = selectMassProper(document, rubrics("1962"), stores);
+    const out = properOf(document, rubrics("1962"), stores);
     for (const key of CHANT_SECTIONS) {
       expect(out[key], `${key} should resolve`).toEqual({ ref: key });
     }
@@ -221,7 +201,7 @@ describe("the store contract", () => {
     const document = Object.fromEntries(
       [...READING_SECTIONS, ...PRAYER_SECTIONS].map((k) => [k, [v(`k-${k}`)]])
     );
-    const out = selectMassProper(document, rubrics("1962"), stores);
+    const out = properOf(document, rubrics("1962"), stores);
     for (const key of [...READING_SECTIONS, ...PRAYER_SECTIONS]) {
       expect(out[key], `${key} should resolve`).toBeDefined();
       expect(typeof out[key], `${key} should not stay a key`).not.toBe("string");

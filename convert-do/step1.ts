@@ -1,11 +1,11 @@
 import { applyCondition } from "./condition";
+import { toKebabCase } from "./lib/paths";
 
 /** Section content: array of lines, or when conditional a map condition -> lines (use "" for default). */
 export type Step1Output = {
   [key: string]: { value: string[]; condition: string[] }[];
 };
 
-const WHITESPACE = /\s+/g;
 const KEY_LINE = /^\[(.+)\](?:\s*\((.*)\))?$/;
 
 // Corrections scoped to individual corrupted source files. Each applies to
@@ -26,10 +26,6 @@ function matchesFile(inputFile: string, target: string) {
     inputFile.replace(/\\/g, "/").replace(/\.[^./]+$/, "") === target ||
     inputFile.replace(/\\/g, "/").replace(/\.[^./]+$/, "").endsWith("/" + target)
   );
-}
-
-function toKebabCase(str: string) {
-  return str.toLowerCase().trim().replace(WHITESPACE, "-");
 }
 
 function trimTrailingEmptyLines(lines: string[]) {

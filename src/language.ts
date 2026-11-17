@@ -8,13 +8,19 @@
  * its translations and its Martyrology, and handed to the generator by whoever
  * wants it, so a caller pays for the languages they ask for and no others.
  *
- * `assets` is keyed by the path the asset is filed under, exactly as the
- * pipeline lays it out: `mass-propers/nl/oratio.yml`,
- * `translations/nl/sanctorum.yml`. `code` is the segment those paths use.
+ * `assets` holds them by kind and then by name: the store the pipeline files
+ * as `mass-propers/nl/oratio.yml` is `assets.masspropers.oratio`, the
+ * translations filed as `translations/nl/sanctorum.yml` are
+ * `assets.translations.sanctorum`, and the Martyrology's dates are
+ * `assets.martyrologium["01-21"]`. `code` is the language they are in.
  */
 export type Language = {
   code: string;
-  assets: Record<string, unknown>;
+  assets: {
+    masspropers?: Record<string, unknown>;
+    translations?: Record<string, Record<string, string>>;
+    martyrologium?: Record<string, unknown>;
+  };
 };
 
 /**
@@ -24,37 +30,3 @@ export type Language = {
  * only what a language would supply is absent.
  */
 export const NO_LANGUAGE: Language = { code: "la", assets: {} };
-
-/**
- * The language argument, checked, as the list of languages it names.
- *
- * Until version 3 this was the language's code, and the assets of every
- * language were bundled into this package. Passing a code now would silently
- * produce a calendar with no Masses and no translations, so it is refused with
- * the reason rather than accepted.
- *
- * One language or several: the first is the language asked for, and the rest
- * are said in where it has no words for a text, in their order. Without a
- * language, or with an empty list, the calendar has none.
- */
-export function asLanguages(
-  language: Language | readonly Language[] | string | undefined
-): [Language, ...Language[]] {
-  const named: readonly unknown[] = Array.isArray(language)
-    ? language
-    : language === undefined
-      ? []
-      : [language];
-  for (const each of named) {
-    if (typeof each === "string") {
-      throw new TypeError(
-        `Expected a language package, not the code "${each}". ` +
-          `Each language is published separately now: ` +
-          `import ${each} from "@sint-willibrordkerk/liturgical-calendar-${each}" ` +
-          `and pass it in.`
-      );
-    }
-  }
-  const [first = NO_LANGUAGE, ...rest] = named as Language[];
-  return [first, ...rest];
-}

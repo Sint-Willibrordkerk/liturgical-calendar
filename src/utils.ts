@@ -1,7 +1,13 @@
 import { LiturgicalClass, LiturgicalDate, RelativeDate } from "./types";
 
+/** A field as a list, whether it holds one value, several or none. */
+export function asList<T>(field: T | T[] | undefined): T[] {
+  if (field === undefined) return [];
+  return Array.isArray(field) ? field : [field];
+}
+
 export function calculateAdvent(year: number) {
-  const advent = new Date(Date.UTC(year, 11, 3));
+  const advent = new Date(year, 11, 3);
   advent.setDate(advent.getDate() - advent.getDay());
   return advent;
 }
@@ -21,9 +27,9 @@ export function calculateEaster(year: number) {
     april_easter = d + e - 9;
 
   if (march_easter <= 31) {
-    return new Date(Date.UTC(year, 2, march_easter));
+    return new Date(year, 2, march_easter);
   } else {
-    return new Date(Date.UTC(year, 3, april_easter));
+    return new Date(year, 3, april_easter);
   }
 }
 
@@ -65,17 +71,17 @@ function matchDateString(
     case "easter":
       return new Date(easter);
     default:
-      return new Date(`${year}-${date.split("-")[1]}-${date.split("-")[0]}`);
+      const [day, month] = date.split("-").map(Number);
+      return new Date(year, month! - 1, day!);
   }
 }
 
-/**
- * A date as a plain year-month-day number, so that two dates compare as days.
- *
- * The dates here are not all built the same way — Easter and Advent are reckoned
- * in UTC, while the days of the year are local — and an hour of offset between
- * two of them is enough to move a day across a boundary.
- */
-export function dayNumber(date: Date): number {
-  return date.getFullYear() * 10000 + date.getMonth() * 100 + date.getDate();
+/** A date as a count of days, by the date it shows, whatever the hour or the clock. */
+export function dayCount(date: Date): number {
+  return Math.round(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) / 86_400_000);
+}
+
+/** Whole days from `from` to `to`; negative where `to` comes first. */
+export function daysBetween(from: Date, to: Date): number {
+  return dayCount(to) - dayCount(from);
 }

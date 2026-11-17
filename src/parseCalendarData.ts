@@ -1,144 +1,47 @@
-import type {
-  CalendarData,
-  CalendarEntry,
-  Color,
-  DateString,
-  Occurence,
-  RelativeDate,
-  Weekday,
-} from "./types";
-import { CalendarBuilder } from "./parse";
-import { calculateAdvent, calculateEaster, getDate } from "./utils";
+import type { Calendar, Color, Commemorated, LiturgicalDay, Occurence, RelativeDate, Weekday } from "./types";
+import { calculateAdvent, calculateEaster, daysBetween, getDate } from "./utils";
 import { weekdays } from "./constants";
-import {
-  loadCalendarData,
-  loadPropers,
-  loadMassPropersByTitle,
-  loadOfficiumByTitle,
-  type RawMassProper,
-} from "./loadAssets";
-import { ordinals, days, feriae } from "./ordinals";
-import type { Language } from "./language";
+import { loadCalendar, loadPropers } from "./loadAssets";
+import { idOf } from "./naming";
 import { defaultColor, mayWearRose, seasonOf } from "./seasons";
 
-type Translations = Record<string, string>;
-/** A filing slug — all lowercase, digits and hyphens — not a name to show. */
-const IS_SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-
-/** A slug, or a slug with `$count`/`$day`/`$feria` still to be filled in. */
-const IS_SLUG_TEMPLATE = /^[a-z0-9$]+(?:-[a-z0-9$]+)*$/;
-
-/** A value spliced into a slug, kept lowercase and hyphenated so it stays one. */
-function slugPart(value: string): string {
-  return value.toLowerCase().replace(/\s+/g, "-");
+/**
+ * Put a day on its date. The day already there gives way and is commemorated:
+ * the days are placed lowest first. The season belongs to the date and the
+ * color to the Mass that is said, so neither follows it down: a commemoration
+ * is a collect added to that Mass, not a Mass of its own. Nor does the Office,
+ * which is that of the celebration kept.
+ */
+function place(calendar: Calendar, date: Date, day: Omit<LiturgicalDay, "commemorations">) {
+  const month = (calendar[date.getMonth() + 1] ??= {});
+  const existing = month[date.getDate()];
+  if (existing === undefined) {
+    month[date.getDate()] = { commemorations: [], ...day };
+    return;
+  }
+  const {
+    commemorations,
+    officium: _officium,
+    season: _season,
+    color: _color,
+    alternativeColor: _alternativeColor,
+    ...commemorated
+  } = existing;
+  month[date.getDate()] = { ...day, commemorations: [commemorated, ...commemorations] };
 }
 
-function translate(
-  str: string | undefined,
-  translations?: Translations
-): string | undefined {
-  if (!str || !translations) return str;
-  return translations[str] || str;
-}
-
-type ParsedCalendarData = {
-  type: string;
-  title?: string;
-  liturgicalClass: number;
-  commemorationType: string;
-  acceptCommemorationTypes: string[];
-  color?: string;
-  occurence?: Occurence;
-  calendar?: Record<DateString, CalendarEntry[] | CalendarEntry | undefined>;
-  slot?: string;
-  slotName?: string;
-  /**
-   * The local calendars of the sources a local proper's own day is read from,
-   * before the general ones. A day of the base calendar reads only the general
-   * ones, so it keeps its own propers whatever local proper is chosen: a local
-   * calendar may file a different saint under the same name.
-   */
-  localCalendars?: string[];
-};
-
-function flattenCalendarData(
-  item: CalendarData,
-  parent: Partial<ParsedCalendarData>,
-  slots: Record<string, ParsedCalendarData[]> = {}
-) {
-  const list: ParsedCalendarData[] = [];
-  const merged: Partial<ParsedCalendarData> = {
-    title: item.title ?? parent.title,
-    type: item.type ?? parent.type,
-    liturgicalClass: item["liturgical-class"] ?? parent.liturgicalClass,
-    commemorationType: item["commemoration-type"] ?? parent.commemorationType,
-    acceptCommemorationTypes:
-      item["accept-commemoration-types"] ?? parent.acceptCommemorationTypes,
-    color: item.color ?? parent.color,
-    occurence: item.occurence ?? parent.occurence,
-    slotName: item["slot-name"] ?? parent.slotName,
-  };
-
-  if (item.slot) {
-    list.push(
-      ...((slots[item.slot]?.map((slot) => ({
-        ...merged,
-        ...Object.fromEntries(
-          Object.entries(slot).filter(([_, value]) => value !== undefined)
-        ),
-      })) ?? []) as ParsedCalendarData[])
-    );
-  } else if (item.items?.length)
-    list.push(
-      ...item.items.flatMap((subItem) =>
-        flattenCalendarData(subItem, merged as ParsedCalendarData, slots)
-      )
-    );
-  else if (Object.keys(item.calendar ?? {}).length) {
-    Object.entries(item.calendar!).forEach(([date, value]) => {
-      if (value === undefined) return;
-      // Copied before reversing: the data is shared by every calendar built
-      // from it, and reversing it in place would flip the order each time.
-      const entries = Array.isArray(value) ? [...value] : [value];
-      entries.reverse().forEach((entry) => {
-        const { title, color } =
-          typeof entry === "string" ? { title: entry, color: undefined } : entry;
-        list.push({
-          ...(merged as ParsedCalendarData),
-          title,
-          color: color ?? merged.color,
-          occurence: { date: date as DateString },
-        });
-      });
-    });
-  } else list.push(merged as ParsedCalendarData);
-
-  return list;
-}
-
-function getDates(
-  occurence: Occurence,
-  advent: Date,
-  easter: Date,
-  year: number
-) {
+function getDates(occurence: Occurence, advent: Date, easter: Date, year: number) {
   const dates = [];
 
   if (typeof occurence === "object") {
-    if (
-      "start" in occurence &&
-      "end" in occurence &&
-      occurence.start &&
-      occurence.end
-    ) {
+    if ("start" in occurence && "end" in occurence && occurence.start && occurence.end) {
       const date = getDate(occurence.start, advent, easter, year);
       const end = getDate(occurence.end, advent, easter, year);
 
-      while (date.getTime() <= end.getTime()) {
+      while (daysBetween(date, end) >= 0) {
         if (
           !occurence.type ||
-          (occurence.type in weekdays &&
-            weekdays[occurence.type as Weekday] === date.getDay()) ||
+          (occurence.type in weekdays && weekdays[occurence.type as Weekday] === date.getDay()) ||
           (occurence.type &&
             occurence.type.startsWith("!") &&
             weekdays[occurence.type.slice(1) as Weekday] !== date.getDay())
@@ -162,130 +65,54 @@ function getDates(
   return dates;
 }
 
-export function parseCalendarData(
-  year: number,
-  propers: string[],
-  language: Language,
-  translations?: Translations,
-  officium = false,
-  fallbacks: readonly Language[] = []
-) {
-  const calendarData = loadCalendarData();
-  const calendarBuilder = new CalendarBuilder();
-
-  const slots: Record<string, ParsedCalendarData[]> = {};
-  propers.reverse().forEach((proper) => {
-    const data = loadPropers(proper);
-    const localCalendars = data["local-calendars"];
-    const properData = flattenCalendarData(data, {});
-    properData.forEach(({ slotName, ...item }) => {
-      slots[slotName!] ??= [];
-      slots[slotName!]!.push({ ...item, localCalendars });
-    });
-  });
-
-  const list = flattenCalendarData(calendarData, {}, slots);
+/**
+ * The days of `year`, with the local `propers` named laid over the general
+ * calendar: which is kept on each date and which commemorated, its color and
+ * its season, and where each one's Mass is filed.
+ *
+ * The days are the same in every language, so none is asked for. Each has the
+ * id the calendar gives it, and carries what a language needs to name it and
+ * to read its propers after.
+ */
+export function parseCalendarData(year: number, properNames: readonly string[]) {
+  // The propers are put in their slots, and every day checked, as it loads.
+  const { days } = loadCalendar(properNames.map(loadPropers));
+  const calendar: Calendar = {};
   const advent = calculateAdvent(year);
   const easter = calculateEaster(year);
 
-  list.reverse().forEach((item) => {
-    if (item.occurence) {
-      const dates = getDates(item.occurence, advent, easter, year);
-      dates.forEach((date, index) => {
-        const originalTitle = translate(item.title, translations);
-        const ordinal = translate(
-          ordinals[(index + 1) as keyof typeof ordinals],
-          translations
-        );
-        const day = translate(
-          days[(date.getDay() + 1) as keyof typeof days],
-          translations
-        );
+  days.toReversed().forEach(({ occurence, localCalendar, id: template, ...item }) => {
+    getDates(occurence, advent, easter, year).forEach((date, index) => {
+      const count = index + 1;
+      const id = template === undefined ? undefined : idOf(template, count, date);
 
-        // Build title with variable substitution for mass proper matching
-        const latinOrdinal =
-          ordinals[(index + 1) as keyof typeof ordinals] || "";
-        const latinDay = days[(date.getDay() + 1) as keyof typeof days] || "";
-        // `$feria` spells the weekday's ordinal out, which is how the propers
-        // are filed; `$day` gives the Roman numeral the calendar reads by.
-        const latinFeria =
-          feriae[(date.getDay() + 1) as keyof typeof feriae] || "";
-        const titleWithSubstitution = item.title
-          ?.replace("$count", latinOrdinal)
-          .replace("$day", latinDay)
-          .replace("$feria", latinFeria);
-
-        // Load mass proper by title and language. A proper carries every chant
-        // the year might call for; the season decides which the day sings.
-        const mass: RawMassProper | undefined = titleWithSubstitution
-          ? loadMassPropersByTitle(
-              titleWithSubstitution,
-              language,
-              undefined,
-              { date, easter },
-              item.localCalendars,
-              fallbacks
-            )
+      // The season belongs to the date; the color to the day's own Mass,
+      // where the calendar names one, and to the season otherwise.
+      const season = seasonOf(date, easter, advent);
+      const color = (item.color as Color | undefined) ?? defaultColor(item.type, season);
+      const alternativeColor =
+        item.type === "dominica" && mayWearRose(date, easter, advent)
+          ? ("rose" as const)
           : undefined;
 
-        // Fill the parametric parts to build the name shown. A slug stays a
-        // slug — `$count` spliced in lowercase so `dominica-$count-adventus`
-        // becomes `dominica-i-adventus`, still a lookup key; a translated or
-        // written title takes the ordinary weekday name and numeral. `$feria`
-        // exists only to file the propers, so it is never shown: the day is
-        // called by its weekday like any other.
-        const intoSlug =
-          originalTitle != null && IS_SLUG_TEMPLATE.test(originalTitle);
-        let title = translate(
-          originalTitle
-            ?.replace("$count", intoSlug ? slugPart(latinOrdinal) : ordinal!)
-            .replace("$day", intoSlug ? slugPart(latinDay) : day!)
-            .replace("$feria", intoSlug ? slugPart(latinFeria) : day!),
-          translations
-        );
-
-        // A slug is a lookup key, not a name. Where the day resolved a proper,
-        // that proper carries the real Latin title (from its officium), so the
-        // reader sees `Festum Sanctissimæ Trinitatis` rather than
-        // `festum-sanctissimae-trinitatis`. A translated title has already
-        // become a name and is left alone; so is a day with no proper to draw
-        // on, such as Holy Saturday, and a written title like a numbered Sunday
-        // the calendar spells out rather than files under a slug.
-        if (title && mass?.title && IS_SLUG.test(title)) {
-          title = mass.title;
-        }
-
-        // The season belongs to the date; the color to the day's own Mass,
-        // where the calendar names one, and to the season otherwise.
-        const season = seasonOf(date, easter, advent);
-        const color =
-          (item.color as Color | undefined) ?? defaultColor(item.type, season);
-        const alternativeColor =
-          item.type === "dominica" && mayWearRose(date, easter, advent)
-            ? ("rose" as const)
-            : undefined;
-
-        calendarBuilder.add(date.getMonth() + 1, date.getDate(), {
-          ...item,
-          title,
-          mass,
-          officium:
-            officium && titleWithSubstitution
-              ? loadOfficiumByTitle(
-                  titleWithSubstitution,
-                  language,
-                  undefined,
-                  item.localCalendars,
-                  fallbacks
-                )
-              : undefined,
-          color,
-          season,
-          alternativeColor,
-        });
+      // The fields a language adds later hold their place here, so that a
+      // published day reads in the same order every time.
+      place(calendar, date, {
+        id,
+        title: undefined,
+        ...item,
+        // Checked against the calendar's list as it loaded.
+        commemorated: item.commemorated as Commemorated | undefined,
+        color,
+        mass: undefined,
+        officium: undefined,
+        proper: id ? { id, ...(localCalendar && { local: localCalendar }) } : undefined,
+        naming: template === undefined ? undefined : { template, count },
+        season,
+        alternativeColor,
       });
-    }
+    });
   });
 
-  return calendarBuilder.result;
+  return calendar;
 }

@@ -1,13 +1,13 @@
 import { join } from "path";
-import { readFile, writeFile } from "fs/promises";
+import { readFile } from "fs/promises";
 
 import { applyIncludes } from "./condition.js";
-import { SEP, escapeRegExp, splitPath } from "./lib/paths.js";
+import { SEP, escapeRegExp, splitPath, toKebabCase } from "./lib/paths.js";
 import { directoryMappings, mappings } from "./lib/mappings.js";
-import { DEFAULT_CONCURRENCY, ensureDir, runBatched } from "./lib/batch.js";
+import { DEFAULT_CONCURRENCY, writeTreeFile, runBatched } from "./lib/batch.js";
 import { STEP_EXT, parseStep, stringifyStep } from "./lib/serialize.js";
 import { collectDocumentFiles, copyStores } from "./lib/stores.js";
-import { unionDocuments } from "./lib/variants.js";
+import { conditionKey, unionDocuments } from "./lib/variants.js";
 import { KEYED_RULES } from "./lib/broad.js";
 import { SOURCES, locate } from "./step4.js";
 
@@ -22,13 +22,6 @@ import { SOURCES, locate } from "./step4.js";
  */
 type FoldVariant = { value: unknown; condition: string[] };
 export type Step8Output = { [key: string]: FoldVariant[] };
-
-const WHITESPACE = /\s+/g;
-
-function toKebabCase(str: string) {
-  const result = str.toLowerCase().trim().replace(WHITESPACE, "-");
-  return result.startsWith("-") ? result.slice(1) : result;
-}
 
 function splitSuffix(input: string) {
   const parts = splitPath(input.split(".").at(-2)!);
@@ -121,9 +114,7 @@ export function transform(obj: Step8Output, inputFile: string): Step8Output {
     if (dir !== directory) {
       includes.push(
         directoryMappings[
-          toKebabCase(
-            dir.replace(directory, "")
-          ) as keyof typeof directoryMappings
+          toKebabCase(dir.replace(directory, "")).replace(/^-/, "") as keyof typeof directoryMappings
         ]
       );
     }
@@ -189,10 +180,6 @@ export function transform(obj: Step8Output, inputFile: string): Step8Output {
 }
 
 /** Order-independent key for a rubric condition set. */
-function conditionKey(condition: string[]): string {
-  return [...condition].sort().join("|");
-}
-
 /**
  * Fold one more document onto a path already holding `earlier`. Their
  * sections are unioned by condition, so no base or variant content is dropped;
@@ -265,22 +252,12 @@ export async function run(
   outputDir: string
 ): Promise<{ written: number }> {
   // Unfolded path → its documents, Office before Mass, so the Mass wins.
-  const days = new Map<string, string[]>();
+  const days = Map.groupBy((await collectDocumentFiles(inputDir)).sort(), withoutSource);
   const sourceRank = (rel: string) => SOURCES.indexOf(locate(rel).source as (typeof SOURCES)[number]);
-  for (const rel of (await collectDocumentFiles(inputDir)).sort()) {
-    const day = withoutSource(rel);
-    if (!days.has(day)) days.set(day, []);
-    days.get(day)!.push(rel);
-  }
   for (const rels of days.values()) rels.sort((x, y) => sourceRank(x) - sourceRank(y));
 
   // Folded path → the unfolded days landing on it, in path order.
-  const groups = new Map<string, string[]>();
-  for (const day of [...days.keys()].sort()) {
-    const out = getOutputFile(day);
-    if (!groups.has(out)) groups.set(out, []);
-    groups.get(out)!.push(day);
-  }
+  const groups = Map.groupBy([...days.keys()].sort(), getOutputFile);
 
   const mkdirCache = new Set<string>();
   const { processed, errors } = await runBatched(
@@ -298,8 +275,7 @@ export async function run(
         folded = folded === undefined ? conditioned : mergeDocuments(folded, conditioned);
       }
       const outPath = join(outputDir, out);
-      await ensureDir(outPath, mkdirCache);
-      await writeFile(outPath, stringifyStep(folded), "utf-8");
+      await writeTreeFile(outPath, stringifyStep(folded), mkdirCache);
     }
   );
   // A file whose name carries a suffix no rubric is known for stops the run:

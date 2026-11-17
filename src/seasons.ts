@@ -7,11 +7,10 @@
  * it is not white.
  */
 import type { Color, Season } from "./types";
-
-const DAY = 86_400_000;
+import { daysBetween } from "./utils";
 
 /** Septuagesima Sunday, the ninth Sunday before Easter. */
-const SEPTUAGESIMA = -63;
+export const SEPTUAGESIMA = -63;
 /** Ash Wednesday, the start of Lent. */
 const ASH_WEDNESDAY = -46;
 /** The First Sunday of the Passion, a fortnight before Easter. */
@@ -24,32 +23,6 @@ const PENTECOST = 49;
 const GAUDETE = 14;
 /** Laetare Sunday, the fourth of Lent. */
 const LAETARE = -21;
-
-/**
- * A day of the year as a number of days, by the local date it shows. The days
- * of the year are built as local dates.
- */
-function ofDay(date: Date): number {
-  return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
-}
-
-/**
- * A reckoned date — Easter, Advent — as a number of days, by the UTC date it
- * was built on. Those are reckoned in UTC, and reading them locally would move
- * them across midnight in a timezone west of Greenwich.
- */
-function ofReckoned(date: Date): number {
-  return Date.UTC(
-    date.getUTCFullYear(),
-    date.getUTCMonth(),
-    date.getUTCDate()
-  );
-}
-
-/** Whole days from the reckoned date `from` to `date`; negative before it. */
-function daysFrom(date: Date, from: Date): number {
-  return Math.round((ofDay(date) - ofReckoned(from)) / DAY);
-}
 
 /**
  * The season `date` falls in.
@@ -80,9 +53,9 @@ export function seasonOf(date: Date, easter: Date, advent: Date): Season {
     return "nativitatis";
   }
   if (month === 1 && day <= 13) return "epiphaniae";
-  if (daysFrom(date, advent) >= 0) return "adventus";
+  if (daysBetween(advent, date) >= 0) return "adventus";
 
-  const fromEaster = daysFrom(date, easter);
+  const fromEaster = daysBetween(easter, date);
   if (fromEaster < SEPTUAGESIMA) return "per-annum";
   if (fromEaster < ASH_WEDNESDAY) return "septuagesimae";
   if (fromEaster < PASSION_SUNDAY) return "quadragesimae";
@@ -134,6 +107,6 @@ export function defaultColor(type: string | undefined, season: Season): Color {
  */
 export function mayWearRose(date: Date, easter: Date, advent: Date): boolean {
   return (
-    daysFrom(date, advent) === GAUDETE || daysFrom(date, easter) === LAETARE
+    daysBetween(advent, date) === GAUDETE || daysBetween(easter, date) === LAETARE
   );
 }

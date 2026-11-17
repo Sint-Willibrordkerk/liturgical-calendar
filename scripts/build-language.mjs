@@ -1,11 +1,11 @@
 // Build one language package: every YAML under its `assets/` becomes one
-// module exporting them as a `Language`, keyed by the path it is filed under.
+// module exporting them as a `Language`, by kind and then by name.
 //
 // The assets are inlined rather than read at runtime so the package works
 // unchanged in a browser, in a bundler and in Node, with nothing to resolve.
-import { readdirSync, readFileSync, statSync, mkdirSync, writeFileSync } from "fs";
+import { readFileSync, statSync, mkdirSync, writeFileSync } from "fs";
 import { join, relative, resolve } from "path";
-import { parse } from "yaml";
+import { languageAssets } from "./language-assets.mjs";
 
 const packageDir = resolve(process.argv[2] ?? ".");
 const { name, liturgicalLanguage } = JSON.parse(
@@ -17,20 +17,9 @@ if (!liturgicalLanguage) {
 
 const assetsDir = join(packageDir, "assets");
 
-function read(dir, base = "") {
-  const assets = {};
-  for (const item of readdirSync(dir)) {
-    const full = join(dir, item);
-    const rel = (base ? `${base}/${item}` : item).replace(/\\/g, "/");
-    if (statSync(full).isDirectory()) Object.assign(assets, read(full, rel));
-    else if (/\.ya?ml$/.test(item)) assets[rel] = parse(readFileSync(full, "utf-8"));
-  }
-  return assets;
-}
-
 let assets;
 try {
-  assets = read(assetsDir);
+  assets = languageAssets(assetsDir, liturgicalLanguage);
 } catch {
   throw new Error(
     `${name} has no assets. The Mass propers are generated: run\n` +
@@ -38,7 +27,10 @@ try {
   );
 }
 
-const count = Object.keys(assets).length;
+const count = Object.values(assets).reduce(
+  (sum, named) => sum + Object.keys(named).length,
+  0
+);
 if (count === 0) throw new Error(`${name} has no assets under ${assetsDir}`);
 
 const dist = join(packageDir, "dist");

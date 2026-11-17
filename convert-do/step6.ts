@@ -1,12 +1,12 @@
 import { join } from "path";
-import { readFile, writeFile } from "fs/promises";
+import { readFile } from "fs/promises";
 import {
   STEP_EXT,
   parseStep,
   stringifyStep,
 } from "./lib/serialize.js";
 import { consola } from "consola";
-import { ensureDir } from "./lib/batch.js";
+import { writeTreeFile } from "./lib/batch.js";
 import { isVariantArray } from "./lib/variants.js";
 import { collectDocumentFiles, languageOf } from "./lib/stores.js";
 // The calendar library owns which store each section draws on; the stores are
@@ -415,12 +415,7 @@ export async function run(
   const allRelPaths = await collectDocumentFiles(inputDir);
   const mkdirCache = new Set<string>();
 
-  const byLanguage = new Map<string, string[]>();
-  for (const relPath of [...allRelPaths].sort()) {
-    const lang = languageOf(relPath);
-    if (!byLanguage.has(lang)) byLanguage.set(lang, []);
-    byLanguage.get(lang)!.push(relPath);
-  }
+  const byLanguage = Map.groupBy([...allRelPaths].sort(), languageOf);
 
   let written = 0;
   let errors = 0;
@@ -439,20 +434,7 @@ export async function run(
           throw new Error("Expected object");
         }
         const outPath = join(outputDir, relPath);
-        await ensureDir(outPath, mkdirCache);
-        await writeFile(
-          outPath,
-          stringifyStep(
-            transform(
-              obj as Record<string, unknown>,
-              store,
-              prayerStore,
-              chantStore,
-              officeStores
-            )
-          ),
-          "utf-8"
-        );
+        await writeTreeFile(outPath, stringifyStep(transform(obj as Record<string, unknown>, store, prayerStore, chantStore, officeStores)), mkdirCache);
         written++;
       } catch (err) {
         errors++;
@@ -469,8 +451,7 @@ export async function run(
       ),
     ] as const) {
       const storePath = join(outputDir, lang, name);
-      await ensureDir(storePath, mkdirCache);
-      await writeFile(storePath, stringifyStep(s.entries()), "utf-8");
+      await writeTreeFile(storePath, stringifyStep(s.entries()), mkdirCache);
     }
   }
 
