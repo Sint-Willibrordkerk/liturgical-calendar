@@ -1,6 +1,6 @@
 {
   "name": "@sint-willibrordkerk/liturgical-calendar",
-  "version": "3.4.0",
+  "version": "3.5.0",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.mts",
   "exports": {
@@ -20,7 +20,7 @@
     "knip": "knip",
     "pipeline": "tsx convert-do/index.ts",
     "copy-mass-propers": "node scripts/copy-mass-propers.mjs",
-    "build:languages": "node scripts/build-language.mjs languages/la && node scripts/build-language.mjs languages/nl"
+    "build:languages": "node scripts/build-language.mjs languages/la && node scripts/build-language.mjs languages/nl && node scripts/build-language.mjs languages/en"
   },
   "files": [
     "dist"

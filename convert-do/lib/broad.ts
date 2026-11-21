@@ -413,15 +413,30 @@ export function createBroadResolver(
 }
 
 /**
- * The document with the base language's rank, where a translation has none of
- * its own: the rank names the common a day draws on, and is the same in every
- * language.
+ * The sections that say how a document is put together rather than what it
+ * says, and so are the same in every language:
+ *
+ * - `rank` names the common a day draws on;
+ * - `martyrologium` lists a date's entries of the Martyrology by reference
+ *   (`@:Agnetis`). A translation may carry only the entries — the English does
+ *   — and Divinum Officium reads the Latin list against its file.
  */
-export function withBaseRank(
+const STRUCTURAL_SECTIONS = ["rank", "martyrologium"] as const;
+
+/**
+ * The document with the base language's structural sections, where a
+ * translation has none of its own. A reference in one resolves against the
+ * translation's own document, so it says the translation's words.
+ */
+export function withBaseStructure(
   doc: Doc | undefined,
-  baseDoc: Doc | undefined
+  baseDoc: Doc | undefined,
+  sections: readonly string[] = STRUCTURAL_SECTIONS
 ): Doc | undefined {
-  if (doc === undefined || doc.rank !== undefined) return doc;
-  if (baseDoc?.rank === undefined) return doc;
-  return { ...doc, rank: baseDoc.rank };
+  if (doc === undefined || baseDoc === undefined) return doc;
+  const missing = sections.filter(
+    (section) => doc[section] === undefined && baseDoc[section] !== undefined
+  );
+  if (missing.length === 0) return doc;
+  return { ...doc, ...Object.fromEntries(missing.map((section) => [section, baseDoc[section]])) };
 }

@@ -59,4 +59,37 @@ describe("step1 file-specific corrections", () => {
       __preamble: [{ value: ["d[Rank]", "Name"], condition: [] }],
     });
   });
+
+  // The English movable announcements keep a stray Latin `[Pasc5-3]`, then the
+  // English one under a header with a tab after it.
+  const LATIN_PASC53 = [
+    "[Pasc5-3]",
+    "Romæ Litaníæ minóres ad sanctum Petrum.",
+    " ",
+    "[Pasc5-3]\t",
+    "The Vigil of the Ascension of our Lord Jesus Christ.",
+    "[Pasc5-4]",
+    "The Ascension.",
+  ];
+
+  it("reads the English Mobile's second `[Pasc5-3]` in place of the stray Latin one", () => {
+    expect(transform(LATIN_PASC53, "horas/English/Martyrologium/Mobile.txt")).toEqual({
+      "pasc5-3": [{ value: ["The Vigil of the Ascension of our Lord Jesus Christ."], condition: [] }],
+      "pasc5-4": [{ value: ["The Ascension."], condition: [] }],
+    });
+  });
+
+  it("leaves a header with whitespace after it as text for any other file", () => {
+    expect(transform(LATIN_PASC53, "horas/Latin/Martyrologium/Mobile.txt")["pasc5-3"]).toEqual([
+      {
+        value: [
+          "Romæ Litaníæ minóres ad sanctum Petrum.",
+          " ",
+          "[Pasc5-3]\t",
+          "The Vigil of the Ascension of our Lord Jesus Christ.",
+        ],
+        condition: [],
+      },
+    ]);
+  });
 });

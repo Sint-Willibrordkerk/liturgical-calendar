@@ -126,7 +126,8 @@ once *its* references are resolved. A borrowing cycle — the Vigil of Pentecost
 and its rubric file include each other — is cut where it closes: the side
 reached second borrows nothing from the other. Documents are visited in a fixed
 order (`documentsOf`), so that is the same on every run. A translation without a
-rank takes the base language's, read from the same input tree.
+rank, or without the list of a date's entries of the Martyrology, takes the
+base language's (`withBaseStructure`), read from the same input tree.
 
 ---
 
@@ -335,7 +336,7 @@ rank takes the base language's, read from the same input tree.
 - [`lib/broad.ts`](lib/broad.ts) — broad references on any value, lines or
   keys: `extractExVideReferences`, `importReferences`, the memoized
   `createSourcedResolver` (and its one-document form `createBroadResolver`),
-  `withBaseRank`, and the `LINE_RULES` / `KEYED_RULES` that say what a borrow
+  `withBaseStructure`, and the `LINE_RULES` / `KEYED_RULES` that say what a borrow
   takes before and after structuring. Used by steps 4, 7 and 8.
 - [`lib/stores.ts`](lib/stores.ts) — the store files: `isStoreFile`,
   `collectDocumentFiles`, `readStore` / `writeStore`, `copyStores`.

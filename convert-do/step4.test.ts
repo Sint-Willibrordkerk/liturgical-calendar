@@ -509,4 +509,28 @@ describe("step4 run", () => {
     const out = JSON.parse(await readFile(join(output, "nl/missa/Sancti/11-10.json"), "utf-8"));
     expect(out.evangelium).toEqual([v(["In die tijd…"])]);
   });
+
+  it("reads the Latin list of a date's Martyrology against a translation's own entries", async () => {
+    root = mkdtempSync(join(tmpdir(), "lc-step4-en-"));
+    const input = join(root, "step3");
+    const output = join(root, "step4");
+    await put(input, "la/horas/Martyrologium/01-21", {
+      martyrologium: [v(["", "@:Agnetis", "", "@:Publii"])],
+      agnetis: [v(["Romæ pássio sanctæ Agnétis…"])],
+      publii: [v(["Athénis natális sancti Públii…"])],
+    });
+    await put(input, "en/horas/Martyrologium/01-21", {
+      agnetis: [v(["At Rome, … the holy Virgin and martyr Agnes."])],
+      publii: [v(["At Athens, … the holy Bishop Publius."])],
+    });
+
+    await run(input, output);
+
+    const out = JSON.parse(await readFile(join(output, "en/horas/Martyrologium/01-21.json"), "utf-8"));
+    expect(out.martyrologium).toEqual([
+      v(["", "At Rome, … the holy Virgin and martyr Agnes.", "", "At Athens, … the holy Bishop Publius."]),
+    ]);
+    // The rank is only lent for reading: a translation's document keeps none.
+    expect(out.rank).toBeUndefined();
+  });
 });

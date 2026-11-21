@@ -682,11 +682,21 @@ export function martyrologyDay(
 ): MartyrologyDay {
   const out: MartyrologyDay = {};
   const [titulus] = readLines(linesInForce(obj.titulus, inForce) ?? []);
-  if (titulus !== undefined) out.titulus = titulus;
   const elogia = readLines(linesInForce(obj.martyrologium, inForce) ?? []);
+  // Where the title is empty, the date line may stand among the entries: five
+  // English dates open with the feast of the morrow and print it after that.
+  const lifted = titulus === undefined ? elogia.findIndex((line) => ENGLISH_DATE_LINE.test(line)) : -1;
+  if (lifted >= 0) out.titulus = elogia.splice(lifted, 1)[0]!;
+  else if (titulus !== undefined) out.titulus = titulus;
   if (elogia.length > 0) out.elogia = elogia;
   return out;
 }
+
+/**
+ * The English date line, as Divinum Officium finds it to add the moon:
+ * *Upon the 21st day of January, were born into the better life:*.
+ */
+const ENGLISH_DATE_LINE = /^Upon the (?:same )?\d+\s?\w\w day of \S+/i;
 
 /**
  * The announcements keyed to no date: two Divinum Officium attaches to the
@@ -728,7 +738,7 @@ export function martyrologyConclusion(
   const versus = lines.find((line) => /^V\./.test(line));
   const macro = lines.find((line) => line.startsWith("$"));
   if (versus === undefined || macro === undefined) return undefined;
-  const named = macro.slice(1).trim().toLowerCase().replace(/\s+/g, "-");
+  const named = macro.slice(1).trim().replace(/[.,;:]+$/, "").toLowerCase().replace(/\s+/g, "-");
   const [responsum] = linesInForce(prayers[named], inForce) ?? [];
   if (responsum === undefined) return undefined;
   return { versus: unmarked(versus), responsum: unmarked(responsum) };

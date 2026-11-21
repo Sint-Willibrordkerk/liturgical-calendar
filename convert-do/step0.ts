@@ -46,7 +46,7 @@ const LANGUAGE_CODES: [string, string][] = [
  * named the same as the Latin ones and a day finds its propers by the same
  * lookup, whatever language it asks for.
  */
-const INGESTED_LANGUAGES = ["Latin", "Nederlands"];
+const INGESTED_LANGUAGES = ["Latin", "Nederlands", "English"];
 
 function fileFilter(relativePath: string) {
   return (
@@ -62,6 +62,10 @@ function fileFilter(relativePath: string) {
     !relativePath.endsWith("dom-oct.txt") &&
     !relativePath.endsWith("Quad5-5Feriarc.txt") &&
     !relativePath.endsWith("Propaganda.txt") &&
+    // The Mass of Mission Sunday, which only commemorates `Propaganda` above.
+    // The sources pin it to a date by a suffix (`-DUP`) no step reads; the
+    // calendar never asked for it under its old name, `Tempora/104-0`.
+    !relativePath.endsWith("Tempora/10-DUP.txt") &&
     !relativePath.startsWith("Help/") &&
     !relativePath.startsWith("Latin-gabc/") &&
     INGESTED_LANGUAGES.some((lang) => relativePath.startsWith(`${lang}/`))
