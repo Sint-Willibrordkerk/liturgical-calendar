@@ -7,6 +7,7 @@ import {
   extractExVideReferences,
   importReferences,
   referencedPaths,
+  withBaseStructure,
   type Doc,
 } from "./broad";
 
@@ -610,5 +611,32 @@ describe("createSourcedResolver — the Mass and the Office of a day", () => {
     expect(resolve("missa", "Tempora/b")!.oratio).toBeUndefined();
     // Once `a` is done, it can be read in full.
     expect(view("Tempora/a")!.oratio).toEqual([v("a-collect")]);
+  });
+});
+
+describe("withBaseStructure — what is the same in every language", () => {
+  it("gives a translation the base language's rank where it has none", () => {
+    const base: Doc = { rank: [v(["S. Agnetis;;Duplex;;3;;vide C6"])] };
+    expect(withBaseStructure({ oratio: [v(["Almighty"])] }, base)).toEqual({
+      oratio: [v(["Almighty"])],
+      rank: base.rank,
+    });
+  });
+
+  it("keeps a translation's own rank", () => {
+    const own: Doc = { rank: [v(["St. Agnes;;Double;;3;;vide C6"])] };
+    expect(withBaseStructure(own, { rank: [v(["S. Agnetis"])] })).toBe(own);
+  });
+
+  // English lists no entries for a date of the Martyrology, only the entries
+  // themselves; Divinum Officium reads the Latin list against the English file.
+  it("gives a translation the base language's list of the Martyrology's entries", () => {
+    const base: Doc = { martyrologium: [v(["@:Agnetis", "", "@:Publii"])] };
+    const own: Doc = { agnetis: [v(["At Rome, … Agnes."])], publii: [v(["At Athens, … Publius."])] };
+    expect(withBaseStructure(own, base)).toEqual({ ...own, martyrologium: base.martyrologium });
+  });
+
+  it("gives a language nothing it has no file for", () => {
+    expect(withBaseStructure(undefined, { rank: [v(["S. Agnetis"])] })).toBeUndefined();
   });
 });

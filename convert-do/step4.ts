@@ -4,7 +4,7 @@ import { readFile } from "fs/promises";
 import {
   LINE_RULES,
   createSourcedResolver,
-  withBaseRank,
+  withBaseStructure,
   type BorrowRules,
   type Doc,
   type Load,
@@ -452,10 +452,11 @@ export async function readTree(inputDir: string): Promise<Map<string, LanguageTr
 }
 
 /**
- * A resolver over one language's documents, each given the base language's rank
- * where it has none of its own — the rank of the base language's day, its Mass
- * and its Office together — and borrowing only where the base language's
- * document of the same day leaves a gap.
+ * A resolver over one language's documents, each given the base language's rank,
+ * and its list of the Martyrology's entries, where it has none of its own — read
+ * from the base language's day, its Mass and its Office together — and
+ * borrowing only where the base language's document of the same day leaves a
+ * gap.
  */
 export function languageResolver(
   tree: Map<string, LanguageTree>,
@@ -474,7 +475,7 @@ export function languageResolver(
   };
   const baseView: Load | undefined = base && languageResolver(tree, BASE_LANGUAGE, rules).view;
   return createSourcedResolver(
-    (source, path) => withBaseRank(own.get(source)?.get(path), baseDay(path)),
+    (source, path) => withBaseStructure(own.get(source)?.get(path), baseDay(path)),
     SOURCES,
     rules,
     // A translation borrows only where the base language does: what the base
@@ -504,6 +505,7 @@ export async function run(
   const mkdirCache = new Set<string>();
   let written = 0;
 
+  const base = tree.get(BASE_LANGUAGE);
   for (const [language, languageTree] of tree) {
     // A target is read as its broad references leave it, its Mass and Office
     // together.
@@ -514,7 +516,14 @@ export async function run(
       documentsOf(languageTree),
       DEFAULT_CONCURRENCY,
       async ({ source, path, doc }) => {
-        const out = transform(doc, path, view);
+        // A translation listing no entries of the Martyrology for a date reads
+        // the base language's list, resolved here against its own entries. The
+        // rank it is only lent for reading, as step 7 resolves it later.
+        const own =
+          language === BASE_LANGUAGE
+            ? doc
+            : withBaseStructure(doc, base?.get(source)?.get(path), ["martyrologium"])!;
+        const out = transform(own, path, view);
         const outPath = join(outputDir, language, source, path + STEP_EXT);
         await writeTreeFile(outPath, stringifyStep(out), mkdirCache);
       }

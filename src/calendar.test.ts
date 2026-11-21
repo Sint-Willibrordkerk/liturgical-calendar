@@ -90,6 +90,14 @@ describe("the names of the seasons and the colors", () => {
     });
     expect(dutch[6]![14]).not.toHaveProperty("alternativeColorName");
 
+    const english = generateCalendar({ year: 2026, languages: [language("en")] });
+    expect(english[12]![13]).toMatchObject({
+      seasonName: "Advent",
+      colorName: "violet",
+      alternativeColorName: "rose",
+    });
+    expect(english[3]![1]).toMatchObject({ seasonName: "Lent" });
+
     const latin = generateCalendar({ year: 2026, languages: [language("la")] });
     expect(latin[4]![3]).toMatchObject({
       seasonName: "Tempus Passionis",

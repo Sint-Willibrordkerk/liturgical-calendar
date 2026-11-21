@@ -694,6 +694,37 @@ describe("the Martyrology", () => {
       ).toEqual(["a"]);
     });
 
+    // Five English dates open with the feast of the morrow and leave their
+    // `[Titulus]` empty; the date line follows within the first entry.
+    it("takes the English date line from the entries where the title is empty", () => {
+      expect(
+        martyrologyDay({
+          martyrologium: [
+            v([
+              "",
+              "On the morrow we keep the feast of the holy Confessor Francis de Sales.",
+              "Upon the same 29th day of January, were born into the better life:  ",
+              "",
+              "At Trier, holy Valerius, Bishop of that see.",
+            ]),
+          ],
+        })
+      ).toEqual({
+        titulus: "Upon the same 29th day of January, were born into the better life:",
+        elogia: [
+          "On the morrow we keep the feast of the holy Confessor Francis de Sales.",
+          "At Trier, holy Valerius, Bishop of that see.",
+        ],
+      });
+    });
+
+    it("leaves the entries alone where the title is given", () => {
+      const lines = ["Upon the 21st day of January, were born into the better life:", "At Rome, … Agnes."];
+      expect(
+        martyrologyDay({ titulus: [v(["Duodécimo Kaléndas Februárii"])], martyrologium: [v(lines)] }).elogia
+      ).toEqual(lines);
+    });
+
     it("leaves out an entry the language has no words for", () => {
       expect(
         martyrologyDay({
@@ -785,6 +816,16 @@ describe("the Martyrology", () => {
         versus: "Et álibi aliórum plurimórum sanctórum Mártyrum.",
         responsum: "Deo grátias.",
       });
+    });
+
+    // The English writes the response it names with a full stop after it.
+    it("names its response however the line is punctuated", () => {
+      expect(
+        martyrologyConclusion({
+          conclmart: [v(["V. And elsewhere many other holy martyrs.", "$Deo gratias."])],
+          "deo-gratias": [v(["R. Thanks be to God."])],
+        })
+      ).toEqual({ versus: "And elsewhere many other holy martyrs.", responsum: "Thanks be to God." });
     });
 
     it("is absent where the prayers do not carry it", () => {

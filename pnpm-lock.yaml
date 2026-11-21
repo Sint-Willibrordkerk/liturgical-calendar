@@ -43,6 +43,12 @@ importers:
         specifier: ^2.6.1
         version: 2.8.1
 
+  languages/en:
+    devDependencies:
+      '@sint-willibrordkerk/liturgical-calendar':
+        specifier: workspace:*
+        version: link:../..
+
   languages/la:
     devDependencies:
       '@sint-willibrordkerk/liturgical-calendar':

@@ -2083,7 +2083,12 @@ elogia:
   - Athénis natális sancti Públii Epíscopi, …
 ```
 
-The list of entries is taken as the references step 4 resolved it to, with:
+The list of entries is taken as the references step 4 resolved it to. A
+translation that gives the entries but not the list — the English, whose dates
+hold `[Agnetis]`, `[Publii]` and no `[Martyrologium]` — reads the base
+language's list against its own file, as Divinum Officium does: the list says
+which entries, in what order, and is the same in every language. It is taken
+with:
 
 - **an entry the language has no words for left out.** The sources list an
   entry another book carries; where its section is empty here, the reference

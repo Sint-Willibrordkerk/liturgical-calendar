@@ -1,0 +1,55 @@
+maria-in-sabbato-in-tempore-adventus: Saturday of Our Lady in Advent
+maria-in-sabbato-a-nativitate-domini-usque-ad-purificationem: Saturday of Our Lady from Christmas to the Purification
+maria-in-sabbato-a-die-3-februari-usque-ad-feriam-iv-hebdomadae-sanctae: Saturday of Our Lady from 3 February to Wednesday of Holy Week
+maria-in-sabbato-in-tempore-paschali: Saturday of Our Lady in Paschaltide
+maria-in-sabbato-a-festo-trinitatis-usque-ad-sabbatum-ante-dominicam-i-adventus: Saturday of Our Lady from Trinity Sunday to the Saturday before the First Sunday of Advent
+in-vigilia-ascensionis: Vigil of the Ascension
+feria-iv-quattuor-temporum-adventus: Ember Wednesday in Advent
+feria-vi-quattuor-temporum-adventus: Ember Friday in Advent
+sabbato-quattuor-temporum-adventus: Ember Saturday in Advent
+feria-quarta-quatuor-temporum-quadragesimae: Ember Wednesday in Lent
+feria-sexta-quattuor-temporum: Ember Friday in Lent
+sabbato-quattuor-temporum-quadrageismae: Ember Saturday in Lent
+feria-quarta-quattuor-temporum-septembris: Ember Wednesday in September
+feria-sexta-quattuor-temporum-septembris: Ember Friday in September
+sabbato-quattuor-temporum-septembris: Ember Saturday in September
+dominica-infra-octavam-nativitatis: Sunday within the Octave of Christmas
+dominica-$count-post-epiphaniam: $count Sunday after Epiphany
+dominica-in-septuagesima: Septuagesima Sunday
+dominica-in-sexagesima: Sexagesima Sunday
+dominica-in-quinquagesima: Quinquagesima Sunday
+dominica-$count-post-pascha: $count Sunday after Easter
+dominica-post-ascensionem: Sunday after the Ascension
+dominica-$count-post-pentecosten: $count Sunday after Pentecost
+sanctissimi-nominis-jesu: The Most Holy Name of Jesus
+sanctae-familiae-jesu-mariae-joseph: The Holy Family of Jesus, Mary and Joseph
+die-ii-infra-octavam-paschae: Easter Monday
+die-ii-infra-octavam-pentecostes: Whit Monday
+sabbato-in-vigilia-pentecostes: Vigil of Pentecost
+feria-iv-cinerum: Ash Wednesday
+dominica-$count-adventus: $count Sunday of Advent
+dominica-$count-in-quadragesima: $count Sunday of Lent
+dominica-i-passionis: Passion Sunday
+dominica-ii-passionis-seu-in-palmis: Palm Sunday
+dominica-in-albis-in-octava-paschae: Low Sunday
+in-ascensione-domini-pasc5-4: The Ascension of Our Lord
+festum-sanctissimae-trinitatis: The Most Holy Trinity
+festum-sanctissimi-corporis-christi: Corpus Christi
+sacratissimi-cordis-domini-nostri-jesu-christi-pent02-5: The Most Sacred Heart of Jesus
+in-festo-domini-nostri-jesu-christi-regis-10-du: Our Lord Jesus Christ the King
+feria-quarta-quattuor-temporum-pentecostes: Ember Wednesday in the Octave of Pentecost
+feria-sexta-quattuor-temporum-pentecostes: Ember Friday in the Octave of Pentecost
+sabbato-quattuor-temporum-pentecostes: Ember Saturday in the Octave of Pentecost
+$day infra octavam Paschæ: $day within the Octave of Easter
+feria-quinta-in-coena-domini-quad6-4: Maundy Thursday
+feria-sexta-in-passione-et-morte-domini: Good Friday
+sabbato-sancto: Holy Saturday
+dominica-resurrectionis: Easter Sunday
+dominica-pentecostes: Whitsunday
+$feria-infra-hebdomadam-i-in-quadragesima: $feria of the First Week of Lent
+$feria-infra-hebdomadam-ii-in-quadragesima: $feria of the Second Week of Lent
+$feria-infra-hebdomadam-iii-in-quadragesima: $feria of the Third Week of Lent
+$feria-infra-hebdomadam-iv-in-quadragesima: $feria of the Fourth Week of Lent
+$feria-infra-hebdomadam-passionis: $feria of Passion Week
+$feria-majoris-hebdomadae: $feria of Holy Week
+$day-post-cineres: $day after Ash Wednesday

@@ -18,6 +18,7 @@ const GENERATED = [
   "assets/mass-propers/Sancti",
   "languages/la/assets/mass-propers/la",
   "languages/nl/assets/mass-propers/nl",
+  "languages/en/assets/mass-propers/en",
 ];
 const generated = GENERATED.every((path) => existsSync(path));
 
@@ -120,14 +121,14 @@ describe.skipIf(!generated)("the Office as published", () => {
   // a hook is given by default once other files run beside it.
   beforeAll(() => {
     (globalThis as Record<string, unknown>).bundledAssets = readAssets("assets");
-    for (const code of ["la", "nl"]) {
+    for (const code of ["la", "nl", "en"]) {
       languages[code] = { code, assets: languageAssets(join("languages", code, "assets"), code) };
     }
   }, 60_000);
 
   const YEARS = [2026, 2027, 2029, 2038];
 
-  for (const code of ["la", "nl"]) {
+  for (const code of ["la", "nl", "en"]) {
     it(`says in ${code} what its types say, on every day of ${YEARS.join(", ")}`, () => {
       const wrong: string[] = [];
       let offices = 0;
@@ -149,7 +150,7 @@ describe.skipIf(!generated)("the Office as published", () => {
   }
 
   it("carries the Office of the celebration kept, and none on a commemoration", () => {
-    for (const code of ["la", "nl"]) {
+    for (const code of ["la", "nl", "en"]) {
       const calendar = generateCalendar({ year: 2026, languages: [languages[code]!], officium: true });
       const commemorations = Object.values(calendar).flatMap((days) =>
         Object.values(days ?? {}).flatMap((entry) => entry?.commemorations ?? [])

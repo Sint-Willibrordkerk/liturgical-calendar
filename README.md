@@ -16,7 +16,7 @@ This library generates a complete liturgical calendar for any given year. It sup
   generated from Divinum Officium
 - **Office propers**: The Breviary's texts of each day, Hour by Hour — hymns,
   antiphons, Matins lessons and responsories, chapters and versicles (opt-in)
-- **Translations**: Multi-language support; see nl as an example.
+- **Translations**: Latin, Dutch and English; see nl or en as an example.
 
 ## Installation
 
@@ -27,8 +27,9 @@ texts of its Office — and its translations. Install the calendar and the langu
 
 ```bash
 pnpm add @sint-willibrordkerk/liturgical-calendar @sint-willibrordkerk/liturgical-calendar-la
-# or Dutch, or both
+# or Dutch, or English, or several
 pnpm add @sint-willibrordkerk/liturgical-calendar @sint-willibrordkerk/liturgical-calendar-nl
+pnpm add @sint-willibrordkerk/liturgical-calendar @sint-willibrordkerk/liturgical-calendar-en
 ```
 
 A language runs to a few megabytes, so a caller carries only the languages they
@@ -68,7 +69,7 @@ they fall, each with its id — but no day carries a Mass or a title.
   default.
 - `propers` (string[]): Array of proper names to include (e.g., `['neerlandia/ultrajectum', 'fsspx']`)
 - `languages` (Language[]): Language packages —
-  `@sint-willibrordkerk/liturgical-calendar-la`, `…-nl` — imported and passed
+  `@sint-willibrordkerk/liturgical-calendar-la`, `…-nl`, `…-en` — imported and passed
   in. The first supplies the words of the Mass propers and the names of the
   days; the rest say a text where the first has none; see
   [Several languages](#several-languages). Omit it for the bare calendar, whose
@@ -248,10 +249,12 @@ the 24th and 25th of February are both *Sexto Kaléndas Mártii*, with the same
 moon. Rubrics addressed to the reader — *Hic vox elevatur…* — are left out of
 the text.
 
-The Martyrology is in Latin only: Divinum Officium has no Dutch one, so a Dutch
-calendar asked for it carries none. It adds about half a megabyte to the Latin
-package and a few kilobytes to each day, which is why it is left out unless
-asked for.
+The Martyrology is in Latin and English: Divinum Officium has no Dutch one, so
+a Dutch calendar asked for it carries none. The English is the translation
+Divinum Officium prints — *Upon the 21st day of January, were born into the
+better life* — and its date line names the date in English rather than the
+Roman reckoning. It adds about half a megabyte to each package that has it and
+a few kilobytes to each day, which is why it is left out unless asked for.
 
 ### The Office
 
@@ -320,10 +323,11 @@ What the propers cannot yet say:
 - **Commemorations** carry no Office of their own.
 
 The text is Divinum Officium's. A language has the Office its sources translate:
-Divinum Officium's Dutch Breviary is far from complete, so a Dutch calendar
-asked for it carries the Office of about half the days, often only in part. The
-Office adds a few megabytes to the Latin package and a few kilobytes to each
-day, which is why it is left out unless asked for.
+the English Breviary covers every day the Latin does, but Divinum Officium's
+Dutch Breviary is far from complete, so a Dutch calendar asked for it carries
+the Office of about half the days, often only in part. The Office adds a few
+megabytes to the Latin and English packages and a few kilobytes to each day,
+which is why it is left out unless asked for.
 
 ### Colors in Local Propers
 
@@ -384,7 +388,8 @@ pnpm start # uses scripts/main.js to generate test_output.yml
 │   └── mass-propers/    # The days of the propers, Mass and Office, keys only (generated)
 ├── languages/           # One package per language: what the keys say
 │   ├── la/assets/       #   mass-propers/la/, martyrologium/la/ (generated)
-│   └── nl/assets/       #   mass-propers/nl/ (generated), translations/nl/
+│   ├── nl/assets/       #   mass-propers/nl/ (generated), translations/nl/
+│   └── en/assets/       #   mass-propers/en/, martyrologium/en/ (generated), translations/en/
 ├── convert-do/          # The pipeline that generates the propers
 ├── src/                 # TypeScript source
 ├── dist/                # Compiled output
