@@ -7,7 +7,7 @@ import { calendarAssets } from "../scripts/assets.mjs";
 // The calendar and the local propers, as the build reads them.
 const assets = calendarAssets("assets", { days: false });
 const generateCalendar = calendarOf(assets);
-import type { Calendar, Commemoration, LiturgicalDay } from "./types";
+import type { LiturgicalDay, WorkingCalendar, WorkingCommemoration, WorkingDay } from "./types";
 
 /**
  * Which of the days falling on a date are commemorated with the day kept
@@ -24,18 +24,18 @@ const RULES: CommemorationRules = {
   order: [{ "of-the-season": true }, "precedence"],
 };
 
-const day = (fields: Partial<Commemoration>): Commemoration =>
-  ({ type: "festum", liturgicalClass: 3, commemorated: "ordinary", honours: [], ...fields }) as Commemoration;
+const day = (fields: Partial<WorkingCommemoration>): WorkingCommemoration =>
+  ({ type: "festum", liturgicalClass: 3, commemorated: "ordinary", honours: [], ...fields }) as WorkingCommemoration;
 
 /** The day kept, with the others on its date in the order of precedence. */
-function kept(fields: Partial<LiturgicalDay>, others: Commemoration[]): Calendar {
+function kept(fields: Partial<WorkingDay>, others: WorkingCommemoration[]): WorkingCalendar {
   return {
-    3: { 4: { ...day({ admits: { count: 2 } }), ...fields, commemorations: others } as LiturgicalDay },
-  } as Calendar;
+    3: { 4: { ...day({ admits: { count: 2 } }), ...fields, commemorations: others } as WorkingDay },
+  } as WorkingCalendar;
 }
 
 /** The ids commemorated on the one day, after the rules. */
-function commemorated(calendar: Calendar, rules = RULES): (string | undefined)[] {
+function commemorated(calendar: WorkingCalendar, rules = RULES): (string | undefined)[] {
   applyCommemorations(calendar, 2026, rules);
   return calendar[3]![4]!.commemorations.map((c) => c.id);
 }

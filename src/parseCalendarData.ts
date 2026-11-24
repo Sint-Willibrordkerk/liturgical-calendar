@@ -1,4 +1,14 @@
-import type { Calendar, Color, Commemorated, LiturgicalDay, Occurence, RelativeDate, Weekday } from "./types";
+import type {
+  Color,
+  Commemorated,
+  DayType,
+  LiturgicalClass,
+  Occurence,
+  RelativeDate,
+  Weekday,
+  WorkingCalendar,
+  WorkingDay,
+} from "./types";
 import { calculateAdvent, calculateEaster, daysBetween, getDate } from "./utils";
 import { weekdays } from "./constants";
 import type { Assets } from "./assets";
@@ -13,7 +23,7 @@ import { defaultColor, mayWearRose, seasonOf } from "./seasons";
  * is a collect added to that Mass, not a Mass of its own. Nor does the Office,
  * which is that of the celebration kept.
  */
-function place(calendar: Calendar, date: Date, day: Omit<LiturgicalDay, "commemorations">) {
+function place(calendar: WorkingCalendar, date: Date, day: Omit<WorkingDay, "commemorations">) {
   const month = (calendar[date.getMonth() + 1] ??= {});
   const existing = month[date.getDate()];
   if (existing === undefined) {
@@ -85,7 +95,7 @@ export function parseCalendarData(
     assets,
     properNames.map((name) => loadPropers(assets, name))
   );
-  const calendar: Calendar = {};
+  const calendar: WorkingCalendar = {};
   const advent = calculateAdvent(year);
   const easter = calculateEaster(year);
 
@@ -103,17 +113,14 @@ export function parseCalendarData(
           ? ("rose" as const)
           : undefined;
 
-      // The fields a language adds later hold their place here, so that a
-      // published day reads in the same order every time.
       place(calendar, date, {
         id,
-        title: undefined,
         ...item,
-        // Checked against the calendar's list as it loaded.
+        // Checked against the calendar's lists as it loaded.
+        type: item.type as DayType,
+        liturgicalClass: item.liturgicalClass as LiturgicalClass,
         commemorated: item.commemorated as Commemorated | undefined,
         color,
-        mass: undefined,
-        officium: undefined,
         proper: id ? { id, ...(localCalendar && { local: localCalendar }) } : undefined,
         naming: template === undefined ? undefined : { template, count },
         season,

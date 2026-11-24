@@ -7,7 +7,7 @@
  * settled and their Masses read, since a day the language has no name for is
  * called by the Latin title of its Mass.
  */
-import type { Calendar, Commemoration, LiturgicalDay } from "./types";
+import type { WorkingCalendar, WorkingCommemoration, WorkingDay } from "./types";
 import { ordinals, days, feriae } from "./ordinals";
 import { eachDay } from "./utils";
 
@@ -71,7 +71,7 @@ export function nameDay(
  * the reader sees `Festum Sanctissimæ Trinitatis` rather than an id. A day with
  * neither has no title: its id still says which day it is.
  */
-function name(entry: Commemoration, date: Date, translations: Translations): void {
+function name(entry: WorkingCommemoration, date: Date, translations: Translations): void {
   if (entry.naming === undefined) return;
   const named = nameDay(entry.naming.template, entry.naming.count, date, translations);
   const title = named ?? entry.mass?.title;
@@ -82,12 +82,12 @@ function name(entry: Commemoration, date: Date, translations: Translations): voi
  * Name every day of `year` and its commemorations in the language, and its
  * season and colors beside their identifiers, where the language names them.
  */
-export function nameDays(calendar: Calendar, year: number, translations: Translations): void {
+export function nameDays(calendar: WorkingCalendar, year: number, translations: Translations): void {
   const nameOf = (key: string | undefined): string | undefined =>
     key === undefined ? undefined : translations[key];
 
   eachDay(year, ({ date, month, day }) => {
-    const entry: LiturgicalDay | undefined = calendar[month]?.[day];
+    const entry: WorkingDay | undefined = calendar[month]?.[day];
     if (entry === undefined) return;
     name(entry, date, translations);
     entry.commemorations.forEach((commemoration) => name(commemoration, date, translations));

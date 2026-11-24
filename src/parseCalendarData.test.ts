@@ -2,7 +2,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { parseCalendarData } from "./parseCalendarData";
 import { loadPropers } from "./loadAssets";
 import type { Assets } from "./assets";
-import type { Calendar, LiturgicalDay } from "./types";
+import type { WorkingCalendar, WorkingDay } from "./types";
 import { calendarAssets } from "../scripts/assets.mjs";
 
 /**
@@ -12,18 +12,18 @@ import { calendarAssets } from "../scripts/assets.mjs";
  */
 const assets: Assets = calendarAssets("assets", { days: false });
 
-let general: Calendar;
-let utrecht: Calendar;
+let general: WorkingCalendar;
+let utrecht: WorkingCalendar;
 beforeAll(() => {
   general = parseCalendarData(assets, 2026, []);
   utrecht = parseCalendarData(assets, 2026, ["neerlandia/ultrajectum"]);
 });
 
-const day = (calendar: Calendar, month: number, date: number) => calendar[month]![date]!;
+const day = (calendar: WorkingCalendar, month: number, date: number) => calendar[month]![date]!;
 
 /** Every day of the calendar, in no particular order. */
-const daysOf = (calendar: Calendar): LiturgicalDay[] =>
-  Object.values(calendar).flatMap((month) => Object.values(month ?? {}) as LiturgicalDay[]);
+const daysOf = (calendar: WorkingCalendar): WorkingDay[] =>
+  Object.values(calendar).flatMap((month) => Object.values(month ?? {}) as WorkingDay[]);
 
 describe("parseCalendarData", () => {
   it("places every day of the year", () => {

@@ -7,28 +7,28 @@ import {
   SUNDAY_AFTER_PENTECOST_MASS,
   SUNDAY_AFTER_PENTECOST_VARIANT,
 } from "./ferias";
-import type { Calendar, LiturgicalDay, ProperReference } from "./types";
+import type { WorkingCalendar, WorkingDay, ProperReference } from "./types";
 import { calculateEaster } from "./utils";
 
-const feria = (): LiturgicalDay =>
+const feria = (): WorkingDay =>
   ({
     type: "feria",
     liturgicalClass: 4,
     commemorations: [],
     season: "per-annum",
     color: "green",
-  }) as LiturgicalDay;
+  }) as WorkingDay;
 
 const withProper = (
   type: string,
   liturgicalClass: number,
   proper: ProperReference | undefined
-): LiturgicalDay =>
+): WorkingDay =>
   ({ type, liturgicalClass, proper, commemorations: [] }) as never;
 
 /** A calendar holding only the days named, so a rule is easy to read. */
-function calendarOf(days: Record<string, LiturgicalDay>): Calendar {
-  const out: Calendar = {} as Calendar;
+function calendarOf(days: Record<string, WorkingDay>): WorkingCalendar {
+  const out: WorkingCalendar = {} as WorkingCalendar;
   for (const [key, day] of Object.entries(days)) {
     const [m, d] = key.split("-").map(Number) as [number, number];
     out[m] ??= {};
@@ -38,7 +38,7 @@ function calendarOf(days: Record<string, LiturgicalDay>): Calendar {
 }
 
 /** The id a day's Mass is read from. */
-const filedUnder = (day: LiturgicalDay | undefined) => day?.proper?.id;
+const filedUnder = (day: WorkingDay | undefined) => day?.proper?.id;
 
 describe("borrowsItsMass", () => {
   it("is a fourth-class feria with no Mass of its own", () => {
@@ -205,7 +205,7 @@ describe("the ferias of a week whose Sunday a feast took", () => {
   const keptOnSunday = (
     feast: ProperReference,
     sunday: ProperReference | undefined
-  ): LiturgicalDay =>
+  ): WorkingDay =>
     ({
       type: "festum",
       liturgicalClass: 1,
@@ -300,7 +300,7 @@ describe("the ferias of a week whose Sunday a feast took", () => {
 });
 
 describe("the Preface of a feria that says its Sunday's Mass", () => {
-  const prefatioOf = (day: LiturgicalDay | undefined) => day?.proper?.prefatio;
+  const prefatioOf = (day: WorkingDay | undefined) => day?.proper?.prefatio;
   const dominicaXIII = { id: "dominica-xiii-post-pentecosten" };
 
   it("is the common Preface in place of any the Sunday names", () => {

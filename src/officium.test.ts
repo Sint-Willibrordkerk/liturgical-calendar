@@ -179,6 +179,6 @@ describe("the Office of a commemoration", () => {
     const telesphorus = commemorations.find((entry) => entry.title === "S. Telesphori Papæ et Martyris");
     expect(telesphorus).toBeDefined();
     expect(telesphorus!.mass).toBeDefined();
-    expect(telesphorus!.officium).toBeUndefined();
+    expect(telesphorus).not.toHaveProperty("officium");
   });
 });

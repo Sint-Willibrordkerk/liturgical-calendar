@@ -6,7 +6,7 @@
  * feasts, and the rest of the year it keeps the Sunday just past — the Sunday
  * as such, even where a feast was kept on it in its place.
  */
-import type { Calendar, Commemoration, LiturgicalDay, ProperReference } from "./types";
+import type { WorkingCalendar, WorkingCommemoration, WorkingDay, ProperReference } from "./types";
 import { calculateEaster, daysBetween, eachDay } from "./utils";
 
 /**
@@ -55,7 +55,7 @@ const SUNDAY = 0;
  * the same — Lent, whose ferias are also privileged, gives each of them a Mass
  * of its own and so never reaches here.
  */
-export function borrowsItsMass(day: LiturgicalDay | undefined): boolean {
+export function borrowsItsMass(day: WorkingDay | undefined): boolean {
   return (
     day != null &&
     day.type === FERIA &&
@@ -106,7 +106,7 @@ export function firstSundayAfterEpiphany(year: number): Date {
  * already has a Mass, and any day of a higher class, is left as it is. Where
  * the day it would borrow from has no Mass either, it keeps none.
  */
-export function applyFerialMass(calendar: Calendar, year: number): void {
+export function applyFerialMass(calendar: WorkingCalendar, year: number): void {
   const epiphanySunday = firstSundayAfterEpiphany(year);
   const trinity = calculateEaster(year);
   trinity.setDate(trinity.getDate() + 56);
@@ -166,7 +166,7 @@ export function applyFerialMass(calendar: Calendar, year: number): void {
  * that day's season, and without its Office.
  */
 function borrowedFrom(
-  entry: Commemoration | undefined,
+  entry: WorkingCommemoration | undefined,
   date: Date
 ): ProperReference | undefined {
   const proper = entry?.proper;
@@ -187,7 +187,7 @@ function asSaidOnItsFerias(sunday: ProperReference): ProperReference {
  * Sunday it commemorates. A feast that commemorates no Sunday stands for the
  * Sunday itself.
  */
-function sundayAsSuch(entry: LiturgicalDay): Commemoration {
+function sundayAsSuch(entry: WorkingDay): WorkingCommemoration {
   if (entry.type === SUNDAY_TYPE) return entry;
   const commemorated = entry.commemorations?.find(
     (commemoration) => commemoration.type === SUNDAY_TYPE

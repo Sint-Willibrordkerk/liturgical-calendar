@@ -1,5 +1,5 @@
 import type { Assets } from "./assets";
-import type { Calendar, Commemoration, LiturgicalDay } from "./types";
+import type { Calendar } from "./types";
 import { eachDay } from "./utils";
 import { parseCalendarData } from "./parseCalendarData";
 import { loadTranslations, loadMartyrology, loadCommemorationRules } from "./loadAssets";
@@ -10,6 +10,7 @@ import { applyPropers } from "./propers";
 import { nameDays } from "./naming";
 import { applyMartyrology } from "./martyrology";
 import { NO_LANGUAGE, languageProblems, type Language } from "./language";
+import { publish } from "./publish";
 
 /** Options that shape the calendar beyond the days themselves. */
 export type Options = {
@@ -30,25 +31,6 @@ export type Options = {
    */
   officium?: boolean;
 };
-
-function deleteFields(day: Partial<LiturgicalDay | Commemoration>) {
-  if ("commemorations" in day && day.commemorations) {
-    day.commemorations.forEach(deleteFields);
-    if (!day.commemorations.length) {
-      delete day.commemorations;
-    }
-  }
-
-  delete day.commemorated;
-  delete day.admits;
-  delete day.omittedOn;
-  delete day.honours;
-  delete day.ofTheSeason;
-  delete day.proper;
-  delete day.naming;
-  // Nothing named the day: its id says which it is.
-  if (day.title === undefined) delete day.title;
-}
 
 /**
  * The generator of calendars from `assets`: the calendar, the local propers
@@ -104,10 +86,12 @@ export function calendarOf(assets: Assets) {
     }
     nameDays(calendar, year, translations);
 
+    // The days as they are published: without what they were settled with.
+    const published: Calendar = {};
     eachDay(year, ({ month, day }) => {
-      deleteFields(calendar[month]![day]!);
+      (published[month] ??= {})[day] = publish(calendar[month]![day]!);
     });
-    return calendar;
+    return published;
   };
 }
 

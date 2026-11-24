@@ -6,7 +6,7 @@ import {
   resumedSundayMass,
   sundayMasses,
 } from "./resumedSundays";
-import type { Calendar, LiturgicalDay } from "./types";
+import type { WorkingCalendar, WorkingDay } from "./types";
 import { calculateEaster } from "./utils";
 
 describe("applyResumedSundays", () => {
@@ -14,12 +14,12 @@ describe("applyResumedSundays", () => {
   // 27 Sundays after Pentecost, two kept after the Epiphany, so IV, V and VI
   // are resumed on the 31st of October, the 7th and the 14th of November.
   const year = 2027;
-  const sundayOf = (id: string): LiturgicalDay =>
+  const sundayOf = (id: string): WorkingDay =>
     ({ type: "dominica", id, proper: { id }, commemorations: [] }) as never;
 
   /** Every Sunday after Pentecost of 2027, Christ the King on the 31st. */
-  function calendar2027(): Calendar {
-    const out: Calendar = {} as Calendar;
+  function calendar2027(): WorkingCalendar {
+    const out: WorkingCalendar = {} as WorkingCalendar;
     const date = new Date(year, 4, 23);
     for (; date < new Date(year, 10, 28); date.setDate(date.getDate() + 7)) {
       const [m, d] = [date.getMonth() + 1, date.getDate()];

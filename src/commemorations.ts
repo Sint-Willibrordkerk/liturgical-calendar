@@ -9,10 +9,10 @@
  * applies them, the same for every day.
  */
 import type {
-  Calendar,
-  Commemoration,
+  WorkingCalendar,
+  WorkingCommemoration,
   CommemorationRules,
-  LiturgicalDay,
+  WorkingDay,
   Matcher,
 } from "./types";
 import { asList, eachDay } from "./utils";
@@ -25,7 +25,7 @@ function takes<T>(field: T | T[] | undefined, value: T | undefined): boolean {
 }
 
 /** Whether the day is of the kind the matcher names: every field it names. */
-export function matches(day: Commemoration, matcher: Matcher): boolean {
+export function matches(day: WorkingCommemoration, matcher: Matcher): boolean {
   return (
     takes(matcher.type, day.type) &&
     takes(matcher.class, day.liturgicalClass) &&
@@ -49,7 +49,7 @@ const TITLES = new Set(
  * names, with the words that say what he was taken out, and the date some ids
  * carry. A day that is no feast, and says no one, honours no one.
  */
-export function honoursOf(day: Pick<Commemoration, "id" | "type" | "honours">): string[] {
+export function honoursOf(day: Pick<WorkingCommemoration, "id" | "type" | "honours">): string[] {
   if (day.honours !== undefined) return day.honours;
   if (day.type !== "festum" || day.id === undefined) return [];
   const words = day.id.split("-").filter((word) => !TITLES.has(word) && !/^\d+$/.test(word));
@@ -59,8 +59,8 @@ export function honoursOf(day: Pick<Commemoration, "id" | "type" | "honours">): 
 /** Whether one rule of n. 112 keeps the two days apart. */
 function excludes(
   rule: CommemorationRules["excludes"][number],
-  a: Commemoration,
-  b: Commemoration
+  a: WorkingCommemoration,
+  b: WorkingCommemoration
 ): boolean {
   if (rule === "honours") {
     const honoured = honoursOf(a);
@@ -76,10 +76,10 @@ function excludes(
  * reduced to what the day admits and put in the order they are said.
  */
 function commemorationsOf(
-  kept: LiturgicalDay,
-  others: Commemoration[],
+  kept: WorkingDay,
+  others: WorkingCommemoration[],
   rules: CommemorationRules
-): Commemoration[] {
+): WorkingCommemoration[] {
   // A day never commemorated, or left out on this one (nn. 26, 33).
   const candidates = others.filter(
     (other) =>
@@ -89,7 +89,7 @@ function commemorationsOf(
 
   // Excluded by the day kept, or by a commemoration higher in precedence
   // already admitted (n. 112).
-  const admitted: Commemoration[] = [];
+  const admitted: WorkingCommemoration[] = [];
   for (const candidate of candidates) {
     const excluded = [kept, ...admitted].some((other) =>
       rules.excludes.some((rule) => excludes(rule, other, candidate))
@@ -102,7 +102,7 @@ function commemorationsOf(
   const allowed = of === undefined ? admitted : admitted.filter((c) => of.some((m) => matches(c, m)));
 
   // In the order they are said (n. 113); the sort keeps precedence within a rank.
-  const rank = (c: Commemoration) => {
+  const rank = (c: WorkingCommemoration) => {
     if (privilegedFirst && c.commemorated === "privileged") return -1;
     const index = rules.order.findIndex((entry) => entry !== "precedence" && matches(c, entry));
     return index === -1 ? rules.order.indexOf("precedence") : index;
@@ -115,7 +115,7 @@ function commemorationsOf(
 
 /** Reduce the commemorations of every day of `year` by the calendar's rules. */
 export function applyCommemorations(
-  calendar: Calendar,
+  calendar: WorkingCalendar,
   year: number,
   rules: CommemorationRules
 ): void {
