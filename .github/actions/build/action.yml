@@ -1,0 +1,51 @@
+name: Generate and build
+description: >
+  Generate the propers from the pinned commit of Divinum Officium and build the
+  calendar and every language package from them.
+
+runs:
+  using: composite
+  steps:
+    - uses: pnpm/action-setup@v6
+
+    - uses: actions/setup-node@v7
+      with:
+        node-version: 22
+        cache: pnpm
+
+    - run: pnpm install --frozen-lockfile
+      shell: bash
+
+    # The propers are generated, not committed: `convert-do/source.json` names
+    # the commit of Divinum Officium they are generated from.
+    - id: source
+      shell: bash
+      run: |
+        echo "repository=$(node -p "require('./convert-do/source.json').repository")" >> "$GITHUB_OUTPUT"
+        echo "commit=$(node -p "require('./convert-do/source.json').commit")" >> "$GITHUB_OUTPUT"
+
+    # Only the trees the pipeline reads. `.divinum-officium/` is ignored by git
+    # and by the tests, and the pipeline writes its steps beside this.
+    - uses: actions/checkout@v7
+      with:
+        repository: ${{ steps.source.outputs.repository }}
+        ref: ${{ steps.source.outputs.commit }}
+        path: .divinum-officium/source
+        sparse-checkout: |
+          web/www/horas
+          web/www/missa
+        persist-credentials: false
+
+    - run: pnpm pipeline
+      shell: bash
+      env:
+        DIVINUM_OFFICIUM_BASE: ${{ github.workspace }}/.divinum-officium/source
+
+    - run: pnpm copy-mass-propers
+      shell: bash
+
+    - run: pnpm build
+      shell: bash
+
+    - run: pnpm build:languages
+      shell: bash

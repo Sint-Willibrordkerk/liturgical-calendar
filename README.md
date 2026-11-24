@@ -365,13 +365,48 @@ pnpm build:languages  # the language packages
 
 The propers are generated from [Divinum
 Officium](https://github.com/DivinumOfficium/divinum-officium) rather than kept
-in this repository. To rebuild them, point `DIVINUM_OFFICIUM_BASE` at a checkout
-and run:
+in this repository. [`convert-do/source.json`](convert-do/source.json) names the
+commit they are generated from, so that what is published can be generated
+again and comes out the same. To rebuild them, point `DIVINUM_OFFICIUM_BASE` (in
+`.env`) at a checkout of that commit and run:
 
 ```bash
 pnpm pipeline
 pnpm copy-mass-propers
 ```
+
+The pipeline refuses a checkout at another commit, or one with changes that are
+not committed. To take newer sources, check them out, run `pnpm pipeline
+--unpinned --force` to see what they change, and write their commit in
+`convert-do/source.json`.
+
+### Testing
+
+```bash
+pnpm test        # vitest, watching
+pnpm typecheck
+pnpm knip
+```
+
+The tests that read the generated propers (`*.published.test.ts`) are skipped
+where the propers have not been generated. CI generates them from the pinned
+commit on every pull request, so there they always run.
+
+### Releasing
+
+The calendar and the language packages are released together, at one version: a
+language says what the keys of the calendar's days mean, so the two are only
+right for each other when they come from the same build. Set the version in
+every `package.json` (`node scripts/package-versions.mjs` checks they agree),
+merge, and push the tag:
+
+```bash
+git tag v3.6.0 && git push origin v3.6.0
+```
+
+The release workflow generates the propers from the pinned commit, runs the
+tests, and publishes all the packages to npm. It needs an `NPM_TOKEN` secret
+that may publish them.
 
 ### Running
 
@@ -391,6 +426,7 @@ pnpm start # uses scripts/main.js to generate test_output.yml
 │   ├── nl/assets/       #   mass-propers/nl/ (generated), translations/nl/
 │   └── en/assets/       #   mass-propers/en/, martyrologium/en/ (generated), translations/en/
 ├── convert-do/          # The pipeline that generates the propers
+│   └── source.json      #   the commit of Divinum Officium it reads
 ├── src/                 # TypeScript source
 ├── dist/                # Compiled output
 └── scripts/             # Utility scripts

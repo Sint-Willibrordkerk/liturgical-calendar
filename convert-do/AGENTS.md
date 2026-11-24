@@ -60,10 +60,19 @@ CLI options (see [`index.ts`](index.ts)):
 | `--step <N>`    | —       | Shorthand for `--from N --to N`.                     |
 | `-f`, `--force` | `false` | Empty the streaming output folder and reprocess everything. Without it, existing streaming outputs are skipped (caching). Batch steps always rebuild. |
 
+| `--unpinned`    | `false` | Read the checkout as it stands rather than at the pinned commit. For trying newer sources; what it generates is not what is published. |
+
 `step0` needs the env variable **`DIVINUM_OFFICIUM_BASE`** (path to the
 `divinum-officium` repository; `web/www` is appended automatically). From
 `--from 1` onwards the input is `.divinum-officium/step{from-1}` and the source
 repository is not needed.
+
+The checkout must be at the commit [`source.json`](source.json) names, with
+nothing changed under `web/www/horas` and `web/www/missa`
+([`lib/source.ts`](lib/source.ts)): the propers are published from that commit
+and no other, so that they can be generated again. To move to newer sources,
+check them out, run with `--unpinned --force`, and write the new commit in
+`source.json` in the same change.
 
 Publishing the result into the language packages is a separate, deliberate step:
 

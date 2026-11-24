@@ -29,6 +29,7 @@ import { run as runStep11 } from "./step11.js";
 import { run as runStep12 } from "./step12.js";
 import { runBatched } from "./lib/batch.js";
 import { parseStep, stringifyStep } from "./lib/serialize.js";
+import { PINNED_SOURCE, requirePinnedSource } from "./lib/source.js";
 
 const PROJECT_BASE = process.cwd();
 const STEP_BASE = join(PROJECT_BASE, ".divinum-officium");
@@ -209,11 +210,25 @@ async function runBatchStep(step: number): Promise<void> {
 export async function runPipeline(
   fromStep: number,
   toStep: number,
-  force: boolean
+  force: boolean,
+  { unpinned = false }: { unpinned?: boolean } = {}
 ) {
   const stepRange =
     fromStep === toStep ? `step ${fromStep}` : `steps ${fromStep}-${toStep}`;
   consola.box(`Converting Divinum Officium files\n\nProcessing ${stepRange}`);
+
+  // Only step 0 reads the sources; every later step reads the step before it.
+  if (fromStep === 0 && process.env.DIVINUM_OFFICIUM_BASE) {
+    const differs = requirePinnedSource(process.env.DIVINUM_OFFICIUM_BASE, { unpinned });
+    if (differs.length === 0) {
+      consola.info(`Sources at the pinned commit ${PINNED_SOURCE.commit.slice(0, 12)}`);
+    } else {
+      consola.warn(
+        `Reading sources that are not the pinned ones — do not publish what this generates:\n` +
+          differs.map((problem) => `  - ${problem}`).join("\n")
+      );
+    }
+  }
 
   // Streaming portion (steps 0..STREAMING_MAX_STEP), written once to its last
   // step's folder.
