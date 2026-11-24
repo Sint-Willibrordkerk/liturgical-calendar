@@ -84,12 +84,12 @@ describe("applyCommemorations", () => {
   });
 
   it("on a Sunday admits a feast of the second class, but a privileged one first (n. 111b)", () => {
-    const sunday = {
+    const sunday: Partial<WorkingDay> = {
       type: "dominica",
       liturgicalClass: 2,
       admits: {
         count: 1,
-        of: [{ commemorated: "privileged" as const }, { class: 2, type: "festum" }],
+        of: [{ commemorated: "privileged" }, { class: 2, type: "festum" }],
         "privileged-first": true,
       },
     };
@@ -139,7 +139,7 @@ describe("applyCommemorations", () => {
 
 describe("honoursOf", () => {
 
-  const feast = (id: string) => ({ id, type: "festum" });
+  const feast = (id: string) => ({ id, type: "festum" as const });
 
   it("is whom the day says it honours", () => {
     expect(honoursOf({ ...feast("joseph-opificis"), honours: ["joseph"] })).toEqual(["joseph"]);
@@ -178,7 +178,7 @@ describe("the commemorations of the calendar", () => {
   it("commemorates one feria on a second-class feast of Advent (n. 111c)", () => {
     // St Thomas, 21 December 2026.
     expect(ids(on(2026, 12, 21))).toEqual(["(feria)"]);
-    expect(on(2026, 12, 21).commemorations[0]!.liturgicalClass).toBe(2);
+    expect(on(2026, 12, 21).commemorations![0]!.liturgicalClass).toBe(2);
   });
 
   it("commemorates its feria once on St Joseph in Lent (n. 111a)", () => {
