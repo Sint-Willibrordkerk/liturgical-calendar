@@ -1,9 +1,10 @@
 import { beforeAll, describe, expect, it } from "vitest";
-import { existsSync, readdirSync, readFileSync, statSync } from "fs";
+import { existsSync, readFileSync } from "fs";
 import { join } from "path";
 import { parse } from "yaml";
-import { languageAssets } from "../scripts/language-assets.mjs";
-import generateCalendar, { type Language, type LiturgicalDay } from "./index";
+import { calendarAssets, readLanguage } from "../scripts/assets.mjs";
+import { calendarOf } from "./generate";
+import type { Language, LiturgicalDay } from "./index";
 
 /**
  * The Utrecht local proper as published, with the days Divinum Officium keeps
@@ -23,18 +24,6 @@ const generated = GENERATED.every((path) => existsSync(path));
 // is a failure: these tests never pass by being skipped.
 if (!generated && process.env.CI) {
   throw new Error(`The propers are not generated: ${GENERATED.filter((path) => !existsSync(path)).join(", ")}`);
-}
-
-/** Every YAML under `dir`, by the path below it. */
-function readAssets(dir: string, base = ""): Record<string, unknown> {
-  const assets: Record<string, unknown> = {};
-  for (const item of readdirSync(dir)) {
-    const full = join(dir, item);
-    const rel = base ? `${base}/${item}` : item;
-    if (statSync(full).isDirectory()) Object.assign(assets, readAssets(full, rel));
-    else if (/\.ya?ml$/.test(item)) assets[rel] = parse(readFileSync(full, "utf-8"));
-  }
-  return assets;
 }
 
 /** The dates the Utrecht proper keeps a day on, as month and day. */
@@ -58,11 +47,11 @@ describe.skipIf(!generated)("the Utrecht local proper as published", () => {
 
   // Every generated file is read and parsed, some ten seconds' work: more than
   // a hook is given by default once other files run beside it.
+  let generateCalendar: ReturnType<typeof calendarOf>;
   beforeAll(() => {
-    (globalThis as Record<string, unknown>).bundledAssets = readAssets("assets");
-    for (const code of ["la", "nl"]) {
-      languages[code] = { code, assets: languageAssets(join("languages", code, "assets"), code) };
-    }
+    // The calendar and the languages as their builds read them.
+    generateCalendar = calendarOf(calendarAssets("assets"));
+    for (const code of ["la", "nl"]) languages[code] = readLanguage(join("languages", code));
   }, 60_000);
 
   /** The Utrecht days kept in the years, beside the general day each displaced. */

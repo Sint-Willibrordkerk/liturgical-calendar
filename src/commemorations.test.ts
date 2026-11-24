@@ -1,10 +1,12 @@
-import { readFileSync, readdirSync } from "fs";
-import { join } from "path";
-import { parse } from "yaml";
-import { beforeAll, describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { applyCommemorations, honoursOf, type CommemorationRules } from "./commemorations";
 import { parseCalendarData } from "./parseCalendarData";
-import generateCalendar from "./index";
+import { calendarOf } from "./generate";
+import { calendarAssets } from "../scripts/assets.mjs";
+
+// The calendar and the local propers, as the build reads them.
+const assets = calendarAssets("assets", { days: false });
+const generateCalendar = calendarOf(assets);
 import type { Calendar, Commemoration, LiturgicalDay } from "./types";
 
 /**
@@ -160,17 +162,6 @@ describe("honoursOf", () => {
 });
 
 describe("the commemorations of the calendar", () => {
-  beforeAll(() => {
-    const bundled: Record<string, unknown> = {
-      "calendar1962.yml": parse(readFileSync(join("assets", "calendar1962.yml"), "utf-8")),
-    };
-    for (const file of (readdirSync(join("assets", "propers"), { recursive: true }) as string[]).map((f) => f.replace(/\\/g, "/"))) {
-      if (!file.endsWith(".yml")) continue;
-      bundled[`propers/${file}`] = parse(readFileSync(join("assets", "propers", file), "utf-8"));
-    }
-    (globalThis as Record<string, unknown>).bundledAssets = bundled;
-  });
-
   const on = (year: number, month: number, date: number, propers: string[] = []) =>
     generateCalendar({ year, propers })[month]![date]!;
   // The calendar leaves an empty list of commemorations out.
@@ -264,7 +255,7 @@ describe("the commemorations of the calendar", () => {
     const met = new Set<string>();
     for (let year = 2020; year <= 2060; year++) {
       for (const propers of [[], ["neerlandia/ultrajectum"], ["fsspx"]]) {
-        const calendar = parseCalendarData(year, propers);
+        const calendar = parseCalendarData(assets, year, propers);
         for (const month of Object.values(calendar)) {
           for (const entry of Object.values(month ?? {})) {
             if (entry === undefined) continue;

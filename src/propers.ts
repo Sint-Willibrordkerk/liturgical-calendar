@@ -2,11 +2,13 @@
  * The propers of the days, read in the languages asked for.
  *
  * The days are settled first, the same in every language, and each holds
- * where its Mass is filed. This is the one place they are read from there:
+ * where its Mass is filed, among the assets. This is the one place they are
+ * read from there:
  * the Mass of each day and of each of its commemorations, and the Office of
  * the celebration kept.
  */
 import type { Calendar, ProperReference, RawMassProper } from "./types";
+import type { Assets } from "./assets";
 import { NO_LANGUAGE, type Language } from "./language";
 import { DEFAULT_RUBRICS, loadMassPropersById, loadOfficiumById } from "./loadAssets";
 import { calculateEaster, eachDay } from "./utils";
@@ -18,6 +20,7 @@ import { calculateEaster, eachDay } from "./utils";
  * collect added to the Mass, and a borrowed Mass brings no Office with it.
  */
 export function applyPropers(
+  assets: Assets,
   calendar: Calendar,
   year: number,
   languages: Language[],
@@ -31,6 +34,7 @@ export function applyPropers(
     const rubrics =
       proper.variant === undefined ? undefined : new Set([...DEFAULT_RUBRICS, proper.variant]);
     const mass = loadMassPropersById(
+      assets,
       proper.id,
       language,
       rubrics,
@@ -49,6 +53,7 @@ export function applyPropers(
     entry.mass = massOf(proper, date);
     if (officium && proper !== undefined && !proper.borrowed) {
       entry.officium = loadOfficiumById(
+        assets,
         proper.id,
         language,
         undefined,

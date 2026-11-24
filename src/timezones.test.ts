@@ -1,8 +1,6 @@
-import { readFileSync, readdirSync } from "fs";
-import { join } from "path";
-import { parse } from "yaml";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import generateCalendar from "./index";
+import { calendarOf } from "./generate";
+import { calendarAssets } from "../scripts/assets.mjs";
 import { calculateAdvent, calculateEaster, daysBetween } from "./utils";
 
 /**
@@ -14,19 +12,10 @@ describe.each(["America/New_York", "Pacific/Honolulu", "Europe/Amsterdam", "Asia
   "the calendar in %s",
   (zone) => {
     const before = process.env.TZ;
+    const generateCalendar = calendarOf(calendarAssets("assets", { days: false }));
 
     beforeAll(() => {
       process.env.TZ = zone;
-      const bundled: Record<string, unknown> = {
-        "calendar1962.yml": parse(readFileSync(join("assets", "calendar1962.yml"), "utf-8")),
-      };
-      (globalThis as Record<string, unknown>).bundledAssets = bundled;
-      for (const file of (readdirSync(join("assets", "propers"), { recursive: true }) as string[]).map((f) =>
-        f.replace(/\\/g, "/")
-      )) {
-        if (!file.endsWith(".yml")) continue;
-        bundled[`propers/${file}`] = parse(readFileSync(join("assets", "propers", file), "utf-8"));
-      }
     });
 
     afterAll(() => {

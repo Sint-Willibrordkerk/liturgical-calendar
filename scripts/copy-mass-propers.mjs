@@ -10,12 +10,19 @@
  * is the one place the two meet, and it is run by hand rather than at build
  * time, so nothing is ever built from a folder no one can see.
  *
+ * The days hold keys and a language's stores say what the keys mean, so the
+ * two are right for each other only when they come from one run of the
+ * pipeline. As they are copied, the version of the days is written beside the
+ * days and beside every language's stores (`data-version`): the builds carry
+ * it into the packages, and the calendar refuses stores keyed to other days.
+ *
  * A language the pipeline produces but that has no package is reported rather
  * than dropped: it needs a `languages/<code>/package.json` before it can ship.
  */
-import { cp, rm, readdir, stat, mkdir } from "fs/promises";
+import { cp, rm, readdir, stat, mkdir, writeFile } from "fs/promises";
 import { join, resolve } from "path";
 import { consola } from "consola";
+import { DATA_VERSION_FILE, daysVersion } from "./assets.mjs";
 
 const SOURCE = ".divinum-officium/step12";
 const PACKAGES = "languages";
@@ -78,6 +85,11 @@ async function main() {
   }
   await report("days", DAYS);
 
+  // What the days are, for the stores copied below to be held to.
+  const dataVersion = daysVersion(DAY_TREES.map((tree) => join(DAYS, tree)));
+  await writeFile(join(DAYS, DATA_VERSION_FILE), `${dataVersion}\n`, "utf-8");
+  consola.info(`days of version ${dataVersion}`);
+
   const unpackaged = [];
   for (const entry of await readdir(SOURCE, { withFileTypes: true })) {
     if (!entry.isDirectory() || DAY_TREES.includes(entry.name)) continue;
@@ -97,6 +109,7 @@ async function main() {
       recursive: true,
       filter: (src) => !isMartyrology(src, code),
     });
+    await writeFile(join(pkg, "assets", "mass-propers", DATA_VERSION_FILE), `${dataVersion}\n`, "utf-8");
     await report(code, target);
 
     // The Martyrology is not a Mass proper, and is filed under its own name.

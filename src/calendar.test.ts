@@ -1,44 +1,26 @@
 /**
  * The calendar as generated, read against the rubrics.
  *
- * The assets are bundled into the build, and the generator reads them from a
- * global the bundler defines. Here that global is filled from the YAML files
- * themselves, so the calendar can be generated from the source data.
+ * The build bundles the assets and hands them to the generator. Here the
+ * generator is handed the YAML files themselves, read as the build reads them,
+ * so the calendar is generated from the source data.
  */
-import { readFileSync, readdirSync } from "fs";
 import { join } from "path";
-import { parse } from "yaml";
 import { beforeAll, describe, expect, it } from "vitest";
-import generateCalendar, { type Language } from "./index";
+import { calendarOf } from "./generate";
+import type { Language } from "./language";
 import type { Calendar } from "./types";
 import { colors, seasons } from "./constants";
+import { calendarAssets, languageAssets } from "../scripts/assets.mjs";
 
-const ASSETS = "assets";
+// The calendar and the local propers; the days of the propers are not needed.
+const generateCalendar = calendarOf(calendarAssets("assets", { days: false }));
 
 /** A language package as built from `languages/<code>`, translations only. */
 function language(code: string): Language {
-  const dir = join("languages", code, "assets", "translations", code);
-  const translations: Record<string, Record<string, string>> = {};
-  for (const file of readdirSync(dir)) {
-    translations[file.replace(/\.ya?ml$/, "")] = parse(
-      readFileSync(join(dir, file), "utf-8")
-    );
-  }
+  const { translations } = languageAssets(join("languages", code, "assets"), code);
   return { code, assets: { translations } };
 }
-
-beforeAll(() => {
-  const bundled: Record<string, unknown> = {
-    "calendar1962.yml": parse(readFileSync(join(ASSETS, "calendar1962.yml"), "utf-8")),
-  };
-  for (const file of (readdirSync(join(ASSETS, "propers"), { recursive: true }) as string[]).map((f) => f.replace(/\\/g, "/"))) {
-    if (!file.endsWith(".yml")) continue;
-    bundled[`propers/${file}`] = parse(
-      readFileSync(join(ASSETS, "propers", file), "utf-8")
-    );
-  }
-  (globalThis as Record<string, unknown>).bundledAssets = bundled;
-});
 
 // 2026: Easter is the 5th of April, Advent begins the 29th of November.
 let calendar: Calendar;

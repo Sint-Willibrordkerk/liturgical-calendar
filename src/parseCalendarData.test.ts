@@ -1,32 +1,22 @@
-import { readFileSync, readdirSync } from "fs";
-import { join } from "path";
-import { parse } from "yaml";
 import { beforeAll, describe, expect, it } from "vitest";
 import { parseCalendarData } from "./parseCalendarData";
 import { loadPropers } from "./loadAssets";
+import type { Assets } from "./assets";
 import type { Calendar, LiturgicalDay } from "./types";
+import { calendarAssets } from "../scripts/assets.mjs";
 
 /**
  * The days of the year as the calendar and the local propers place them, the
  * same in every language: which is kept and which commemorated, its color and
  * season, and where its Mass is filed. Read from the shipped calendar.
  */
-beforeAll(() => {
-  const bundled: Record<string, unknown> = {
-    "calendar1962.yml": parse(readFileSync(join("assets", "calendar1962.yml"), "utf-8")),
-  };
-  for (const file of (readdirSync(join("assets", "propers"), { recursive: true }) as string[]).map((f) => f.replace(/\\/g, "/"))) {
-    if (!file.endsWith(".yml")) continue;
-    bundled[`propers/${file}`] = parse(readFileSync(join("assets", "propers", file), "utf-8"));
-  }
-  (globalThis as Record<string, unknown>).bundledAssets = bundled;
-});
+const assets: Assets = calendarAssets("assets", { days: false });
 
 let general: Calendar;
 let utrecht: Calendar;
 beforeAll(() => {
-  general = parseCalendarData(2026, []);
-  utrecht = parseCalendarData(2026, ["neerlandia/ultrajectum"]);
+  general = parseCalendarData(assets, 2026, []);
+  utrecht = parseCalendarData(assets, 2026, ["neerlandia/ultrajectum"]);
 });
 
 const day = (calendar: Calendar, month: number, date: number) => calendar[month]![date]!;
@@ -164,24 +154,24 @@ describe("parseCalendarData", () => {
   describe("its arguments and its data", () => {
     it("leaves the list of propers it was handed as it was", () => {
       const propers = ["fsspx", "neerlandia/ultrajectum"];
-      parseCalendarData(2026, propers);
+      parseCalendarData(assets, 2026, propers);
       expect(propers).toEqual(["fsspx", "neerlandia/ultrajectum"]);
     });
 
     it("loads a proper whatever it says, and checks it once merged", () => {
-      const bundled = (globalThis as unknown as { bundledAssets: Record<string, unknown> }).bundledAssets;
-      bundled["propers/nemo.yml"] = { "dioecesis-3": { "02-01": { id: "nemini", color: "gold" } } };
-      try {
-        expect(() => loadPropers("nemo")).not.toThrow();
-        expect(() => parseCalendarData(2026, ["nemo"])).toThrow('nemini: invalid color "gold"');
-      } finally {
-        delete bundled["propers/nemo.yml"];
-      }
+      const withNemo: Assets = {
+        files: {
+          ...assets.files,
+          "propers/nemo.yml": { "dioecesis-3": { "02-01": { id: "nemini", color: "gold" } } },
+        },
+      };
+      expect(() => loadPropers(withNemo, "nemo")).not.toThrow();
+      expect(() => parseCalendarData(withNemo, 2026, ["nemo"])).toThrow('nemini: invalid color "gold"');
     });
 
     it("gives the same days each time it is asked", () => {
-      expect(parseCalendarData(2026, [])).toEqual(general);
-      expect(parseCalendarData(2026, ["neerlandia/ultrajectum"])).toEqual(utrecht);
+      expect(parseCalendarData(assets, 2026, [])).toEqual(general);
+      expect(parseCalendarData(assets, 2026, ["neerlandia/ultrajectum"])).toEqual(utrecht);
     });
   });
 });

@@ -1,5 +1,6 @@
-import { beforeAll, describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { applyPropers } from "./propers";
+import type { Assets } from "./assets";
 import type { Language } from "./language";
 import type { Calendar, LiturgicalDay } from "./types";
 
@@ -8,8 +9,8 @@ import type { Calendar, LiturgicalDay } from "./types";
  * in the languages asked for, once the days are settled.
  */
 describe("applyPropers", () => {
-  beforeAll(() => {
-    (globalThis as Record<string, unknown>).bundledAssets = {
+  const assets: Assets = {
+    files: {
       "mass-propers/Sancti/adriani-martyris.yml": {
         title: "S. Adriani, Martyris",
         oratio: "praesta-1",
@@ -20,8 +21,8 @@ describe("applyPropers", () => {
         title: "S. Pauli Primi Eremitæ",
         oratio: "deus-qui-1",
       },
-    };
-  });
+    },
+  };
 
   const latin: Language = {
     code: "la",
@@ -50,13 +51,13 @@ describe("applyPropers", () => {
 
   it("reads the day's Mass in the language", () => {
     const calendar = dayOf({ proper: adrian });
-    applyPropers(calendar, 2026, [dutch]);
+    applyPropers(assets, calendar, 2026, [dutch]);
     expect(calendar[3]![4]!.mass).toMatchObject({ oratio: { text: "Geef" } });
   });
 
   it("says in the fallback what the language lacks", () => {
     const calendar = dayOf({ proper: paul });
-    applyPropers(calendar, 2026, [dutch, latin]);
+    applyPropers(assets, calendar, 2026, [dutch, latin]);
     expect(calendar[3]![4]!.mass).toMatchObject({
       oratio: { text: "Deus, qui" },
       fallback: { oratio: "la" },
@@ -68,7 +69,7 @@ describe("applyPropers", () => {
       proper: adrian,
       commemorations: [{ liturgicalClass: 3, proper: paul }],
     });
-    applyPropers(calendar, 2026, [latin], { officium: true });
+    applyPropers(assets, calendar, 2026, [latin], { officium: true });
     const day = calendar[3]![4]!;
     expect(day.commemorations[0]!.mass).toMatchObject({ oratio: { text: "Deus, qui" } });
     expect(day.officium).toBeDefined();
@@ -77,13 +78,13 @@ describe("applyPropers", () => {
 
   it("reads no Office unless asked for", () => {
     const calendar = dayOf({ proper: adrian });
-    applyPropers(calendar, 2026, [latin]);
+    applyPropers(assets, calendar, 2026, [latin]);
     expect(calendar[3]![4]!.officium).toBeUndefined();
   });
 
   it("reads no Office of a borrowed Mass", () => {
     const calendar = dayOf({ proper: { ...adrian, borrowed: true } });
-    applyPropers(calendar, 2026, [latin], { officium: true });
+    applyPropers(assets, calendar, 2026, [latin], { officium: true });
     expect(calendar[3]![4]!.mass).toBeDefined();
     expect(calendar[3]![4]!.officium).toBeUndefined();
   });
@@ -92,22 +93,22 @@ describe("applyPropers", () => {
     const calendar = dayOf({
       proper: { ...adrian, prefatio: { name: "trinitate", always: false } },
     });
-    applyPropers(calendar, 2026, [latin]);
+    applyPropers(assets, calendar, 2026, [latin]);
     expect(calendar[3]![4]!.mass).toMatchObject({ prefatio: "trinitate" });
   });
 
   it("adds none where the Mass names none, unless always", () => {
     const sometimes = dayOf({ proper: { ...paul, prefatio: { name: "communis", always: false } } });
     const always = dayOf({ proper: { ...paul, prefatio: { name: "epi", always: true } } });
-    applyPropers(sometimes, 2026, [latin]);
-    applyPropers(always, 2026, [latin]);
+    applyPropers(assets, sometimes, 2026, [latin]);
+    applyPropers(assets, always, 2026, [latin]);
     expect(sometimes[3]![4]!.mass).not.toHaveProperty("prefatio");
     expect(always[3]![4]!.mass).toMatchObject({ prefatio: "epi" });
   });
 
   it("leaves a day with nowhere to read from without a Mass", () => {
     const calendar = dayOf({});
-    applyPropers(calendar, 2026, [latin]);
+    applyPropers(assets, calendar, 2026, [latin]);
     expect(calendar[3]![4]!.mass).toBeUndefined();
   });
 });
