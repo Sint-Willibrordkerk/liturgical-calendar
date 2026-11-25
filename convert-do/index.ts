@@ -12,6 +12,7 @@ function parseCliArgs() {
       to: { type: "string", default: String(LAST_STEP) },
       step: { type: "string" },
       force: { type: "boolean", short: "f", default: false },
+      unpinned: { type: "boolean", default: false },
       help: { type: "boolean", short: "h", default: false },
     },
     allowPositionals: false,
@@ -31,6 +32,9 @@ Options:
   --to <step>       Process up to step N (0-12, default: 12)
   --step <step>     Process only step N (shorthand for --from N --to N)
   -f, --force       Clean output folder and process all files (default: only process missing outputs)
+  --unpinned        Read the checkout as it stands, not at the commit pinned in
+                    convert-do/source.json. For trying a newer commit; what it
+                    generates is not what is published.
   -h, --help        Show this help
 
 Examples:
@@ -76,12 +80,15 @@ Examples:
     fromStep,
     toStep,
     force: !!values.force,
+    unpinned: !!values.unpinned,
   };
 }
 
 async function main() {
   const args = parseCliArgs();
-  await runPipeline(args.fromStep, args.toStep, args.force).catch((err) => {
+  await runPipeline(args.fromStep, args.toStep, args.force, {
+    unpinned: args.unpinned,
+  }).catch((err) => {
     consola.error("Pipeline error:", err);
     process.exit(1);
   });

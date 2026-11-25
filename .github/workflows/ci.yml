@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: The packages are at one version
+        run: node scripts/package-versions.mjs
+
+      - uses: ./.github/actions/build
+
+      - run: pnpm typecheck
+
+      - run: pnpm knip
+
+      # With the propers generated, so the tests that read them run here; they
+      # fail rather than skip where the propers are missing.
+      - run: pnpm exec vitest run
+
+      - name: The built packages generate a calendar
+        run: node scripts/smoke.mjs

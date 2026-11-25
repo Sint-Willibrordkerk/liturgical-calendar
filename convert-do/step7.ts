@@ -17,7 +17,7 @@ import { documentsOf, languageResolver, readTree, transform } from "./step4.js";
  * Runs before the fold (step 8), so a reference to a variant file such as
  * `@SanctiM/11-14M` finds a file of its own.
  */
-export type Step7Output = Doc;
+type Step7Output = Doc;
 
 /** Batch runner: resolves every document's broad references, one language at a time. */
 export async function run(

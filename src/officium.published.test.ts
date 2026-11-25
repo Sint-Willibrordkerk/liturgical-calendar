@@ -21,6 +21,11 @@ const GENERATED = [
   "languages/en/assets/mass-propers/en",
 ];
 const generated = GENERATED.every((path) => existsSync(path));
+// In CI the propers are generated before the tests run, so there a missing one
+// is a failure: these tests never pass by being skipped.
+if (!generated && process.env.CI) {
+  throw new Error(`The propers are not generated: ${GENERATED.filter((path) => !existsSync(path)).join(", ")}`);
+}
 
 /** Every YAML under `dir`, by the path below it. */
 function readAssets(dir: string, base = ""): Record<string, unknown> {

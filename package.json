@@ -17,6 +17,7 @@
     "build": "tsup",
     "start": "pnpm build && pnpm build:languages && node scripts/main.js",
     "test": "vitest",
+    "typecheck": "tsc --noEmit",
     "knip": "knip",
     "pipeline": "tsx convert-do/index.ts",
     "copy-mass-propers": "node scripts/copy-mass-propers.mjs",
@@ -26,12 +27,11 @@
     "dist"
   ],
   "dependencies": {
-    "consola": "^3.4.2",
-    "oxfmt": "^0.74.0",
     "zod": "^4.1.13"
   },
   "devDependencies": {
     "@types/node": "^22.9.4",
+    "consola": "^3.4.2",
     "dotenv": "^17.2.3",
     "knip": "^6.42.1",
     "tsup": "^8.5.0",

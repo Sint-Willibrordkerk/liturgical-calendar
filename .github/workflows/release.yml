@@ -1,0 +1,54 @@
+name: Release
+
+# Pushing the tag `v<version>` publishes the calendar and every language
+# package at that version, generated from the pinned sources and tested first.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+  # For the provenance npm records with each package.
+  id-token: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: The packages are at the version of the tag
+        run: node scripts/package-versions.mjs "$GITHUB_REF_NAME"
+
+      - uses: ./.github/actions/build
+
+      - run: pnpm typecheck
+
+      - run: pnpm exec vitest run
+
+      - name: The built packages generate a calendar
+        run: node scripts/smoke.mjs
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+
+      - name: Publish the calendar
+        run: pnpm publish --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: "true"
+
+      - name: Publish the languages
+        run: pnpm --filter "./languages/*" publish --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: "true"
