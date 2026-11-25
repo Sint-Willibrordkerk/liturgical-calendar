@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { idOf, nameDay, nameDays } from "./naming";
-import type { Calendar, LiturgicalDay } from "./types";
+import type { WorkingCalendar, WorkingDay } from "./types";
 
 // 29 November 2026 is a Sunday; 19 February a Thursday; 30 March a Monday.
 const sunday = new Date(2026, 10, 29);
@@ -50,7 +50,7 @@ describe("nameDay", () => {
 });
 
 describe("nameDays", () => {
-  const dayOf = (day: Partial<LiturgicalDay>): Calendar =>
+  const dayOf = (day: Partial<WorkingDay>): WorkingCalendar =>
     ({ 11: { 29: { commemorations: [], ...day } } }) as never;
 
   it("names a day in the language", () => {

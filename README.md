@@ -153,22 +153,29 @@ type Calendar = Record<
   >
 >;
 
-type LiturgicalDay = {
+type Commemoration = {
   id?: string; // what the day is: a slug, the same in every language
   title?: string; // what the language calls it, where anything names it
-  type?: string;
-  liturgicalClass: number;
+  type: "dominica" | "feria" | "vigilia" | "festum" | "octava";
+  liturgicalClass: 1 | 2 | 3 | 4;
+  mass?: RawMassProper; // where the language says something of it
+};
+
+type LiturgicalDay = Commemoration & {
   season: Season;
   color: Color;
   alternativeColor?: Color;
   seasonName?: string;
   colorName?: string;
   alternativeColorName?: string;
-  commemorations: Commemoration[];
+  commemorations?: Commemoration[]; // absent where there are none
   martyrologium?: Martyrologium;
   officium?: Officium;
 };
 ```
+
+A day has a key only for what it has: one without a Mass in the language has no
+`mass`, and one that commemorates nothing has no `commemorations`.
 
 ### Seasons and Colors
 

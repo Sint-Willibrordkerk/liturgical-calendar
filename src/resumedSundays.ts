@@ -8,7 +8,7 @@
  * resumed here, in their own order, and the earliest of them are the ones left
  * out when there is not room for all.
  */
-import type { Calendar, LiturgicalDay } from "./types";
+import type { WorkingCalendar, WorkingDay } from "./types";
 import { SEPTUAGESIMA } from "./seasons";
 import { calculateAdvent, calculateEaster, daysBetween, eachDay } from "./utils";
 
@@ -73,7 +73,7 @@ export function sundayMasses(
  * Only the Mass changes: the Sunday is still the twenty-fifth after Pentecost,
  * say, and keeps that name.
  */
-export function applyResumedSundays(calendar: Calendar, year: number): void {
+export function applyResumedSundays(calendar: WorkingCalendar, year: number): void {
   const easter = calculateEaster(year);
   const septuagesima = new Date(easter);
   septuagesima.setDate(septuagesima.getDate() + SEPTUAGESIMA);
@@ -83,7 +83,7 @@ export function applyResumedSundays(calendar: Calendar, year: number): void {
   firstSunday.setDate(firstSunday.getDate() + 56);
   const advent = calculateAdvent(year);
 
-  const sundays: LiturgicalDay[] = [];
+  const sundays: WorkingDay[] = [];
   eachDay(year, ({ date, month, day }) => {
     if (date.getDay() !== SUNDAY) return;
     if (daysBetween(firstSunday, date) < 0 || daysBetween(date, advent) <= 0) return;

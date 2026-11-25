@@ -7,7 +7,7 @@ import { calendarAssets } from "../scripts/assets.mjs";
 // The calendar and the local propers, as the build reads them.
 const assets = calendarAssets("assets", { days: false });
 const generateCalendar = calendarOf(assets);
-import type { Calendar, Commemoration, LiturgicalDay } from "./types";
+import type { LiturgicalDay, WorkingCalendar, WorkingCommemoration, WorkingDay } from "./types";
 
 /**
  * Which of the days falling on a date are commemorated with the day kept
@@ -24,18 +24,18 @@ const RULES: CommemorationRules = {
   order: [{ "of-the-season": true }, "precedence"],
 };
 
-const day = (fields: Partial<Commemoration>): Commemoration =>
-  ({ type: "festum", liturgicalClass: 3, commemorated: "ordinary", honours: [], ...fields }) as Commemoration;
+const day = (fields: Partial<WorkingCommemoration>): WorkingCommemoration =>
+  ({ type: "festum", liturgicalClass: 3, commemorated: "ordinary", honours: [], ...fields }) as WorkingCommemoration;
 
 /** The day kept, with the others on its date in the order of precedence. */
-function kept(fields: Partial<LiturgicalDay>, others: Commemoration[]): Calendar {
+function kept(fields: Partial<WorkingDay>, others: WorkingCommemoration[]): WorkingCalendar {
   return {
-    3: { 4: { ...day({ admits: { count: 2 } }), ...fields, commemorations: others } as LiturgicalDay },
-  } as Calendar;
+    3: { 4: { ...day({ admits: { count: 2 } }), ...fields, commemorations: others } as WorkingDay },
+  } as WorkingCalendar;
 }
 
 /** The ids commemorated on the one day, after the rules. */
-function commemorated(calendar: Calendar, rules = RULES): (string | undefined)[] {
+function commemorated(calendar: WorkingCalendar, rules = RULES): (string | undefined)[] {
   applyCommemorations(calendar, 2026, rules);
   return calendar[3]![4]!.commemorations.map((c) => c.id);
 }
@@ -84,12 +84,12 @@ describe("applyCommemorations", () => {
   });
 
   it("on a Sunday admits a feast of the second class, but a privileged one first (n. 111b)", () => {
-    const sunday = {
+    const sunday: Partial<WorkingDay> = {
       type: "dominica",
       liturgicalClass: 2,
       admits: {
         count: 1,
-        of: [{ commemorated: "privileged" as const }, { class: 2, type: "festum" }],
+        of: [{ commemorated: "privileged" }, { class: 2, type: "festum" }],
         "privileged-first": true,
       },
     };
@@ -139,7 +139,7 @@ describe("applyCommemorations", () => {
 
 describe("honoursOf", () => {
 
-  const feast = (id: string) => ({ id, type: "festum" });
+  const feast = (id: string) => ({ id, type: "festum" as const });
 
   it("is whom the day says it honours", () => {
     expect(honoursOf({ ...feast("joseph-opificis"), honours: ["joseph"] })).toEqual(["joseph"]);
@@ -178,7 +178,7 @@ describe("the commemorations of the calendar", () => {
   it("commemorates one feria on a second-class feast of Advent (n. 111c)", () => {
     // St Thomas, 21 December 2026.
     expect(ids(on(2026, 12, 21))).toEqual(["(feria)"]);
-    expect(on(2026, 12, 21).commemorations[0]!.liturgicalClass).toBe(2);
+    expect(on(2026, 12, 21).commemorations![0]!.liturgicalClass).toBe(2);
   });
 
   it("commemorates its feria once on St Joseph in Lent (n. 111a)", () => {

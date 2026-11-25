@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { applyPropers } from "./propers";
 import type { Assets } from "./assets";
 import type { Language } from "./language";
-import type { Calendar, LiturgicalDay } from "./types";
+import type { WorkingCalendar, WorkingDay } from "./types";
 
 /**
  * The days hold where their Masses are filed; the propers are read from there,
@@ -46,7 +46,7 @@ describe("applyPropers", () => {
   const adrian = { id: "adriani-martyris" };
   const paul = { id: "pauli-primi-eremitae" };
 
-  const dayOf = (day: Partial<LiturgicalDay>): Calendar =>
+  const dayOf = (day: Partial<WorkingDay>): WorkingCalendar =>
     ({ 3: { 4: { commemorations: [], ...day } } }) as never;
 
   it("reads the day's Mass in the language", () => {

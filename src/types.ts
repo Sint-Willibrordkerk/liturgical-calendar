@@ -1,7 +1,10 @@
-import { weekdays, namedDates, colors, seasons } from "./constants";
+import { weekdays, namedDates, colors, seasons, dayTypes, liturgicalClasses } from "./constants";
 
 export type Digit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
-export type LiturgicalClass = 1 | 2 | 3 | 4;
+/** A type of day (n. 6): `dominica`, `feria`, `vigilia`, `festum` or `octava`. */
+export type DayType = (typeof dayTypes)[number];
+/** A class of day (n. 8), the first to the fourth. */
+export type LiturgicalClass = (typeof liturgicalClasses)[number];
 
 export type DateString = `${0 | 1 | 2 | 3}${Digit}-${0 | 1}${Digit}`;
 export type NamedDate = (typeof namedDates)[number];
@@ -105,6 +108,10 @@ export type ProperReference = {
   borrowed?: true;
 };
 
+/**
+ * A celebration as it is published: what it is, what it is called, and its
+ * Mass. A day kept is one, and so is each day commemorated with it.
+ */
 export type Commemoration = {
   /**
    * What the day is, the same in every language: a slug such as
@@ -118,37 +125,22 @@ export type Commemoration = {
    * names it; the id still says which day it is.
    */
   title?: string;
-  type?: string;
-  liturgicalClass: number;
-  /** How the day is commemorated when it gives way (nn. 107-108). Gone once applied. */
-  commemorated?: Commemorated;
-  /** What the day admits when it is kept (n. 111). Gone once applied. */
-  admits?: Admits;
-  /** The days it is left out on, not commemorated (n. 33). Gone once applied. */
-  omittedOn?: Matcher[];
-  /** Whom it honours, where it says so (n. 112). Gone once applied. */
-  honours?: string[];
-  /** Whether it is of the season (nn. 112c, 113). Gone once applied. */
-  ofTheSeason?: boolean;
-  /** Where the Mass is read from. Gone once it is read. */
-  proper?: ProperReference;
-  /**
-   * The id as the calendar writes it, `$count` and `$day` still to fill, and
-   * the count to fill them with: named in the language once the Mass is read.
-   * Gone once it is named.
-   */
-  naming?: { template: string; count: number };
+  type: DayType;
+  liturgicalClass: LiturgicalClass;
+  /** The Mass, in the language. Absent where the language says nothing of it. */
   mass?: RawMassProper;
-  /**
-   * The propers of the Office, Hour by Hour. Present only when asked for, and
-   * only on the celebration kept, where the language says something of its
-   * Office: a commemoration carries none.
-   */
-  officium?: Officium;
 };
 
+/** A day of the calendar as it is published. */
 export type LiturgicalDay = Commemoration & {
-  commemorations: Commemoration[];
+  /**
+   * The propers of the Office, Hour by Hour. Present only when asked for, and
+   * only where the language says something of the day's Office. A
+   * commemoration carries none.
+   */
+  officium?: Officium;
+  /** The days commemorated with the day kept. Absent where there are none. */
+  commemorations?: Commemoration[];
   /** The season the day falls in. */
   season: Season;
   /**
@@ -309,11 +301,54 @@ export type Martyrologium = {
   fallback?: Fallback;
 };
 
-// Mass Proper Types
-
+/** The calendar of a year as it is published: its days by month and day. */
 export type Calendar = Record<
   number,
   Record<number, LiturgicalDay | undefined> | undefined
+>;
+
+/**
+ * A celebration while the days are being settled: what is published of it,
+ * and what settles it — how it is commemorated, what it admits, where its Mass
+ * is filed. None of the latter is published: `publish` builds the published
+ * day from this one, field by field.
+ */
+export type WorkingCommemoration = Omit<Commemoration, "type" | "liturgicalClass"> & {
+  // The calendar's own days all have one, checked as it loads; the stages
+  // ask for no more than they read.
+  type?: DayType;
+  liturgicalClass: LiturgicalClass;
+  /** How the day is commemorated when it gives way (nn. 107-108). */
+  commemorated?: Commemorated;
+  /** What the day admits when it is kept (n. 111). */
+  admits?: Admits;
+  /** The days it is left out on, not commemorated (n. 33). */
+  omittedOn?: Matcher[];
+  /** Whom it honours, where it says so (n. 112). */
+  honours?: string[];
+  /** Whether it is of the season (nn. 112c, 113). */
+  ofTheSeason?: boolean;
+  /** Where the Mass is read from. */
+  proper?: ProperReference;
+  /**
+   * The id as the calendar writes it, `$count` and `$day` still to fill, and
+   * the count to fill them with: named in the language once the Mass is read.
+   */
+  naming?: { template: string; count: number };
+  /** Set on the day kept alone, where its Office is asked for. */
+  officium?: Officium;
+};
+
+/** A day of the calendar while it is being settled. */
+export type WorkingDay = WorkingCommemoration &
+  Omit<LiturgicalDay, keyof Commemoration | "commemorations"> & {
+    commemorations: WorkingCommemoration[];
+  };
+
+/** The calendar of a year while its days are being settled. */
+export type WorkingCalendar = Record<
+  number,
+  Record<number, WorkingDay | undefined> | undefined
 >;
 
 /**

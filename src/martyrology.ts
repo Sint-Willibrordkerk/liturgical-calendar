@@ -12,7 +12,7 @@
  * tables; which movable day is announced, from the date of Easter and Advent;
  * and which date's text is read at all in a leap year.
  */
-import type { Calendar, Fallback, Martyrologium } from "./types";
+import type { WorkingCalendar, Fallback, Martyrologium } from "./types";
 import { calculateAdvent, calculateEaster, dayCount, eachDay } from "./utils";
 
 /** A date of the Martyrology as published: its date line and its entries. */
@@ -181,7 +181,7 @@ export type MartyrologySource = {
  * said in a language other than `asked` is named in the reading's `fallback`.
  */
 export function applyMartyrology(
-  calendar: Calendar,
+  calendar: WorkingCalendar,
   year: number,
   sources: readonly MartyrologySource[],
   asked: string

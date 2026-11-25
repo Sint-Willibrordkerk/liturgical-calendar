@@ -149,7 +149,7 @@ describe.skipIf(!generated)("the Office as published", () => {
         Object.values(days ?? {}).flatMap((entry) => entry?.commemorations ?? [])
       );
       expect(commemorations.length).toBeGreaterThan(100);
-      expect(commemorations.filter((entry) => entry.officium !== undefined)).toEqual([]);
+      expect(commemorations.filter((entry) => "officium" in entry)).toEqual([]);
     }
   });
 

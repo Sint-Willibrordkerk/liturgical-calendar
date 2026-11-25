@@ -7,7 +7,7 @@
  * the Mass of each day and of each of its commemorations, and the Office of
  * the celebration kept.
  */
-import type { Calendar, ProperReference, RawMassProper } from "./types";
+import type { WorkingCalendar, ProperReference, RawMassProper } from "./types";
 import type { Assets } from "./assets";
 import { NO_LANGUAGE, type Language } from "./language";
 import { DEFAULT_RUBRICS, loadMassPropersById, loadOfficiumById } from "./loadAssets";
@@ -21,7 +21,7 @@ import { calculateEaster, eachDay } from "./utils";
  */
 export function applyPropers(
   assets: Assets,
-  calendar: Calendar,
+  calendar: WorkingCalendar,
   year: number,
   languages: Language[],
   { officium = false }: { officium?: boolean } = {}

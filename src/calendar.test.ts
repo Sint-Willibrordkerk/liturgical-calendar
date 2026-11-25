@@ -210,7 +210,7 @@ describe("the saints", () => {
     expect(hilary.commemorations).toContainEqual(
       expect.objectContaining({ id: "felicis-presbyteri-et-martyris" })
     );
-    expect(hilary.commemorations[0]).not.toHaveProperty("color");
+    expect(hilary.commemorations![0]).not.toHaveProperty("color");
   });
 
   it("take their color from a local proper as from the calendar", () => {
