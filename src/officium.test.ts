@@ -1,8 +1,10 @@
-import { beforeAll, describe, expect, it } from "vitest";
-import { readFileSync } from "fs";
-import { join } from "path";
-import { parse } from "yaml";
-import generateCalendar, { type Language } from "./index";
+import { describe, expect, it } from "vitest";
+import { calendarOf } from "./generate";
+import type { Language } from "./language";
+import { calendarAssets } from "../scripts/assets.mjs";
+
+// The calendar as the build reads it; each test adds the few days it reads.
+const source = calendarAssets("assets", { days: false });
 import { buildOfficium } from "./officium";
 
 describe("the Office in the calendar", () => {
@@ -20,15 +22,15 @@ describe("the Office in the calendar", () => {
     },
   };
 
-  beforeAll(() => {
-    (globalThis as Record<string, unknown>).bundledAssets = {
-      "calendar1962.yml": parse(readFileSync(join("assets", "calendar1962.yml"), "utf-8")),
+  const generateCalendar = calendarOf({
+    files: {
+      ...source.files,
       "mass-propers/Sancti/agnetis-virginis-et-martyris.yml": {
         title: "S. Agnetis Virginis et Martyris",
         oratio: "omnipotens-1",
         "ant-2": "ecce-quod-1",
       },
-    };
+    },
   });
 
   it("is read only when asked for", () => {
@@ -158,15 +160,15 @@ describe("the Office of a commemoration", () => {
     },
   };
 
-  beforeAll(() => {
-    (globalThis as Record<string, unknown>).bundledAssets = {
-      "calendar1962.yml": parse(readFileSync(join("assets", "calendar1962.yml"), "utf-8")),
+  const generateCalendar = calendarOf({
+    files: {
+      ...source.files,
       "mass-propers/Sancti/telesphori-papae-et-martyris.yml": {
         title: "S. Telesphori Papæ et Martyris",
         oratio: "omnipotens-1",
         "ant-2": "ecce-quod-1",
       },
-    };
+    },
   });
 
   it("is none: the day keeps the Office of the celebration, and the commemoration is a collect", () => {

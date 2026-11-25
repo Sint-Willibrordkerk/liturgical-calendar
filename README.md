@@ -35,6 +35,13 @@ pnpm add @sint-willibrordkerk/liturgical-calendar @sint-willibrordkerk/liturgica
 A language runs to a few megabytes, so a caller carries only the languages they
 ask for.
 
+Keep the calendar and its languages at the same version. The days hold keys and
+a language says what the keys mean, so the two are right for each other only
+when they were generated together; each carries the version of the days it was
+generated with (`dataVersion`), and the calendar throws when it is handed a
+language whose texts are keyed to other days, rather than leaving texts out or
+saying another day's.
+
 ## Usage
 
 ### Basic Example

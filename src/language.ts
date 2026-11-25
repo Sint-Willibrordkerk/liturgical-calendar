@@ -13,9 +13,15 @@
  * translations filed as `translations/nl/sanctorum.yml` are
  * `assets.translations.sanctorum`, and the Martyrology's dates are
  * `assets.martyrologium["01-21"]`. `code` is the language they are in.
+ *
+ * `dataVersion` names the days the stores are keyed to. The days hold keys and
+ * the stores say what the keys mean, so a language is right for the days it was
+ * generated with and for no others: the calendar refuses stores keyed to other
+ * days than its own. A language without stores needs none.
  */
 export type Language = {
   code: string;
+  dataVersion?: string;
   assets: {
     masspropers?: Record<string, unknown>;
     translations?: Record<string, Record<string, string>>;
@@ -30,3 +36,32 @@ export type Language = {
  * only what a language would supply is absent.
  */
 export const NO_LANGUAGE: Language = { code: "la", assets: {} };
+
+/**
+ * Why `languages` cannot be read against the days of version `dataVersion`,
+ * each reason a line; nothing where they can.
+ *
+ * Only stores are keyed to the days, so a language without them is taken
+ * whatever the days. Days that carry no version — a test's own — are read with
+ * whatever stores they are given.
+ */
+export function languageProblems(
+  languages: readonly Language[],
+  dataVersion: string | undefined
+): string[] {
+  if (dataVersion === undefined) return [];
+  return languages
+    .filter(({ assets, dataVersion: theirs }) => assets?.masspropers !== undefined && theirs !== dataVersion)
+    .map(({ code, dataVersion: theirs }) => {
+      const keyedTo =
+        theirs === undefined
+          ? "say nothing of the days they are keyed to"
+          : `are keyed to the days of version ${theirs}`;
+      return (
+        `The stores of the language "${code}" ${keyedTo}, and this calendar's days are of ` +
+        `version ${dataVersion}: its texts would be missing or wrong. Install ` +
+        `@sint-willibrordkerk/liturgical-calendar and ` +
+        `@sint-willibrordkerk/liturgical-calendar-${code} at the same version.`
+      );
+    });
+}

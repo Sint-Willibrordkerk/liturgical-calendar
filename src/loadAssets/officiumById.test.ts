@@ -1,5 +1,6 @@
-import { beforeAll, describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { loadMassPropersById, loadOfficiumById } from "./index";
+import type { Assets } from "../assets";
 import { NO_LANGUAGE, type Language } from "../language";
 
 /**
@@ -7,8 +8,8 @@ import { NO_LANGUAGE, type Language } from "../language";
  * holding keys alike; the calendar reads it Hour by Hour.
  */
 describe("the Office of a day, in a language", () => {
-  beforeAll(() => {
-    (globalThis as Record<string, unknown>).bundledAssets = {
+  const assets: Assets = {
+    files: {
       "mass-propers/Sancti/agnetis-virginis-et-martyris.yml": {
         title: "S. Agnetis Virginis et Martyris",
         name: "agnetis",
@@ -60,8 +61,8 @@ describe("the Office of a day, in a language", () => {
         title: "Feria IV Quattuor Temporum",
         "ant-2": [{ value: "ecce-quod-1" }, { value: "beata-agnes-1", condition: ["1570"] }],
       },
-    };
-  });
+    },
+  };
 
   const versicle = (versus: string) => ({ versus, responsum: "Inténde." });
   const latin: Language = {
@@ -108,7 +109,7 @@ describe("the Office of a day, in a language", () => {
   };
 
   it("reads the Office Hour by Hour", () => {
-    expect(loadOfficiumById("agnetis-virginis-et-martyris", latin)).toEqual({
+    expect(loadOfficiumById(assets, "agnetis-virginis-et-martyris", latin)).toEqual({
       primaeVesperae: {
         psalmodia: { antiphonae: [{ text: "Hæc est Virgo sápiens, * et una.", psalmus: "109" }] },
         hymnus: { strophae: [["Jesu, coróna Vírginum,"]] },
@@ -169,33 +170,33 @@ describe("the Office of a day, in a language", () => {
   });
 
   it("says at second Vespers what first Vespers says, where the day gives nothing else", () => {
-    const officium = loadOfficiumById("pauli-primi-eremitae", latin);
+    const officium = loadOfficiumById(assets, "pauli-primi-eremitae", latin);
     expect(officium!.primaeVesperae!.magnificat).toEqual({ text: "Beáta Agnes * in médio flammárum." });
     expect(officium!.vesperae!.magnificat).toEqual({ text: "Beáta Agnes * in médio flammárum." });
   });
 
   it("gives the saint's name where the common leaves it open", () => {
-    expect(loadOfficiumById("pauli-primi-eremitae", latin)!.oratio).toEqual({
+    expect(loadOfficiumById(assets, "pauli-primi-eremitae", latin)!.oratio).toEqual({
       text: "Deus, qui nos beáti Pauli",
       closure: "Per Dominum",
     });
   });
 
   it("reads Christmas's Office where the sources keep it, with the collect of the Mass of the day", () => {
-    expect(loadOfficiumById("in-die-nativitatis-domini", latin)).toEqual({
+    expect(loadOfficiumById(assets, "in-die-nativitatis-domini", latin)).toEqual({
       laudes: { benedictus: { text: "Ecce, quod concupívi, * jam vídeo." } },
       oratio: { text: "Omnípotens sempitérne Deus", closure: "Per Dominum" },
     });
   });
 
   it("takes the variant of the rubric in force", () => {
-    expect(loadOfficiumById("feria-iv-quattuor-temporum", latin)).toEqual({
+    expect(loadOfficiumById(assets, "feria-iv-quattuor-temporum", latin)).toEqual({
       laudes: { benedictus: { text: "Ecce, quod concupívi, * jam vídeo." } },
     });
   });
 
   it("leaves the Office out of the Mass", () => {
-    expect(Object.keys(loadMassPropersById("agnetis-virginis-et-martyris", latin)!)).toEqual([
+    expect(Object.keys(loadMassPropersById(assets, "agnetis-virginis-et-martyris", latin)!)).toEqual([
       "title",
       "name",
       "oratio",
@@ -204,8 +205,8 @@ describe("the Office of a day, in a language", () => {
   });
 
   it("has no Office without a language, or for a day with no Office", () => {
-    expect(loadOfficiumById("agnetis-virginis-et-martyris", NO_LANGUAGE)).toBeUndefined();
-    expect(loadOfficiumById("nemo", latin)).toBeUndefined();
+    expect(loadOfficiumById(assets, "agnetis-virginis-et-martyris", NO_LANGUAGE)).toBeUndefined();
+    expect(loadOfficiumById(assets, "nemo", latin)).toBeUndefined();
   });
 
   describe("with fallback languages", () => {
@@ -231,7 +232,7 @@ describe("the Office of a day, in a language", () => {
     const agnes = "agnetis-virginis-et-martyris";
 
     it("says what the language lacks in the fallback, and names it on the part that holds it", () => {
-      const officium = loadOfficiumById(agnes, dutch, undefined, undefined, [latin])!;
+      const officium = loadOfficiumById(assets, agnes, dutch, undefined, undefined, [latin])!;
       expect(officium.laudes).toEqual({
         psalmodia: { antiphonae: [{ text: "Dit is de wijze maagd, * en één.", psalmus: "109" }] },
         capitulum: { ref: "Sir 51:1-3", text: "Confitébor tibi, Dómine, Rex." },
@@ -253,13 +254,13 @@ describe("the Office of a day, in a language", () => {
     });
 
     it("carries no marker where the language says the whole Office itself", () => {
-      expect(JSON.stringify(loadOfficiumById(agnes, latin, undefined, undefined, [dutch]))).not.toContain(
+      expect(JSON.stringify(loadOfficiumById(assets, agnes, latin, undefined, undefined, [dutch]))).not.toContain(
         "fallback"
       );
     });
 
     it("leaves out what the language lacks when no fallback is given", () => {
-      const officium = loadOfficiumById(agnes, dutch)!;
+      const officium = loadOfficiumById(assets, agnes, dutch)!;
       expect(officium.laudes).toEqual({
         psalmodia: { antiphonae: [{ text: "Dit is de wijze maagd, * en één.", psalmus: "109" }] },
       });
@@ -267,7 +268,7 @@ describe("the Office of a day, in a language", () => {
     });
 
     it("says an Office the language has nothing of wholly in the fallback", () => {
-      const officium = loadOfficiumById(agnes, { code: "nl", assets: {} }, undefined, undefined, [latin])!;
+      const officium = loadOfficiumById(assets, agnes, { code: "nl", assets: {} }, undefined, undefined, [latin])!;
       expect(officium.oratio).toEqual({ text: "Omnípotens sempitérne Deus", closure: "Per Dominum" });
       expect(officium.fallback).toEqual({ oratio: "la" });
       expect(officium.laudes!.fallback).toEqual({

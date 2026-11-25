@@ -77,6 +77,14 @@ its days are read from — the Netherlands, the archdiocese of Utrecht — which
 searched before the general calendar's.
 _Avoid_: diocesan calendar, supplement
 
+**Data Version**:
+Which days of the propers a package was generated with: a digest of the days,
+which hold keys alone. A language's stores say what those keys mean, so they
+are right for the days they were generated with and for no others. The calendar
+and every language carry it, and the calendar reads no stores keyed to other
+days than its own.
+_Avoid_: schema version, format version (it names the days, not their shape)
+
 ## Relationships
 
 - Every **Liturgical Day** falls in exactly one **Season**; the season belongs to

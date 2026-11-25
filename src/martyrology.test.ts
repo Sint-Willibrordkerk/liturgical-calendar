@@ -1,8 +1,7 @@
-import { beforeAll, describe, expect, it } from "vitest";
-import { readFileSync, readdirSync } from "fs";
-import { join } from "path";
-import { parse } from "yaml";
-import generateCalendar, { type Language } from "./index";
+import { describe, expect, it } from "vitest";
+import { calendarOf } from "./generate";
+import type { Language } from "./language";
+import { calendarAssets } from "../scripts/assets.mjs";
 import { lunaOf, martyrologyDateOf, movableDayOf } from "./martyrology";
 
 describe("the age of the moon", () => {
@@ -136,17 +135,7 @@ describe("the Martyrology in the calendar", () => {
     },
   };
 
-  beforeAll(() => {
-    const bundled: Record<string, unknown> = {
-      "calendar1962.yml": parse(readFileSync(join("assets", "calendar1962.yml"), "utf-8")),
-    };
-    for (const file of (readdirSync(join("assets", "propers"), { recursive: true }) as string[]).map((f) => f.replace(/\\/g, "/"))) {
-      if (file.endsWith(".yml")) {
-        bundled[`propers/${file}`] = parse(readFileSync(join("assets", "propers", file), "utf-8"));
-      }
-    }
-    (globalThis as Record<string, unknown>).bundledAssets = bundled;
-  });
+  const generateCalendar = calendarOf(calendarAssets("assets", { days: false }));
 
   it("is read only when asked for", () => {
     const calendar = generateCalendar({ year: 2026, languages: [martyrology] });

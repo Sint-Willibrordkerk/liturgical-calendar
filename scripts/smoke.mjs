@@ -28,6 +28,18 @@ for (const code of codes) {
   } else {
     console.log(`${code}: ${easter.title} — ${easter.mass.oratio.text.slice(0, 60)}…`);
   }
+
+  // Built beside the calendar, the language is keyed to its days; said to be
+  // keyed to others, it is refused.
+  if (language.dataVersion === undefined) {
+    problems.push(`${code}: the package carries no version of the days its stores are keyed to`);
+  }
+  try {
+    generateCalendar({ year: YEAR, languages: [{ ...language, dataVersion: "other" }] });
+    problems.push(`${code}: a language keyed to other days was not refused`);
+  } catch {
+    // Refused, as it should be.
+  }
 }
 
 if (problems.length > 0) {

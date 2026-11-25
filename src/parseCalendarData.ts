@@ -1,6 +1,7 @@
 import type { Calendar, Color, Commemorated, LiturgicalDay, Occurence, RelativeDate, Weekday } from "./types";
 import { calculateAdvent, calculateEaster, daysBetween, getDate } from "./utils";
 import { weekdays } from "./constants";
+import type { Assets } from "./assets";
 import { loadCalendar, loadPropers } from "./loadAssets";
 import { idOf } from "./naming";
 import { defaultColor, mayWearRose, seasonOf } from "./seasons";
@@ -74,9 +75,16 @@ function getDates(occurence: Occurence, advent: Date, easter: Date, year: number
  * id the calendar gives it, and carries what a language needs to name it and
  * to read its propers after.
  */
-export function parseCalendarData(year: number, properNames: readonly string[]) {
+export function parseCalendarData(
+  assets: Assets,
+  year: number,
+  properNames: readonly string[]
+) {
   // The propers are put in their slots, and every day checked, as it loads.
-  const { days } = loadCalendar(properNames.map(loadPropers));
+  const { days } = loadCalendar(
+    assets,
+    properNames.map((name) => loadPropers(assets, name))
+  );
   const calendar: Calendar = {};
   const advent = calculateAdvent(year);
   const easter = calculateEaster(year);

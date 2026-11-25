@@ -1,4 +1,4 @@
-import { findAsset, loadAsset } from "./assert/utils";
+import { findAsset, loadAsset, type Assets } from "../assets";
 import type { Language } from "../language";
 import {
   resolveMassProper,
@@ -23,8 +23,11 @@ import type { LocalProper } from "./insertPropers";
  * checked against the lists the calendar declares. What is wrong is thrown, a
  * line for each thing.
  */
-export function loadCalendar(propers: readonly LocalProper[] = []): LoadedCalendar {
-  const result = calendarSchema(propers).safeParse(loadAsset("calendar1962.yml"));
+export function loadCalendar(
+  assets: Assets,
+  propers: readonly LocalProper[] = []
+): LoadedCalendar {
+  const result = calendarSchema(propers).safeParse(loadAsset(assets, "calendar1962.yml"));
   if (result.success) return result.data;
   throw new Error(
     result.error.issues
@@ -34,8 +37,8 @@ export function loadCalendar(propers: readonly LocalProper[] = []): LoadedCalend
 }
 
 /** The rules of the commemorations the calendar gives at its head (nn. 112-113). */
-export function loadCommemorationRules() {
-  const { commemorations } = loadCalendar();
+export function loadCommemorationRules(assets: Assets) {
+  const { commemorations } = loadCalendar(assets);
   if (commemorations === undefined) throw new Error("calendar1962.yml gives no rules of commemoration");
   return commemorations;
 }
@@ -44,8 +47,8 @@ export function loadCommemorationRules() {
  * A local proper's days, read for their shape alone. What they say is checked
  * once they are in the calendar, against the calendar's own lists.
  */
-export function loadPropers(name: string): LocalProper {
-  return { name, days: properSchema.parse(loadAsset(`propers/${name}.yml`)) };
+export function loadPropers(assets: Assets, name: string): LocalProper {
+  return { name, days: properSchema.parse(loadAsset(assets, `propers/${name}.yml`)) };
 }
 
 /** Every translation the language carries, read as one table. */
@@ -128,10 +131,14 @@ function loadStores(language: Language): Stores {
  * The local calendar named is searched first, and the general trees after it.
  * Only a local proper's own days name one, so a general day keeps its propers.
  */
-function dayById(id: string, local?: string): Record<string, unknown> | undefined {
+function dayById(
+  assets: Assets,
+  id: string,
+  local?: string
+): Record<string, unknown> | undefined {
   // An id is filed as itself; a title is folded to the file it names.
   const fileName = titleToFileName(id);
-  const at = (tree: string) => findAsset(`mass-propers/${tree}/${fileName}.yml`);
+  const at = (tree: string) => findAsset(assets, `mass-propers/${tree}/${fileName}.yml`);
   const data =
     (local === undefined ? undefined : at(`Sancti/${local}`)) ??
     at("Sancti") ??
@@ -172,8 +179,8 @@ function properOf(
  * The mass proper filed under an id, reduced to the rubric in force and with
  * its texts said in the language.
  *
- * The day is the same in every language and is bundled here, holding keys
- * alone; the language supplies what each key says. A day the language says
+ * The day is the same in every language and is among the `assets`, holding
+ * keys alone; the language supplies what each key says. A day the language says
  * nothing of has no Mass in it — nor has any day without a language.
  *
  * The `fallbacks` say the texts the language has none for, the first that has
@@ -181,6 +188,7 @@ function properOf(
  * codes — absent when the Mass is wholly the language's own.
  */
 export function loadMassPropersById(
+  assets: Assets,
   id: string,
   language: Language,
   rubrics: ReadonlySet<string> = DEFAULT_RUBRICS,
@@ -188,7 +196,7 @@ export function loadMassPropersById(
   local?: string,
   fallbacks: readonly Language[] = [],
 ): RawMassProper | undefined {
-  const document = dayById(id, local);
+  const document = dayById(assets, id, local);
   if (document === undefined) return undefined;
 
   const selected = properOf(document, language, rubrics, isMassSection, fallbacks);
@@ -213,15 +221,16 @@ export function loadMassPropersById(
  * nothing of the day's Office, and without a language.
  */
 export function loadOfficiumById(
+  assets: Assets,
   id: string,
   language: Language,
   rubrics: ReadonlySet<string> = DEFAULT_RUBRICS,
   local?: string,
   fallbacks: readonly Language[] = [],
 ): Officium | undefined {
-  const own = dayById(id, local);
+  const own = dayById(assets, id, local);
   const elsewhere = OFFICE_FILED_WITH[titleToFileName(id)];
-  const document = elsewhere === undefined ? own : dayById(elsewhere, local);
+  const document = elsewhere === undefined ? own : dayById(assets, elsewhere, local);
   if (document === undefined) return undefined;
 
   // The collect is the day's own, said at Mass and at the Hours alike.
