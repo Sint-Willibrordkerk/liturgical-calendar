@@ -72,6 +72,38 @@ describe("nameDays", () => {
     expect(calendar[11]![29]!.title).toBe("Dominica I Adventus");
   });
 
+  it("calls the Mass otherwise than the day where the language does", () => {
+    const calendar = dayOf({
+      id: "maria-in-sabbato-in-tempore-adventus",
+      naming: { template: "maria-in-sabbato-in-tempore-adventus", count: 1 },
+      proper: { id: "maria-in-sabbato-in-tempore-adventus" },
+      mass: { title: "Sanctæ Mariæ Sabbato" },
+    });
+    nameDays(
+      calendar,
+      2026,
+      { "maria-in-sabbato-in-tempore-adventus": "Onze Lieve Vrouw op zaterdag" },
+      { "maria-in-sabbato-in-tempore-adventus": "Onze Lieve Vrouw op zaterdag in de Advent" }
+    );
+    expect(calendar[11]![29]!.title).toBe("Onze Lieve Vrouw op zaterdag");
+    expect(calendar[11]![29]!.mass?.title).toBe("Onze Lieve Vrouw op zaterdag in de Advent");
+  });
+
+  it("titles a borrowed Mass as the day it is filed under, on a copy", () => {
+    const sundays = { title: "Dominica XXIII post Pentecosten" };
+    // A feria nothing names, saying the Mass of the Sunday before it.
+    const calendar = dayOf({
+      proper: { id: "dominica-xxiii-post-pentecosten", borrowed: true },
+      mass: sundays,
+    });
+    nameDays(calendar, 2026, {}, {
+      "dominica-xxiii-post-pentecosten": "Mis van de drieëntwintigste zondag na Pinksteren",
+    });
+    expect(calendar[11]![29]!.mass?.title).toBe("Mis van de drieëntwintigste zondag na Pinksteren");
+    expect(calendar[11]![29]).not.toHaveProperty("title");
+    expect(sundays.title).toBe("Dominica XXIII post Pentecosten");
+  });
+
   it("gives a day nothing names no title, leaving it its id", () => {
     const calendar = dayOf({ id: "sabbato-sancto", naming: { template: "sabbato-sancto", count: 1 } });
     nameDays(calendar, 2026, {});

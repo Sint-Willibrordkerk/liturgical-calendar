@@ -1,8 +1,20 @@
-maria-in-sabbato-in-tempore-adventus: Saturday of Our Lady in Advent
-maria-in-sabbato-a-nativitate-domini-usque-ad-purificationem: Saturday of Our Lady from Christmas to the Purification
-maria-in-sabbato-a-die-3-februari-usque-ad-feriam-iv-hebdomadae-sanctae: Saturday of Our Lady from 3 February to Wednesday of Holy Week
-maria-in-sabbato-in-tempore-paschali: Saturday of Our Lady in Paschaltide
-maria-in-sabbato-a-festo-trinitatis-usque-ad-sabbatum-ante-dominicam-i-adventus: Saturday of Our Lady from Trinity Sunday to the Saturday before the First Sunday of Advent
+# The Saturday of Our Lady is one day with a Mass for each part of the year:
+# the day is called the same all year, its Mass by when it is said.
+maria-in-sabbato-in-tempore-adventus:
+  title: Saturday of Our Lady
+  mass: Saturday of Our Lady in Advent
+maria-in-sabbato-a-nativitate-domini-usque-ad-purificationem:
+  title: Saturday of Our Lady
+  mass: Saturday of Our Lady from Christmas to the Purification
+maria-in-sabbato-a-die-3-februari-usque-ad-feriam-iv-hebdomadae-sanctae:
+  title: Saturday of Our Lady
+  mass: Saturday of Our Lady from 3 February to Wednesday of Holy Week
+maria-in-sabbato-in-tempore-paschali:
+  title: Saturday of Our Lady
+  mass: Saturday of Our Lady in Paschaltide
+maria-in-sabbato-a-festo-trinitatis-usque-ad-sabbatum-ante-dominicam-i-adventus:
+  title: Saturday of Our Lady
+  mass: Saturday of Our Lady from Trinity Sunday to the Saturday before the First Sunday of Advent
 in-vigilia-ascensionis: Vigil of the Ascension
 feria-iv-quattuor-temporum-adventus: Ember Wednesday in Advent
 feria-vi-quattuor-temporum-adventus: Ember Friday in Advent

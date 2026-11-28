@@ -2,7 +2,12 @@ import type { Assets } from "./assets";
 import type { Calendar } from "./types";
 import { eachDay } from "./utils";
 import { parseCalendarData } from "./parseCalendarData";
-import { loadTranslations, loadMartyrology, loadCommemorationRules } from "./loadAssets";
+import {
+  loadTranslations,
+  loadMassTitles,
+  loadMartyrology,
+  loadCommemorationRules,
+} from "./loadAssets";
 import { applyFerialMass } from "./ferias";
 import { applyResumedSundays } from "./resumedSundays";
 import { applyCommemorations } from "./commemorations";
@@ -84,7 +89,7 @@ export function calendarOf(assets: Assets) {
       const asked = (languages[0] ?? NO_LANGUAGE).code;
       applyMartyrology(calendar, year, martyrologySources(languages), asked);
     }
-    nameDays(calendar, year, translations);
+    nameDays(calendar, year, translations, loadMassTitles(languages));
 
     // The days as they are published: without what they were settled with.
     const published: Calendar = {};
