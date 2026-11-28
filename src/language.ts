@@ -24,10 +24,19 @@ export type Language = {
   dataVersion?: string;
   assets: {
     masspropers?: Record<string, unknown>;
-    translations?: Record<string, Record<string, string>>;
+    translations?: Record<string, Record<string, Translation>>;
     martyrologium?: Record<string, unknown>;
   };
 };
+
+/**
+ * What a language calls a key: a name, or, for a day whose Mass is called
+ * otherwise than the day, the day's title and its Mass's. The Saturday of Our
+ * Lady is one day with five Masses through the year: the day is "Onze Lieve
+ * Vrouw op zaterdag", and its Mass in Advent "Onze Lieve Vrouw op zaterdag in
+ * de Advent".
+ */
+export type Translation = string | { title: string; mass: string };
 
 /**
  * A language carrying nothing — the calendar without propers or translations.

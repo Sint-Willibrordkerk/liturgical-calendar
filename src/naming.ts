@@ -5,7 +5,7 @@
  * `dominica-$count-adventus`, its count and weekday filled in by date. What the
  * day is called is the language's to say, and is said once the days are
  * settled and their Masses read, since a day the language has no name for is
- * called by the Latin title of its Mass.
+ * called by the title of its Mass.
  */
 import type { WorkingCalendar, WorkingCommemoration, WorkingDay } from "./types";
 import { ordinals, days, feriae } from "./ordinals";
@@ -67,11 +67,24 @@ export function nameDay(
 
 /**
  * Name a day or commemoration in the language: as the language calls it, or,
- * where it has no name for the day, by the Latin title of the Mass said, so
- * the reader sees `Festum Sanctissimæ Trinitatis` rather than an id. A day with
+ * where it has no name for the day, by the title of the Mass said, so the
+ * reader sees `Festum Sanctissimæ Trinitatis` rather than an id. A day with
  * neither has no title: its id still says which day it is.
+ *
+ * The Mass keeps the Latin title of its source unless the language calls it
+ * otherwise than its day. It is titled by the id it is filed under, so a day
+ * that borrows it says it under the same title as the day it belongs to.
  */
-function name(entry: WorkingCommemoration, date: Date, translations: Translations): void {
+function name(
+  entry: WorkingCommemoration,
+  date: Date,
+  translations: Translations,
+  massTitles: Translations
+): void {
+  const massTitle = entry.proper === undefined ? undefined : massTitles[entry.proper.id];
+  // Copied rather than set in place, since a Mass may be shared.
+  if (massTitle !== undefined && entry.mass !== undefined) entry.mass = { ...entry.mass, title: massTitle };
+
   if (entry.naming === undefined) return;
   const named = nameDay(entry.naming.template, entry.naming.count, date, translations);
   const title = named ?? entry.mass?.title;
@@ -81,16 +94,25 @@ function name(entry: WorkingCommemoration, date: Date, translations: Translation
 /**
  * Name every day of `year` and its commemorations in the language, and its
  * season and colors beside their identifiers, where the language names them.
+ * `massTitles` holds the Masses the language calls otherwise than their days,
+ * by the id each is filed under.
  */
-export function nameDays(calendar: WorkingCalendar, year: number, translations: Translations): void {
+export function nameDays(
+  calendar: WorkingCalendar,
+  year: number,
+  translations: Translations,
+  massTitles: Translations = {}
+): void {
   const nameOf = (key: string | undefined): string | undefined =>
     key === undefined ? undefined : translations[key];
 
   eachDay(year, ({ date, month, day }) => {
     const entry: WorkingDay | undefined = calendar[month]?.[day];
     if (entry === undefined) return;
-    name(entry, date, translations);
-    entry.commemorations.forEach((commemoration) => name(commemoration, date, translations));
+    name(entry, date, translations, massTitles);
+    entry.commemorations.forEach((commemoration) =>
+      name(commemoration, date, translations, massTitles)
+    );
 
     const seasonName = nameOf(entry.season);
     const colorName = nameOf(entry.color);

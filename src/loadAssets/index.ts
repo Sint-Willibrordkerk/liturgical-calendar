@@ -1,5 +1,5 @@
 import { findAsset, loadAsset, type Assets } from "../assets";
-import type { Language } from "../language";
+import type { Language, Translation } from "../language";
 import {
   resolveMassProper,
   applySeason,
@@ -51,17 +51,43 @@ export function loadPropers(assets: Assets, name: string): LocalProper {
   return { name, days: properSchema.parse(loadAsset(assets, `propers/${name}.yml`)) };
 }
 
-/** Every translation the language carries, read as one table. */
-export function loadTranslations(languages: Language[]): Record<string, string> {
-  const translations: Record<string, string> = {};
+/**
+ * Every translation the languages carry, read as one table, the first
+ * language's where several translate a key. An entry is taken whole, so a day
+ * and its Mass are never titled in two languages.
+ */
+function loadEntries(languages: Language[]): Record<string, Translation> {
+  const entries: Record<string, Translation> = {};
   for (const language of languages.toReversed()) {
     for (const data of Object.values(language.assets?.translations ?? {})) {
       if (typeof data === "object" && data !== null) {
-        Object.assign(translations, data);
+        Object.assign(entries, data);
       }
     }
   }
-  return translations;
+  return entries;
+}
+
+/** Every translation the language carries, read as one table: what it calls each key. */
+export function loadTranslations(languages: Language[]): Record<string, string> {
+  return Object.fromEntries(
+    Object.entries(loadEntries(languages)).map(([key, entry]) => [
+      key,
+      typeof entry === "string" ? entry : entry.title,
+    ])
+  );
+}
+
+/**
+ * The titles the language gives Masses called otherwise than their day, by the
+ * id the Mass is filed under.
+ */
+export function loadMassTitles(languages: Language[]): Record<string, string> {
+  return Object.fromEntries(
+    Object.entries(loadEntries(languages)).flatMap(([key, entry]) =>
+      typeof entry === "string" ? [] : [[key, entry.mass]]
+    )
+  );
 }
 
 /**

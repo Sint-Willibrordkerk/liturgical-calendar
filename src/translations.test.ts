@@ -57,11 +57,16 @@ function names(node: unknown, out: string[] = []): string[] {
   return out;
 }
 
+/**
+ * The keys of a file as written, so a key said twice shows. Only the top
+ * level: beneath a key stand the titles of a day and its Mass, where the
+ * language calls them apart.
+ */
 function keysOf(file: string): string[] {
   const keys: string[] = [];
   for (const line of readFileSync(file, "utf-8").split(/\r?\n/)) {
-    const match = line.match(/^([^:#]+):/);
-    if (match?.[1]?.trim()) keys.push(match[1]);
+    const match = line.match(/^([^\s:#][^:#]*):/);
+    if (match?.[1]) keys.push(match[1]);
   }
   return keys;
 }
@@ -99,6 +104,21 @@ describe.each(translated)("the %s translations", (language) => {
       existsSync(join(dir, file)) ? keysOf(join(dir, file)) : [];
     expect(read("seasons.yml").sort()).toEqual([...seasons].sort());
     expect(read("colors.yml").sort()).toEqual([...colors].sort());
+  });
+
+  it("calls a day and its Mass apart by the day's id, with both titles", () => {
+    for (const file of files.filter((file) => !VOCABULARY.has(file))) {
+      const entries = parse(readFileSync(join(dir, file), "utf-8")) as Record<string, unknown> | null;
+      for (const [key, entry] of Object.entries(entries ?? {})) {
+        if (typeof entry === "string") continue;
+        // A Mass is titled by the id it is filed under, never by a template.
+        expect(key, `${file}: ${key}`).not.toContain("$");
+        expect(entry, `${file}: ${key}`).toEqual({
+          title: expect.stringMatching(/\S/),
+          mass: expect.stringMatching(/\S/),
+        });
+      }
+    }
   });
 
   it("keys its days by the name the calendar files them under", () => {

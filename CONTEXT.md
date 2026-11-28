@@ -36,9 +36,19 @@ _Avoid_: title (for the slug), key, name
 
 **Title**:
 What a day is called in a language: the name the language gives its id, or,
-where it has none, the Latin title of the day's Mass. A day nothing names has
-no title; its id still says which day it is.
+where it has none, the **Mass Title**. A day nothing names has no title; its id
+still says which day it is.
 _Avoid_: id, name (of a day)
+
+**Mass Title**:
+What a day's Mass is called: the Latin title of its source, unless the language
+calls the Mass otherwise than the day. The Saturday of Our Lady is one day with
+a Mass for each part of the year: the day is "Onze Lieve Vrouw op zaterdag",
+its Mass in Advent "Onze Lieve Vrouw op zaterdag in de Advent". A Mass is titled
+by the id it is filed under, so a day that borrows it says it under the same
+title.
+_Avoid_: name (of a Mass: the `name` of the propers is the saint's, for the N.
+of a common)
 
 **Name**:
 What a language calls a thing the calendar identifies: the Dutch "Advent" for

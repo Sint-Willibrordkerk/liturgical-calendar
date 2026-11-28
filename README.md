@@ -62,8 +62,27 @@ console.log(january1.mass.introitus); // the Introit, in Latin
 
 Every day the calendar names has an `id`, the same in every language, to
 compare and look up by. Its `title` is what the language calls it — or, where
-the language has no name for the day, the Latin title of its Mass — and is
-absent where nothing names it.
+the language has no name for the day, the title of its Mass — and is absent
+where nothing names it.
+
+The Mass has a `title` of its own: the Latin title of its source, unless the
+language calls the Mass otherwise than the day. The Saturday of Our Lady is one
+day with a Mass for each part of the year:
+
+```javascript
+const saturday = calendar[11][28]; // 28 November 2026, in Dutch
+console.log(saturday.title); // "Onze Lieve Vrouw op zaterdag"
+console.log(saturday.mass.title); // "Onze Lieve Vrouw op zaterdag vanaf Zondag Trinitate tot de zaterdag voor de eerste zondag van de Advent"
+```
+
+A language calls a day and its Mass apart by giving both titles under the day's
+id in its translations:
+
+```yaml
+maria-in-sabbato-in-tempore-adventus:
+  title: Onze Lieve Vrouw op zaterdag
+  mass: Onze Lieve Vrouw op zaterdag in de Advent
+```
 
 Called without a language the calendar is still generated — the days fall where
 they fall, each with its id — but no day carries a Mass or a title.

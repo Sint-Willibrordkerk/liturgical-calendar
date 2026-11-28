@@ -58,7 +58,10 @@ export type RawReading =
 export type Fallback = Record<string, string>;
 
 export type RawMassProper = {
-  /** The formal designation, from the source's officium. */
+  /**
+   * What the Mass is called: the formal designation, from the source's
+   * officium, unless the language calls the Mass otherwise than its day.
+   */
   title?: string;
   /** The short name of the celebration. */
   name?: string;
@@ -121,8 +124,10 @@ export type Commemoration = {
   id?: string;
   /**
    * What the day is called in the language: its name there, or, where the
-   * language has none, the Latin title of its Mass. Absent where nothing
-   * names it; the id still says which day it is.
+   * language has none, the title of its Mass. Absent where nothing names it;
+   * the id still says which day it is. A language may call the day and its
+   * Mass apart: the Saturday of Our Lady is "Onze Lieve Vrouw op zaterdag",
+   * its Mass "Onze Lieve Vrouw op zaterdag in de Advent".
    */
   title?: string;
   type: DayType;

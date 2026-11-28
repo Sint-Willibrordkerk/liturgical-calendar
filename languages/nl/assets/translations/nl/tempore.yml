@@ -1,8 +1,20 @@
-maria-in-sabbato-in-tempore-adventus: Onze Lieve Vrouw op zaterdag in de Advent
-maria-in-sabbato-a-nativitate-domini-usque-ad-purificationem: Onze Lieve Vrouw op zaterdag vanaf Kerstmis tot Maria Lichtmis
-maria-in-sabbato-a-die-3-februari-usque-ad-feriam-iv-hebdomadae-sanctae: Onze Lieve Vrouw op zaterdag vanaf 3 februari tot woensdag in de Goede Week
-maria-in-sabbato-in-tempore-paschali: Onze Lieve Vrouw op zaterdag in de Paastijd
-maria-in-sabbato-a-festo-trinitatis-usque-ad-sabbatum-ante-dominicam-i-adventus: Onze Lieve Vrouw op zaterdag vanaf Zondag Trinitate tot de zaterdag voor de eerste zondag van de Advent
+# The Saturday of Our Lady is one day with a Mass for each part of the year:
+# the day is called the same all year, its Mass by when it is said.
+maria-in-sabbato-in-tempore-adventus:
+  title: Onze Lieve Vrouw op zaterdag
+  mass: Onze Lieve Vrouw op zaterdag in de Advent
+maria-in-sabbato-a-nativitate-domini-usque-ad-purificationem:
+  title: Onze Lieve Vrouw op zaterdag
+  mass: Onze Lieve Vrouw op zaterdag vanaf Kerstmis tot Maria Lichtmis
+maria-in-sabbato-a-die-3-februari-usque-ad-feriam-iv-hebdomadae-sanctae:
+  title: Onze Lieve Vrouw op zaterdag
+  mass: Onze Lieve Vrouw op zaterdag vanaf 3 februari tot woensdag in de Goede Week
+maria-in-sabbato-in-tempore-paschali:
+  title: Onze Lieve Vrouw op zaterdag
+  mass: Onze Lieve Vrouw op zaterdag in de Paastijd
+maria-in-sabbato-a-festo-trinitatis-usque-ad-sabbatum-ante-dominicam-i-adventus:
+  title: Onze Lieve Vrouw op zaterdag
+  mass: Onze Lieve Vrouw op zaterdag vanaf Zondag Trinitate tot de zaterdag voor de eerste zondag van de Advent
 in-vigilia-ascensionis: Vigilie van Hemelvaart
 feria-iv-quattuor-temporum-adventus: Quatertemperwoensdag in de Advent
 feria-vi-quattuor-temporum-adventus: Quatertempervrijdag in de Advent
